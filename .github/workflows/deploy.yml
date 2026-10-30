@@ -1,7 +1,9 @@
 name: Deploy existing GRIDIRON AI services
 
-# The provider-native Git integrations are the primary automatic deploy path.
-# This workflow is an explicit retry mechanism for already provisioned services;
+# Provider-native Git deployment requires the provider's separate GitHub App
+# authorization; ChatGPT's GitHub connector access does not configure it.
+# This workflow is a prepared explicit retry mechanism for existing services;
+# its named GitHub secrets must be configured before execution.
 # it never creates resources or chooses a billable service tier.
 on:
   workflow_dispatch:

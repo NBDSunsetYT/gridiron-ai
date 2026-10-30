@@ -11,5 +11,14 @@
     "workspaceHoursPerMonth": 750
   },
   "pricingSource": "https://render.com/docs/free",
-  "credentialsIncluded": false
+  "credentialsIncluded": false,
+  "checkedAt": "2026-10-30T18:45:57.665334+00:00",
+  "creationAttempt": {
+    "plan": "free",
+    "httpStatus": 402,
+    "status": "billing_verification_required",
+    "message": "Payment information is required to complete this request.",
+    "remediationUrl": "https://dashboard.render.com/billing"
+  },
+  "resourcesOrChargesInitiated": false
 }

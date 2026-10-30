@@ -24,13 +24,20 @@ beforeAll(async()=>{
  ledger.settleBet(owner,{id:bet.id,result:'won',payout:'175.00',settledAt:'2026-10-04T12:00:00Z'});
  ledger.postTransaction(other,{type:'deposit',amount:'777.77',sportsbook:'Hard Rock',note:'OTHER OWNER PRIVATE SYNTHETIC RECORD'});
 });
-beforeEach(()=>{provider.create.mockReset();vi.stubEnv('OPENAI_API_KEY','SYNTHETIC PROVIDER STUB ONLY');vi.stubEnv('APP_ORIGIN','http://localhost:3000');});
+beforeEach(()=>{provider.create.mockReset();vi.stubEnv('AI_PROVIDER','');vi.stubEnv('OPENAI_API_KEY','SYNTHETIC PROVIDER STUB ONLY');vi.stubEnv('APP_ORIGIN','http://localhost:3000');});
 afterEach(()=>vi.unstubAllEnvs());
 afterAll(()=>{db.closeDb();rmSync(directory,{recursive:true,force:true});});
 function request(token=ownerToken,conversationId?:string){return new Request('http://localhost:3000/api/assistant',{method:'POST',headers:{'content-type':'application/json',origin:'http://localhost:3000',cookie:`${auth.SESSION_COOKIE}=${token}`},body:JSON.stringify({conversationId,messages:[{role:'user',content:question}]})});}
 describe('Assistant retrieves persisted owned records with provider transport stubbed',()=>{
  it('reports a missing provider key explicitly without inventing an answer or creating a conversation',async()=>{
   vi.stubEnv('OPENAI_API_KEY','');const before=research.listConversations(owner).length;const response=await route.POST(request());expect(response.status).toBe(503);expect((await response.json()).error).toContain('OPENAI_API_KEY');expect(research.listConversations(owner)).toHaveLength(before);expect(provider.create).not.toHaveBeenCalled();
+ });
+ it('withholds unconfigured Gateway requests without saving conversation text or falling back to direct OpenAI',async()=>{
+  vi.stubEnv('AI_PROVIDER','vercel-gateway');vi.stubEnv('AI_GATEWAY_API_KEY','');vi.stubEnv('VERCEL_OIDC_TOKEN','');const before=research.listConversations(owner).length;const response=await route.POST(request());expect(response.status).toBe(503);expect((await response.json()).error).toContain('VERCEL_OIDC_TOKEN');expect(research.listConversations(owner)).toHaveLength(before);expect(provider.create).not.toHaveBeenCalled();
+ });
+ it('checks Gateway credits without sending private records and refuses unapproved credit use',async()=>{
+  vi.stubEnv('AI_PROVIDER','vercel-gateway');vi.stubEnv('AI_GATEWAY_API_KEY','');vi.stubEnv('VERCEL_OIDC_TOKEN','SYNTHETIC GATEWAY TOKEN');vi.stubEnv('AI_GATEWAY_INCLUDED_CREDITS_ALLOWED','');const fetcher=vi.spyOn(globalThis,'fetch').mockResolvedValue(Response.json({balance:'5.00',total_used:'0.00'}));
+  try{const before=research.listConversations(owner).length;const response=await route.POST(request());expect(response.status).toBe(503);expect((await response.json()).error).toContain('included versus paid');expect(research.listConversations(owner)).toHaveLength(before);expect(provider.create).not.toHaveBeenCalled();expect(fetcher).toHaveBeenCalledWith('https://ai-gateway.vercel.sh/v1/credits',expect.objectContaining({method:'GET'}));expect(fetcher.mock.calls[0][1]?.body).toBeUndefined();}finally{fetcher.mockRestore();}
  });
  it('calculates actual period totals, excludes the other owner, and persists streamed conversation citations',async()=>{
   provider.create.mockImplementation(async(input:any)=>{

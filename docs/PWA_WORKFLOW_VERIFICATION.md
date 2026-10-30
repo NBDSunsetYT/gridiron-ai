@@ -66,6 +66,30 @@ is supplied, it also fits actual historical evidence, runs 10,000 complete games
 checks correlated passing/receiving totals and saved result attestations, and
 confirms that unsupported player-availability assumptions are rejected.
 
+Both request-bound and queued worker deployments are supported. For a 202
+receipt, the check polls the saved job until it actually completes and requires
+its owner/job-bound engine receipt to verify before using the result. A queued
+or running job is never counted as completed. Compact fitted models are reused
+through their saved model job IDs; the test does not send a large artifact back
+through the public API. Unsupported injury assumptions may return an immediate
+422 or a persisted failed/blocked job, and both paths must show the evidence
+failure. A timeout leaves the saved job intact and fails verification.
+
+The default verification deadline is ten minutes per saved job. Set
+`QA_SIMULATION_DEADLINE_MS` only to change this verification deadline, not to
+alter the simulation count or infer completion. The helper's transport and CSV
+handling tests run with:
+
+```sh
+node --test scripts/simulation-workflow.test.mjs
+```
+
+Nine focused checks cover queued/running/completed transitions, verified result
+receipts, compact model references, explicit failure states, transient read
+errors, authentication failures, deadlines, synchronous compatibility and quoted
+CSV fields. They use clearly synthetic transport fixtures and do not establish
+that any hosted service has completed a real NFL run.
+
 All financial, contract and injury mechanics fixtures are visibly **SYNTHETIC** in
 the disposable account. Their prices and results are not actual DraftKings quotes
 or real player injury news. Real historical NFL source imports and simulation

@@ -11,7 +11,7 @@ const output = resolve(root, 'artifacts',archiveName);
 await mkdir(resolve(root, 'artifacts'), { recursive: true });
 await rm(output,{force:true});
 const dirs = ['app', 'components', 'lib', 'public', 'migrations', 'supabase', 'deployment', 'native', 'ios', 'tests', 'scripts', 'docs', 'modeling', 'types', '.github'];
-const filenames = ['package.json', 'package-lock.json', 'tsconfig.json', 'next.config.ts', 'next.config.mjs', 'next-env.d.ts', 'middleware.ts', 'instrumentation.ts', 'capacitor.config.ts', 'vitest.config.ts', 'playwright.config.ts', 'Dockerfile', 'docker-compose.yml', '.dockerignore', '.gitignore', '.env.example', 'README.md'];
+const filenames = ['package.json', 'package-lock.json', 'tsconfig.json', 'next.config.ts', 'next.config.mjs', 'next-env.d.ts', 'middleware.ts', 'instrumentation.ts', 'capacitor.config.ts', 'vitest.config.ts', 'playwright.config.ts', 'Dockerfile', 'docker-compose.yml', 'render.yaml', 'vercel.json', 'requirements.txt', 'pyproject.toml', '.python-version', '.vercelignore', '.dockerignore', '.gitignore', '.env.example', 'README.md'];
 const existing = new Set(await readdir(root));
 const included = [...dirs, ...filenames].filter(name => existing.has(name));
 const result = spawnSync('zip', ['-q', '-r', output, ...included, '-x', '*.pyc', '*/__pycache__/*', '*/.DS_Store', '*/.env', '*/.env.local', '*/.env.production', '*/node_modules/*', '*/.venv/*', '*/.temp/*', '*/.branches/*', '*/xcuserdata/*', '*/DerivedData/*', '*/.build/*', '*.p12', '*.p8', '*.key', '*.pem', '*.pfx', '*.mobileprovision', '*.db', '*.db-wal', '*.db-shm', '*.sqlite*'], { cwd: root, encoding: 'utf8' });

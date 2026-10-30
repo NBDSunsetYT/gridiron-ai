@@ -1,23 +1,31 @@
 # Vercel frontend and API deployment
 
-The existing Next.js/React app stays intact. Vercel hosts its frontend and authenticated Node API; the separate Python/FastAPI service runs on Render. Supabase Auth/PostgreSQL remains the durable account database. No native IPA, App Store or TestFlight release is part of this deployment.
+The existing Next.js/React app stays intact. Vercel hosts its frontend and authenticated Node API; the existing Python/FastAPI engine can run as a private Vercel Service while Render account verification is blocked. Supabase Auth/PostgreSQL remains the durable account database. No native IPA, App Store or TestFlight release is part of this deployment.
 
 ## Current verified account and scope
 
-The connected Vercel user is on the **Hobby** plan. The user's default team scope is `gridiron5`, ID `team_GWp3QPUQgohJPqe7ppe9pYmS`. The initial scoped project request returned HTTP 403 with Vercel's explicit requirement to authorize team access. The native `authorize_team_access` flow was started; its one-use link must be approved by the account owner before using that scope. An installed connector does not itself prove access to every team. Do not create the project in a different personal/team scope to bypass that authorization requirement.
+The connected Vercel user is on the **Hobby** plan. The authorized team scope is `gridiron5`, ID `team_GWp3QPUQgohJPqe7ppe9pYmS`. Its initial HTTP 403 was resolved through Vercel's explicit team-authorization flow; a subsequent scoped project read succeeded. No different scope was used to bypass the requirement.
 
-No project or deployment is claimed here until the actual native API result and production checks establish it. After authorization, reuse an existing GRIDIRON project if one appears rather than creating a duplicate.
+The existing-project inspection returned no projects, so one project named `gridiron-ai` was created: `prj_ufIV2AZJcQAW7lNtQmH6hcyrWamH`. Node 22.x, Fluid Compute and a 300-second function timeout were selected without paid resource upgrades. Existing Supabase keys and the stable simulation token were transferred into encrypted server environment variables without printing values. The initial frontend deployment is READY at https://gridiron-ai-gray.vercel.app. The project now uses the Services framework preset for the next atomic web/Python deployment. Consult the final deployment report for the actual deployment ID, build status and production workflow checks.
 
 ## Build and runtime settings
 
-- Framework: Next.js. Repository root: this application directory.
+- Framework preset: Services; web service framework: Next.js; quant service framework: FastAPI. Both service roots reference this existing application directory. Python is pinned to 3.12 without moving the original engine.
 - Install: `npm ci`; build: `npm run build`; output directory: framework default.
 - Node: supported 22.x or 24.x.
 - Use Hobby/default build resources and Fluid Compute; no turbo build, paid memory or multiple-region upgrade is requested.
 - `vercel.json` caps API functions at 300 seconds, the current Hobby Fluid Compute maximum. Route-level `maxDuration` exports must also remain at or below that limit.
-- `.vercelignore` excludes local credentials, financial databases, caches and Python/native source from CLI uploads. It retains the three historical JSON reports actually imported by the web components.
+- `.vercelignore` excludes local credentials, financial databases, caches and native source from CLI uploads. It retains the three historical JSON reports actually imported by the web components.
 
 Current official Vercel documentation states that **both request and response bodies are limited to 4.5 MB**. Increasing Next's middleware limit does not raise that gateway limit. Signed fitted artifacts can be larger. Use owned model-job references and compact server responses instead of resending or returning entire multi-megabyte artifacts in ordinary API JSON. A local Docker pass does not test this platform gateway constraint.
+
+## Private Python service and Render limitation
+
+Vercel Services is **Beta on all plans**. `vercel.json` declares a web-to-quant binding that supplies `SIMULATION_SERVICE_URL` at runtime. The only public ingress rewrite targets the web service. The Python compute service has no public rewrite and additionally checks the retained server bearer token and a short-lived authenticated user session.
+
+Simulation requests first save immutable, owner-scoped inputs and a signed input receipt in Supabase. A 202 receipt identifies the durable job. Next.js `after()` retains the request lifetime while the private Python request performs the actual computation and saves its signed result. Polling retrieves the saved state, verifies the result proof, and shows results only when completed. Vercel request-bound execution does not depend on a detached thread surviving after its response. The 300-second Hobby timeout applies; a timed-out job preserves its inputs for an explicit fresh-session retry. A model reference avoids resending large fitted artifacts through the 4.5 MB public gateway.
+
+Render rejected creation of the requested **free** Python web service with HTTP402: payment information is required at https://dashboard.render.com/billing. No Render service or paid worker/cron resource was created. The Render Docker/Blueprint configuration remains available for a later authorized retry. The current interim Vercel configuration requests no plan, memory or paid build upgrade. Background workers and recurring ingestion must not be represented as active until their actual production checks succeed.
 
 ## Server environment
 
@@ -29,8 +37,10 @@ GRIDIRON_CLOUD_ONLY=1
 GRIDIRON_COMPACT_API=1
 SUPABASE_URL=<existing gridiron-ai project URL>
 SUPABASE_PUBLISHABLE_KEY=<existing publishable key, server-only>
-SIMULATION_SERVICE_URL=<actual Render HTTPS backend URL>
-SIMULATION_SERVICE_TOKEN=<same stable server token used by Render>
+GRIDIRON_ASYNC_SIMULATIONS=1
+GRIDIRON_WORKER_REQUEST_LIFETIME=1
+SIMULATION_SERVICE_URL=<generated private binding; do not manually configure>
+SIMULATION_SERVICE_TOKEN=<retained stable server token shared by web and quant>
 APP_URL=<actual stable production HTTPS origin>
 DEVICE_TOKEN_ENCRYPTION_KEY=<retained server-only key when needed>
 OPENAI_API_KEY=<authorized key if live AI is enabled>
@@ -49,4 +59,4 @@ After a successful build, verify the returned stable HTTPS URL, `/api/health`, d
 
 Set the Supabase Auth Site URL and permitted confirmation redirects to the exact production origin using authorized Auth configuration. Do not bypass its redirect allowlist. A functioning existing password session does not establish confirmation email delivery or a correct new-user redirect.
 
-Official references checked: [Function limits](https://vercel.com/docs/functions/limitations), [function duration](https://vercel.com/docs/functions/configuring-functions/duration), and [project configuration](https://vercel.com/docs/project-configuration/vercel-json).
+Official references checked: [Services](https://vercel.com/docs/services), [private bindings](https://vercel.com/docs/services/bindings), [configuration](https://vercel.com/docs/services/config-reference), [Python versions](https://vercel.com/docs/functions/runtimes/python/python-version), [Function limits](https://vercel.com/docs/functions/limitations), [function duration](https://vercel.com/docs/functions/configuring-functions/duration), and [project configuration](https://vercel.com/docs/project-configuration/vercel-json).

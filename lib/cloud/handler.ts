@@ -15,8 +15,10 @@ import {verifyCloudResult,verifiedCloudJob} from './attestation';
 import {cloudImportContracts} from './imports';
 import {exportOwnedTables,OWNED_TYPED_EXPORT_TABLES} from './export';
 import {decodeCloudData} from './codec';
+import {cloudJson} from './transport';
+import {probeAiProvider} from '../ai-provider';
 
-const json=(data:unknown,status=200)=>Response.json(data,{status});
+const json=cloudJson;
 const publicLimits=new Map<string,{count:number;until:number}>();
 function limitAuth(request:Request){const key=createHash('sha256').update(request.headers.get('x-forwarded-for')?.split(',')[0]??'local').digest('hex'),now=Date.now();for(const[k,v]of publicLimits)if(v.until<now)publicLimits.delete(k);const previous=publicLimits.get(key);if(previous&&previous.count>=30)throw new ApiError('Too many authentication requests. Try again later.',429);if(publicLimits.size>10000)throw new ApiError('Authentication is busy. Try again later.',429);publicLimits.set(key,{count:(previous?.count??0)+1,until:previous?.until??now+900000});}
 export async function cloudSettings(ctx:CloudContext){const u=requireCloudUser(ctx),{data,error}=await ctx.client.from('profiles').select('settings').eq('user_id',u.id).single();if(error)cloudError(error);return data.settings??{monthlyLimitCents:null,timezone:'UTC',notifications:{},theme:'dark'};}
@@ -100,7 +102,7 @@ export async function handleCloudRequest(request:Request,pathParts:string[]){
   }else if(path==='contracts/import'){const imported=await cloudImportContracts(ctx,await inputBody(request));result=json(imported,imported.duplicate?200:201);
   }else if(path==='injuries'){
    if(method==='GET')result=json(await cloudInjuries(ctx));else{const value=await cloudSaveInjury(ctx,await inputBody(request));if(value.resimulationRequired){try{after(()=>cloudProcessJobs(ctx!,3).then(()=>{}));}catch{/* Durable jobs can be resumed by their owner. */}}result=json(value,201);}
-  }else if(path==='simulations')result=method==='GET'?json(await cloudSimulationHistory(ctx,query.get('id'))):json(await cloudRunSimulation(ctx,await inputBody(request,20*1024*1024)));
+  }else if(path==='simulations'){if(method==='GET')result=json(await cloudSimulationHistory(ctx,query.get('id')));else{const run=await cloudRunSimulation(ctx,await inputBody(request,20*1024*1024));result=json(run,run.pending?202:200);}}
   else if(path==='quant'){
    const {handleQuant}=await import('../quant'),{attestCloudResult}=await import('./attestation');
    result=await handleQuant(request,user.id,{save:async job=>{const value=job.status==='completed'?{...job,resultProof:attestCloudResult(ctx!,job.id,job.result)}:job;let existing=false;try{await record(ctx!,job.id,'quant_runs');existing=true;}catch(e){if(!(e instanceof ApiError&&e.status===404))throw e;}if(existing)await updateRecord(ctx!,job.id,value);else await saveRecord(ctx!,'quant_runs',value,{id:job.id});},list:async()=>unwrap(await records(ctx!,'quant_runs',{limit:100})).map(job=>verifiedCloudJob(ctx!,job)),get:async id=>{try{return verifiedCloudJob(ctx!,(await record(ctx!,id,'quant_runs')).data);}catch(e){if(e instanceof ApiError&&e.status===404)return null;throw e;}}});
@@ -124,6 +126,7 @@ export async function handleCloudRequest(request:Request,pathParts:string[]){
   else if(path==='database/health'||path==='status')result=json({backend:'supabase',status:'connected',authenticated:true,checkedAt:new Date().toISOString(),durability:'Remote PostgreSQL; local cache is not the primary database.',profileVerified:true});
   else if(path==='warehouse'){const {handleWarehouse,cloudWarehouseStorage}=await import('../warehouse');result=await handleWarehouse(request,user.id,cloudWarehouseStorage(ctx));}
   else if(path==='pipeline'){const {handlePipeline}=await import('../pipeline');result=await handlePipeline(forwardCloudRequest(ctx),user.id,{preferences:()=>preferences(ctx!),setPreference:(key,value)=>updatePreferences(ctx!,{[key]:value}).then(()=>{}),history:async limit=>unwrap(await records(ctx!,'pipeline_run',{limit})),saveRun:async run=>{let exists=false;try{await record(ctx!,run.id,'pipeline_run');exists=true;}catch(e){if(!(e instanceof ApiError&&e.status===404))throw e;}if(exists)await updateRecord(ctx!,run.id,run);else await saveRecord(ctx!,'pipeline_run',run,{id:run.id});}});}
+  else if(path==='assistant/status'&&method==='GET'){await cloudRateLimit(ctx,'assistant-status',6,60000);const provider=query.get('provider')??process.env.AI_PROVIDER??'openai';const status=await probeAiProvider(provider);const {credits,...safe}=status;result=json({...safe,...(credits?{creditCheck:{httpStatus:credits.httpStatus,checkedAt:credits.checkedAt,includedCreditEligibility:credits.includedCreditEligibility,includedCreditsAuthorized:credits.includedCreditsAuthorized}}:{})});}
   else if(path==='assistant'){const {cloudAssistant}=await import('./assistant');result=await cloudAssistant(ctx,await inputBody(request));}
   else if(path==='reports'){const {buildFinancialReport}=await import('../reports');result=json(buildFinancialReport(await rpc(ctx,'gridiron_ledger'),{timezone:(await cloudSettings(ctx)).timezone,...Object.fromEntries(query)}));}
   else if(path==='audit'){const {auditWorkspace}=await import('../auditor');const h=await cloudContracts(ctx),i=await cloudInjuries(ctx),s=unwrap(await records(ctx,'simulation_jobs',{limit:100}));result=json(auditWorkspace({contracts:h.contracts,predictions:h.predictions,injuries:i.records,simulations:s}));}

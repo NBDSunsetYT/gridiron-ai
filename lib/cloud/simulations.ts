@@ -4,8 +4,10 @@ import {combineScenarios} from '../jobs';
 import {type CloudContext} from './context';
 import {records,record,saveRecord,updateRecord,unwrap} from './store';
 import {cloudSavePrediction} from './research';
-import {attestCloudResult,verifyCloudResult,verifiedCloudJob} from './attestation';
+import {attestCloudResult,attestCloudInput,verifyCloudResult,verifiedCloudJob} from './attestation';
 import {simulationPayload} from '../simulation-input';
+import {backgroundSimulations,dispatchCloudSimulation,resumeCloudSimulation} from './async-simulations';
+import {compactApiEnabled,compactSimulationResult,compactSimulationJob} from './transport';
 
 export function cloudInjuryPayload(input:Record<string,any>,playerId:string,status:string){
  const payload=simulationPayload(input,{replay:true});payload.scenario={playerId,status};
@@ -37,18 +39,20 @@ export async function cloudRunSimulation(ctx:CloudContext,input:any){
  // Refuse to record a pretend pending run when the service is absent.
  if(!process.env.SIMULATION_SERVICE_URL||!process.env.SIMULATION_SERVICE_TOKEN)throw new ApiError('SIMULATION_SERVICE_URL and SIMULATION_SERVICE_TOKEN are not configured.',503);
  const {action,...payload}=input;simulationPayload(payload);
- const id=randomUUID(),now=new Date().toISOString(),job={id,kind:action,status:'running',data:{inputHash:createHash('sha256').update(JSON.stringify(input)).digest('hex'),home:input.home??null,away:input.away??null,eventStart:input.eventStart??null,simulations:input.simulations??null,modelVersion:input.model?.version??null,source:input.source??input.model?.source??null,scenario:input.scenario??null,contracts:input.contracts??null,injuryEntityKeys:input.injuryEntityKeys??[]},result:null as any,error:null as string|null,createdAt:now,updatedAt:now};
+ const background=backgroundSimulations(),id=randomUUID(),now=new Date().toISOString(),job={id,kind:action,status:background?'queued':'running',data:{execution:background?'background':'request',inputHash:createHash('sha256').update(JSON.stringify(input)).digest('hex'),home:input.home??null,away:input.away??null,eventStart:input.eventStart??null,simulations:input.simulations??null,modelVersion:input.model?.version??null,source:input.source??input.model?.source??null,scenario:input.scenario??null,contracts:input.contracts??null,injuryEntityKeys:input.injuryEntityKeys??[]},result:null as any,error:null as string|null,createdAt:now,updatedAt:now};
  await saveRecord(ctx,'simulation_jobs',job,{id});
  try{
-  await saveRecord(ctx,'simulation_inputs',{id:randomUUID(),jobId:id,input},{entityKey:id});
+  await saveRecord(ctx,'simulation_inputs',{id:randomUUID(),jobId:id,input,...(background?{inputProof:attestCloudInput(ctx,id,input)}:{})},{entityKey:id});
+  if(background){const worker=await dispatchCloudSimulation(ctx,id);return{id,status:'queued',pending:true,worker};}
   const result=await simulationService(action,payload);job.status='completed';job.result=result;job.updatedAt=new Date().toISOString();await updateRecord(ctx,id,{...job,resultProof:attestCloudResult(ctx,id,result)});
-  return{id,status:'completed',...result};
+  return{id,status:'completed',...compactSimulationResult(id,result)};
  }catch(error){job.status='failed';job.error=error instanceof ApiError?error.message:'Simulation failed.';job.updatedAt=new Date().toISOString();await updateRecord(ctx,id,job);throw error;}
 }
 export async function cloudSimulationHistory(ctx:CloudContext,id?:string|null){
  const configured=Boolean(process.env.SIMULATION_SERVICE_URL&&process.env.SIMULATION_SERVICE_TOKEN);
- if(id)return{job:verifiedCloudJob(ctx,(await record(ctx,id,'simulation_jobs')).data),service:{configured}};
- return{jobs:unwrap(await records(ctx,'simulation_jobs',{limit:60})).map(j=>verifiedCloudJob(ctx,j)).map(j=>({...j,result:j.result?{summary:j.result.summary,modelVersion:j.result.modelVersion,provenance:j.result.provenance,simulations:j.result.simulations,home:j.result.home,away:j.result.away}:null})),service:{configured,message:configured?'Service configured; requests verify actual availability.':'Private service not configured.'}};
+ const service={configured,background:backgroundSimulations(),compactTransport:compactApiEnabled(),maxRequestBytes:compactApiEnabled()?3_800_000:20*1024*1024};
+ if(id){let job=(await record(ctx,id,'simulation_jobs')).data;job=await resumeCloudSimulation(ctx,job);return{job:compactSimulationJob(verifiedCloudJob(ctx,job)),service};}
+ return{jobs:unwrap(await records(ctx,'simulation_jobs',{limit:60})).map(j=>verifiedCloudJob(ctx,j)).map(j=>({...j,result:j.result?{summary:j.result.summary,modelVersion:j.result.modelVersion,provenance:j.result.provenance,simulations:j.result.simulations,home:j.result.home,away:j.result.away}:null})),service:{...service,message:configured?'Service configured; requests verify actual availability.':'Private service not configured.'}};
 }
 export async function cloudJobHistory(ctx:CloudContext){return{jobs:unwrap(await records(ctx,'simulation_jobs',{limit:100,dataKind:'injury_resimulation'})),worker:{onInjurySave:true,recovery:'Owned queued jobs can be resumed after sign-in. Background server-wide cron needs an explicitly configured privileged worker; no user JWT is invented.'}};}
 export async function cloudProcessJobs(ctx:CloudContext,limit=1){

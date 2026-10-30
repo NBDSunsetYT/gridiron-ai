@@ -1,23 +1,59 @@
 {
   "status": "passed",
-  "checkedAt": "2026-10-30T18:22:14.755007+00:00",
-  "candidateSourceFiles": 308,
-  "configuredCredentialByteScan": "passed",
+  "checkedAt": "2026-10-30T18:56:11.430497+00:00",
+  "candidateSourceFiles": 325,
+  "configuredCredentialByteScan": "passed against all Git index contents",
   "runtimeDatabasesAndSigningMaterialExcluded": true,
   "gitHub": {
     "authenticatedAccount": "NBDSunsetYT",
-    "existingGridironRepositoryFound": false,
-    "nativeInstallations": 0,
-    "repositoryCreation": "denied by both GraphQL and REST403",
-    "localBranch": "main",
-    "remotePush": "not performed",
-    "plannedPrivateRepository": "NBDSunsetYT/gridiron-ai"
+    "repository": "https://github.com/NBDSunsetYT/gridiron-ai",
+    "visibility": "public (created by the user)",
+    "defaultBranch": "main",
+    "nativeInstallations": 1,
+    "repositorySelection": "all",
+    "initialSourceCommit": "0e0261546aed5dc7e760bb72d50ea7fd3588efdf",
+    "remotePush": "verified",
+    "remoteHeadVerifiedByGitHubApi": true,
+    "previousAuthorizationBlock": "Resolved after the user installed the connected GitHub app for repository access."
   },
   "ci": {
     "yamlParsed": true,
     "actionsPinnedToOfficialCommitShas": true,
-    "providerRedeployWorkflow": "manual/main-only/existing-services-only",
-    "executedOnGitHub": false
+    "providerRedeployWorkflow": "prepared/manual/main-only/existing-services-only; required secrets not configured",
+    "executedOnGitHub": true,
+    "githubRun": "https://github.com/NBDSunsetYT/gridiron-ai/actions/runs/41109225962",
+    "githubRunStatusAtCheck": "completed",
+    "githubRunConclusion": "failure",
+    "initialFailure": "24/26 browser checks passed on initial commits; two iPhone checks were blocked by the Next.js dev overlay following an SVG list-key warning. Repaired the missing key; all28current browser checks now pass.",
+    "vercelNativeGitIntegration": "unconfigured: the authorized Vercel git_namespaces response is empty; its GitHub App authorization is separate from ChatGPT connector access",
+    "localFinalChecks": {
+      "applicationTypeScriptTests": 252,
+      "pythonModelingTests": 60,
+      "browserTests": 28,
+      "browserElapsedSeconds": 90,
+      "focusedIphoneRegressionTests": 7,
+      "productionNextBuild": "passed",
+      "physicalIphoneInstallationTested": false,
+      "nodeWorkflowTests": 9
+    }
   },
-  "credentialsIncluded": false
+  "credentialsIncluded": false,
+  "dependencies": {
+    "productionNpmAudit": {
+      "status": "passed",
+      "vulnerabilities": 0,
+      "patch": "Next-only PostCSS8.5.32 override; no Next major upgrade"
+    },
+    "developmentOnlyNpmAudit": {
+      "critical": 2,
+      "moderate": 1,
+      "packages": [
+        "vitest",
+        "tinypool",
+        "@vitest/mocker"
+      ],
+      "exposedProductionRuntime": false
+    }
+  },
+  "syntheticCredentialFixture": "One explicitly labeled sb_secret_SYNTHETIC_ADMIN rejection-test string; not a real key"
 }

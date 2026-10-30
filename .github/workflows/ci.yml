@@ -19,6 +19,7 @@ jobs:
       - run: npm ci
       - run: pip install -r modeling/requirements.txt httpx
       - run: npm test
+      - run: node --test scripts/simulation-workflow.test.mjs
       - run: npm run test:postgres
       - run: npm run typecheck
       - run: npm run test:python

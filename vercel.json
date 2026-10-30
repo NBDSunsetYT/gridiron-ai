@@ -1,12 +1,30 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "framework": "nextjs",
-  "buildCommand": "npm run build",
-  "installCommand": "npm ci",
   "regions": ["iad1"],
-  "functions": {
-    "app/api/**/*.ts": {
-      "maxDuration": 300
+  "services": {
+    "web": {
+      "root": ".",
+      "framework": "nextjs",
+      "buildCommand": "npm run build",
+      "installCommand": "npm ci",
+      "functions": {
+        "app/api/**/*.ts": {"maxDuration": 300}
+      },
+      "bindings": [
+        {"type": "service", "service": "quant", "format": "url", "env": "SIMULATION_SERVICE_URL"}
+      ]
+    },
+    "quant": {
+      "root": ".",
+      "framework": "fastapi",
+      "runtime": "python3.12",
+      "entrypoint": "modeling.service:app",
+      "functions": {
+        "modeling/service.py": {"maxDuration": 300}
+      }
     }
-  }
+  },
+  "rewrites": [
+    {"source": "/(.*)", "destination": {"service": "web"}}
+  ]
 }

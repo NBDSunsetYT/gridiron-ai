@@ -14,14 +14,15 @@
   ],
   "startupTests": 2,
   "officialBlueprintSchemaValidation": "passed",
-  "deploymentStatus": "awaiting_reachable_Git_repository",
+  "deploymentStatus": "billing_verification_required",
   "publicUrl": null,
   "credentialsIncluded": false,
   "asyncWorkerRegressionTests": 14,
   "existingServiceRegressionTests": 6,
   "totalComputeBoundaryTests": 20,
   "limitations": [
-    "Remote Render deployment still requires a reachable Git source",
-    "Local container verification is not a public HTTPS deployment"
+    "Render rejected an actual free-service creation with HTTP402: payment information required",
+    "Follow-up service listing confirmed no resource was created",
+    "Local container verification is not a public Render deployment"
   ]
 }

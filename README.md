@@ -1,8 +1,8 @@
 # GRIDIRON AI 4.0
 
-Current priority: the installable iPhone PWA. Read [PWA release status and tests](docs/DELIVERY_PWA.md) and [Railway deployment](docs/RAILWAY.md). PWA and container checks passed; public hosting awaits Railway account authorization. Native IPA/Xcode work is postponed.
+Current priority: the installable iPhone PWA at **https://gridiron-ai-gray.vercel.app**. Source is published at [NBDSunsetYT/gridiron-ai](https://github.com/NBDSunsetYT/gridiron-ai). Read the [PWA release status and tests](docs/DELIVERY_PWA.md), [Vercel deployment](docs/VERCEL.md), and [Render status](docs/RENDER.md). Native IPA/Xcode work is postponed.
 
-A functioning NFL research application with an exact-money personal ledger, persistent cloud accounts, evidence-backed market tools, a private Python simulator, and an iPhone web/native installation path. The Supabase backend is configured and tested against a live project. The web frontend has **not** been deployed to a public HTTPS host, and no signed iPhone IPA is included.
+A functioning NFL research application with an exact-money personal ledger, persistent cloud accounts, evidence-backed market tools, a private Python simulator, and an iPhone web installation path. The Supabase backend is configured and tested against the existing live project. The frontend is deployed to public HTTPS. Render rejected free backend creation with HTTP 402 pending account payment verification; the Vercel Python hosting fallback is being verified. A deployed frontend alone does not establish that simulation jobs work. No signed iPhone IPA is included.
 
 The app uses Next.js 15, React 19, TypeScript, PostgreSQL/Supabase Auth with owner-scoped RLS, and a separate FastAPI modeling service. The original durable SQLite workspace is preserved as an explicit backend option. Missing credentials or source coverage remain visible; no sportsbook odds, injuries, bankroll results, or accuracy figures are fabricated to fill gaps.
 

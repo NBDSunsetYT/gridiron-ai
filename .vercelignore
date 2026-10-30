@@ -24,7 +24,9 @@ __pycache__/
 .venv/
 ios/
 native/
-modeling/
+modeling/test_*.py
+modeling/backtest_*.py
+modeling/__pycache__/
 deployment/
 tests/
 test-results/

@@ -8,15 +8,29 @@ import hmac
 import json
 import os
 import threading
+from contextlib import asynccontextmanager
 from typing import Any
 
 from fastapi import FastAPI, Header, HTTPException, Request
 
 from .fit import fit_csv
 from .simulator import simulate
+from .cloud_worker import CloudWorker, Config, WorkerError
 
-app = FastAPI(title="GRIDIRON empirical simulation service", docs_url=None, redoc_url=None, openapi_url=None)
+@asynccontextmanager
+async def lifespan(_application):
+    yield
+    # Request-bound adapters may enter/exit ASGI lifespan for warm invocations.
+    # Their compute already finished before returning; do not permanently close
+    # a reusable warm dispatcher. Persistent Render processes drain on shutdown.
+    if not request_bound_environment():
+        await asyncio.to_thread(stop_cloud_worker)
+
+
+app = FastAPI(title="GRIDIRON empirical simulation service", docs_url=None, redoc_url=None, openapi_url=None, lifespan=lifespan)
 lock = threading.Lock()
+cloud_worker = None
+cloud_worker_lock = threading.Lock()
 
 
 def secret():
@@ -85,25 +99,34 @@ def guarded(work):
 
 @app.get("/health")
 async def health():
-    return {"status": "ready" if len(os.environ.get("SIMULATION_SERVICE_TOKEN", "")) >= 32 else "unconfigured", "model": "pbp-empirical-2.0.0", "trainedData": False}
+    return {"status": "ready" if len(os.environ.get("SIMULATION_SERVICE_TOKEN", "")) >= 32 else "unconfigured", "model": "pbp-empirical-2.0.0", "trainedData": False,
+            "asyncSupported": True, "asyncConfigured": bool(os.environ.get('SUPABASE_URL') and os.environ.get('SUPABASE_PUBLISHABLE_KEY') and len(os.environ.get('SIMULATION_SERVICE_TOKEN', '')) >= 32)}
+
+
+def fit_data(data):
+    def work():
+        result = fit_csv(data["csv"], data["source"], data["asOf"], data.get("teamMinPlays", 100), data.get('options'))
+        result['model']['signatureVersion'] = 'numeric-canonical-v1'
+        result['model']['signature'] = signature(result['model'])
+        return result
+    return guarded(work)
 
 
 @app.post("/fit")
 async def fit(request: Request, authorization: str | None = Header(default=None)):
     authorize(authorization)
     data = await body(request)
-    def work():
-        result = fit_csv(data["csv"], data["source"], data["asOf"], data.get("teamMinPlays", 100),data.get('options'))
-        result['model']['signatureVersion']='numeric-canonical-v1'
-        result["model"]["signature"] = signature(result["model"])
-        return result
-    return await asyncio.to_thread(guarded, work)
+    return await asyncio.to_thread(fit_data, data)
 
 
 @app.post("/simulate")
 async def run(request: Request, authorization: str | None = Header(default=None)):
     authorize(authorization)
     data = await body(request)
+    return await asyncio.to_thread(simulate_data, data)
+
+
+def simulate_data(data):
     if set(data)-{'model','home','away','simulations','seed','eventStart','contracts','scenario','postseason','parameterUncertainty','representativeGames'}:
         raise HTTPException(422,'Unsupported simulation assumptions. Weather, snap shares and arbitrary player multipliers are not silently applied.')
     model = data.get("model", {})
@@ -118,7 +141,61 @@ async def run(request: Request, authorization: str | None = Header(default=None)
         raise HTTPException(422, "simulations must be1000..100000")
     def work():
         return simulate(model, data["home"], data["away"], count, data.get("seed", 1), data.get("eventStart"), data.get("contracts"), data.get("scenario"), data.get("postseason", False),parameter_uncertainty=data.get('parameterUncertainty'),representative_games=data.get('representativeGames',0))
-    return await asyncio.to_thread(guarded, work)
+    return guarded(work)
+
+
+def compute_saved_input(saved):
+    data = dict(saved)
+    action = data.pop('action', None)
+    references = data.pop('injuryEntityKeys', None)
+    if references is not None and (not isinstance(references, list) or len(references) > 100 or any(not isinstance(value, str) or not value.strip() or len(value) > 180 for value in references)):
+        raise ValueError('Invalid application injury references')
+    if action == 'fit':
+        if set(data) - {'csv', 'source', 'asOf', 'teamMinPlays', 'options'}:
+            raise ValueError('Unsupported fitting assumptions')
+        return fit_data(data)
+    if action == 'simulate':
+        return simulate_data(data)
+    raise ValueError('Unsupported saved statistical job')
+
+
+def get_cloud_worker():
+    global cloud_worker
+    configuration = Config.from_environment()
+    with cloud_worker_lock:
+        if cloud_worker is None:
+            # Serverless runtimes must not return while daemon threads are still
+            # computing. The web caller keeps this private request alive via
+            # its supported after-response lifecycle; Render stays asynchronous.
+            request_bound = request_bound_environment()
+            cloud_worker = CloudWorker(configuration, executor=(lambda work: work()) if request_bound else None)
+        elif cloud_worker.config != configuration:
+            raise WorkerError('Worker configuration changed; restart compute before accepting another saved job.')
+        return cloud_worker
+
+
+def request_bound_environment():
+    return os.environ.get('VERCEL') == '1' or os.environ.get('GRIDIRON_WORKER_REQUEST_LIFETIME') == '1'
+
+
+@app.post('/jobs', status_code=202)
+async def queue_job(request: Request, authorization: str | None = Header(default=None)):
+    authorize(authorization)
+    data = await body(request)
+    if set(data) != {'jobId', 'accessToken'}:
+        raise HTTPException(400, 'Supply only the saved job identifier and its current owner access token')
+    try:
+        worker = get_cloud_worker()
+        return await asyncio.to_thread(worker.submit, data['jobId'], data['accessToken'], compute_saved_input)
+    except WorkerError as error:
+        raise HTTPException(error.status, str(error)) from None
+    except Exception:
+        raise HTTPException(503, 'Private compute dispatch could not complete. Original saved inputs remain available.') from None
+
+
+def stop_cloud_worker():
+    if cloud_worker is not None:
+        cloud_worker.shutdown()
 
 
 def verify_artifact(model):

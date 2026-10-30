@@ -11,6 +11,7 @@ import {readFileSync,writeFileSync,mkdirSync} from 'node:fs';
 import {randomUUID} from 'node:crypto';
 import assert from 'node:assert/strict';
 import {EnvHttpProxyAgent,setGlobalDispatcher} from 'undici';
+import {runSavedSimulation,receiverFromNormalizedCsv} from './lib/simulation-workflow.mjs';
 
 // Preserve the managed environment's proxy/CA policy while keeping NO_PROXY
 // loopback requests local. Never disable TLS verification for a production test.
@@ -49,8 +50,30 @@ try{
  const conversation=await a.call('conversations',{title:'SYNTHETIC PWA workflow research'});assert.equal(conversation.status,201,conversation.data?.error);const conversationId=conversation.data.conversation.id;assert.equal((await a.call('conversations/'+conversationId,{role:'user',content:'SYNTHETIC saved research question; no model answer invented.'})).status,201);assert.equal((await b.call('conversations/'+conversationId)).status,404);mark('Persistent conversation and cross-owner access rejection');
  const warehouse=await a.call('warehouse',{action:'sync_games',seasonFrom:2023,seasonTo:2023});assert.equal(warehouse.status,200,warehouse.data?.error);const history=await a.call('warehouse?kind=games&limit=300');assert.equal(history.status,200,history.data?.error);assert.ok((history.data.records??history.data.rows??[]).length>0,'Expected actual imported NFL games');mark('Actual public NFL historical schedule loaded');
  let simulationId=null;
- if(process.env.PBP_NORMALIZED_CSV){const csv=readFileSync(process.env.PBP_NORMALIZED_CSV,'utf8');const fitted=await a.call('simulations',{action:'fit',csv,source:process.env.PBP_SOURCE||'https://github.com/nflverse/nflverse-data/releases/tag/pbp ; actual historical replay; publication availability unknown',asOf:process.env.PBP_AS_OF||'2023-11-30T00:00:00Z',options:{recencyHalfLifeDays:180,conditionalShrinkage:true,strictAvailability:false}});assert.equal(fitted.status,200,fitted.data?.error);const run=await a.call('simulations',{action:'simulate',modelJobId:fitted.data.id,home:'DAL',away:'SEA',eventStart:process.env.PBP_EVENT_START||'2023-12-01T01:15:00Z',simulations:10000,seed:2026,representativeGames:1,injuryEntityKeys:[],contracts:[{id:'HISTORICAL-QA-TOTAL-45.5',kind:'total',threshold:45.5,direction:'over',equality:'no'}]});assert.equal(run.status,200,run.data?.error);assert.equal(run.data.simulations,10000);assert.equal(run.data.jointOutcomes.reduce((n,r)=>n+r.count,0),10000);const trace=run.data.representativeGames[0];assert.ok(trace.plays.length>50);assert.equal(Object.values(trace.players).reduce((n,p)=>n+(p.passingYards??0),0),Object.values(trace.players).reduce((n,p)=>n+(p.receivingYards??0),0));simulationId=run.data.id;mark('Actual historical fitted model produced 10,000 coherent complete games and a saved replay');
-  const playerId=fitted.data.model.rows.find(r=>['DAL','SEA'].includes(r.o)&&r.receiver)?.receiver;if(playerId){const unsupported=await a.call('simulations',{action:'simulate',modelJobId:fitted.data.id,home:'DAL',away:'SEA',eventStart:process.env.PBP_EVENT_START||'2023-12-01T01:15:00Z',simulations:10000,scenario:{playerId,status:'inactive'}});assert.equal(unsupported.status,422);mark('Unsupported player-availability adjustment is blocked instead of guessing an injury multiplier');}
+ if(process.env.PBP_NORMALIZED_CSV){
+  const csv=readFileSync(process.env.PBP_NORMALIZED_CSV,'utf8');
+  const simulationOptions={deadlineMs:Number(process.env.QA_SIMULATION_DEADLINE_MS)||600000,onProgress:value=>console.log(JSON.stringify({simulationJob:value.id,status:value.status}))};
+  const fitted=await runSavedSimulation(a,{action:'fit',csv,source:process.env.PBP_SOURCE||'https://github.com/nflverse/nflverse-data/releases/tag/pbp ; actual historical replay; publication availability unknown',asOf:process.env.PBP_AS_OF||'2023-11-30T00:00:00Z',options:{recencyHalfLifeDays:180,conditionalShrinkage:true,strictAvailability:false}},simulationOptions);
+  assert.equal(fitted.status,'completed',fitted.error);assert.ok(fitted.result.model?.sha256,'A fitted evidence artifact is required.');
+  const run=await runSavedSimulation(a,{action:'simulate',modelJobId:fitted.id,home:'DAL',away:'SEA',eventStart:process.env.PBP_EVENT_START||'2023-12-01T01:15:00Z',simulations:10000,seed:2026,representativeGames:1,injuryEntityKeys:[],contracts:[{id:'HISTORICAL-QA-TOTAL-45.5',kind:'total',threshold:45.5,direction:'over',equality:'no'}]},simulationOptions);
+  assert.equal(run.status,'completed',run.error);assert.equal(run.result.simulations,10000);assert.equal(run.result.jointOutcomes.reduce((n,r)=>n+r.count,0),10000);
+  const trace=run.result.representativeGames[0];assert.ok(trace.plays.length>50);assert.equal(Object.values(trace.players).reduce((n,p)=>n+(p.passingYards??0),0),Object.values(trace.players).reduce((n,p)=>n+(p.receivingYards??0),0));
+  simulationId=run.id;mark('Actual historical fitted model produced 10,000 coherent complete games and a saved replay');
+  const playerId=fitted.result.model.rows?.find(r=>['DAL','SEA'].includes(r.o)&&r.receiver)?.receiver??receiverFromNormalizedCsv(csv,['DAL','SEA']);
+  if(playerId){
+   // This input deliberately has no historical availability labels. Neither
+   // queued nor synchronous service mode may invent an injury adjustment.
+   const unsupportedInput={action:'simulate',modelJobId:fitted.id,home:'DAL',away:'SEA',eventStart:process.env.PBP_EVENT_START||'2023-12-01T01:15:00Z',simulations:10000,scenario:{playerId,status:'inactive'}};
+   const submitted=await a.call('simulations',unsupportedInput);
+   if(submitted.status===422){assert.match(submitted.data?.error??'',/evidence|scenario/i);}
+   else{
+    assert.ok([200,202].includes(submitted.status),submitted.data?.error);let replayed=false;
+    const client={call:(...args)=>{if(!replayed){replayed=true;return Promise.resolve(submitted);}return a.call(...args);}};
+    const unsupported=await runSavedSimulation(client,unsupportedInput,simulationOptions);
+    assert.ok(['failed','blocked'].includes(unsupported.status),'Unsupported injury assumptions must not produce a completed projection.');assert.match(unsupported.error,/evidence|scenario/i);
+   }
+   mark('Unsupported player-availability adjustment is blocked instead of guessing an injury multiplier');
+  }else unavailable.push({feature:'Unsupported player-availability request check',reason:'No receiver ID present in supplied normalized evidence; no identity was invented.'});
  }else unavailable.push({feature:'Production 10,000-game modeling run',reason:'PBP_NORMALIZED_CSV not supplied; no substitute simulation was invented.'});
  const reopened=session(accounts[0]);await reopened.login();assert.equal((await reopened.call('ledger')).data.summary.cashBalanceCents,52500);assert.ok((await reopened.call('contracts')).data.predictions.some(p=>p.id===forecast.data.prediction.id));assert.equal((await reopened.call('conversations/'+conversationId)).data.conversation.messages[0].role,'user');if(simulationId){const saved=(await reopened.call('simulations?id='+simulationId)).data.job;assert.equal(saved.status,'completed');assert.equal(saved.provenanceVerified,true);assert.equal(saved.result.simulations,10000);}mark('Fresh client sign-in reopens remote balances, predictions, conversations and supplied simulations');
  const ai=await a.call('assistant',{messages:[{role:'user',content:'Use the read_ledger tool. What are my total recorded withdrawals and realized P/L? Cite the ledger and do not invent records.'}]});if(ai.status===503){unavailable.push({feature:'Live conversational AI',reason:'Server reports unavailable credentials/service; no fabricated answer accepted.'});}else{assert.equal(ai.status,200,ai.data?.error);assert.ok(typeof ai.data==='string'&&/read_ledger|\[ledger\]/.test(ai.data),'A real ledger citation is required');mark('Live assistant returned a ledger-cited response');}

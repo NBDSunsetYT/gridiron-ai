@@ -1,0 +1,47 @@
+{
+  "status": "passed",
+  "projectRef": "qdtdjbapdipopncklsdb",
+  "executedAt": "2026-10-30T18:52:32.536Z",
+  "source": "Actual Supabase Auth and PostgREST HTTPS requests; disposable QA users only",
+  "publicTables": 47,
+  "rlsTables": 47,
+  "migrations": 5,
+  "securityAdvisorFindings": 0,
+  "checks": [
+    {
+      "name": "Two actual Supabase Auth password logins for isolated confirmed QA users",
+      "status": "passed"
+    },
+    {
+      "name": "Authenticated persistent owned preference write",
+      "status": "passed"
+    },
+    {
+      "name": "Different authenticated owner cannot read QA record",
+      "status": "passed"
+    },
+    {
+      "name": "RLS WITH CHECK blocks transferring owned data to another user",
+      "status": "passed"
+    },
+    {
+      "name": "RLS rejects a forged user_id on insert",
+      "status": "passed"
+    },
+    {
+      "name": "Anonymous private table access denied",
+      "status": "passed"
+    },
+    {
+      "name": "Owned data survives a separate authenticated session",
+      "status": "passed"
+    }
+  ],
+  "backupStatus": {
+    "plan": "free",
+    "providerAutomaticBackups": "not_verified_or_guaranteed",
+    "PITR": "not_configured_or_verified",
+    "applicationEncryptedExport": "implemented; separate workflow verifies export and recovery",
+    "documentation": "https://supabase.com/docs/guides/platform/backups"
+  }
+}

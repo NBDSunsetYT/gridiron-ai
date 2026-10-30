@@ -1,0 +1,2 @@
+# The private Vercel Python service uses the existing quantitative runtime.
+-r modeling/requirements.txt
