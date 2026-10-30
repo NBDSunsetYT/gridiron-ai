@@ -17,7 +17,7 @@ describe('Vercel release boundaries',()=>{
  });
  it('keeps the original Python engine private and gives only the web service an authenticated internal binding',()=>{
   const config=JSON.parse(readFileSync('vercel.json','utf8'));
-  expect(config.services.quant).toMatchObject({framework:'fastapi',runtime:'python3.12',entrypoint:'modeling.service:app'});
+  expect(config.services.quant).toMatchObject({framework:'fastapi',entrypoint:'modeling.service:app'});
   expect(config.services.quant.functions['modeling/service.py'].maxDuration).toBe(300);
   expect(config.services.web.bindings).toEqual([{type:'service',service:'quant',format:'url',env:'SIMULATION_SERVICE_URL'}]);
   expect(config.rewrites).toEqual([{source:'/(.*)',destination:{service:'web'}}]);

@@ -1,6 +1,8 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "regions": ["iad1"],
+  "regions": [
+    "iad1"
+  ],
   "services": {
     "web": {
       "root": ".",
@@ -8,23 +10,36 @@
       "buildCommand": "npm run build",
       "installCommand": "npm ci",
       "functions": {
-        "app/api/**/*.ts": {"maxDuration": 300}
+        "app/api/**/*.ts": {
+          "maxDuration": 300
+        }
       },
       "bindings": [
-        {"type": "service", "service": "quant", "format": "url", "env": "SIMULATION_SERVICE_URL"}
+        {
+          "type": "service",
+          "service": "quant",
+          "format": "url",
+          "env": "SIMULATION_SERVICE_URL"
+        }
       ]
     },
     "quant": {
       "root": ".",
       "framework": "fastapi",
-      "runtime": "python3.12",
       "entrypoint": "modeling.service:app",
       "functions": {
-        "modeling/service.py": {"maxDuration": 300}
+        "modeling/service.py": {
+          "maxDuration": 300
+        }
       }
     }
   },
   "rewrites": [
-    {"source": "/(.*)", "destination": {"service": "web"}}
+    {
+      "source": "/(.*)",
+      "destination": {
+        "service": "web"
+      }
+    }
   ]
 }
