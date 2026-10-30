@@ -1,23 +1,23 @@
 {
-  "checkedAt": "2026-10-30T19:02:02.723168+00:00",
+  "checkedAt": "2026-10-30T19:18:13.001957+00:00",
   "provider": "Vercel",
   "plan": "hobby",
   "teamId": "team_GWp3QPUQgohJPqe7ppe9pYmS",
   "projectId": "prj_ufIV2AZJcQAW7lNtQmH6hcyrWamH",
   "projectName": "gridiron-ai",
   "framework": "services",
-  "deploymentId": "dpl_KngiqGqVpG6o1iyrZ5ZQyKF5CnBp",
+  "deploymentId": "dpl_75gXVpd768F6Su44YesvG2HSkbJR",
   "state": "READY",
   "target": "production",
   "url": "https://gridiron-ai-gray.vercel.app",
-  "uniqueUrl": "https://gridiron-qeptvvzro-gridiron5.vercel.app",
+  "uniqueUrl": "https://gridiron-lex1er5o0-gridiron5.vercel.app",
   "aliases": [
     "gridiron-ai-gray.vercel.app",
     "gridiron-ai-gridiron5.vercel.app"
   ],
-  "previousReadyDeploymentId": "dpl_FfZKZoWQd9LVE4WKPXFqPx5WBKuP",
-  "sourceCheckpoint": "56fa00ed196d1e9d178eb8e15811e6c90bc20d9b",
-  "sourceUpload": "Frozen 135-file source snapshot, then config/middleware compatibility fixes and modeling/.python-version; no database/env/signing files. Native SHA1 references verified uploads.",
+  "previousReadyDeploymentId": "dpl_KngiqGqVpG6o1iyrZ5ZQyKF5CnBp",
+  "sourceCheckpoint": "c0a60e2c353b4c02c5bff27a618d4c8ad36bfec8",
+  "sourceUpload": "Frozen 136-file source snapshot with only three reviewed backup runtime files updated for this release; native SHA1 uploads verified, no database/env/signing files.",
   "services": {
     "web": "Next.js 15.5.28, Node 22.x, 300s Hobby maximum; Node middleware preserves existing backend rewrite",
     "quant": "Existing FastAPI engine, Python 3.12 confirmed in native build logs; no public ingress rewrite",
@@ -63,6 +63,11 @@
     },
     {
       "path": "/icon-192.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "path": "/icon-512.png",
       "status": 200,
       "type": "image/png"
     },
@@ -129,18 +134,46 @@
     "aiGenerationEnabled": false
   },
   "limitations": [
-    "Reachability is not an end-to-end simulation, database write, calibration, live data feed, or AI-generation test; consult separate production QA report.",
     "OpenAI API key absent; live AI generation unavailable. Gateway paid traffic remains disabled.",
     "Render dedicated workers and scheduled data ingestion not deployed due account HTTP402.",
-    "Services is Beta; Hobby limits remain 300seconds and 4.5 MB public non-streamed bodies.",
-    "Supabase confirmation email SiteURL/redirect allowlist and physical Safari/Home Screen installation not verified."
+    "Services is Beta; Hobby limits remain 300 seconds and 4.5 MB public non-streamed bodies.",
+    "Supabase confirmation email SiteURL/redirect allowlist and physical Safari/Home Screen installation not verified.",
+    "Complete encrypted export was verified. The 7.92 MB archive exceeds Vercel's 4.5 MB request limit for a single POST /api/migrate; large web upload needs chunking or off-platform recovery. Typed research/model reconstruction is still partial as documented."
   ],
   "physicalIphoneTestPerformed": false,
   "sourceFiles": 136,
-  "sourceManifestSha256": "c338c91b69af60ded017755fd1f9c000e21ae1678046184b41d4a0d781b099f7",
+  "sourceManifestSha256": "9b3d58ca5f4cc49f003cd5a8b74002edcaebc0519c25dd6820f640799a1996b0",
   "runtimeErrorsReview": {
     "result": "No runtime errors found",
-    "window": "10minutes immediately after deployment",
-    "note": "This predates complete production workflow QA."
-  }
+    "window": "10 minutes immediately after the updated deployment",
+    "note": "Production compute modes ran on the prior successful deployment and were verified again after this deployment."
+  },
+  "originalFrontendDeploymentId": "dpl_FfZKZoWQd9LVE4WKPXFqPx5WBKuP",
+  "deploymentUpdate": {
+    "change": "Lossless gzip+AES-GCM account export, backward compatible legacy decryption,160 MB bounded expansion",
+    "databaseMigrationsApplied": false,
+    "credentialsRotated": false,
+    "continuityVerification": {
+      "status": "passed",
+      "checks": 5,
+      "report": "docs/reports/pwa-production-redeploy-persistence.json",
+      "notes": "Fresh-login exact ledger, fit/10k/50k/100k signed results, saved prediction/paper/conversation retained; other owner isolated. No new financial or simulation mutations."
+    },
+    "encryptedExportVerification": {
+      "status": "passed",
+      "checks": 7,
+      "downloadBytes": 7921412,
+      "expandedBytes": 64697869,
+      "typedFamilies": 43,
+      "report": "docs/reports/production-encrypted-backup.json",
+      "notes": "Actual HTTPS stream exceeds 4.5 MB; decrypted complete owned archive retains all modes and input/output receipts. No financial mutation."
+    }
+  },
+  "productionQaReports": [
+    "docs/reports/pwa-production-workflow.json",
+    "docs/reports/pwa-production-simulation-modes.json",
+    "docs/reports/pwa-production-redeploy-persistence.json",
+    "docs/reports/production-encrypted-backup.json",
+    "docs/reports/production-browser-pwa.json"
+  ]
 }

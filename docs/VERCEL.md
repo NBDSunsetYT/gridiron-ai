@@ -6,7 +6,7 @@ The existing Next.js/React app stays intact. Vercel hosts its frontend and authe
 
 The connected Vercel user is on the **Hobby** plan. The authorized team scope is `gridiron5`, ID `team_GWp3QPUQgohJPqe7ppe9pYmS`. Its initial HTTP 403 was resolved through Vercel's explicit team-authorization flow; a subsequent scoped project read succeeded. No different scope was used to bypass the requirement.
 
-The existing-project inspection returned no projects, so one project named `gridiron-ai` was created: `prj_ufIV2AZJcQAW7lNtQmH6hcyrWamH`. Node 22.x, Fluid Compute and a 300-second function timeout were selected without paid resource upgrades. Existing Supabase keys and the stable simulation token were transferred into encrypted server environment variables without printing values. The atomic frontend/API/private-Python production deployment is READY at https://gridiron-ai-gray.vercel.app, deployment `dpl_KngiqGqVpG6o1iyrZ5ZQyKF5CnBp`. Native build logs verify both Next.js and Python builds; the production dependency endpoint reports Supabase and the private simulation service reachable. See `docs/reports/vercel-production-deployment.json` for the exact provider and HTTP checks. A passing health check does not establish a completed simulation or live AI response.
+The existing-project inspection returned no projects, so one project named `gridiron-ai` was created: `prj_ufIV2AZJcQAW7lNtQmH6hcyrWamH`. Node 22.x, Fluid Compute and a 300-second function timeout were selected without paid resource upgrades. Existing Supabase keys and the stable simulation token were transferred into encrypted server environment variables without printing values. The atomic frontend/API/private-Python production deployment is READY at https://gridiron-ai-gray.vercel.app, deployment `dpl_75gXVpd768F6Su44YesvG2HSkbJR`. Native build logs verify both Next.js and Python builds; the production dependency endpoint reports Supabase and the private simulation service reachable. See `docs/reports/vercel-production-deployment.json` for the exact provider and HTTP checks. A passing health check does not establish a completed simulation or live AI response.
 
 ## Build and runtime settings
 
@@ -26,6 +26,12 @@ Vercel Services is **Beta on all plans**. `vercel.json` declares a web-to-quant 
 Simulation requests first save immutable, owner-scoped inputs and a signed input receipt in Supabase. A 202 receipt identifies the durable job. Next.js `after()` retains the request lifetime while the private Python request performs the actual computation and saves its signed result. Polling retrieves the saved state, verifies the result proof, and shows results only when completed. Vercel request-bound execution does not depend on a detached thread surviving after its response. The 300-second Hobby timeout applies; a timed-out job preserves its inputs for an explicit fresh-session retry. A model reference avoids resending large fitted artifacts through the 4.5 MB public gateway.
 
 Render rejected creation of the requested **free** Python web service with HTTP402: payment information is required at https://dashboard.render.com/billing. No Render service or paid worker/cron resource was created. The Render Docker/Blueprint configuration remains available for a later authorized retry. The current interim Vercel configuration requests no plan, memory or paid build upgrade. Background workers and recurring ingestion must not be represented as active until their actual production checks succeed.
+
+## Verified account export and remaining restore limit
+
+The updated production release streamed a complete 7,921,412-byte encrypted archive and decrypted its 64,697,869-byte payload. All 43 owned typed families and the saved fit/10k/50k/100k simulation inputs, outputs and receipts were retained. See `docs/reports/production-encrypted-backup.json` and the independent cross-deployment persistence report.
+
+Streaming bypasses the platform's non-streamed **response** size cap. The **request** cap remains 4.5 MB: this particular archive cannot be posted to `/api/migrate` as one hosted request. Large web restore needs a future bounded chunked upload or a separate verified recovery path. Typed warehouse/model reconstruction remains partial; do not claim complete project recovery from the successful download/decryption check.
 
 ## Server environment
 

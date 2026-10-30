@@ -1,0 +1,42 @@
+{
+  "status": "passed",
+  "checkedAt": "2026-10-30T19:16:32.832Z",
+  "baseUrl": "https://gridiron-ai-gray.vercel.app",
+  "previousDeploymentId": "dpl_KngiqGqVpG6o1iyrZ5ZQyKF5CnBp",
+  "currentDeploymentId": "dpl_75gXVpd768F6Su44YesvG2HSkbJR",
+  "recordMutations": false,
+  "credentialsIncluded": false,
+  "checks": [
+    {
+      "name": "Original deposits, withdrawals, settlement and exact P/L survive redeployment",
+      "status": "passed"
+    },
+    {
+      "name": "Original manual contract prediction and cash-separated paper position survive redeployment",
+      "status": "passed"
+    },
+    {
+      "name": "Original saved research conversation survives redeployment",
+      "status": "passed"
+    },
+    {
+      "name": "Original fitted artifact and 10k/50k/100k signed complete-game results survive redeployment",
+      "status": "passed"
+    },
+    {
+      "name": "Owner isolation remains enforced after redeployment",
+      "status": "passed"
+    }
+  ],
+  "predictionId": "256dcb26-e007-427a-990b-c2455ede41ec",
+  "conversationId": "be7488c9-524a-43b6-9666-ca9c259fd4eb",
+  "simulationIds": [
+    "2fb8997b-c863-41fc-af54-83bc9713852d",
+    "29e061bf-1954-4869-bc20-63e20daa3bfa",
+    "3f9e617b-a702-449a-8ec9-dbb60a5e46f4"
+  ],
+  "limitations": [
+    "Provider deployment IDs are supplied after provider-side READY verification; this script verifies retained records through the stable production origin.",
+    "Disposable synthetic finances, manually entered test prices and injury mechanics are separate from real historical NFL simulations."
+  ]
+}

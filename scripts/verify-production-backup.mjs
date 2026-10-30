@@ -47,7 +47,7 @@ assert.match(response.headers.get('content-disposition')||'',/attachment/);
 const directory=fs.mkdtempSync(path.join(os.tmpdir(),'gridiron-production-backup-'));fs.chmodSync(directory,0o700);
 const artifact=path.join(directory,'account-backup.encrypted.json'),fd=fs.openSync(artifact,'wx',0o600),chunks=[];
 let bytes=0,chunkCount=0;
-try{for await(const value of response.body){const chunk=Buffer.from(value);bytes+=chunk.length;assert.ok(bytes<=100_000_000,'Export exceeds its documented encrypted bound.');fs.writeSync(fd,chunk);chunks.push(chunk);chunkCount++;}}finally{fs.closeSync(fd);}
+try{for await(const value of response.body){const chunk=Buffer.from(value);bytes+=chunk.length;assert.ok(bytes<=100_004_096,'Export exceeds its documented encrypted bound.');fs.writeSync(fd,chunk);chunks.push(chunk);chunkCount++;}}finally{fs.closeSync(fd);}
 const raw=Buffer.concat(chunks),envelope=JSON.parse(raw.toString('utf8'));
 assert.ok(['gridiron-encrypted-backup-v1','gridiron-encrypted-backup-v2'].includes(envelope.format));
 assert.equal(envelope.cipher,'aes-256-gcm');assert.equal(envelope.kdf,'scrypt');

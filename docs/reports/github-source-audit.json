@@ -1,7 +1,7 @@
 {
   "status": "passed",
-  "checkedAt": "2026-10-30T19:14:01.586866+00:00",
-  "candidateSourceFiles": 336,
+  "checkedAt": "2026-10-30T19:22:15.638458+00:00",
+  "candidateSourceFiles": 339,
   "configuredCredentialByteScan": "passed against all Git index contents",
   "runtimeDatabasesAndSigningMaterialExcluded": true,
   "gitHub": {
@@ -21,7 +21,7 @@
     "actionsPinnedToOfficialCommitShas": true,
     "providerRedeployWorkflow": "prepared/manual/main-only/existing-services-only; required secrets not configured",
     "executedOnGitHub": true,
-    "githubRun": "https://github.com/NBDSunsetYT/gridiron-ai/actions/runs/41111516709",
+    "githubRun": "https://github.com/NBDSunsetYT/gridiron-ai/actions/runs/41113571060",
     "githubRunStatusAtCheck": "completed",
     "githubRunConclusion": "success",
     "initialFailure": "24/26 browser checks passed on initial commits; two iPhone checks were blocked by the Next.js dev overlay following an SVG list-key warning. Repaired the missing key; all28current browser checks now pass.",
@@ -37,8 +37,16 @@
       "nodeWorkflowTests": 9,
       "applicationTypeScriptFiles": 41
     },
-    "passingRuntimeSourceCommit": "56fa00ed196d1e9d178eb8e15811e6c90bc20d9b",
-    "largeBackupRepair": "Full259-test suite, typecheck and production Next build passed; actual hosted export retest pending deployment."
+    "passingRuntimeSourceCommit": "c0a60e2c353b4c02c5bff27a618d4c8ad36bfec8",
+    "largeBackupRepair": "Actual production 7/7 export checks passed after deployment; complete 7.92 MB encrypted download/decryption. Large hosted web restore remains unavailable due 4.5 MB request cap.",
+    "logVerified": {
+      "typescript": 259,
+      "typescriptFiles": 41,
+      "python": 60,
+      "nodeWorkflow": 9,
+      "browser": 28,
+      "productionBuild": "passed"
+    }
   },
   "credentialsIncluded": false,
   "dependencies": {
@@ -58,5 +66,6 @@
       "exposedProductionRuntime": false
     }
   },
-  "syntheticCredentialFixture": "One explicitly labeled synthetic admin-key rejection-test string; not a real key"
+  "syntheticCredentialFixture": "One explicitly labeled synthetic admin-key rejection-test string; not a real key",
+  "finalFollowupScope": "Deployment reports, recovery documentation, cleanup evidence and bounded QA download metadata only; deployed runtime remains c0a60e2."
 }

@@ -1,0 +1,63 @@
+{
+  "status": "passed",
+  "checkedAt": "2026-10-30T19:16:53.196Z",
+  "baseUrl": "https://gridiron-ai-gray.vercel.app",
+  "environment": "Actual HTTPS export from isolated SYNTHETIC QA owner; genuine historical model artifacts remain research evidence",
+  "checks": [
+    {
+      "name": "Actual HTTPS authenticated QA session with secure HTTP-only cookies",
+      "status": "passed"
+    },
+    {
+      "name": "Production encrypted download authenticated and decrypted in memory",
+      "status": "passed"
+    },
+    {
+      "name": "Other owner records, passwords, session credentials and compressed storage envelopes excluded",
+      "status": "passed"
+    },
+    {
+      "name": "All 43 normalized table families match exact live owner-scoped database counts",
+      "status": "passed"
+    },
+    {
+      "name": "Exact financial journal, balanced postings, cash and realized P/L reconcile",
+      "status": "passed"
+    },
+    {
+      "name": "Full original simulation inputs, fitted rows, complete-game outputs and conversation histories survive export",
+      "status": "passed"
+    },
+    {
+      "name": "Export and decryption leave financial records unchanged",
+      "status": "passed"
+    }
+  ],
+  "normalizedTableFamilies": 43,
+  "ownedConversations": 1,
+  "ownedMessages": 1,
+  "simulationInputRecords": 5,
+  "simulationJobRecords": 5,
+  "completeGameModesValidated": [
+    10000,
+    50000,
+    100000
+  ],
+  "backupEnvelopeFormat": "gridiron-encrypted-backup-v2",
+  "expandedBackupBytes": 64697869,
+  "decodedHttpResponseBytes": 7921412,
+  "responseChunks": 1248,
+  "exceeds4Point5MB": true,
+  "largeResponseVerification": "Actual production response exceeded 4.5 MB and downloaded completely.",
+  "encryptedArtifactSha256": "70084a9f8ab6dc190f7330789d98a677de0f13340210a8bd1d006ecf1068de7e",
+  "privateArtifactSaved": true,
+  "passwordLoggedOrPersisted": false,
+  "authenticationSecretsExcluded": true,
+  "otherOwnerExcluded": true,
+  "databaseRestoreAttempted": false,
+  "limitations": [
+    "Account export is not a full PostgreSQL/Auth/storage recovery point.",
+    "Typed records are complete in this archive; the current account importer does not reconstruct every normalized warehouse/model table.",
+    "No personal or production user account was changed."
+  ]
+}

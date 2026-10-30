@@ -1,10 +1,18 @@
 {
-  "checkedAt": "2026-10-30T17:55:08.248238+00:00",
+  "checkedAt": "2026-10-30T19:21:28.945612+00:00",
   "deployment": {
-    "status": "authorization_required",
-    "provider": "Railway",
-    "providerInstalled": false,
-    "publicHttpsUrl": null,
+    "status": "READY",
+    "provider": "Vercel",
+    "publicHttpsUrl": "https://gridiron-ai-gray.vercel.app",
+    "deploymentId": "dpl_75gXVpd768F6Su44YesvG2HSkbJR",
+    "runtimeSourceCommit": "c0a60e2c353b4c02c5bff27a618d4c8ad36bfec8",
+    "backend": "Private FastAPI Service in the same Vercel project",
+    "render": {
+      "status": "billing_verification_required",
+      "httpStatus": 402,
+      "publicUrl": null,
+      "resourceCreated": false
+    },
     "paidResourcesCreated": false,
     "physicalIphoneInstallationTested": false
   },
@@ -14,34 +22,62 @@
     "rlsTables": 47,
     "publicTables": 47,
     "migrationsApplied": 5,
-    "qaAccountsRemaining": 0
+    "qaAccountsRemaining": 0,
+    "nonQaRecordsPreserved": true
   },
   "tests": {
     "typescript": {
-      "passed": 209,
-      "files": 36
+      "passed": 259,
+      "files": 41
     },
-    "standaloneBrowser": {
-      "passed": 26,
-      "seconds": 37.4
+    "python": {
+      "passed": 60
     },
-    "deploymentNode": {
+    "nodeWorkflow": {
+      "passed": 9
+    },
+    "localBrowser": {
+      "passed": 28
+    },
+    "productionBrowser": {
+      "passed": 8
+    },
+    "productionWorkflow": {
+      "passed": 11
+    },
+    "liveSupabaseIsolation": {
+      "passed": 7
+    },
+    "productionSimulationModes": [
+      10000,
+      50000,
+      100000
+    ],
+    "productionRedeploymentPersistence": {
       "passed": 5
     },
-    "deploymentPython": {
-      "passed": 2
+    "productionEncryptedExport": {
+      "passed": 7,
+      "encryptedDownloadBytes": 7921412,
+      "expandedPayloadBytes": 64697869
     },
+    "fixtureCleanup": "passed",
     "productionBuild": "passed",
-    "actualDockerRuntime": "passed",
-    "liveCloudWorkflowChecks": 11,
-    "actualBackendRestart": "passed"
+    "githubRuntimeCi": {
+      "status": "success",
+      "url": "https://github.com/NBDSunsetYT/gridiron-ai/actions/runs/41113571060"
+    }
   },
   "externalLimitations": [
-    "Railway account authorization and account billing review",
-    "Production Supabase Auth HTTPS redirect configuration",
-    "OpenAI API key missing: no live conversational response verified",
-    "No authorized live DK Predictions or official injury feed connected",
-    "No historical cohort evidence for unsupported injury adjustments: withheld, not fabricated"
+    "Live OpenAI credentials absent; no live AI response verified",
+    "No authorized live DraftKings Predictions/Hard Rock or official injury feed",
+    "Unsupported injury effects withheld; historical simulator remains research-only",
+    "Supabase confirmation-email SiteURL/redirect and email delivery unverified",
+    "Render free service requires account payment verification; no dedicated workers/cron created",
+    "Vercel GitHub App/CI deployment secrets not configured; source deploys completed through authorized native tooling",
+    "Large web restore unavailable due 4.5 MB request cap; full typed reconstruction/Auth/Storage/PITR recovery not verified",
+    "Legacy SQLite preserved but not automatically imported into cloud accounts",
+    "Physical iPhone/Safari Home Screen installation not performed"
   ],
   "nativeWork": "postponed",
   "credentialsIncluded": false
