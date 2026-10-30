@@ -26,11 +26,11 @@ After one online visit, the service worker caches public icons, static JavaScrip
 
 For historical ledger access, open Advanced Mode → Settings while online and explicitly save an encrypted offline snapshot with a separate passphrase. On the offline page, enter that passphrase to unlock the read-only historical copy. The snapshot uses AES-256-GCM and PBKDF2, stays on that device, displays its saved time, and does not update automatically. The key is not saved. Use Remove device snapshot to delete it. Account deletion also removes the device copy. Exports/backups are separate from this device snapshot; no offline writes are synchronized later.
 
-Automatic background synchronization, offline transaction editing, biometrics, and guaranteed push delivery are not enabled in this release. On a shared iPhone, use a device passcode, sign out after use, and do not keep unencrypted financial exports in a shared iCloud folder.
+The server automatically refreshes available NFL research. Offline transaction synchronization/editing, biometrics, and guaranteed push delivery are not enabled in this release. On a shared iPhone, use a device passcode, sign out after use, and do not keep unencrypted financial exports in a shared iCloud folder.
 
 ## Troubleshooting
 
 - Missing Add to Home Screen: open the page directly in Safari rather than an in-app browser.
 - Old interface after deployment: close and reopen the app. If needed, remove the Home Screen app and clear that site's Safari data, then reinstall.
 - Sign-in lost: installed apps and Safari may use separate session behavior depending on iOS. Sign in again; records remain on the backend.
-- Feed data missing: reconnect and retry the game. The app identifies unavailable source coverage; installing the PWA does not grant sportsbook data access, and users do not need to configure a data provider.
+- Feed data missing: check your connection and reopen the app; available NFL data refreshes automatically. Missing licensed quotes stay unavailable. No manual statistics or provider configuration is needed.
