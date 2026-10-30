@@ -1,0 +1,47 @@
+{
+  "status": "passed",
+  "applicationUrl": "https://gridiron-ai-gray.vercel.app",
+  "projectRef": "qdtdjbapdipopncklsdb",
+  "jobId": 1,
+  "jobName": "gridiron-public-nfl-refresh",
+  "schedule": "*/15 * * * *",
+  "active": true,
+  "realCronRun": {
+    "runId": 1,
+    "startedAt": "2026-10-30T20:19:00.158249+00:00",
+    "status": "succeeded",
+    "httpStatus": 202,
+    "timedOut": false
+  },
+  "backgroundRefresh": {
+    "status": "completed",
+    "queuedAt": "2026-10-30T20:19:00.545Z",
+    "completedAt": "2026-10-30T20:19:02.935Z",
+    "scheduleGames": 272,
+    "processed": [
+      {
+        "gameId": "2026_08_BAL_BUF",
+        "status": "completed"
+      },
+      {
+        "gameId": "2026_08_TEN_CIN",
+        "status": "running"
+      }
+    ]
+  },
+  "auth": {
+    "vaultBacked": true,
+    "shortLivedOneUseHmac": true,
+    "durableTokenInQueue": false,
+    "anonymousFunctionExecute": false
+  },
+  "limitations": [
+    "This proves an actual scheduled refresh and automatic complete-game simulation, not future provider uptime or model calibration."
+  ],
+  "automaticSimulationVerified": {
+    "gameId": "2026_08_TEN_CIN",
+    "status": "completed",
+    "completeGames": 10000,
+    "verifiedAt": "2026-10-30T20:20:19.315034+00:00"
+  }
+}

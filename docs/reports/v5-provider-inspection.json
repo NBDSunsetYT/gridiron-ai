@@ -1,0 +1,78 @@
+{
+  "checkedAt": "2026-10-30T19:36:43.413914+00:00",
+  "applicationUrl": "https://gridiron-ai-gray.vercel.app",
+  "existingVercel": {
+    "teamId": "team_GWp3QPUQgohJPqe7ppe9pYmS",
+    "projectId": "prj_ufIV2AZJcQAW7lNtQmH6hcyrWamH",
+    "framework": "services",
+    "plan": "hobby",
+    "productionDeploymentBeforeUpgrade": "dpl_75gXVpd768F6Su44YesvG2HSkbJR",
+    "state": "READY",
+    "nextRuntime": "Node22.x",
+    "privatePython": "existing FastAPI binding; no public ingress rewrite",
+    "secretsReadOrPrinted": false,
+    "protectionChanged": false,
+    "newServerCapabilityConfigured": {
+      "key": "GRIDIRON_PUBLIC_INGEST_TOKEN",
+      "target": "production",
+      "encrypted": true,
+      "valueIncluded": false
+    },
+    "cronSecretConfigured": {
+      "key": "CRON_SECRET",
+      "target": "production",
+      "encrypted": true,
+      "existingSecretOverwritten": false
+    },
+    "preUpgradeErrorScan": {
+      "window": "30m",
+      "deploymentId": "dpl_75gXVpd768F6Su44YesvG2HSkbJR",
+      "levels": [
+        "error",
+        "fatal"
+      ],
+      "groupBy": "level",
+      "observedGroups": 0,
+      "source": "Native Vercel runtime log counts table"
+    }
+  },
+  "httpBeforeUpgrade": [
+    {
+      "path": "/",
+      "status": 200,
+      "redirect": null
+    },
+    {
+      "path": "/api/health?check=dependencies",
+      "status": 200,
+      "supabase": "reachable",
+      "simulations": "reachable"
+    },
+    {
+      "path": "/api/ledger",
+      "status": 401,
+      "redirect": null
+    }
+  ],
+  "authenticationFinding": "No provider-level redirect to the Supabase developer dashboard. Existing private research API/account gating and technical Cloud Connection UI are separate application concerns being changed in v5.",
+  "render": {
+    "workspaceId": "tea-dbidrq6c6qcc73a7n0u0",
+    "servicesObserved": 0,
+    "creationRetried": false,
+    "previousFreeCreationFailure": "HTTP402 payment verification required",
+    "paidResourceStarted": false
+  },
+  "scheduledRefreshOptions": {
+    "vercelHobbyCron": "Once/day only, per-hour invocation precision; frequent expressions fail deployment. Do not split daily jobs to bypass plan restrictions.",
+    "gitHubSecretProvisioning": "Actual actions/secrets/public-key request returned403 Resource not accessible by integration; no secret configured through that unavailable scope.",
+    "candidate": "Supabase Cron/pg_net with a Vault-backed private signing function and short-lived one-use HMAC headers; durable capabilities must not enter the provider-managed HTTP queue."
+  },
+  "officialReferences": [
+    "https://vercel.com/docs/cron-jobs/usage-and-pricing",
+    "https://vercel.com/docs/services",
+    "https://vercel.com/docs/services/bindings"
+  ],
+  "recoveryCheckpoint": "/workspace/gridiron-recovery/20261030T193406Z-v5-pre-upgrade/gridiron-ai-main.bundle",
+  "checkpointVerified": true,
+  "newDeploymentCreated": false
+}

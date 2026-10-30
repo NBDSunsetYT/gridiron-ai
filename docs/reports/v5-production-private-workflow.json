@@ -1,0 +1,71 @@
+{
+  "status": "passed",
+  "startedAt": "2026-10-30T20:18:51.737Z",
+  "baseUrl": "https://gridiron-ai-gray.vercel.app",
+  "accountScope": "Exactly two pre-provisioned, confirmed, disposable SYNTHETIC QA app identities",
+  "gameId": "2026_08_BAL_BUF",
+  "publicAnalysisId": "7e9fbed6-1bc5-4814-ab62-56b65fcf2de0",
+  "checks": [
+    {
+      "name": "Guests can reopen verified NFL research while private records and saving require an app identity",
+      "status": "passed"
+    },
+    {
+      "name": "Sign-in capabilities reflect actual provider configuration without exposing provider credentials",
+      "status": "passed"
+    },
+    {
+      "name": "Two actual GRIDIRON AI logins establish secure server cookies without a backend dashboard",
+      "status": "passed"
+    },
+    {
+      "name": "Deposits, withdrawals, wager settlement and P/L remain exact and owner isolated",
+      "status": "passed"
+    },
+    {
+      "name": "Private preferences persist, cross-origin mutations fail and another account cannot retrieve them",
+      "status": "passed"
+    },
+    {
+      "name": "A completed public simulation saves privately and idempotently with cross-owner access rejected",
+      "status": "passed"
+    },
+    {
+      "name": "The signed-in research question and cited response are saved only in the owner’s conversation history",
+      "status": "passed"
+    },
+    {
+      "name": "Fresh sign-in restores exact finances, preferences, saved automatic simulation and private conversation",
+      "status": "passed"
+    },
+    {
+      "name": "Guest research and public explanations contain no personal question, finances, preferences or private history",
+      "status": "passed"
+    },
+    {
+      "name": "App sign-out protects personal records while public research remains available",
+      "status": "passed"
+    }
+  ],
+  "credentialsIncluded": false,
+  "emailsSent": false,
+  "realUserDataChanged": false,
+  "physicalIphoneInstallationTested": false,
+  "appleConfigured": false,
+  "fixture": {
+    "cashBalanceCents": 52500,
+    "realizedPlCents": 7500,
+    "totalDepositsCents": 10000,
+    "totalWithdrawalsCents": 15000
+  },
+  "savedSimulationId": "bb402c86-a18f-42fe-a543-c308c6e9b91c",
+  "conversationId": "91a7b2c8-c6c4-413e-8fa3-4bef77d13e69",
+  "summaryMethod": "evidence_brief",
+  "finishedAt": "2026-10-30T20:19:09.115Z",
+  "limitations": [
+    "Financial fixtures and the private preference/question marker are explicitly synthetic and owned by disposable test identities.",
+    "The NFL simulation itself is the actual automatic real-data result verified by the separate guest acceptance report.",
+    "Provider-disabled Apple and evidence-only summaries are not claimed as live Apple/OpenAI validation.",
+    "Email confirmation delivery and physical iPhone installation are not tested."
+  ]
+}

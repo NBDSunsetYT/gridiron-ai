@@ -10,6 +10,9 @@ test('iPhone installation guidance reports the real app URL, public offline read
  await expect(page.locator('link[rel="apple-touch-icon"]')).toHaveAttribute('sizes','180x180');
  await expect(page.locator('meta[name="viewport"]')).toHaveAttribute('content',/viewport-fit=cover/);
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
+ // Installation remains public. The optional cache-maintenance controls and
+ // their forms live in Advanced Mode in the consumer release.
+ await page.goto('/#advanced/settings');await expect(install).toBeVisible();
  if((page.viewportSize()?.width??1000)<760)expect(await page.locator('.input').first().evaluate(el=>parseFloat(getComputedStyle(el).fontSize))).toBeGreaterThanOrEqual(16);
  await page.getByRole('button',{name:'Clear app caches',exact:true}).click();await expect(install.getByText('ONLINE REQUIRED',{exact:true})).toBeVisible();await page.reload();await expect(page.getByRole('region',{name:'Install GRIDIRON AI'}).getByText('CACHED',{exact:true})).toBeVisible();
 });

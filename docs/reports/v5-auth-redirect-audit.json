@@ -1,0 +1,39 @@
+{
+  "status": "configuration_issue_identified",
+  "projectRef": "qdtdjbapdipopncklsdb",
+  "applicationOrigin": "https://gridiron-ai-gray.vercel.app",
+  "publicProviderSettings": {
+    "emailEnabled": true,
+    "appleEnabled": false,
+    "signupDisabled": false,
+    "confirmationRequired": true
+  },
+  "redirectProbe": {
+    "method": "GET /auth/v1/verify with a deliberately invalid synthetic token, type=signup and requested app return origin",
+    "requestedReturns": [
+      "https://gridiron-ai-gray.vercel.app",
+      "https://gridiron-ai-gray.vercel.app/"
+    ],
+    "observedStatuses": [
+      303,
+      303
+    ],
+    "observedReturnOrigin": "http://localhost:3000",
+    "observedReturnPath": "/",
+    "validUserTokenUsed": false,
+    "accountsCreatedOrModified": false,
+    "emailsSent": false,
+    "credentialsIncluded": false
+  },
+  "interpretation": "The deployed app return is not accepted by current Auth redirect configuration, which falls back to localhost. No app code redirects users to the Supabase developer dashboard.",
+  "requiredOperatorConfiguration": "Set Auth Site URL and allowed return URLs to the deployed GRIDIRON AI origin, preserving existing authorized destinations.",
+  "scopeLimitation": "Available Supabase management tools do not expose Auth URL configuration mutation. No security setting was disabled or bypassed.",
+  "unaffectedFlows": [
+    "Guest public NFL research",
+    "Password sign-in for an already confirmed GRIDIRON AI account",
+    "Private owner-scoped records and RLS"
+  ],
+  "reference": "https://github.com/supabase/auth/blob/master/internal/utilities/request.go",
+  "observedDate": "2026-10-30",
+  "reportCreatedAt": "2026-10-30T20:05:26.976Z"
+}

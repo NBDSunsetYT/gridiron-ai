@@ -14,7 +14,7 @@ test('owned compact fit references drive queued simulations without resending a 
   else value={jobs:[{id:fitId,kind:'fit',status:'completed',data:{},createdAt:'2026-01-01T00:00:00Z'}],service:{configured:true,compactTransport:true,maxRequestBytes:3800000}};
   await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(value)});
  });
- await page.goto('/#simulations');await page.getByRole('button',{name:'Run history',exact:true}).click();await page.getByRole('button',{name:'Inspect',exact:true}).click();
+ await page.goto('/#advanced/simulations');await page.getByRole('button',{name:'Run history',exact:true}).click();await page.getByRole('button',{name:'Inspect',exact:true}).click();
  await expect(page.getByRole('button',{name:'Export fit reference',exact:true})).toBeVisible();
  await expect(page.getByText(/not a portable model artifact/)).toBeVisible();
  await page.getByRole('button',{name:'Simulate matchup',exact:true}).click();await page.getByLabel('Away team ID').fill('SYNTH-B');await page.getByLabel('Home team ID').fill('SYNTH-A');await page.getByLabel('Actual event start',{exact:true}).fill('2027-01-01T12:00');

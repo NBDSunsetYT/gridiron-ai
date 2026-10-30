@@ -1,0 +1,70 @@
+{
+  "status": "passed",
+  "startedAt": "2026-10-30T20:19:13.600Z",
+  "baseUrl": "https://gridiron-ai-gray.vercel.app",
+  "gameId": "2026_08_BAL_BUF",
+  "engine": "webkit",
+  "guest": true,
+  "mockedResponses": false,
+  "accountsCreated": false,
+  "financialWrites": false,
+  "csvUploads": false,
+  "physicalIphoneInstallationTested": false,
+  "checks": [
+    {
+      "profile": "desktop-webkit",
+      "name": "A fresh guest opens real NFL games with five consumer navigation items and no technical setup",
+      "status": "passed"
+    },
+    {
+      "profile": "desktop-webkit",
+      "name": "One game card opens cached 10,000-game probabilities and real player outcome distributions",
+      "status": "passed"
+    },
+    {
+      "profile": "desktop-webkit",
+      "name": "The public research assistant explains the selected game with inspectable source citations",
+      "status": "passed"
+    },
+    {
+      "profile": "desktop-webkit",
+      "name": "Wallet uses GRIDIRON sign-in only and private records stay inaccessible to guests",
+      "status": "passed"
+    },
+    {
+      "profile": "desktop-webkit",
+      "name": "Installable offline shell works without caching personal APIs or authenticated HTML",
+      "status": "passed"
+    },
+    {
+      "profile": "iphone-webkit",
+      "name": "A fresh guest opens real NFL games with five consumer navigation items and no technical setup",
+      "status": "passed"
+    },
+    {
+      "profile": "iphone-webkit",
+      "name": "One game card opens cached 10,000-game probabilities and real player outcome distributions",
+      "status": "passed"
+    },
+    {
+      "profile": "iphone-webkit",
+      "name": "The public research assistant explains the selected game with inspectable source citations",
+      "status": "passed"
+    },
+    {
+      "profile": "iphone-webkit",
+      "name": "Wallet uses GRIDIRON sign-in only and private records stay inaccessible to guests",
+      "status": "passed"
+    },
+    {
+      "profile": "iphone-webkit",
+      "name": "Installable offline shell works without caching personal APIs or authenticated HTML",
+      "status": "passed"
+    }
+  ],
+  "finishedAt": "2026-10-30T20:19:27.257Z",
+  "limitations": [
+    "Desktop webkit and iPhone13 webkit emulation do not establish physical Safari/Home Screen installation.",
+    "An evidence-only explanation is labeled as such when live OpenAI access is unavailable."
+  ]
+}

@@ -16,6 +16,7 @@ import {cloudImportContracts} from './imports';
 import {exportOwnedTables,OWNED_TYPED_EXPORT_TABLES,portableCloudRecord} from './export';
 import {cloudJson} from './transport';
 import {probeAiProvider} from '../ai-provider';
+import {registerCloudAccount} from './app-auth';
 
 const json=cloudJson;
 const publicLimits=new Map<string,{count:number;until:number}>();
@@ -25,13 +26,13 @@ async function auth(ctx:CloudContext,request:Request){
  if(request.method==='GET')return json({user:ctx.user?{id:ctx.user.id,email:ctx.user.email}:null,backend:'supabase'});
  if(request.method!=='POST')throw new ApiError('Method not supported.',405);
  guardMutation(request);limitAuth(request);const input=await readJsonObject(request);
- if(input.action==='logout'){if(ctx.accessToken){const config=cloudConfiguration();let response:Response;try{response=await fetch(config.url+'/auth/v1/logout?scope=local',{method:'POST',headers:{apikey:config.key,Authorization:`Bearer ${ctx.accessToken}`},signal:AbortSignal.timeout(15000)});}catch{throw new ApiError('Supabase sign-out could not be verified. Retry before leaving a shared device.',503);}if(!response.ok&&response.status!==401)throw new ApiError('Supabase sign-out failed. Retry before leaving a shared device.',503);}clearCloudSession(ctx);return json({user:null});}
+ if(input.action==='logout'){if(ctx.accessToken){const config=cloudConfiguration();let response:Response;try{response=await fetch(config.url+'/auth/v1/logout?scope=local',{method:'POST',headers:{apikey:config.key,Authorization:`Bearer ${ctx.accessToken}`},signal:AbortSignal.timeout(15000)});}catch{throw new ApiError('Secure sign-out could not be verified. Retry before leaving a shared device.',503);}if(!response.ok&&response.status!==401)throw new ApiError('Sign-out failed. Retry before leaving a shared device.',503);}clearCloudSession(ctx);return json({user:null});}
  const values=z.object({email:z.string().email().max(254),password:z.string().min(12).max(128)}).parse(input);
- const response=input.action==='register'?await ctx.client.auth.signUp({email:values.email,password:values.password,options:{emailRedirectTo:requestOrigin(request)}}):input.action==='login'?await ctx.client.auth.signInWithPassword(values):null;
+ const response=input.action==='register'?await registerCloudAccount(ctx,values):input.action==='login'?await ctx.client.auth.signInWithPassword(values):null;
  if(!response)throw new ApiError('Choose register, login or logout.');
- if(response.error){if(authUnavailable(response.error))throw new ApiError('Supabase authentication could not be reached. Your credentials were not rejected; retry when the provider connection is available.',503);throw new ApiError(response.error.status===429?'Supabase authentication rate limit reached. Please try later.':input.action==='login'?'Email/password are incorrect or email verification is incomplete.':response.error.message.slice(0,350),response.error.status===429?429:400);}
- if(!response.data.session)return json({user:null,confirmationRequired:true,message:'Check your email to confirm this account, then sign in. No signed-in session has been created.'},202);
- const verified=await ctx.client.auth.getUser(response.data.session.access_token);if(verified.error||!verified.data.user)throw new ApiError('Supabase could not verify the new session.',503);
+ if(response.error){if(authUnavailable(response.error))throw new ApiError('Secure sign-in could not be reached. Your credentials were not rejected; please try again when the connection returns.',503);throw new ApiError(response.error.status===429?'Too many sign-in requests. Please try later.':input.action==='login'?'Email/password are incorrect or email verification is incomplete.':response.error.message.slice(0,350),response.error.status===429?429:400);}
+ if(!response.data.session)return json({user:null,confirmationRequired:true,message:'Check your email to confirm your GRIDIRON AI account. Return to this device to finish signing in, or use your email and password after confirmation.'},202);
+ const verified=await ctx.client.auth.getUser(response.data.session.access_token);if(verified.error||!verified.data.user)throw new ApiError('Secure sign-in could not be verified. Please try again.',503);
  ctx.user=verified.data.user;setCloudSession(ctx,response.data.session);await ensureProfile(ctx);return json({user:{id:ctx.user.id,email:ctx.user.email},backend:'supabase'});
 }
 async function inputBody(request:Request,max=1_000_000){

@@ -4,11 +4,11 @@ import {ApiError, requestOrigin} from '../auth';
 export const ACCESS_COOKIE='gridiron_sb_access';
 export const REFRESH_COOKIE='gridiron_sb_refresh';
 export type CloudContext={request:Request;client:SupabaseClient;user:User|null;accessToken:string|null;cookies:string[]};
-export class CloudAuthUnavailable extends ApiError{constructor(public context:CloudContext){super('Supabase could not verify the refreshed identity. Retry when authentication is available; rotated credentials were preserved securely.',503);}}
+export class CloudAuthUnavailable extends ApiError{constructor(public context:CloudContext){super('Secure sign-in could not be verified. Retry when your account service is available; your private records were preserved.',503);}}
 export const authUnavailable=(error:any)=>Boolean(error)&&(Number(error.status)>=500||error.status===0||/retryable|fetch|abort/i.test(String(error.name)));
 export function cloudConfiguration(){
  const url=process.env.SUPABASE_URL,key=process.env.SUPABASE_PUBLISHABLE_KEY;
- if(!url||!key)throw new ApiError('Supabase is selected but SUPABASE_URL and SUPABASE_PUBLISHABLE_KEY are not configured. Local records were not used as a substitute.',503);
+ if(!url||!key)throw new ApiError('Account storage is not configured on this server. Existing records were preserved.',503);
  const parsed=new URL(url);
  if(parsed.protocol!=='https:'&&!['localhost','127.0.0.1'].includes(parsed.hostname))throw new ApiError('Supabase must use HTTPS.',503);
  if(key.startsWith('sb_secret_'))throw new ApiError('Configure a publishable Supabase key, not a secret/service-role key.',503);
@@ -47,7 +47,7 @@ export async function cloudContext(request:Request):Promise<CloudContext>{
  if(ctx.accessToken){
   const {data,error}=await ctx.client.auth.getUser(ctx.accessToken);
   if(!error&&data.user){ctx.user=data.user;ctx.client=cloudClient(ctx.accessToken);return ctx;}
-  if(authUnavailable(error))throw new ApiError('Supabase authentication is temporarily unavailable. Your stored records have not changed.',503);
+  if(authUnavailable(error))throw new ApiError('Secure sign-in is temporarily unavailable. Your stored records have not changed.',503);
  }
  const refresh=cookieValue(request,REFRESH_COOKIE);
  if(refresh){
@@ -57,12 +57,12 @@ export async function cloudContext(request:Request):Promise<CloudContext>{
    if(!verified.error&&verified.data.user){ctx.user=verified.data.user;setCloudSession(ctx,data.session);return ctx;}
    if(authUnavailable(verified.error)){setCloudSession(ctx,data.session);throw new CloudAuthUnavailable(ctx);}
   }
-  if(authUnavailable(error))throw new ApiError('Supabase session refresh is temporarily unavailable.',503);
+  if(authUnavailable(error))throw new ApiError('Your account session could not be refreshed. Please try again when the connection returns.',503);
   clearCloudSession(ctx);
  }
  return ctx;
 }
-export function requireCloudUser(ctx:CloudContext){if(!ctx.user)throw new ApiError('Sign in to access your private Supabase records.',401);return ctx.user;}
+export function requireCloudUser(ctx:CloudContext){if(!ctx.user)throw new ApiError('Sign in to GRIDIRON AI to access your private records.',401);return ctx.user;}
 export function finishCloud(ctx:CloudContext|undefined,response:Response){
  const headers=new Headers(response.headers);headers.set('Cache-Control','private, no-store');
  for(const value of ctx?.cookies??[])headers.append('Set-Cookie',value);
@@ -82,7 +82,7 @@ export function cloudError(error:any):never{
  if(error?.code==='42501')throw new ApiError('This operation is not authorized for your account.',403);
  if(error?.code==='PGRST116')throw new ApiError('The requested owned record was not found.',404);
  if(error?.code==='P0001'||error?.code==='22023'||error?.code==='23514')throw new ApiError(String(error.message||'The database rejected invalid input.').slice(0,600),400);
- throw new ApiError('Supabase could not complete this operation. No local fallback or invented records were used.',503);
+ throw new ApiError('Your account service could not complete this operation. Existing records were preserved.',503);
 }
 export async function rpc<T=any>(ctx:CloudContext,name:string,payload?:unknown):Promise<T>{
  const {data,error}=await ctx.client.rpc(name,payload===undefined?{}:{payload});if(error)cloudError(error);return data as T;

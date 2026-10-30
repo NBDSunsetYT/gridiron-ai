@@ -1,0 +1,35 @@
+{
+  "status": "passed",
+  "startedAt": "2026-10-30T20:19:14.807Z",
+  "baseUrl": "https://gridiron-ai-gray.vercel.app",
+  "profile": "iPhone13 chromium emulation",
+  "engine": "chromium",
+  "accountsCreated": false,
+  "financialWrites": false,
+  "researchWrites": false,
+  "credentialsIncluded": false,
+  "physicalIphoneInstallationTested": false,
+  "checks": [
+    {
+      "name": "GRIDIRON sign-in opens the real private Wallet with secure cookies",
+      "status": "passed"
+    },
+    {
+      "name": "Saved private game questions and explanations open in the consumer interface",
+      "status": "passed"
+    },
+    {
+      "name": "A fresh browser session reopens the exact same persistent Wallet",
+      "status": "passed"
+    },
+    {
+      "name": "Another fresh sign-in retains the same private conversation and messages",
+      "status": "passed"
+    }
+  ],
+  "finishedAt": "2026-10-30T20:19:23.958Z",
+  "limitations": [
+    "Uses only the explicitly provisioned disposable QA identity and existing synthetic financial fixtures.",
+    "Tests real iPhone-sized chromium UI and HTTPS app sessions, not a physical Safari device."
+  ]
+}

@@ -15,7 +15,7 @@ test('failed sign-out stays visibly signed in until the server confirms revocati
  await expect(page.getByRole('button',{name:'Sign in',exact:true})).toBeVisible();
 });
 test('account registration through the interface creates a persistent private workspace',async({page})=>{
- const account=credentials();await page.goto('/');
+ const account=credentials();await page.goto('/#advanced/home');
  await page.getByRole('button',{name:'Create your workspace'}).click();
  await page.getByLabel('Email',{exact:true}).fill(account.email);
  await page.getByLabel('Password',{exact:true}).fill(account.password);
@@ -29,7 +29,7 @@ test('all research and financial screens fit desktop and iPhone viewports',async
  const account=credentials();expect((await page.request.post('/api/auth',{data:{action:'register',...account}})).ok()).toBeTruthy();
  const errors:string[]=[];page.on('pageerror',error=>errors.push(error.message));
  for(const view of ['contracts','simulations','injuries','models','movement','history','paper','bankroll','intelligence','settings','scanner','games','players','parlay','performance','auditor','comparisons','board','warehouse']){
-  await page.goto('/#'+view);await expect(page.locator('main h1, main h2').first()).toBeVisible();
+  await page.goto('/#'+(['bankroll','settings'].includes(view)?view:'advanced/'+view));await expect(page.locator('main h1, main h2').first()).toBeVisible();
   await page.waitForTimeout(150);
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth+1),`overflow in ${view}`).toBe(true);
  }
@@ -39,7 +39,7 @@ test('all research and financial screens fit desktop and iPhone viewports',async
 test('encrypted snapshot unlocks actual recorded history offline and rejects an incorrect password',async({page,context})=>{
  const account=credentials();await page.request.post('/api/auth',{data:{action:'register',...account}});
  const deposited=await page.request.post('/api/ledger',{data:{type:'deposit',amount:'123.45',sportsbook:'DraftKings',reference:'SYNTHETIC-OFFLINE-QA'}});expect(deposited.ok()).toBeTruthy();
- await page.goto('/#settings');await page.getByLabel('Offline snapshot passphrase').fill('Offline-synthetic-password-1742');
+ await page.goto('/#advanced/settings');await page.getByLabel('Offline snapshot passphrase').fill('Offline-synthetic-password-1742');
  await page.getByRole('checkbox',{name:/I want an encrypted copy/}).check();
  await page.getByRole('button',{name:'Save encrypted snapshot'}).click();
  await expect(page.getByText(/Encrypted historical snapshot saved on this device/)).toBeVisible();

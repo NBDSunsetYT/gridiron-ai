@@ -1,5 +1,6 @@
 import {PGlite} from '@electric-sql/pglite';
 import {readFileSync,readdirSync} from 'node:fs';
+import assert from 'node:assert/strict';
 const db=new PGlite();
 await db.exec(`create role anon;create role authenticated;create role service_role bypassrls;create schema auth;create table auth.users(id uuid primary key,email text);create table auth.sessions(id uuid primary key,user_id uuid references auth.users(id));create function auth.uid() returns uuid language sql stable as $$select (nullif(current_setting('request.jwt.claims',true),'')::jsonb->>'sub')::uuid$$;create function auth.jwt() returns jsonb language sql stable as $$select coalesce(nullif(current_setting('request.jwt.claims',true),'')::jsonb,'{}'::jsonb)$$;grant usage on schema auth to authenticated;grant execute on function auth.uid(),auth.jwt() to authenticated;`);
 try{for(const file of readdirSync(new URL('../migrations/',import.meta.url)).filter(name=>name.endsWith('.sql')).sort())await db.exec(readFileSync(new URL('../migrations/'+file,import.meta.url),'utf8'));console.log('MIGRATIONS COMPILED');}catch(e){console.error('COMPILE',e.message,e.where,e.position);process.exit(1);}
@@ -47,4 +48,40 @@ const rejectedArchive=await db.query("select count(*)::int n from public.gridiro
 await db.exec('reset role');
 await db.exec(readFileSync(new URL('./live-rls.sql',import.meta.url),'utf8'));
 console.log('ROLLBACK LIVE-RLS FIXTURE PASSED');
+// Public research is a separate privilege boundary: guests may read published
+// evidence, but only the server capability can enqueue or commit computation.
+await db.exec('reset role');
+const serverCapability='SYNTHETIC-PUBLIC-NFL-CAPABILITY-ONLY-2026';
+await db.query("insert into gridiron_shared_private.capabilities(name,token_sha256) values('public_nfl_ingestion',encode(sha256(convert_to($1,'UTF8')),'hex'))",[serverCapability]);
+await db.exec('set role anon');
+const shared=async payload=>(await db.query('select public.gridiron_public_write($1,$2::jsonb) value',[serverCapability,JSON.stringify(payload)])).rows[0].value;
+await assert.rejects(db.query('select public.gridiron_public_write($1,$2::jsonb)',['SYNTHETIC-wrong',JSON.stringify({action:'cache_put',kind:'schedule',key:'SYNTHETIC',data:{}})]),/Server capability required/);
+await assert.rejects(db.query("insert into public.shared_nfl_cache(kind,key,data)values('schedule','SYNTHETIC','{}')"),/permission denied/);
+await assert.rejects(db.query('select * from gridiron_shared_private.capabilities'),/permission denied/);
+await shared({action:'cache_put',kind:'schedule',key:'SYNTHETIC',data:{label:'SYNTHETIC published schedule'},expiresAt:'2027-01-01T00:00:00Z'});
+assert.equal((await db.query("select data from public.shared_nfl_cache where kind='schedule' and key='SYNTHETIC'")).rows[0].data.label,'SYNTHETIC published schedule');
+await shared({action:'cache_put',kind:'artifact',key:'SYNTHETIC-private',data:{label:'SYNTHETIC private fitted artifact'}});
+assert.equal((await db.query("select * from public.shared_nfl_cache where kind='artifact'")).rows.length,0);
+const artifact=(await db.query('select public.gridiron_public_artifact($1,$2,$3) value',[serverCapability,'artifact','SYNTHETIC-private'])).rows[0].value;
+assert.equal(artifact.data.label,'SYNTHETIC private fitted artifact');
+await assert.rejects(db.query('select gridiron_shared_private.write_operation_v1($1,$2::jsonb)',[serverCapability,'{}']),/permission denied/);
+const limit={action:'rate_limit',key:'SYNTHETIC-guest',windowMs:60000,limit:2};
+assert.equal((await shared(limit)).allowed,true);assert.equal((await shared(limit)).allowed,true);assert.equal((await shared(limit)).allowed,false);
+const job=await shared({action:'job_enqueue',gameId:'SYNTHETIC-GAME',inputHash:'SYNTHETIC-INPUT-HASH',data:{simulations:10000,label:'SYNTHETIC mechanics fixture'}});
+assert.equal((await shared({action:'job_enqueue',gameId:'SYNTHETIC-GAME',inputHash:'SYNTHETIC-INPUT-HASH',data:{simulations:10000}})).id,job.id);
+const lease='60000000-0000-4000-8000-000000000001',wrongLease='60000000-0000-4000-8000-000000000002';
+assert.equal((await shared({action:'job_claim',id:job.id,lease})).status,'running');
+assert.equal(await shared({action:'job_claim',id:job.id,lease:wrongLease}),null);
+await assert.rejects(shared({action:'job_complete',id:job.id,lease:wrongLease,result:{simulations:10000}}),/Stale worker lease/);
+assert.equal((await shared({action:'job_complete',id:job.id,lease,result:{simulations:10000,label:'SYNTHETIC completed mechanics'}})).status,'completed');
+assert.equal((await db.query("select count(*)::int n from public.shared_nfl_snapshots where game_id='SYNTHETIC-GAME'")).rows[0].n,1);
+await assert.rejects(shared({action:'job_complete',id:job.id,lease,result:{simulations:10000}}),/Stale worker lease/);
+await shared({action:'invalidate_game',gameId:'SYNTHETIC-GAME'});
+assert.equal((await db.query("select count(*)::int n from public.shared_nfl_snapshots where game_id='SYNTHETIC-GAME'")).rows[0].n,1);
+await db.exec('reset role');await db.exec('update gridiron_shared_private.compute_budget set games=150000');await db.exec('set role anon');
+const limited=await shared({action:'job_enqueue',gameId:'SYNTHETIC-CAPACITY',inputHash:'SYNTHETIC-CAPACITY-HASH',data:{simulations:10000}});
+assert.equal(await shared({action:'job_claim',id:limited.id,lease}),null);
+assert.match((await db.query('select error from public.shared_nfl_jobs where id=$1',[limited.id])).rows[0].error,/capacity/);
+await owner(users[0]);const retainedLedger=await rpc('gridiron_ledger');assert.equal(retainedLedger.summary.cashBalanceCents,92500);assert.equal(retainedLedger.summary.realizedPlCents,7500);
+console.log('GUEST SHARED RLS/CAPABILITY/ARTIFACT ISOLATION/RATE LIMIT/IDEMPOTENCY/LEASE FENCING/IMMUTABLE SNAPSHOTS/COMPUTE BUDGET/PRIVATE LEDGER PRESERVATION PASSED');
 await db.close();

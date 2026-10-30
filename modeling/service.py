@@ -126,6 +126,22 @@ async def run(request: Request, authorization: str | None = Header(default=None)
     return await asyncio.to_thread(simulate_data, data)
 
 
+@app.post('/public/analyze')
+async def public_analysis(request: Request, authorization: str | None = Header(default=None)):
+    """Private server-to-server automatic research; guests never send datasets.
+
+    The authenticated web service resolves the requested game from its verified
+    shared schedule. The Python service retrieves fixed public nflverse assets.
+    Existing owner-scoped fit/simulation endpoints remain unchanged.
+    """
+    authorize(authorization)
+    data = await body(request)
+    def work():
+        from .public_research import analyze_public
+        return analyze_public(data)
+    return await asyncio.to_thread(guarded, work)
+
+
 def simulate_data(data):
     if set(data)-{'model','home','away','simulations','seed','eventStart','contracts','scenario','postseason','parameterUncertainty','representativeGames'}:
         raise HTTPException(422,'Unsupported simulation assumptions. Weather, snap shares and arbitrary player multipliers are not silently applied.')

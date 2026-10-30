@@ -1,6 +1,6 @@
 {
   "projectRef": "qdtdjbapdipopncklsdb",
-  "source": "Supabase list_migrations after all five successful applications",
+  "source": "Supabase list_migrations after all ten successful applications",
   "method": "Aligned source filenames only; SQL bytes and remote history unchanged",
   "migrations": [
     {
@@ -36,6 +36,41 @@
       "authoredVersion": "20261030164315",
       "liveVersion": "20261030164434",
       "sha256": "9f12d358d7893b43b9c068b413bea3a03a8ad139758b7692939e9bc5f536ab8a",
+      "sqlUnchanged": true
+    },
+    {
+      "name": "gridiron_public_nfl_research",
+      "authoredVersion": "20261030193607",
+      "liveVersion": "20261030194057",
+      "sha256": "233145d442f2a5a409470066436034df35da05a76aefd76f38abd0d2f2091a48",
+      "sqlUnchanged": true
+    },
+    {
+      "name": "gridiron_public_compute_budget",
+      "authoredVersion": "20261030194434",
+      "liveVersion": "20261030194913",
+      "sha256": "4bcba286c5cff8734804c458c91aefaeb6b680d166ae0ba0820e4139c38ed636",
+      "sqlUnchanged": true
+    },
+    {
+      "name": "gridiron_scheduled_public_refresh",
+      "authoredVersion": "20261030194826",
+      "liveVersion": "20261030195404",
+      "sha256": "47eb4b0d6759471e6e5285ecc99ab335132eaf26db8bb4128962d909d29f8f8f",
+      "sqlUnchanged": true
+    },
+    {
+      "name": "gridiron_signed_background_refresh",
+      "authoredVersion": "20261030195548",
+      "liveVersion": "20261030195717",
+      "sha256": "c6148eb03dc8cc41ee633cbf5e976eeb1d621bf868f73a5a28d1ee7c55e19d64",
+      "sqlUnchanged": true
+    },
+    {
+      "name": "gridiron_shared_service_wrappers",
+      "authoredVersion": "20261030195805",
+      "liveVersion": "20261030195938",
+      "sha256": "d893dedb03993f45bd0f3cea13617f1eecf14a9248b70ce481f16fa4bf4a1b98",
       "sqlUnchanged": true
     }
   ]

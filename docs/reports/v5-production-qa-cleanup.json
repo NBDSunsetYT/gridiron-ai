@@ -1,0 +1,55 @@
+{
+  "status": "passed",
+  "startedAt": "2026-10-30T20:22:10.002Z",
+  "baseUrl": "https://gridiron-ai-gray.vercel.app",
+  "scope": "Exactly two pre-provisioned, server-marked disposable V5 QA identities",
+  "credentialsIncluded": false,
+  "realUserDataChanged": false,
+  "checks": [
+    {
+      "name": "Both exact UUIDs and reserved test emails match the server-controlled QA marker before any deletion",
+      "status": "passed"
+    },
+    {
+      "name": "Only the two authenticated QA owners are deleted through the session-revoking Edge Function",
+      "status": "passed"
+    },
+    {
+      "name": "Old sessions and passwords cannot reopen either removed test identity",
+      "status": "passed"
+    },
+    {
+      "name": "Shared real NFL research remains available after isolated QA cleanup",
+      "status": "passed"
+    },
+    {
+      "name": "Live SQL confirms the original non-QA identity is unchanged and no QA-owned rows remain across 58 auth/public tables",
+      "status": "passed"
+    },
+    {
+      "name": "Live SQL finds no private conversation marker in shared NFL caches, jobs, results or immutable snapshots",
+      "status": "passed"
+    }
+  ],
+  "finishedAt": "2026-10-30T20:22:18.532Z",
+  "limitations": [
+    "Only the deliberately provisioned, explicitly server-marked disposable QA identities were removed. No existing user records or shared NFL research were reset."
+  ],
+  "databaseVerification": {
+    "verifiedAt": "2026-10-30T20:22:53.262748+00:00",
+    "source": "Live Supabase SQL across auth/public ownership columns and exact disposable fixture UUIDs",
+    "nonQaAuthUsersBefore": 1,
+    "nonQaAuthUsersAfter": 1,
+    "remainingQaAuthUsers": 0,
+    "checkedOwnedTables": 58,
+    "remainingQaOwnedRows": 0,
+    "tablesWithRemainingQaRows": []
+  },
+  "publicPrivacyVerification": {
+    "verifiedAt": "2026-10-30T20:23:07.928664Z",
+    "source": "Live SQL searches for the isolated private question marker in every shared cache/job/result/snapshot",
+    "publicCacheQuestionMatches": 0,
+    "publicJobQuestionMatches": 0,
+    "publicSnapshotQuestionMatches": 0
+  }
+}

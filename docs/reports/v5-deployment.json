@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-30T20:18:35.836Z",
+  "status": "passed",
+  "applicationUrl": "https://gridiron-ai-gray.vercel.app",
+  "deploymentUrl": "https://gridiron-542uo53hl-gridiron5.vercel.app",
+  "deploymentId": "dpl_4PakhDosuivMZSAj3DHFZBVhNceC",
+  "projectId": "prj_ufIV2AZJcQAW7lNtQmH6hcyrWamH",
+  "target": "production",
+  "readyAt": "2026-10-30T20:17:52.233Z",
+  "buildDurationSeconds": 122,
+  "source": {
+    "mode": "authorized native Vercel source snapshot",
+    "baseCommit": "d0531212a95586787fdcca2cd341444f6b38acf9",
+    "includedUncommittedV5Changes": true,
+    "fileCount": 158,
+    "bytes": 7784281,
+    "manifestSha256": "34fe47e3674853b7c8294372520263dc25ada4422caa9f266c1a69b8a2303a22",
+    "configuredSecretByteScan": "passed"
+  },
+  "services": {
+    "web": "Next.js 15.5.28",
+    "quant": "private FastAPI / Python 3.12",
+    "database": "existing Supabase qdtdjbapdipopncklsdb"
+  },
+  "checks": {
+    "health": {
+      "status": 200,
+      "version": "5.0.0",
+      "backend": "supabase",
+      "cloudOnly": true,
+      "simulationsConfigured": true,
+      "assistantConfigured": false
+    },
+    "manifest": {
+      "status": 200,
+      "display": "standalone",
+      "icons": [
+        192,
+        512
+      ]
+    },
+    "authProviders": {
+      "status": 200,
+      "emailPassword": true,
+      "apple": false
+    },
+    "productionDependencyAudit": {
+      "total": 0
+    },
+    "developmentDependencyAudit": {
+      "total": 3,
+      "critical": 2,
+      "moderate": 1,
+      "packages": [
+        "vitest",
+        "tinypool",
+        "@vitest/mocker"
+      ],
+      "scope": "development test tooling; no runtime dependency findings",
+      "remediation": "Dedicated reviewed test-tool upgrade remains outstanding."
+    },
+    "initialDeploymentErrorLogScan": {
+      "level": [
+        "error",
+        "fatal"
+      ],
+      "windowMinutes": 10,
+      "records": 0
+    },
+    "productionAcceptance": {
+      "status": "passed",
+      "checks": 45,
+      "reports": [
+        "v5-production-public-workflow.json",
+        "v5-production-browser.json",
+        "v5-production-webkit-browser.json",
+        "v5-production-private-workflow.json",
+        "v5-production-private-browser.json",
+        "v5-production-private-webkit-browser.json"
+      ]
+    },
+    "backgroundSchedule": {
+      "status": "passed",
+      "report": "v5-background-refresh.json",
+      "schedule": "*/15 * * * *",
+      "active": true
+    },
+    "postAcceptanceDeploymentErrorLogScan": {
+      "level": [
+        "error",
+        "fatal"
+      ],
+      "windowMinutes": 20,
+      "records": 0
+    },
+    "qaCleanup": {
+      "status": "passed",
+      "checks": 6,
+      "report": "v5-production-qa-cleanup.json",
+      "preExistingIdentityCountPreserved": true,
+      "privateQuestionAbsentFromSharedTables": true
+    }
+  },
+  "boundaries": {
+    "render": "No service created; existing HTTP402 billing verification limitation retained without charges.",
+    "automaticGitDeployment": "Not connected to Vercel Git App; native source deployment used. GitHub verification workflow remains configured.",
+    "appleSignIn": "Provider not configured; not claimed operational.",
+    "languageModel": "OpenAI credential absent; explicitly labeled source-based evidence briefs remain available.",
+    "physicalIPhoneInstallation": "Not performed; browser/device emulation does not establish physical installation."
+  }
+}

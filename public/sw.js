@@ -1,5 +1,5 @@
 /* Only public static resources are cached. Private API responses never enter CacheStorage. */
-const CACHE = 'gridiron-interface-v3';
+const CACHE = 'gridiron-interface-v5';
 const PUBLIC = ['/offline-reader.js', '/offline.html', '/icon.svg', '/icon-192.png', '/icon-512.png', '/apple-touch-icon.png', '/manifest.webmanifest'];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(PUBLIC)).then(() => self.skipWaiting()));

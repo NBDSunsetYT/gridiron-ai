@@ -5,7 +5,7 @@ import {runInNewContext} from 'node:vm';
 function harness(){
  const listeners:Record<string,(event:any)=>void>={},stored=new Map<string,any>();
  const cache={addAll:vi.fn(async(paths:string[])=>{for(const path of paths)stored.set(path,{publicAsset:true});}),match:vi.fn(async(request:any)=>stored.get(typeof request==='string'?request:request.url)),put:vi.fn(async(request:any,response:any)=>{stored.set(request.url,response);})};
- const caches={open:vi.fn(async()=>cache),match:vi.fn(async(path:string)=>stored.get(path)),keys:vi.fn(async()=>['gridiron-interface-v2','gridiron-interface-v3','another-application']),delete:vi.fn(async()=>true)};
+ const caches={open:vi.fn(async()=>cache),match:vi.fn(async(path:string)=>stored.get(path)),keys:vi.fn(async()=>['gridiron-interface-v2','gridiron-interface-v3','gridiron-interface-v5','another-application']),delete:vi.fn(async()=>true)};
  const fetch=vi.fn(async(_request?:any,_options?:any)=>({ok:true,type:'basic',headers:new Headers({'Content-Type':'application/javascript','Cache-Control':'public, max-age=31536000, immutable'}),clone(){return this;}}));
  const self={location:{origin:'https://gridiron.example'},addEventListener:(name:string,fn:(event:any)=>void)=>listeners[name]=fn,skipWaiting:vi.fn(async()=>{}),clients:{claim:vi.fn(async()=>{})}};
  runInNewContext(readFileSync('public/sw.js','utf8'),{self,caches,fetch,URL,Response});
@@ -21,7 +21,7 @@ describe('Installable PWA and private-account cache boundary',()=>{
  });
  it('precaches public installation/offline assets and removes only this app’s older caches',async()=>{
   const h=harness();await h.dispatch('install');const paths=h.cache.addAll.mock.calls[0][0];expect(paths).toContain('/apple-touch-icon.png');expect(paths).toContain('/offline.html');expect(paths).not.toContain('/');expect(paths.some(path=>path.startsWith('/api/'))).toBe(false);
-  await h.dispatch('activate');expect(h.caches.delete).toHaveBeenCalledWith('gridiron-interface-v2');expect(h.caches.delete).not.toHaveBeenCalledWith('another-application');expect(h.caches.delete).not.toHaveBeenCalledWith('gridiron-interface-v3');
+  await h.dispatch('activate');expect(h.caches.delete).toHaveBeenCalledWith('gridiron-interface-v2');expect(h.caches.delete).not.toHaveBeenCalledWith('another-application');expect(h.caches.delete).toHaveBeenCalledWith('gridiron-interface-v3');expect(h.caches.delete).not.toHaveBeenCalledWith('gridiron-interface-v5');
  });
  it('never intercepts private APIs, account mutations, cross-origin responses or sign-in pages',()=>{
   const h=harness();for(const request of [h.request('/api/ledger'),h.request('/api/cloud/conversations'),h.request('/signin'),h.request('/signout'),h.request('/icon.svg',{method:'POST'}),h.request('https://other.example/icon.svg')])expect(h.dispatch('fetch',{request})).toBeUndefined();expect(h.fetch).not.toHaveBeenCalled();expect(h.cache.put).not.toHaveBeenCalled();

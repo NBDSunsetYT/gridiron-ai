@@ -46,6 +46,7 @@
     ".next-cloud-runtime-debug",
     ".next-pwa-qa",
     ".next-compact-qa",
-    ".next-ci-check"
+    ".next-ci-check",
+    ".next-v5-qa"
   ]
 }

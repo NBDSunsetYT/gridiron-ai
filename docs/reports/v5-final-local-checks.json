@@ -1,0 +1,28 @@
+{
+  "status": "passed",
+  "checkedAt": "2026-10-30T20:17:53.109425+00:00",
+  "scope": "final v5 source; public pipeline5.0.2",
+  "applicationUnitTests": {
+    "passed": 324,
+    "failed": 0,
+    "success": true
+  },
+  "python": {
+    "passed": 74,
+    "failed": 0,
+    "elapsedSeconds": 81.77
+  },
+  "typecheck": "passed",
+  "productionBuild": "passed",
+  "postgresMigrations": {
+    "count": 10,
+    "checks": "migration compilation; legacy ledger and imports; RLS; guest shared reads and denied private artifacts; capability denial; durable limits; job idempotency and lease fencing; immutable snapshots; compute budget; existing private ledger preservation",
+    "status": "passed"
+  },
+  "runtimeDependencyAudit": {
+    "vulnerabilities": 0,
+    "scope": "npm audit --omit=dev, verified by deployment worker"
+  },
+  "productionAcceptance": "recorded separately after live deployment",
+  "physicalIphoneInstallationTested": false
+}

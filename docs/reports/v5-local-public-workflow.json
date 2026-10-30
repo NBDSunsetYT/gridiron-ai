@@ -1,0 +1,74 @@
+{
+  "status": "passed",
+  "startedAt": "2026-10-30T19:50:18.212Z",
+  "baseUrl": "http://127.0.0.1:3430",
+  "environment": "local_fullstack",
+  "guest": true,
+  "accountsCreated": false,
+  "financialWrites": false,
+  "csvUploads": false,
+  "physicalIphoneInstallationTested": false,
+  "checks": [
+    {
+      "name": "A fresh visitor has no app identity and is not redirected to a developer dashboard",
+      "status": "passed"
+    },
+    {
+      "name": "Upcoming NFL games load from published sources without sign-in or a CSV upload",
+      "status": "passed"
+    },
+    {
+      "name": "Automatic trusted-data preparation and 10,000 coherent complete games produce player and game distributions",
+      "status": "passed"
+    },
+    {
+      "name": "A repeated Analyze Game action reuses the same fresh persisted result",
+      "status": "passed"
+    },
+    {
+      "name": "Public analysis explanation contains sources and correctly identifies AI versus evidence-only generation",
+      "status": "passed"
+    },
+    {
+      "name": "Personal finances, saved forecasts, private simulations and conversation history remain protected",
+      "status": "passed"
+    },
+    {
+      "name": "Another identity-free request reopens the saved shared research without a personal session",
+      "status": "passed"
+    }
+  ],
+  "game": {
+    "id": "2026_08_BAL_BUF",
+    "home": "BUF",
+    "away": "BAL",
+    "startTime": "2026-11-01T18:00:00.000Z"
+  },
+  "simulation": {
+    "completeGames": 10000,
+    "players": 26,
+    "withheldPlayers": 2,
+    "representativeGames": 1,
+    "modelVersion": "pbp-conditional-4.0.0",
+    "inputDataVersion": "78af2b288b0e9cedb38c905ac83618ebfebb6d5285ffe1940b6f2e8a8637407e",
+    "homeWinProbability": 0.6922
+  },
+  "analysisId": "361b8420-fdca-4524-8687-5633a19b2e4d",
+  "coverage": {
+    "injuries": "available",
+    "weather": "available",
+    "markets": "unavailable"
+  },
+  "sourceCount": 6,
+  "summary": {
+    "method": "evidence_brief",
+    "generatedByAI": false,
+    "citations": 6
+  },
+  "finishedAt": "2026-10-30T19:50:45.895Z",
+  "limitations": [
+    "Acceptance verifies actual data retrieval, football mechanics, public caching and private-record boundaries; it does not prove calibration or market advantage.",
+    "Unavailable injury and price data must remain labeled unavailable. Evidence-only text is not a live OpenAI response.",
+    "Physical Safari Add to Home Screen installation is not performed by this script."
+  ]
+}
