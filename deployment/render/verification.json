@@ -1,0 +1,27 @@
+{
+  "status": "passed",
+  "environment": "Actual local Render-specific Docker image, not a remote Render deployment",
+  "checks": [
+    "Dynamic PORT 18444 bound on 0.0.0.0",
+    "HTTP health endpoint ready",
+    "Anonymous compute requests rejected with 401",
+    "Non-root runtime UID 1001",
+    "Copied source readable by the runtime owner",
+    "No environment file, user database or build CA in the image",
+    "Async endpoint capability advertised",
+    "Anonymous async dispatch rejected with 401",
+    "Missing cloud configuration fails closed with 503"
+  ],
+  "startupTests": 2,
+  "officialBlueprintSchemaValidation": "passed",
+  "deploymentStatus": "awaiting_reachable_Git_repository",
+  "publicUrl": null,
+  "credentialsIncluded": false,
+  "asyncWorkerRegressionTests": 14,
+  "existingServiceRegressionTests": 6,
+  "totalComputeBoundaryTests": 20,
+  "limitations": [
+    "Remote Render deployment still requires a reachable Git source",
+    "Local container verification is not a public HTTPS deployment"
+  ]
+}

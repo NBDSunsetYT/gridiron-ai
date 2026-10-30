@@ -6,8 +6,8 @@ RUN --mount=type=secret,id=proxy_ca \
     && pip install --no-cache-dir -r requirements.txt \
     && groupadd --system --gid 1001 gridiron \
     && useradd --system --uid 1001 --gid 1001 gridiron
-COPY modeling /app/modeling
-COPY deployment/render/start.py /app/start.py
+COPY --chown=gridiron:gridiron modeling /app/modeling
+COPY --chown=gridiron:gridiron deployment/render/start.py /app/start.py
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PORT=10000
 USER gridiron
 EXPOSE 10000
