@@ -1,0 +1,8 @@
+import {NextResponse} from 'next/server';
+import {z} from 'zod';
+import {requireUser,guardMutation,rateLimit,errorResponse,ApiError} from '@/lib/auth';
+import {getDb} from '@/lib/db';
+import {simulationParlay} from '@/lib/simulation-parlay';
+export const runtime='nodejs';
+const schema=z.object({simulationId:z.string(),contractIds:z.array(z.string()).min(2).max(12),offer:z.object({odds:z.number().finite(),source:z.string().min(3).max(1000),quotedAt:z.string().datetime({offset:true}),sportsbook:z.enum(['DraftKings','Hard Rock','Other']),verified:z.literal(true)}).optional()});
+export async function POST(request:Request){try{guardMutation(request);const u=await requireUser(request);rateLimit(`simulation-parlay:${u.id}`,30,60000);const input=schema.parse(await request.json());const row=getDb().prepare('SELECT result,status FROM simulation_jobs WHERE id=? AND user_id=?').get(input.simulationId,u.id) as {result:string|null;status:string}|undefined;if(!row)throw new ApiError('Simulation record not found.',404);if(row.status!=='completed'||!row.result)throw new ApiError('A completed simulation with aligned contract outcomes is required.');if(input.offer&&Date.parse(input.offer.quotedAt)>Date.now()+60000)throw new ApiError('Quote observation cannot be in the future.');const result=JSON.parse(row.result);return NextResponse.json({...simulationParlay(result,input.contractIds,input.offer),simulationId:input.simulationId,modelVersion:result.modelVersion,createdAt:new Date().toISOString()});}catch(e){if(e instanceof z.ZodError)return NextResponse.json({error:e.issues.map(i=>i.message).join('; ')},{status:400});if(e instanceof Error&&!('status' in e))return NextResponse.json({error:e.message},{status:400});return errorResponse(e);}}

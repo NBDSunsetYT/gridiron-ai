@@ -1,0 +1,9 @@
+{
+  "status": "passed",
+  "checkedAt": "2026-10-30T17:53:01.300Z",
+  "disposableOwnersRemoved": 2,
+  "scope": "Only two explicitly generated example.test QA accounts and their owned fixtures; original application records unchanged.",
+  "ownedEdgeDeletionAndLoginRejectionVerified": true,
+  "emailsSent": false,
+  "credentialsIncluded": false
+}

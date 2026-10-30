@@ -1,0 +1,11 @@
+import {createCipheriv,createDecipheriv,createHash,randomBytes} from 'node:crypto';
+import {ApiError} from '../auth';
+export type DeviceEnvelope={version:1;cipher:'aes-256-gcm';iv:string;tag:string;ciphertext:string;fingerprint:string};
+export function validateDeviceToken(input:unknown):{platform:'ios';token:string;environment:'development'|'production'}{
+ const value=input as Record<string,unknown>;
+ if(!value||value.platform!=='ios'||typeof value.token!=='string'||!/^[a-f0-9]{32,512}$/i.test(value.token)||!['development','production'].includes(String(value.environment)))throw new ApiError('A valid iOS APNs token and development/production environment are required.');
+ return{platform:'ios',token:value.token.toLowerCase(),environment:value.environment as 'development'|'production'};
+}
+function key(secret:string|undefined){if(!secret||secret.length<32)throw new ApiError('Native device registration is unavailable until a server-side DEVICE_TOKEN_ENCRYPTION_KEY of at least 32 random characters is configured. Push delivery also requires Apple APNs credentials.',503);return createHash('sha256').update(secret).digest();}
+export function encryptDeviceToken(token:string,secret=process.env.DEVICE_TOKEN_ENCRYPTION_KEY):DeviceEnvelope{const secretKey=key(secret),iv=randomBytes(12),cipher=createCipheriv('aes-256-gcm',secretKey,iv);try{const ciphertext=Buffer.concat([cipher.update(token,'utf8'),cipher.final()]);return{version:1,cipher:'aes-256-gcm',iv:iv.toString('base64'),tag:cipher.getAuthTag().toString('base64'),ciphertext:ciphertext.toString('base64'),fingerprint:createHash('sha256').update(token).digest('hex')};}finally{secretKey.fill(0);}}
+export function decryptDeviceToken(envelope:DeviceEnvelope,secret=process.env.DEVICE_TOKEN_ENCRYPTION_KEY){if(envelope.version!==1||envelope.cipher!=='aes-256-gcm')throw new ApiError('Unsupported device token envelope.');const secretKey=key(secret);try{const decipher=createDecipheriv('aes-256-gcm',secretKey,Buffer.from(envelope.iv,'base64'));decipher.setAuthTag(Buffer.from(envelope.tag,'base64'));return Buffer.concat([decipher.update(Buffer.from(envelope.ciphertext,'base64')),decipher.final()]).toString('utf8');}finally{secretKey.fill(0);}}

@@ -1,0 +1,2 @@
+'use client';
+export default function ErrorPage({reset}:{reset:()=>void}){return <main style={{maxWidth:600,margin:'12vh auto',padding:30}}><span className="eyebrow">GRIDIRON AI</span><h1>The workspace could not load.</h1><p className="muted">Your server records have not been changed. Try reconnecting to your private workspace.</p><button className="btn btn-primary" onClick={reset}>Try again</button></main>;}

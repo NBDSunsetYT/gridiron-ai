@@ -1,0 +1,15 @@
+import {afterAll,afterEach,beforeAll,describe,expect,it,vi} from 'vitest';
+import {mkdtempSync,rmSync} from 'node:fs';
+import {tmpdir} from 'node:os';
+import {join} from 'node:path';
+import {randomUUID} from 'node:crypto';
+const directory=mkdtempSync(join(tmpdir(),'gridiron-native-api-'));process.env.DATA_DIR=directory;
+let db:typeof import('../lib/db'),auth:typeof import('../lib/auth'),route:typeof import('../app/api/devices/route');
+beforeAll(async()=>{db=await import('../lib/db');auth=await import('../lib/auth');route=await import('../app/api/devices/route');});
+afterEach(()=>vi.unstubAllEnvs());afterAll(()=>{db.closeDb();rmSync(directory,{recursive:true,force:true});});
+function user(){const id=randomUUID();db.getDb().prepare('INSERT INTO users(id,email,password_hash,created_at) VALUES(?,?,?,?)').run(id,id+'@example.test','SYNTHETIC-HASH',new Date().toISOString());return{id,token:auth.newSession(id)};}
+function request(method:string,token?:string,body?:unknown){return new Request('https://gridiron.test/api/devices',{method,headers:{'content-type':'application/json',...(token?{cookie:`${auth.SESSION_COOKIE}=${token}`}:{})},...(body?{body:JSON.stringify(body)}:{})});}
+describe('Owner-scoped native registration API',()=>{
+ it('requires authentication and refuses plaintext fallback when no encryption key exists',async()=>{expect((await route.GET(request('GET'))).status).toBe(401);const owner=user();vi.stubEnv('DEVICE_TOKEN_ENCRYPTION_KEY','');const response=await route.POST(request('POST',owner.token,{platform:'ios',token:'a1'.repeat(32),environment:'development'}));expect(response.status).toBe(503);expect((db.getDb().prepare("SELECT count(*) n FROM research_records WHERE user_id=? AND kind='device_registration'").get(owner.id) as any).n).toBe(0);});
+ it('stores encrypted registrations idempotently and prevents cross-account access or deletion',async()=>{vi.stubEnv('DEVICE_TOKEN_ENCRYPTION_KEY','SYNTHETIC-PRIVATE-KEY-NOT-PRODUCTION-2026');const owner=user(),other=user(),token='b2'.repeat(32),body={platform:'ios',token,environment:'development'};const a=await route.POST(request('POST',owner.token,body)),b=await route.POST(request('POST',owner.token,body));expect(a.status).toBe(200);expect((await a.json()).id).toBe((await b.json()).id);const own=await(await route.GET(request('GET',owner.token))).json(),stranger=await(await route.GET(request('GET',other.token))).json();expect(own.devices).toHaveLength(1);expect(stranger.devices).toHaveLength(0);expect(JSON.stringify(own)).not.toContain(token);const row=db.getDb().prepare("SELECT data FROM research_records WHERE user_id=? AND kind='device_registration'").get(owner.id) as {data:string};expect(row.data).not.toContain(token);await route.DELETE(request('DELETE',other.token));expect((await(await route.GET(request('GET',owner.token))).json()).devices).toHaveLength(1);await route.DELETE(request('DELETE',owner.token));expect((await(await route.GET(request('GET',owner.token))).json()).devices).toHaveLength(0);});
+});

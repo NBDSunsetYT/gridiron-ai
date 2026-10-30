@@ -1,0 +1,5 @@
+import {ApiError,errorResponse,readJsonObject,guardMutation,rateLimit,requireUser} from '@/lib/auth';
+import {getDb} from '@/lib/db';import {getPreferences,setPreference} from '@/lib/research-store';
+export const runtime='nodejs';export const dynamic='force-dynamic';
+export async function GET(request:Request){try{const user=await requireUser(request);return Response.json({preferences:getPreferences(user.id)},{headers:{'Cache-Control':'no-store'}});}catch(e){return errorResponse(e);}}
+export async function PATCH(request:Request){try{guardMutation(request);const user=await requireUser(request);rateLimit('preferences:'+user.id,60);const body=await readJsonObject(request);if(!body.preferences||typeof body.preferences!=='object'||Array.isArray(body.preferences)||Object.keys(body.preferences).length>50)throw new ApiError('Supply at most 50 preference keys.');getDb().transaction(()=>{for(const[key,value]of Object.entries(body.preferences))setPreference(user.id,key,value);})();return Response.json({preferences:getPreferences(user.id)});}catch(e){return errorResponse(e);}}

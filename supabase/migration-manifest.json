@@ -1,0 +1,42 @@
+{
+  "projectRef": "qdtdjbapdipopncklsdb",
+  "source": "Supabase list_migrations after all five successful applications",
+  "method": "Aligned source filenames only; SQL bytes and remote history unchanged",
+  "migrations": [
+    {
+      "name": "gridiron_v4",
+      "authoredVersion": "20261030153448",
+      "liveVersion": "20261030154518",
+      "sha256": "121561ac495158ced33866adc3d796b2e0ebf812f0c66e477f2262ce17d63545",
+      "sqlUnchanged": true
+    },
+    {
+      "name": "gridiron_financial_export",
+      "authoredVersion": "20261030154530",
+      "liveVersion": "20261030155320",
+      "sha256": "50186d4afa4acf492249a5f835c66dde0cfe4e3cf03798cbcce16edaac9c6784",
+      "sqlUnchanged": true
+    },
+    {
+      "name": "gridiron_index_deduplication",
+      "authoredVersion": "20261030154705",
+      "liveVersion": "20261030155321",
+      "sha256": "210486500b3e1c141d3f214dc1b248214e4d17dec6652ffa7e94196d8898b98a",
+      "sqlUnchanged": true
+    },
+    {
+      "name": "gridiron_contract_identity",
+      "authoredVersion": "20261030155041",
+      "liveVersion": "20261030155322",
+      "sha256": "fafadb0dbef700eb75fbfbf6db18024b7921d84d84d7d74f63f4538394284a14",
+      "sqlUnchanged": true
+    },
+    {
+      "name": "gridiron_saved_research_restore",
+      "authoredVersion": "20261030164315",
+      "liveVersion": "20261030164434",
+      "sha256": "9f12d358d7893b43b9c068b413bea3a03a8ad139758b7692939e9bc5f536ab8a",
+      "sqlUnchanged": true
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+import {ApiError,digest,errorResponse,readJsonObject,guardMutation,rateLimit,requireUser,sessionCookie} from '@/lib/auth';
+import {getDb} from '@/lib/db';
+import {getSettings,updateSettings} from '@/lib/ledger';
+export const runtime='nodejs';export const dynamic='force-dynamic';
+export async function GET(request:Request){try{const user=await requireUser(request);return Response.json({user,settings:getSettings(user.id),capabilities:{passkeys:false,notifications:false}},{headers:{'Cache-Control':'no-store'}});}catch(e){return errorResponse(e);}}
+export async function PATCH(request:Request){try{guardMutation(request);const user=await requireUser(request);rateLimit('account:'+user.id,30);const body=await readJsonObject(request);return Response.json({settings:getDb().transaction(()=>updateSettings(user.id,body))()});}catch(e){return errorResponse(e);}}
+export async function DELETE(request:Request){try{guardMutation(request);const user=await requireUser(request);const body=await readJsonObject(request);if(body.confirmation!=='DELETE')throw new ApiError('Type DELETE to confirm permanent account deletion.');getDb().transaction(()=>{getDb().prepare('DELETE FROM rate_limits WHERE instr(key,?)>0 OR key=?').run(user.id,'auth-email:'+digest(user.email));getDb().prepare('DELETE FROM users WHERE id=?').run(user.id);})();return Response.json({deleted:true},{headers:{'Set-Cookie':sessionCookie('',request)}});}catch(e){return errorResponse(e);}}

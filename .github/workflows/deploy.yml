@@ -1,0 +1,75 @@
+name: Deploy existing GRIDIRON AI services
+
+# The provider-native Git integrations are the primary automatic deploy path.
+# This workflow is an explicit retry mechanism for already provisioned services;
+# it never creates resources or chooses a billable service tier.
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: Existing service to redeploy
+        type: choice
+        required: true
+        options: [all, backend, frontend]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gridiron-production-deployment
+  cancel-in-progress: false
+
+jobs:
+  backend:
+    if: github.ref == 'refs/heads/main' && (inputs.target == 'all' || inputs.target == 'backend')
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Trigger the existing Render deployment
+        env:
+          RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+        run: |
+          if [ -z "$RENDER_DEPLOY_HOOK_URL" ]; then
+            echo "Configure the existing service's RENDER_DEPLOY_HOOK_URL secret."
+            exit 1
+          fi
+          python - <<'PY'
+          import os, urllib.request, urllib.parse
+          target = urllib.parse.urlparse(os.environ['RENDER_DEPLOY_HOOK_URL'])
+          if target.scheme != 'https' or target.hostname != 'api.render.com' or not target.path.startswith('/deploy/'):
+              raise SystemExit('Expected the existing Render service deploy hook.')
+          try:
+              with urllib.request.urlopen(urllib.request.Request(target.geturl(), method='POST'), timeout=60) as response:
+                  if response.status >= 300:
+                      raise RuntimeError()
+          except Exception:
+              raise SystemExit('Render rejected the deployment request; inspect the service dashboard.') from None
+          PY
+          echo "Render accepted the deployment request. Verify health and logs before claiming success."
+
+  frontend:
+    if: github.ref == 'refs/heads/main' && (inputs.target == 'all' || inputs.target == 'frontend')
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Deploy to the existing Vercel project
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          if [ -z "$VERCEL_TOKEN" ] || [ -z "$VERCEL_ORG_ID" ] || [ -z "$VERCEL_PROJECT_ID" ]; then
+            echo "Configure credentials and IDs for the existing Vercel project."
+            exit 1
+          fi
+          npx --yes vercel@65.8.0 pull --yes --environment=production
+          npx --yes vercel@65.8.0 build --prod
+          npx --yes vercel@65.8.0 deploy --prebuilt --prod

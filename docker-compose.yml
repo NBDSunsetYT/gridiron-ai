@@ -1,0 +1,47 @@
+services:
+  app:
+    build: .
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      DATA_DIR: /data
+      APP_URL: ${APP_URL:-https://gridiron.example.com}
+      ODDS_API_KEY: ${ODDS_API_KEY:-}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4.1-mini}
+      SIMULATION_SERVICE_URL: http://quant:8000
+      SIMULATION_SERVICE_TOKEN: ${SIMULATION_SERVICE_TOKEN:-}
+      CRON_SECRET: ${CRON_SECRET:-}
+      DATA_BACKEND: ${DATA_BACKEND:-sqlite}
+      SUPABASE_URL: ${SUPABASE_URL:-}
+      SUPABASE_PUBLISHABLE_KEY: ${SUPABASE_PUBLISHABLE_KEY:-}
+      DEVICE_TOKEN_ENCRYPTION_KEY: ${DEVICE_TOKEN_ENCRYPTION_KEY:-}
+    volumes:
+      - gridiron-data:/data
+    depends_on:
+      - quant
+    ports:
+      - "127.0.0.1:3000:3000"
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+  quant:
+    build:
+      context: .
+      dockerfile: modeling/Dockerfile
+    restart: unless-stopped
+    environment:
+      SIMULATION_SERVICE_TOKEN: ${SIMULATION_SERVICE_TOKEN:-}
+    # Private Compose network only. Do not expose this service directly to the Internet.
+    expose:
+      - "8000"
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    read_only: true
+    tmpfs:
+      - /tmp:size=128m,mode=1777
+volumes:
+  gridiron-data:

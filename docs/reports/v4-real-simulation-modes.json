@@ -1,0 +1,297 @@
+{
+  "kind": "real_historical_complete_game_modes_audit",
+  "source": "https://github.com/nflverse/nflverse-data/releases/tag/pbp",
+  "sourceGzipSha256": "4649804ee0f0a40b41e51ec75a1ce921949d7fab5459213488656b92f78560e8",
+  "normalizedInputSha256": "e564be7f965af3633fc9c998229bc3689e9ec2e6d28bbe4a1afebef0297d5476",
+  "normalizedPlays": 25303,
+  "historicalGames": 180,
+  "evidenceCutoff": "2023-11-30T00:00:00+00:00",
+  "home": "DAL",
+  "away": "SEA",
+  "eventStart": "2023-12-01T01:15:00Z",
+  "seed": 2026,
+  "modelVersion": "pbp-conditional-4.0.0",
+  "modelOptions": {
+    "recencyHalfLifeDays": 180,
+    "conditionalShrinkage": true
+  },
+  "shrinkageFit": {
+    "priorPlays": 50,
+    "validation": [
+      {
+        "priorPlays": 5,
+        "validationPlays": 4872,
+        "logLoss": 0.9469788329467728
+      },
+      {
+        "priorPlays": 20,
+        "validationPlays": 4872,
+        "logLoss": 0.9404192531180589
+      },
+      {
+        "priorPlays": 50,
+        "validationPlays": 4872,
+        "logLoss": 0.9394922051408945
+      }
+    ],
+    "trainingGames": 144,
+    "heldoutGames": 36,
+    "method": "Chronological next-play-kind validation; regularization is not a fabricated injury adjustment"
+  },
+  "fitSeconds": 3.30580437899971,
+  "modes": [
+    {
+      "completeGames": 50000,
+      "durationSeconds": 31.11338195100052,
+      "gamesPerSecond": 1607.0255582868947,
+      "homeWinProbability": 0.69782,
+      "awayWinProbability": 0.29386,
+      "tieProbability": 0.00832,
+      "baseMonteCarloSE": 0.002053617528168281,
+      "baseMonteCarloInterval95": [
+        0.693779912346261,
+        0.7018296932935563
+      ],
+      "convergence": [
+        {
+          "simulations": 5000,
+          "homeWinProbability": 0.6946,
+          "monteCarloSE": 0.006513537287833701
+        },
+        {
+          "simulations": 25000,
+          "homeWinProbability": 0.6974,
+          "monteCarloSE": 0.0029053966338522526
+        },
+        {
+          "simulations": 50000,
+          "homeWinProbability": 0.69782,
+          "monteCarloSE": 0.002053617528168281
+        }
+      ],
+      "scoreHistogramCounts": {
+        "DAL": 50000,
+        "SEA": 50000
+      },
+      "jointOutcomeCount": 50000,
+      "logicalJointContractAgreement": true,
+      "representativeTraceChecks": [
+        {
+          "index": 0,
+          "score": [
+            30,
+            9
+          ],
+          "plays": 137,
+          "checks": {
+            "passingYardsEqualReceivingYards": true,
+            "completionsEqualReceptions": true,
+            "passingTDsEqualReceivingTDs": true,
+            "completeTrace": true
+          }
+        },
+        {
+          "index": 1,
+          "score": [
+            34,
+            19
+          ],
+          "plays": 143,
+          "checks": {
+            "passingYardsEqualReceivingYards": true,
+            "completionsEqualReceptions": true,
+            "passingTDsEqualReceivingTDs": true,
+            "completeTrace": true
+          }
+        },
+        {
+          "index": 2,
+          "score": [
+            20,
+            16
+          ],
+          "plays": 147,
+          "checks": {
+            "passingYardsEqualReceivingYards": true,
+            "completionsEqualReceptions": true,
+            "passingTDsEqualReceivingTDs": true,
+            "completeTrace": true
+          }
+        }
+      ],
+      "gameEnvironment": {
+        "plays": 142.17986,
+        "sacks": 4.97412,
+        "punts": 7.8603,
+        "fieldGoalAttempts": 4.5416,
+        "fieldGoals": 4.13912,
+        "touchdowns": 4.58276,
+        "interceptions": 1.43428,
+        "defensiveTouchdowns": 0.10536,
+        "fumblesLost": 0.44752,
+        "drives": 22.67072,
+        "overtime": 0.03454,
+        "safeties": 0.13092
+      },
+      "backoffCounts": {
+        "1": 6082450,
+        "2": 996089,
+        "3": 30454
+      },
+      "parameterInterval": null,
+      "engineVersion": "pbp-runtime-4.0.0",
+      "dataAvailabilityVerified": false
+    },
+    {
+      "completeGames": 100000,
+      "durationSeconds": 63.1201383130001,
+      "gamesPerSecond": 1584.28043208841,
+      "homeWinProbability": 0.69829,
+      "awayWinProbability": 0.29387,
+      "tieProbability": 0.00784,
+      "baseMonteCarloSE": 0.0014514857074735528,
+      "baseMonteCarloInterval95": [
+        0.6954375677965505,
+        0.7011271983312612
+      ],
+      "convergence": [
+        {
+          "simulations": 10000,
+          "homeWinProbability": 0.6912,
+          "monteCarloSE": 0.00461998441555813
+        },
+        {
+          "simulations": 50000,
+          "homeWinProbability": 0.69782,
+          "monteCarloSE": 0.002053617528168281
+        },
+        {
+          "simulations": 100000,
+          "homeWinProbability": 0.69829,
+          "monteCarloSE": 0.0014514857074735528
+        }
+      ],
+      "scoreHistogramCounts": {
+        "DAL": 100000,
+        "SEA": 100000
+      },
+      "jointOutcomeCount": 100000,
+      "logicalJointContractAgreement": true,
+      "representativeTraceChecks": [
+        {
+          "index": 0,
+          "score": [
+            30,
+            9
+          ],
+          "plays": 137,
+          "checks": {
+            "passingYardsEqualReceivingYards": true,
+            "completionsEqualReceptions": true,
+            "passingTDsEqualReceivingTDs": true,
+            "completeTrace": true
+          }
+        },
+        {
+          "index": 1,
+          "score": [
+            34,
+            19
+          ],
+          "plays": 143,
+          "checks": {
+            "passingYardsEqualReceivingYards": true,
+            "completionsEqualReceptions": true,
+            "passingTDsEqualReceivingTDs": true,
+            "completeTrace": true
+          }
+        },
+        {
+          "index": 2,
+          "score": [
+            20,
+            16
+          ],
+          "plays": 147,
+          "checks": {
+            "passingYardsEqualReceivingYards": true,
+            "completionsEqualReceptions": true,
+            "passingTDsEqualReceivingTDs": true,
+            "completeTrace": true
+          }
+        }
+      ],
+      "gameEnvironment": {
+        "plays": 142.16859,
+        "sacks": 4.97338,
+        "punts": 7.8525,
+        "fieldGoalAttempts": 4.54633,
+        "fieldGoals": 4.14517,
+        "touchdowns": 4.58446,
+        "interceptions": 1.4367,
+        "defensiveTouchdowns": 0.10558,
+        "fumblesLost": 0.44843,
+        "drives": 22.67456,
+        "overtime": 0.03373,
+        "safeties": 0.13225
+      },
+      "backoffCounts": {
+        "1": 12159757,
+        "2": 1996071,
+        "3": 61031
+      },
+      "parameterInterval": null,
+      "engineVersion": "pbp-runtime-4.0.0",
+      "dataAvailabilityVerified": false
+    }
+  ],
+  "policy": "Retrospective software mechanics/throughput audit. These generated games are not independent historical validation cases. No real market quotes, financial records, or live forecasts are used. Parameter/structural uncertainty is not inferred from Monte Carlo count.",
+  "crossModeChecks": {
+    "sameSeedFirst50000GamesReproduceExactly": true,
+    "baseMonteCarloSEDecreases": true,
+    "modelConfidenceIncreaseClaimed": false,
+    "parameterUncertaintyEstimatedByTheseRuns": false
+  },
+  "fixedRuntimeRepresentativeTraceVerification": {
+    "engineVersion": "pbp-runtime-4.0.0",
+    "checkedAt": "2026-10-30T16:32:33.459549+00:00",
+    "sameModelHash": true,
+    "seed": 2026,
+    "checks": [
+      {
+        "index": 0,
+        "playEvents": 137,
+        "score": [
+          30,
+          9
+        ],
+        "finalScoreMatchesTrace": true,
+        "sharedPlayerStatisticEqualities": true,
+        "matchesBothRecordedModes": true
+      },
+      {
+        "index": 1,
+        "playEvents": 143,
+        "score": [
+          34,
+          19
+        ],
+        "finalScoreMatchesTrace": true,
+        "sharedPlayerStatisticEqualities": true,
+        "matchesBothRecordedModes": true
+      },
+      {
+        "index": 2,
+        "playEvents": 147,
+        "score": [
+          20,
+          16
+        ],
+        "finalScoreMatchesTrace": true,
+        "sharedPlayerStatisticEqualities": true,
+        "matchesBothRecordedModes": true
+      }
+    ],
+    "note": "Replayed the exact first3games using the module containing the overtime-safety final-event fix; probabilities and score-generation mechanics were unchanged."
+  }
+}

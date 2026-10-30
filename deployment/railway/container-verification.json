@@ -1,0 +1,16 @@
+{
+  "status": "passed",
+  "environment": "Actual local Docker images; real remote Supabase Auth health and private bridge-network Python service; not a public deployment",
+  "checks": [
+    "both images built",
+    "non-root production Node startup",
+    "real Supabase dependency readiness",
+    "private quantitative dependency readiness",
+    "IPv4 and IPv6 quantitative health",
+    "anonymous financial401",
+    "ephemeral SQLite switch409",
+    "runtime env/user database source exclusion"
+  ],
+  "deploymentStatus": "authorization_required",
+  "credentialsIncluded": false
+}

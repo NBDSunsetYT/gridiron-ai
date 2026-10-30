@@ -1,0 +1,48 @@
+{
+  "status": "passed",
+  "checkedAt": "2026-10-30T17:46:26.712915+00:00",
+  "environment": "Local Next development server with isolated temporary SQLite DATA_DIR; public installation assets and anonymous Settings only",
+  "unitTests": 6,
+  "browserChecks": 8,
+  "browserSeconds": 16.6,
+  "viewports": [
+    "Desktop Chromium",
+    "iPhone 13 Chromium emulation"
+  ],
+  "icons": {
+    "png192": [
+      192,
+      192
+    ],
+    "png512": [
+      512,
+      512
+    ],
+    "appleTouch": [
+      180,
+      180
+    ]
+  },
+  "metadata": [
+    "standalone manifest",
+    "modern mobile web app tag",
+    "Apple compatibility capable tag",
+    "Apple title/status bar",
+    "viewport-fit cover"
+  ],
+  "checks": [
+    "public offline shell only",
+    "private API requests never intercepted or cached",
+    "no authenticated HTML cache",
+    "private/no-store static response rejected",
+    "cache quota failures preserve successful online assets",
+    "safe-area responsive layout",
+    "iOS input zoom prevented",
+    "real app URL shown without hash/query",
+    "standalone Safari flag emulated",
+    "cache clear and reload prepares offline shell again"
+  ],
+  "physicalIphoneInstallation": "not tested",
+  "productionHttpsVerification": "parent deployment task; not established by local checks",
+  "existingUserDataModified": false
+}

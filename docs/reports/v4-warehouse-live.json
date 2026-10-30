@@ -1,0 +1,49 @@
+{
+  "status": "passed",
+  "source": "https://raw.githubusercontent.com/nflverse/nfldata/master/data/games.csv",
+  "testEnvironment": "Owned synthetic QA accounts only; no real user financial records changed",
+  "sqliteHttp": {
+    "season": 2023,
+    "gamesImported": 285,
+    "readback": 285,
+    "exactRetryDuplicate": true
+  },
+  "supabaseHttp": {
+    "season": 2023,
+    "gamesImported": 285,
+    "readback": 285,
+    "exactRetryDuplicate": true
+  },
+  "publicationAvailability": "Unknown historical availability remains null; not inferred from event dates",
+  "typedStorage": "Authenticated Supabase import writes normalized seasons, teams, players and games plus immutable source snapshots",
+  "kickoffNormalization": "nflverse-documented Eastern time with DST; absent times excluded",
+  "scope": "Schedule results and recorded QB identities, not licensed snap/route/injury/player-prop research",
+  "financialData": "untouched",
+  "actualSupabaseCounts": {
+    "seasons": 1,
+    "teams": 32,
+    "players": 66,
+    "games": 285,
+    "immutableSnapshots": 384,
+    "gamesWithUnknownAvailability": 285
+  },
+  "playByPlayImport": {
+    "status": "passed",
+    "source": "https://github.com/nflverse/nflverse-data/releases/tag/pbp",
+    "game": "2023_01_DET_KC",
+    "actualSourcePlays": 179,
+    "normalizedImportedPlays": 149,
+    "firstInserted": 149,
+    "retryInserted": 0,
+    "typedReadback": 149,
+    "RLSOwnerVerified": true,
+    "historicalAvailability": "unknown/null retained",
+    "observedEPAPreserved": true,
+    "sourceVersion": "f3519683d33bd715489bf42135596e48b9420c86f5284aece0b415880559ff5a",
+    "conversionExclusions": {
+      "penalty_or_missing_possession": 18,
+      "unsupported_event": 12
+    },
+    "financialData": "untouched"
+  }
+}

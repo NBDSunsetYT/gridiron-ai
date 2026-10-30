@@ -1,0 +1,21 @@
+/** Build a source-only ZIP with an explicit allow-list. Never ships credentials or financial records. */
+import { readdir, mkdir, rm, readFile, writeFile } from 'node:fs/promises';
+import { resolve } from 'node:path';
+import { spawnSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
+const root = process.cwd();
+const {version}=JSON.parse(await readFile(resolve(root,'package.json'),'utf8'));
+if(!/^\d+\.\d+\.\d+/.test(version))throw new Error('A valid project version is required.');
+const archiveName=`gridiron-ai-v${version.split('.')[0]}-source.zip`;
+const output = resolve(root, 'artifacts',archiveName);
+await mkdir(resolve(root, 'artifacts'), { recursive: true });
+await rm(output,{force:true});
+const dirs = ['app', 'components', 'lib', 'public', 'migrations', 'supabase', 'deployment', 'native', 'ios', 'tests', 'scripts', 'docs', 'modeling', 'types', '.github'];
+const filenames = ['package.json', 'package-lock.json', 'tsconfig.json', 'next.config.ts', 'next.config.mjs', 'next-env.d.ts', 'middleware.ts', 'instrumentation.ts', 'capacitor.config.ts', 'vitest.config.ts', 'playwright.config.ts', 'Dockerfile', 'docker-compose.yml', '.dockerignore', '.gitignore', '.env.example', 'README.md'];
+const existing = new Set(await readdir(root));
+const included = [...dirs, ...filenames].filter(name => existing.has(name));
+const result = spawnSync('zip', ['-q', '-r', output, ...included, '-x', '*.pyc', '*/__pycache__/*', '*/.DS_Store', '*/.env', '*/.env.local', '*/.env.production', '*/node_modules/*', '*/.venv/*', '*/.temp/*', '*/.branches/*', '*/xcuserdata/*', '*/DerivedData/*', '*/.build/*', '*.p12', '*.p8', '*.key', '*.pem', '*.pfx', '*.mobileprovision', '*.db', '*.db-wal', '*.db-shm', '*.sqlite*'], { cwd: root, encoding: 'utf8' });
+if (result.status !== 0) throw new Error(result.stderr || 'zip failed; install the zip utility');
+const digest=createHash('sha256').update(await readFile(output)).digest('hex');
+await writeFile(resolve(root,'artifacts',archiveName.replace(/\.zip$/,'.sha256')),`${digest}  ${archiveName}\n`);
+console.log(output);

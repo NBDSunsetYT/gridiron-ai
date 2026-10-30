@@ -1,0 +1,12 @@
+/** Validates a disposable QA account's complete typed export. Never prints credentials or raw account data. */
+import {readFileSync,writeFileSync} from 'node:fs';
+import assert from 'node:assert/strict';
+import {decryptBackup} from '../lib/backups.ts';
+const [account]=JSON.parse(readFileSync(process.env.QA_CREDENTIALS_FILE||'/tmp/gridiron-live-qa.json','utf8')),base=process.env.BASE_URL||'http://127.0.0.1:3340';
+let cookie='';
+const post=async(path,body)=>{const r=await fetch(new URL('/api/cloud/'+path,base),{method:'POST',headers:{'Content-Type':'application/json',Origin:new URL(base).origin,...cookie?{Cookie:cookie}:{}},body:JSON.stringify(body),signal:AbortSignal.timeout(120000)});const set=r.headers.getSetCookie();if(set.length)cookie=set.map(c=>c.split(';')[0]).join('; ');const d=await r.json();assert.ok(r.ok,d.error);return d;};
+await post('auth',{action:'login',email:account.email,password:account.password});
+const password='SYNTHETIC-TYPED-EXPORT-VERIFICATION-2026',envelope=await post('ledger/backup',{password}),value=await decryptBackup(envelope,password);
+assert.ok(value.research.typedTables);assert.equal(value.research.typedTables.nfl_plays.length,149);assert.equal(value.research.typedTables.nfl_games.length,285);assert.equal(value.rawLedger.journal.length,value.ledger.transactions.length);assert.equal(value.ledger.summary.cashBalanceCents,53501);assert.ok(!Object.keys(value.research.typedTables).some(k=>['users','sessions','auth.users','auth.sessions'].includes(k)));assert.ok(!JSON.stringify(value).includes(account.password));assert.ok(!JSON.stringify(value).includes('_gridironGzipJson'),'Portable backup must contain complete decoded evidence');
+const report={status:'passed',checkedAt:new Date().toISOString(),projectRef:'qdtdjbapdipopncklsdb',environment:'Disposable SYNTHETIC QA owner; actual public NFL source records in live PostgreSQL',normalizedTables:Object.keys(value.research.typedTables).length,nflPlays:value.research.typedTables.nfl_plays.length,nflGames:value.research.typedTables.nfl_games.length,rawFinancialReconciled:true,authenticationSecretsExcluded:true,typedRestore:'Included and archived by legacy import; dedicated normalized typed restore is not yet implemented'};
+writeFileSync('docs/reports/v4-complete-cloud-backup.json',JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify({status:report.status,normalizedTables:report.normalizedTables,nflPlays:report.nflPlays,nflGames:report.nflGames}));

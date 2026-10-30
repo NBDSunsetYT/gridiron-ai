@@ -1,0 +1,11 @@
+{
+  "status": "passed",
+  "path": "authenticated Next API -> private FastAPI -> persisted user-owned fit and simulation",
+  "realHistoricalSource": "https://github.com/nflverse/nflverse-data/releases/tag/pbp",
+  "normalizedTrainingPlays": 25303,
+  "completeGames": 10000,
+  "signedModelAccepted": true,
+  "persistedResultVerified": true,
+  "liveProjection": false,
+  "environment": "local development, separate temporary test database"
+}

@@ -1,0 +1,162 @@
+"""Optional private simulation service. Run behind TLS on an internal network.
+
+uvicorn modeling.service:app --host 0.0.0.0 --port 8000 --workers 1
+"""
+import asyncio
+import hashlib
+import hmac
+import json
+import os
+import threading
+from typing import Any
+
+from fastapi import FastAPI, Header, HTTPException, Request
+
+from .fit import fit_csv
+from .simulator import simulate
+
+app = FastAPI(title="GRIDIRON empirical simulation service", docs_url=None, redoc_url=None, openapi_url=None)
+lock = threading.Lock()
+
+
+def secret():
+    token = os.environ.get("SIMULATION_SERVICE_TOKEN", "")
+    if len(token) < 32:
+        raise HTTPException(503, "Simulation service requires a server-side token of at least32 characters")
+    return token
+
+
+def authorize(authorization):
+    expected = "Bearer " + secret()
+    if not authorization or not hmac.compare_digest(authorization, expected):
+        raise HTTPException(401, "Unauthorized")
+
+
+def signature(model):
+    value={k:v for k,v in model.items() if k!='signature'}
+    if model.get('signatureVersion')=='numeric-canonical-v1':
+        # Browser JSON rewrites1.0 to1 and exponential notation. Encode every
+        # numeric leaf as binary64 hex so signed artifacts survive JSON hops.
+        def canonical(item):
+            if item is None:return ['null']
+            if isinstance(item,bool):return ['bool',item]
+            if isinstance(item,(int,float)):
+                import math
+                number=float(item)
+                if not math.isfinite(number):raise ValueError('Nonfinite artifact number')
+                if number==0:number=0.
+                return ['number',number.hex()]
+            if isinstance(item,str):return ['string',item]
+            if isinstance(item,list):return ['array',[canonical(v) for v in item]]
+            if isinstance(item,dict):return ['object',[[k,canonical(item[k])] for k in sorted(item)]]
+            raise TypeError('Unsupported model artifact value')
+        value=canonical(value)
+    payload = json.dumps(value, sort_keys=True, separators=(",", ":"), allow_nan=False)
+    return hmac.new(secret().encode(), payload.encode(), hashlib.sha256).hexdigest()
+
+
+async def body(request):
+    chunks, size = [], 0
+    async for chunk in request.stream():
+        size += len(chunk)
+        if size > 25_000_000:
+            raise HTTPException(413, "Request exceeds25MB")
+        chunks.append(chunk)
+    raw = b"".join(chunks)
+    try:
+        value = json.loads(raw)
+    except (ValueError, UnicodeDecodeError) as exc:
+        raise HTTPException(400, "Valid JSON required") from exc
+    if not isinstance(value, dict):
+        raise HTTPException(400, "JSON object required")
+    return value
+
+
+def guarded(work):
+    if not lock.acquire(blocking=False):
+        raise HTTPException(429, "Another simulation/fit is running; retry after it completes")
+    try:
+        return work()
+    except (ValueError, KeyError, TypeError, OverflowError) as exc:
+        raise HTTPException(422, str(exc)) from exc
+    finally:
+        lock.release()
+
+
+@app.get("/health")
+async def health():
+    return {"status": "ready" if len(os.environ.get("SIMULATION_SERVICE_TOKEN", "")) >= 32 else "unconfigured", "model": "pbp-empirical-2.0.0", "trainedData": False}
+
+
+@app.post("/fit")
+async def fit(request: Request, authorization: str | None = Header(default=None)):
+    authorize(authorization)
+    data = await body(request)
+    def work():
+        result = fit_csv(data["csv"], data["source"], data["asOf"], data.get("teamMinPlays", 100),data.get('options'))
+        result['model']['signatureVersion']='numeric-canonical-v1'
+        result["model"]["signature"] = signature(result["model"])
+        return result
+    return await asyncio.to_thread(guarded, work)
+
+
+@app.post("/simulate")
+async def run(request: Request, authorization: str | None = Header(default=None)):
+    authorize(authorization)
+    data = await body(request)
+    if set(data)-{'model','home','away','simulations','seed','eventStart','contracts','scenario','postseason','parameterUncertainty','representativeGames'}:
+        raise HTTPException(422,'Unsupported simulation assumptions. Weather, snap shares and arbitrary player multipliers are not silently applied.')
+    model = data.get("model", {})
+    try:
+        valid = isinstance(model, dict) and isinstance(model.get("signature"), str) and hmac.compare_digest(signature(model), model["signature"])
+    except (ValueError, TypeError, OverflowError):
+        valid = False
+    if not valid:
+        raise HTTPException(422, "Model artifact signature invalid; fit historical evidence through /fit first")
+    count = data.get("simulations", 10000)
+    if not isinstance(count, int) or not 1000 <= count <= 100000:
+        raise HTTPException(422, "simulations must be1000..100000")
+    def work():
+        return simulate(model, data["home"], data["away"], count, data.get("seed", 1), data.get("eventStart"), data.get("contracts"), data.get("scenario"), data.get("postseason", False),parameter_uncertainty=data.get('parameterUncertainty'),representative_games=data.get('representativeGames',0))
+    return await asyncio.to_thread(guarded, work)
+
+
+def verify_artifact(model):
+    try:
+        return isinstance(model,dict) and isinstance(model.get('signature'),str) and hmac.compare_digest(signature(model),model['signature'])
+    except (ValueError,TypeError,OverflowError):
+        return False
+
+
+@app.post('/models/benchmark')
+async def model_benchmark(request:Request,authorization:str|None=Header(default=None)):
+    authorize(authorization);data=await body(request)
+    def work():
+        from .advanced import benchmark
+        result=benchmark(data['csv'],data['source'],data['asOf'],tuple(data.get('holdoutSeasons',[2023,2024,2025])),data.get('firstSeason',2014))
+        result['model']['signatureVersion']='numeric-canonical-v1'
+        result['model']['signature']=signature(result['model'])
+        return result
+    return await asyncio.to_thread(guarded,work)
+
+
+@app.post('/models/predict')
+async def model_predict(request:Request,authorization:str|None=Header(default=None)):
+    authorize(authorization);data=await body(request);model=data.get('model')
+    if not verify_artifact(model):raise HTTPException(422,'Signed game-model artifact required; fit through /models/benchmark first')
+    def work():
+        from .advanced import predict
+        return predict(model,data['home'],data['away'],data['eventStart'],data.get('restDifference'),data.get('division',False))
+    return await asyncio.to_thread(guarded,work)
+
+
+@app.post('/trace')
+async def trace(request:Request,authorization:str|None=Header(default=None)):
+    authorize(authorization);data=await body(request);model=data.get('model')
+    if not verify_artifact(model):raise HTTPException(422,'Signed play-by-play artifact required')
+    count=data.get('games',1)
+    if not isinstance(count,int) or not 1<=count<=3:raise HTTPException(422,'Representative game count must be1..3')
+    def work():
+        result=simulate(model,data['home'],data['away'],count,data.get('seed',1),data['eventStart'],scenario=data.get('scenario'),postseason=data.get('postseason',False),representative_games=count)
+        return {'games':result['representativeGames'],'modelVersion':result['modelVersion'],'engineVersion':result['engineVersion'],'inputDataVersion':result['inputDataVersion'],'evidenceCutoff':result['evidenceCutoff'],'seed':result['seed'],'purpose':'Representative generated football games for inspection, not probability estimates.'}
+    return await asyncio.to_thread(guarded,work)

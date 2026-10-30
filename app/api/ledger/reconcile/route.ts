@@ -1,0 +1,6 @@
+import {randomUUID} from 'node:crypto';
+import {ApiError,errorResponse,readJsonObject,guardMutation,rateLimit,requireUser} from '@/lib/auth';
+import {getDb} from '@/lib/db';
+import {getLedger,moneyToCents,SPORTSBOOKS} from '@/lib/ledger';
+export const runtime='nodejs';export const dynamic='force-dynamic';
+export async function POST(request:Request){try{guardMutation(request);const user=await requireUser(request);rateLimit('reconcile:'+user.id,30);const body=await readJsonObject(request);if(!SPORTSBOOKS.includes(body.sportsbook))throw new ApiError('Choose a valid sportsbook.');const statementBalanceCents=moneyToCents(body.statementBalance);const account=getLedger(user.id).accounts.find(a=>a.sportsbook===body.sportsbook)!;const detail={sportsbook:body.sportsbook,statementBalanceCents,ledgerAvailableCents:account.availableBalanceCents,differenceCents:statementBalanceCents-account.availableBalanceCents,reconciled:statementBalanceCents===account.availableBalanceCents,note:typeof body.note==='string'?body.note.slice(0,2000):''};getDb().prepare('INSERT INTO audit(user_id,action,entity_id,detail,created_at) VALUES(?,?,?,?,?)').run(user.id,'reconcile',randomUUID(),JSON.stringify(detail),new Date().toISOString());return Response.json(detail);}catch(e){return errorResponse(e);}}

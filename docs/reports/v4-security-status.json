@@ -1,0 +1,28 @@
+{
+  "checkedAt": "2026-10-30",
+  "projectRef": "qdtdjbapdipopncklsdb",
+  "database": {
+    "publicTables": 47,
+    "tablesWithRowLevelSecurity": 47,
+    "source": "Live PostgreSQL pg_class/pg_namespace query",
+    "isolation": "Verified with two disposable authenticated accounts and transactional RLS tests"
+  },
+  "securityAdvisor": {
+    "sqlOrRlsFindings": 0,
+    "warnings": [
+      {
+        "name": "auth_leaked_password_protection",
+        "status": "disabled",
+        "detail": "Supabase Auth leaked-password protection is disabled in project configuration. Available database connector tools do not expose this Auth configuration change; enable it in the project dashboard when supported by the plan.",
+        "remediation": "https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection"
+      }
+    ]
+  },
+  "backupScope": {
+    "encryptedAccountExportAndDecryption": "verified",
+    "normalizedTableFamiliesIncluded": 43,
+    "providerBackupRetentionOrPitr": "not verified",
+    "completeNormalizedTableRestore": "not implemented; complete typed payload retained in imported archive"
+  },
+  "secretsIncluded": false
+}

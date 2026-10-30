@@ -1,0 +1,9 @@
+**
+!modeling
+!modeling/**
+!deployment
+!deployment/railway
+!deployment/railway/start_quant.py
+**/__pycache__
+**/*.pyc
+**/.env*

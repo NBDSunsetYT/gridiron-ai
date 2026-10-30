@@ -1,0 +1,18 @@
+import {afterEach,beforeEach,describe,expect,it,vi} from 'vitest';
+import {attestCloudResult,verifyCloudResult,verifiedCloudJob,canonicalJson} from '../lib/cloud/attestation';
+import {contractImportPlan,importUuid} from '../lib/cloud/imports';
+beforeEach(()=>vi.stubEnv('SIMULATION_SERVICE_TOKEN','SYNTHETIC-PROOF-SECRET-AT-LEAST-32-CHARACTERS'));
+afterEach(()=>vi.unstubAllEnvs());
+const ctx=(id='owner')=>({user:{id}} as any);
+describe('Cloud model provenance receipts',()=>{
+ it('survives PostgreSQL JSONB object-key reordering',()=>{const a={probability:.62,detail:{n:10000,source:'SYNTHETIC TEST'}},b={detail:{source:'SYNTHETIC TEST',n:10000},probability:.62};expect(canonicalJson(a)).toBe(canonicalJson(b));const proof=attestCloudResult(ctx(),'job',a);expect(()=>verifyCloudResult(ctx(),'job',{result:b,resultProof:proof})).not.toThrow();});
+ it('rejects a modified probability, user or job even when their data is reachable through owned RLS',()=>{const result={probability:.62},resultProof=attestCloudResult(ctx(),'job',result);expect(()=>verifyCloudResult(ctx(),'job',{result:{probability:.99},resultProof})).toThrow(/authenticated/);expect(()=>verifyCloudResult(ctx('other'),'job',{result,resultProof})).toThrow(/authenticated/);expect(()=>verifyCloudResult(ctx(),'another-job',{result,resultProof})).toThrow(/authenticated/);});
+ it('withholds generated status for imported or unproved outcomes',()=>{expect(()=>verifyCloudResult(ctx(),'job',{result:{probability:.9}})).toThrow(/no server attestation/);});
+ it('preserves an unverified stored history record while withholding its generated output from UI/AI reads',()=>{const stored={id:'job',status:'completed',result:{probability:.99}},visible=verifiedCloudJob(ctx(),stored);expect(visible.status).toBe('provenance_unverified');expect(visible.result).toBeNull();expect(stored.result.probability).toBe(.99);const resultProof=attestCloudResult(ctx(),'job',stored.result);expect(verifiedCloudJob(ctx(),{...stored,resultProof}).provenanceVerified).toBe(true);});
+ it('requires continuity of the server secret rather than treating a missing secret as a valid proof',()=>{const result={probability:.3},resultProof=attestCloudResult(ctx(),'job',result);vi.stubEnv('SIMULATION_SERVICE_TOKEN','');expect(()=>verifyCloudResult(ctx(),'job',{result,resultProof})).toThrow(/stable private simulation secret/);});
+});
+const quote=()=>({contractId:'SYNTHETIC-CONTRACT',eventId:'SYNTHETIC-EVENT',event:'SYNTHETIC TEAM A @ B',question:'SYNTHETIC total above threshold?',threshold:45.5,operator:'gt',eventStart:new Date(Date.now()+86400000).toISOString(),settlementRule:'SYNTHETIC TEST: strict total greater than 45.5',rulesUrl:'https://example.test/rules',yesAskCents:'52',noAskCents:'50',quotedAt:new Date(Date.now()-60000).toISOString(),sourceUrl:'https://example.test/quote',verified:true,entryFeeCents:'1',winFeeCents:'0',feeSource:'SYNTHETIC TEST FEE'});
+describe('Cloud verified contract import identity',()=>{
+ it('produces deterministic user-scoped identifiers and stable reviewed-row receipts',()=>{const q=quote(),a=contractImportPlan({verified:true,quotes:[q]}),b=contractImportPlan({verified:true,quotes:[{...q,id:'ignored-client-id',createdAt:'ignored-client-time'}]});expect(a.digest).toBe(b.digest);expect(importUuid('owner:'+a.digest)).toBe(importUuid('owner:'+b.digest));expect(importUuid('owner:'+a.digest)).not.toBe(importUuid('other:'+a.digest));});
+ it('refuses unconfirmed OCR/CSV candidates and conflicting thresholds within a batch',()=>{const q=quote();expect(()=>contractImportPlan({verified:false,quotes:[q]})).toThrow(/verify/);expect(()=>contractImportPlan({verified:true,quotes:[q,{...q,threshold:46.5}]})).toThrow(/batch changes/);});
+});

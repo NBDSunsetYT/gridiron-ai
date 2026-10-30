@@ -1,0 +1,48 @@
+{
+  "checkedAt": "2026-10-30T17:55:08.248238+00:00",
+  "deployment": {
+    "status": "authorization_required",
+    "provider": "Railway",
+    "providerInstalled": false,
+    "publicHttpsUrl": null,
+    "paidResourcesCreated": false,
+    "physicalIphoneInstallationTested": false
+  },
+  "supabase": {
+    "status": "ACTIVE_HEALTHY",
+    "projectRef": "qdtdjbapdipopncklsdb",
+    "rlsTables": 47,
+    "publicTables": 47,
+    "migrationsApplied": 5,
+    "qaAccountsRemaining": 0
+  },
+  "tests": {
+    "typescript": {
+      "passed": 209,
+      "files": 36
+    },
+    "standaloneBrowser": {
+      "passed": 26,
+      "seconds": 37.4
+    },
+    "deploymentNode": {
+      "passed": 5
+    },
+    "deploymentPython": {
+      "passed": 2
+    },
+    "productionBuild": "passed",
+    "actualDockerRuntime": "passed",
+    "liveCloudWorkflowChecks": 11,
+    "actualBackendRestart": "passed"
+  },
+  "externalLimitations": [
+    "Railway account authorization and account billing review",
+    "Production Supabase Auth HTTPS redirect configuration",
+    "OpenAI API key missing: no live conversational response verified",
+    "No authorized live DK Predictions or official injury feed connected",
+    "No historical cohort evidence for unsupported injury adjustments: withheld, not fabricated"
+  ],
+  "nativeWork": "postponed",
+  "credentialsIncluded": false
+}

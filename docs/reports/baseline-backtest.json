@@ -1,0 +1,60 @@
+{
+  "modelVersion": "league-total-empirical-rolling-2.0",
+  "kind": "retrospective_baseline_backtest",
+  "source": "nflverse/nfldata games.csv, https://raw.githubusercontent.com/nflverse/nfldata/master/data/games.csv, retrieved 2026-10-30; public historical scores, not a licensed exchange quote feed",
+  "datasetSha256": "a44317167bc7fd1c3c0983fc067934d6aaaa6b0e56c4a33e567984d990adf188",
+  "evaluatedAt": "2026-10-30T04:15:37.976398+00:00",
+  "threshold": 45.5,
+  "trainingSeason": 2023,
+  "holdoutSeason": 2024,
+  "n": 272,
+  "trainingGamesAtStart": 272,
+  "brier": 0.25563574061003064,
+  "brierWeekBootstrap95": [
+    0.24622088444698906,
+    0.2637220910353451
+  ],
+  "logLoss": 0.7045711258390184,
+  "accuracyAtHalf": 0.5,
+  "constantHalfBrier": 0.25,
+  "marketBenchmark": null,
+  "calibration": [
+    {
+      "from": 0.3,
+      "to": 0.4,
+      "n": 15,
+      "predicted": 0.3987327764689084,
+      "observed": 0.5333333333333333,
+      "observedWilson95": [
+        0.30116980025498397,
+        0.7519046463426261
+      ]
+    },
+    {
+      "from": 0.4,
+      "to": 0.5,
+      "n": 257,
+      "predicted": 0.42588561821505255,
+      "observed": 0.4980544747081712,
+      "observedWilson95": [
+        0.43740578511361694,
+        0.5587604685006622
+      ]
+    }
+  ],
+  "observedHitRate": 0.5,
+  "validation": "Expanding chronological window; every game predicted once; same-date outcomes excluded from training.",
+  "coverage": {
+    "firstHoldoutDate": "2024-09-05",
+    "lastHoldoutDate": "2025-01-05",
+    "weeks": 18
+  },
+  "limitations": [
+    "Fixed league-wide total threshold; no team, player, injury, weather or matchup conditioning.",
+    "Historical outcomes retrieved retrospectively; not archived prospective forecasts.",
+    "Not a backtest of the play-by-play engine or DraftKings Predictions contracts.",
+    "No authorized timestamped exchange prices: fee-aware strategy returns, CLV and market superiority are unavailable.",
+    "Calibration only covers the narrow probability range actually emitted; it cannot validate other confidence buckets.",
+    "A week-block bootstrap interval does not cover all model or dataset uncertainty."
+  ]
+}

@@ -1,0 +1,153 @@
+{
+  "status": "passed",
+  "scope": "Original SQLite data only; isolated temporary test databases and cloud QA records excluded",
+  "preReleaseBackup": "gridiron-2026-10-30T17-39-35-101Z-a6b743a5.sqlite",
+  "integrityBefore": "ok",
+  "integrityAfter": "ok",
+  "tables": [
+    {
+      "table": "users",
+      "unchanged": true,
+      "rowsBefore": 18,
+      "rowsAfter": 18
+    },
+    {
+      "table": "sessions",
+      "unchanged": true,
+      "rowsBefore": 18,
+      "rowsAfter": 18
+    },
+    {
+      "table": "journal",
+      "unchanged": true,
+      "rowsBefore": 36,
+      "rowsAfter": 36
+    },
+    {
+      "table": "postings",
+      "unchanged": true,
+      "rowsBefore": 80,
+      "rowsAfter": 80
+    },
+    {
+      "table": "bets",
+      "unchanged": true,
+      "rowsBefore": 8,
+      "rowsAfter": 8
+    },
+    {
+      "table": "audit",
+      "unchanged": true,
+      "rowsBefore": 36,
+      "rowsAfter": 36
+    },
+    {
+      "table": "settings",
+      "unchanged": true,
+      "rowsBefore": 18,
+      "rowsAfter": 18
+    },
+    {
+      "table": "markets",
+      "unchanged": true,
+      "rowsBefore": 0,
+      "rowsAfter": 0
+    },
+    {
+      "table": "rate_limits",
+      "unchanged": true,
+      "rowsBefore": 47,
+      "rowsAfter": 47
+    },
+    {
+      "table": "contract_quotes",
+      "unchanged": true,
+      "rowsBefore": 0,
+      "rowsAfter": 0
+    },
+    {
+      "table": "prediction_snapshots",
+      "unchanged": true,
+      "rowsBefore": 0,
+      "rowsAfter": 0
+    },
+    {
+      "table": "contract_settlements",
+      "unchanged": true,
+      "rowsBefore": 0,
+      "rowsAfter": 0
+    },
+    {
+      "table": "injury_history",
+      "unchanged": true,
+      "rowsBefore": 0,
+      "rowsAfter": 0
+    },
+    {
+      "table": "notification_history",
+      "unchanged": true,
+      "rowsBefore": 0,
+      "rowsAfter": 0
+    },
+    {
+      "table": "research_records",
+      "unchanged": true,
+      "rowsBefore": 0,
+      "rowsAfter": 0
+    },
+    {
+      "table": "simulation_jobs",
+      "unchanged": true,
+      "rowsBefore": 0,
+      "rowsAfter": 0
+    },
+    {
+      "table": "paper_positions",
+      "unchanged": true,
+      "rowsBefore": 0,
+      "rowsAfter": 0
+    },
+    {
+      "table": "watchlists",
+      "unchanged": true,
+      "rowsBefore": 0,
+      "rowsAfter": 0
+    },
+    {
+      "table": "reports",
+      "unchanged": true,
+      "rowsBefore": 0,
+      "rowsAfter": 0
+    },
+    {
+      "table": "warehouse_records",
+      "unchanged": true,
+      "rowsBefore": 0,
+      "rowsAfter": 0
+    },
+    {
+      "table": "conversations",
+      "unchanged": true,
+      "rowsBefore": 0,
+      "rowsAfter": 0
+    },
+    {
+      "table": "conversation_messages",
+      "unchanged": true,
+      "rowsBefore": 0,
+      "rowsAfter": 0
+    },
+    {
+      "table": "preferences",
+      "unchanged": true,
+      "rowsBefore": 0,
+      "rowsAfter": 0
+    },
+    {
+      "table": "simulation_inputs",
+      "unchanged": true,
+      "rowsBefore": 0,
+      "rowsAfter": 0
+    }
+  ]
+}

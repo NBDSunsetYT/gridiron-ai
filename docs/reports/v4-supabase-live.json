@@ -1,0 +1,112 @@
+{
+  "status": "passed",
+  "projectRef": "qdtdjbapdipopncklsdb",
+  "executedAt": "2026-10-30T16:01:47.387Z",
+  "environment": "Live Supabase Auth/PostgreSQL through local Next server; disposable SYNTHETIC QA accounts only; no emails sent",
+  "checks": [
+    {
+      "name": "anonymous financial access rejected",
+      "status": "passed"
+    },
+    {
+      "name": "real Supabase password sessions and server-only cookies",
+      "status": "passed"
+    },
+    {
+      "name": "cash movements do not change betting profit",
+      "status": "passed"
+    },
+    {
+      "name": "wager escrow, settled returned stake and duplicate settlement",
+      "status": "passed"
+    },
+    {
+      "name": "cross-book transfer atomicity and no income inflation",
+      "status": "passed"
+    },
+    {
+      "name": "insufficient funds fail without changing balances",
+      "status": "passed"
+    },
+    {
+      "name": "statement reconciliation",
+      "status": "passed"
+    },
+    {
+      "name": "atomic CSV retry is idempotent",
+      "status": "passed"
+    },
+    {
+      "name": "persistent conversations and cross-account isolation",
+      "status": "passed"
+    },
+    {
+      "name": "owner-scoped preferences",
+      "status": "passed"
+    },
+    {
+      "name": "exact binary fee valuation and manual source distinction",
+      "status": "passed"
+    },
+    {
+      "name": "atomic reviewed binary CSV idempotence",
+      "status": "passed"
+    },
+    {
+      "name": "paper positions never alter real cash",
+      "status": "passed"
+    },
+    {
+      "name": "statistical probabilities calculated from submitted evidence",
+      "status": "passed"
+    },
+    {
+      "name": "unknown generated joint outcomes are withheld",
+      "status": "passed"
+    },
+    {
+      "name": "complete encrypted financial/research export and recovery",
+      "status": "passed"
+    },
+    {
+      "name": "encrypted legacy migration balances and exact-hash idempotence",
+      "status": "passed"
+    },
+    {
+      "name": "migration refuses to overwrite a nonempty financial workspace",
+      "status": "passed"
+    },
+    {
+      "name": "untrusted or unauthenticated mutation rejected",
+      "status": "passed"
+    }
+  ],
+  "credentialsIncluded": false,
+  "restartContinuity": {
+    "status": "passed",
+    "verifiedAt": "2026-10-30T16:08:48.676Z",
+    "source": "Reauthenticated HTTP API after the caller restarted the Node application; same remote financial/conversation/preferences records"
+  },
+  "additionalChecks": [
+    {
+      "name": "timezone-aware remote financial reports",
+      "status": "passed"
+    },
+    {
+      "name": "independent auditor withholds unsupported forecast promotion",
+      "status": "passed"
+    },
+    {
+      "name": "persistent owned research pipeline and actual evidence calls",
+      "status": "passed"
+    },
+    {
+      "name": "logout revokes financial access for an old still-unexpired token",
+      "status": "passed"
+    },
+    {
+      "name": "Edge Function deletes only the confirmed owned QA Auth account and leaves the other owner intact",
+      "status": "passed"
+    }
+  ]
+}

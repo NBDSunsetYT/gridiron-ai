@@ -1,0 +1,10 @@
+{
+  "configured": false,
+  "origin": null,
+  "bundleId": "ai.gridiron.personal",
+  "pushCapability": false,
+  "apnsEnvironment": null,
+  "keychain": "approved HttpOnly cookies; device-only while unlocked",
+  "nativeCompilation": "not performed by prepare",
+  "signing": "requires macOS, Xcode, Apple team and personal device provisioning"
+}

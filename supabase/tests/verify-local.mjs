@@ -1,0 +1,50 @@
+import {PGlite} from '@electric-sql/pglite';
+import {readFileSync,readdirSync} from 'node:fs';
+const db=new PGlite();
+await db.exec(`create role anon;create role authenticated;create role service_role bypassrls;create schema auth;create table auth.users(id uuid primary key,email text);create table auth.sessions(id uuid primary key,user_id uuid references auth.users(id));create function auth.uid() returns uuid language sql stable as $$select (nullif(current_setting('request.jwt.claims',true),'')::jsonb->>'sub')::uuid$$;create function auth.jwt() returns jsonb language sql stable as $$select coalesce(nullif(current_setting('request.jwt.claims',true),'')::jsonb,'{}'::jsonb)$$;grant usage on schema auth to authenticated;grant execute on function auth.uid(),auth.jwt() to authenticated;`);
+try{for(const file of readdirSync(new URL('../migrations/',import.meta.url)).filter(name=>name.endsWith('.sql')).sort())await db.exec(readFileSync(new URL('../migrations/'+file,import.meta.url),'utf8'));console.log('MIGRATIONS COMPILED');}catch(e){console.error('COMPILE',e.message,e.where,e.position);process.exit(1);}
+const users=['10000000-0000-4000-8000-000000000001','10000000-0000-4000-8000-000000000002','10000000-0000-4000-8000-000000000003'];
+for(const id of users)await db.query('insert into auth.users(id,email) values($1,$2)',[id,id+'@example.test']);
+const owner=async id=>{await db.exec('reset role');await db.query("select set_config('request.jwt.claims',$1,false)",[JSON.stringify({sub:id})]);await db.exec('set role authenticated');};
+const rpc=async(name,payload)=>{const result=payload===undefined?await db.query(`select public.${name}() value`):await db.query(`select public.${name}($1::jsonb) value`,[JSON.stringify(payload)]);return result.rows[0].value;};
+try{
+await owner(users[0]);
+await rpc('gridiron_post_transaction',{type:'deposit',amount:'1000.00',sportsbook:'DraftKings'});
+await rpc('gridiron_post_transaction',{type:'withdrawal',amount:'150.00',sportsbook:'DraftKings'});
+const placed=await rpc('gridiron_place_bet',{sportsbook:'DraftKings',event:'SYNTHETIC QA EVENT',market:'moneyline',selection:'SYNTHETIC',odds:-110,stake:'100.00'});
+const pending=await rpc('gridiron_ledger');if(pending.summary.availableBalanceCents!==75000)throw Error('pending arithmetic '+JSON.stringify(pending.summary));
+await rpc('gridiron_settle_bet',{id:placed.id,result:'won',payout:'175.00'});
+await rpc('gridiron_post_transaction',{type:'transfer',amount:'50.00',sportsbook:'DraftKings',toSportsbook:'Hard Rock'});
+let report=await rpc('gridiron_ledger');if(report.summary.cashBalanceCents!==92500||report.summary.realizedPlCents!==7500)throw Error('settled arithmetic '+JSON.stringify(report.summary));
+await rpc('gridiron_update_settings',{timezone:'America/New_York',monthlyLimitCents:10000,theme:'light'});
+await owner(users[1]);report=await rpc('gridiron_ledger');if(report.summary.cashBalanceCents!==0)throw Error('user isolation failed');
+const visible=await db.query('select count(*)::int n from public.ledger_entries');if(visible.rows[0].n!==0)throw Error('RLS isolation failed');
+try{await db.query("insert into public.ledger_postings(user_id,entry_id,account_id,bucket,amount_cents)values($1,$1,$1,'cash',10)",[users[1]]);throw Error('direct posting allowed');}catch(e){if(!e.message.includes('permission denied'))throw e;}
+console.log('LEDGER/RLS PASSED');
+const quote={contractId:'SYNTHETIC-CONTRACT',eventId:'SYNTHETIC-EVENT',threshold:64.5,operator:'gt',eventStart:'2027-01-01T00:00:00Z',settlementRule:'SYNTHETIC exact rule'};
+await db.query('insert into public.gridiron_records(kind,data) values($1,$2::jsonb)',['contract_quotes',JSON.stringify(quote)]);
+await db.query('insert into public.gridiron_records(kind,data) values($1,$2::jsonb)',['contract_quotes',JSON.stringify({...quote,yesAskCents:'52'})]);
+try{await db.query('insert into public.gridiron_records(kind,data) values($1,$2::jsonb)',['contract_quotes',JSON.stringify({...quote,threshold:74.5})]);throw Error('contract threshold mutation accepted');}catch(e){if(!e.message.includes('cannot change'))throw e;}
+console.log('CONTRACT IDENTITY PASSED');
+await owner(users[2]);
+const ids=['20000000-0000-4000-8000-000000000001','20000000-0000-4000-8000-000000000002','20000000-0000-4000-8000-000000000003'];const bet='30000000-0000-4000-8000-000000000001';const now='2024-01-01T12:00:00Z';
+const journal=ids.map((id,i)=>({id,user_id:users[0],sportsbook:'DraftKings',type:['deposit','wager','settlement'][i],amount_cents:[50000,10000,17500][i],date:now,note:'SYNTHETIC MIGRATION TEST',reference:null,related_id:i?bet:null,reverses_id:null,created_at:now}));
+const pairs=[['cash',50000],['capital',-50000],['cash',-10000],['escrow',10000],['escrow',-10000],['cash',17500],['betting_pnl',-7500]];const postings=pairs.map(([account,amount_cents],i)=>({id:i+1,journal_id:ids[i<2?0:i<4?1:2],account,sportsbook:'DraftKings',amount_cents}));
+const savedResearch=[{id:'40000000-0000-4000-8000-000000000001',user_id:users[0],kind:'watchlist',entity_key:'SYNTHETIC-TEAM',data:JSON.stringify({selection:'SYNTHETIC-TEAM'}),created_at:now,updated_at:now},{id:'40000000-0000-4000-8000-000000000002',user_id:users[0],kind:'saved_analysis',entity_key:'SYNTHETIC-REPORT',data:{title:'SYNTHETIC SAVED RESEARCH'},created_at:now,updated_at:now}];
+const backup={version:2,rawLedger:{journal,postings,bets:[{id:bet,user_id:users[0],sportsbook:'DraftKings',event:'SYNTHETIC MIGRATION GAME',market:'test',selection:'test',odds:-110,stake_cents:10000,placed_at:now,settled_at:now,result:'won',payout_cents:17500,notes:'',prediction:JSON.stringify({probability:.6}),legs:null,created_at:now}],audit:[]},ledger:{summary:{cashBalanceCents:57500,realizedPlCents:7500}},preferences:{theme:'light'},settings:{timezone:'UTC'},research:{research_records:savedResearch}};
+const imported=await db.query('select public.gridiron_import_backup($1::jsonb,$2) value',[JSON.stringify(backup),'a'.repeat(64)]);if(!imported.rows[0].value.imported)throw Error('import false');
+report=await rpc('gridiron_ledger');if(report.summary.cashBalanceCents!==57500||report.summary.realizedPlCents!==7500)throw Error('legacy migration arithmetic');
+const again=await db.query('select public.gridiron_import_backup($1::jsonb,$2) value',[JSON.stringify(backup),'a'.repeat(64)]);if(!again.rows[0].value.duplicate)throw Error('idempotency failure');
+const restored=await db.query("select kind,entity_key,data from public.gridiron_records where kind like 'research_records/%' order by kind");
+if(restored.rows.length!==2||restored.rows[0].kind!=='research_records/saved_analysis'||restored.rows[0].data.title!=='SYNTHETIC SAVED RESEARCH'||restored.rows[1].kind!=='research_records/watchlist'||restored.rows[1].data.selection!=='SYNTHETIC-TEAM')throw Error('saved research namespaces/retrieval/idempotency failed');
+const archive=await db.query("select data=$1::jsonb preserved from public.gridiron_records where kind='legacy_backup_archive' and entity_key=$2",[JSON.stringify(backup),'a'.repeat(64)]);if(archive.rows.length!==1||!archive.rows[0].preserved)throw Error('complete source archive was changed');
+console.log('SAVED RESEARCH NAMESPACES/COMPLETE SOURCE ARCHIVE/RETRY PASSED');
+const exported=await rpc('gridiron_export_financial');if(exported.journal.length!==3||exported.postings.length!==7||exported.bets.length!==1)throw Error('complete export failure');if(exported.journal.some(row=>row.user_id!==users[2]))throw Error('export owner leak');console.log('LEGACY IMPORT/PERSISTED BALANCE/IDEMPOTENCY/COMPLETE EXPORT PASSED');
+await owner(users[1]);const invalid={version:2,rawLedger:{journal:[],postings:[],bets:[],audit:[]},ledger:{summary:{cashBalanceCents:0,realizedPlCents:0}},research:{research_records:[{...savedResearch[0],id:'40000000-0000-4000-8000-000000000003',kind:'../invalid'}]}};
+try{await db.query('select public.gridiron_import_backup($1::jsonb,$2)',[JSON.stringify(invalid),'b'.repeat(64)]);throw Error('invalid saved research namespace accepted');}catch(e){if(!e.message.includes('Invalid saved research kind'))throw e;}
+const rejectedArchive=await db.query("select count(*)::int n from public.gridiron_records where kind='legacy_backup_archive' and entity_key=$1",['b'.repeat(64)]);if(rejectedArchive.rows[0].n!==0)throw Error('invalid import partially committed its archive');console.log('INVALID SAVED RESEARCH NAMESPACE/ATOMIC ROLLBACK PASSED');
+}catch(e){console.error('RUNTIME',e.message,e.where,e.position);process.exit(2);}
+await db.exec('reset role');
+await db.exec(readFileSync(new URL('./live-rls.sql',import.meta.url),'utf8'));
+console.log('ROLLBACK LIVE-RLS FIXTURE PASSED');
+await db.close();

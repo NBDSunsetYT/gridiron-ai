@@ -1,0 +1,15 @@
+{
+  "workspaceId": "tea-dbidrq6c6qcc73a7n0u0",
+  "existingServices": 0,
+  "plannedPlan": "free",
+  "serviceCreated": false,
+  "publicUrl": null,
+  "freePlan": {
+    "cpu": 0.1,
+    "memoryMb": 512,
+    "idleSpinDownMinutes": 15,
+    "workspaceHoursPerMonth": 750
+  },
+  "pricingSource": "https://render.com/docs/free",
+  "credentialsIncluded": false
+}

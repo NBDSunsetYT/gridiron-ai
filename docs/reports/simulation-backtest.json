@@ -1,0 +1,122 @@
+{
+  "source": "https://github.com/nflverse/nflverse-data/releases/tag/pbp",
+  "datasetSha256": "4649804ee0f0a40b41e51ec75a1ce921949d7fab5459213488656b92f78560e8",
+  "modelVersion": "pbp-empirical-2.0.0",
+  "cutoff": "2023-11-30T00:00:00Z",
+  "trainThroughWeek": 12,
+  "heldoutWeek": 13,
+  "inputConversion": {
+    "normalizedPlays": 25303,
+    "excluded": {
+      "penalty_or_missing_possession": 3882,
+      "unsupported_event": 2294,
+      "unsupported_lateral": 8,
+      "unknown_or_extreme_clock_duration": 5,
+      "outside_training_window": 18173
+    },
+    "maxTrainingWeek": 12,
+    "limitations": [
+      "Penalties/laterals and unknown clock durations excluded; this selection can bias the fitted model.",
+      "No injury, roster, weather or license entitlement metadata supplied by this adapter.",
+      "time_of_day is source event time; no claim it represents publication time."
+    ]
+  },
+  "validation": "Fixed chronological cutoff, first heldout games selected before scoring; no tuning on holdout.",
+  "n": 4,
+  "brier": 0.14501322499999997,
+  "logLoss": 0.4646568826944295,
+  "scoreMAE": 9.090712499999999,
+  "games": [
+    {
+      "gameId": "2023_13_SEA_DAL",
+      "home": "DAL",
+      "away": "SEA",
+      "actualHome": 41,
+      "actualAway": 35,
+      "eventStart": "2023-12-01T01:15:51.827Z",
+      "eventStartMeaning": "Earliest actual source time_of_day for this game; not an invented scheduled kickoff",
+      "predictedHome": 28.1367,
+      "predictedAway": 18.2045,
+      "homeWinProbability": 0.7233,
+      "observedHomeWin": 1,
+      "brier": 0.07656288999999997,
+      "logLoss": 0.32393120512690193,
+      "simulations": 10000,
+      "backoffCounts": {
+        "1": 1212836,
+        "2": 211784,
+        "3": 7239
+      }
+    },
+    {
+      "gameId": "2023_13_ARI_PIT",
+      "home": "PIT",
+      "away": "ARI",
+      "actualHome": 10,
+      "actualAway": 24,
+      "eventStart": "2023-12-03T18:02:21.830Z",
+      "eventStartMeaning": "Earliest actual source time_of_day for this game; not an invented scheduled kickoff",
+      "predictedHome": 18.4929,
+      "predictedAway": 15.4113,
+      "homeWinProbability": 0.6051,
+      "observedHomeWin": 0,
+      "brier": 0.36614600999999997,
+      "logLoss": 0.9291227106895332,
+      "simulations": 10000,
+      "backoffCounts": {
+        "1": 1180438,
+        "2": 256756,
+        "3": 10196
+      }
+    },
+    {
+      "gameId": "2023_13_ATL_NYJ",
+      "home": "NYJ",
+      "away": "ATL",
+      "actualHome": 8,
+      "actualAway": 13,
+      "eventStart": "2023-12-03T18:02:52.550Z",
+      "eventStartMeaning": "Earliest actual source time_of_day for this game; not an invented scheduled kickoff",
+      "predictedHome": 15.8886,
+      "predictedAway": 21.8204,
+      "homeWinProbability": 0.2864,
+      "observedHomeWin": 0,
+      "brier": 0.08202496,
+      "logLoss": 0.33743269771633744,
+      "simulations": 10000,
+      "backoffCounts": {
+        "1": 1114400,
+        "3": 7831,
+        "2": 304971
+      }
+    },
+    {
+      "gameId": "2023_13_CAR_TB",
+      "home": "TB",
+      "away": "CAR",
+      "actualHome": 21,
+      "actualAway": 18,
+      "eventStart": "2023-12-03T21:05:20.170Z",
+      "eventStartMeaning": "Earliest actual source time_of_day for this game; not an invented scheduled kickoff",
+      "predictedHome": 18.4281,
+      "predictedAway": 11.2956,
+      "homeWinProbability": 0.7648,
+      "observedHomeWin": 1,
+      "brier": 0.055319039999999986,
+      "logLoss": 0.2681409172449455,
+      "simulations": 10000,
+      "backoffCounts": {
+        "1": 1231658,
+        "2": 172903,
+        "3": 5209
+      }
+    }
+  ],
+  "createdAt": "2026-10-30T04:22:22.594671+00:00",
+  "promotion": "NOT PROMOTED. Small preliminary mechanical/holdout audit; insufficient evidence of calibration or market advantage.",
+  "limitations": [
+    "Only a small fixed holdout slice; no bootstrap model uncertainty, market benchmark or confidence in superiority.",
+    "Historical player identities/usage are reused; no future roster, injury, weather or true home-field fit.",
+    "Team/down fallback and clock filtering can distort scores. Inspect score errors before using probabilities."
+  ]
+}

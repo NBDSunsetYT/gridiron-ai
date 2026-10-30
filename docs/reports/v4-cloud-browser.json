@@ -1,0 +1,28 @@
+{
+  "status": "passed",
+  "environment": "Actual Supabase through local Next BFF; synthetic owned QA account only",
+  "checks": [
+    {
+      "viewport": "desktop",
+      "status": "passed",
+      "checks": [
+        "real cloud UI login",
+        "HttpOnly cookies",
+        "persistent recorded balance",
+        "reload continuity",
+        "no horizontal overflow"
+      ]
+    },
+    {
+      "viewport": "iphone",
+      "status": "passed",
+      "checks": [
+        "real cloud UI login",
+        "HttpOnly cookies",
+        "persistent recorded balance",
+        "reload continuity",
+        "no horizontal overflow"
+      ]
+    }
+  ]
+}

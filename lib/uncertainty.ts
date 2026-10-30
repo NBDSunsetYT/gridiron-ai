@@ -1,0 +1,6 @@
+const interval=(value:unknown):number[]|null=>Array.isArray(value)&&value.length===2&&value.every(v=>typeof v==='number'&&Number.isFinite(v)&&v>=0&&v<=1)&&value[0]<=value[1]?value:null;
+/** Home-win parameter intervals cannot be reused for a receiving-yard contract. */
+export function contractUncertainty(result:Record<string,any>,contractId:string){
+ const contract=result.contracts?.find((c:any)=>c.id===contractId),bootstrap=result.uncertainty?.parameterBootstrap;
+ return{monteCarloSE:contract?.monteCarloSE??null,monteCarloInterval:interval(contract?.monteCarloInterval95),modelInterval:interval(bootstrap?.contracts?.[contractId]?.parameterInterval95),gameHomeWinParameterInterval:interval(result.uncertainty?.modelInterval),parameterBootstrap:bootstrap?{method:bootstrap.method,replicates:bootstrap.replicates,gamesPerReplicate:bootstrap.gamesPerReplicate,limitations:bootstrap.limitations}:null,structuralUncertainty:'Not estimated; game-block parameter uncertainty does not cover future roster, availability, source revisions or model misspecification.',method:bootstrap?'Monte Carlo error and historical-game-block parameter spread are separate; this contract uses only its own parameter interval.':'Conditional Monte Carlo precision only; no estimated total model uncertainty.'};
+}

@@ -1,0 +1,12 @@
+{
+  "status": "passed",
+  "checkedAt": "2026-10-30T16:42:00.301Z",
+  "projectRef": "qdtdjbapdipopncklsdb",
+  "environment": "Disposable SYNTHETIC QA owner; actual public NFL source records in live PostgreSQL",
+  "normalizedTables": 43,
+  "nflPlays": 149,
+  "nflGames": 285,
+  "rawFinancialReconciled": true,
+  "authenticationSecretsExcluded": true,
+  "typedRestore": "Included and archived by legacy import; dedicated normalized typed restore is not yet implemented"
+}

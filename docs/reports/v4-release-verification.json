@@ -1,0 +1,79 @@
+{
+  "version": "4.0.0",
+  "date": "2026-10-30",
+  "typescript": {
+    "status": "passed",
+    "tests": 193,
+    "files": 33,
+    "seconds": 9.17
+  },
+  "python": {
+    "status": "passed",
+    "tests": 42,
+    "seconds": 80.396,
+    "scope": "Synthetic mechanics/service regressions; real source evaluations separately reported"
+  },
+  "postgresql": {
+    "status": "passed",
+    "migrationsCompiled": 5,
+    "liveRlsRollbackFixturePassed": true
+  },
+  "playwright": {
+    "status": "passed",
+    "tests": 22,
+    "seconds": 29.9,
+    "runtime": "Production standalone Node server with Docker-equivalent runtime assets",
+    "viewports": [
+      "desktop Chromium",
+      "iPhone Chromium emulation"
+    ],
+    "physicalSafariTested": false
+  },
+  "cloudBrowser": {
+    "status": "passed",
+    "viewports": 2,
+    "source": "v4-cloud-browser.json"
+  },
+  "productionBuild": {
+    "status": "passed",
+    "framework": "Next.js 15.5.28",
+    "hostingDeployed": false
+  },
+  "completeGameModes": {
+    "status": "passed",
+    "realHistoricalPlays": 25303,
+    "counts": [
+      10000,
+      50000,
+      100000
+    ],
+    "additionalParameterBootstrapGames": 1000,
+    "reports": [
+      "v4-cloud-model-integration.json",
+      "v4-real-simulation-modes.json"
+    ],
+    "calibrationOrProfitabilityEstablished": false
+  },
+  "native": {
+    "sourcePreparationAndSync": "passed",
+    "swiftCompilation": "not run: Linux lacks Xcode/iOS SDK",
+    "signedIpa": "not produced",
+    "deviceInstallation": "not run"
+  },
+  "legacyData": {
+    "status": "unchanged",
+    "preExistingTables": 24,
+    "integrity": "ok",
+    "source": "v4-legacy-preservation.json"
+  },
+  "supabase": {
+    "publicTables": 47,
+    "rlsTables": 47,
+    "migrationsApplied": 5,
+    "liveApiChecks": 24,
+    "disposableQaAccountsRemaining": 0,
+    "productionUserDataDeleted": false,
+    "source": "v4-supabase-live.json"
+  },
+  "credentialsIncluded": false
+}

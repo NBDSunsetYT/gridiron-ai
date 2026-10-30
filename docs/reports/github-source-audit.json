@@ -1,0 +1,23 @@
+{
+  "status": "passed",
+  "checkedAt": "2026-10-30T18:22:14.755007+00:00",
+  "candidateSourceFiles": 308,
+  "configuredCredentialByteScan": "passed",
+  "runtimeDatabasesAndSigningMaterialExcluded": true,
+  "gitHub": {
+    "authenticatedAccount": "NBDSunsetYT",
+    "existingGridironRepositoryFound": false,
+    "nativeInstallations": 0,
+    "repositoryCreation": "denied by both GraphQL and REST403",
+    "localBranch": "main",
+    "remotePush": "not performed",
+    "plannedPrivateRepository": "NBDSunsetYT/gridiron-ai"
+  },
+  "ci": {
+    "yamlParsed": true,
+    "actionsPinnedToOfficialCommitShas": true,
+    "providerRedeployWorkflow": "manual/main-only/existing-services-only",
+    "executedOnGitHub": false
+  },
+  "credentialsIncluded": false
+}

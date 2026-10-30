@@ -1,0 +1,7 @@
+{
+  "name": "gridiron-railway-deployment",
+  "private": true,
+  "type": "module",
+  "scripts": {"test": "node --test test.mjs"},
+  "dependencies": {"railway": "3.16.0"}
+}
