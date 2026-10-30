@@ -10,7 +10,7 @@ The existing-project inspection returned no projects, so one project named `grid
 
 ## Build and runtime settings
 
-- Framework preset: Services; web service framework: Next.js; quant service framework: FastAPI. Both service roots reference this existing application directory. Python is pinned to 3.12 without moving the original engine.
+- Framework preset: Services; web service framework: Next.js; quant service framework: FastAPI. Both service roots reference this existing application directory. Python is pinned to 3.12 at the project and modeling roots without moving the original engine. The existing backend-routing middleware uses the supported Node runtime because Vercel Services rejects Edge middleware.
 - Install: `npm ci`; build: `npm run build`; output directory: framework default.
 - Node: supported 22.x or 24.x.
 - Use Hobby/default build resources and Fluid Compute; no turbo build, paid memory or multiple-region upgrade is requested.

@@ -1,5 +1,7 @@
 import {readFileSync} from 'node:fs';
 import {describe,it,expect} from 'vitest';
+import {NextRequest} from 'next/server';
+import {config as middlewareConfig,middleware} from '../middleware';
 
 describe('Vercel release boundaries',()=>{
  it('uses the existing Next build and Hobby-compatible maximum without paid build or memory settings',()=>{
@@ -23,5 +25,14 @@ describe('Vercel release boundaries',()=>{
   expect(config.rewrites).toEqual([{source:'/(.*)',destination:{service:'web'}}]);
   expect(readFileSync('requirements.txt','utf8')).toContain('-r modeling/requirements.txt');
   expect(readFileSync('.python-version','utf8').trim()).toBe('3.12');
+ });
+ it('uses Services-compatible Node middleware while retaining the owned cloud API rewrite and health bypass',()=>{
+  expect(middlewareConfig.runtime).toBe('nodejs');
+  const previous=process.env.GRIDIRON_CLOUD_ONLY;process.env.GRIDIRON_CLOUD_ONLY='1';
+  try{
+   const response=middleware(new NextRequest('https://gridiron.example/api/ledger'));
+   expect(response.headers.get('x-middleware-rewrite')).toBe('https://gridiron.example/api/cloud/ledger');
+   expect(middleware(new NextRequest('https://gridiron.example/api/health')).headers.get('x-middleware-rewrite')).toBeNull();
+  }finally{if(previous===undefined)delete process.env.GRIDIRON_CLOUD_ONLY;else process.env.GRIDIRON_CLOUD_ONLY=previous;}
  });
 });

@@ -9,4 +9,5 @@ export function middleware(request:NextRequest){
  }
  return NextResponse.next();
 }
-export const config={matcher:'/api/:path*'};
+// Vercel Services supports Node middleware; preserve the same backend rewrite.
+export const config={matcher:'/api/:path*',runtime:'nodejs'};
