@@ -1,0 +1,83 @@
+{
+  "status": "passed_with_explicit_unavailable_features",
+  "checkedAt": "2026-10-30T19:02:41.007Z",
+  "baseUrl": "https://gridiron-ai-gray.vercel.app",
+  "environment": "Disposable SYNTHETIC QA accounts only; actual public history separated from synthetic financial/contract/injury mechanics",
+  "checks": [
+    {
+      "name": "Anonymous financial access rejected",
+      "status": "passed"
+    },
+    {
+      "name": "Public standalone manifest and required icons reachable",
+      "status": "passed"
+    },
+    {
+      "name": "Real Supabase login and two isolated empty QA accounts",
+      "status": "passed"
+    },
+    {
+      "name": "Exact ledger arithmetic, settlement and account isolation",
+      "status": "passed"
+    },
+    {
+      "name": "Clearly synthetic manually imported binary contract, fee calculation, saved prediction and cash-separated paper position",
+      "status": "passed"
+    },
+    {
+      "name": "Uncertain availability is withheld without cohorts; confirmed synthetic designation stays distinct",
+      "status": "passed"
+    },
+    {
+      "name": "Persistent conversation and cross-owner access rejection",
+      "status": "passed"
+    },
+    {
+      "name": "Actual public NFL historical schedule loaded",
+      "status": "passed"
+    },
+    {
+      "name": "Actual historical fitted model produced 10,000 coherent complete games and a saved replay",
+      "status": "passed"
+    },
+    {
+      "name": "Unsupported player-availability adjustment is blocked instead of guessing an injury multiplier",
+      "status": "passed"
+    },
+    {
+      "name": "Fresh client sign-in reopens remote balances, predictions, conversations and supplied simulations",
+      "status": "passed"
+    }
+  ],
+  "unavailable": [
+    {
+      "feature": "Live conversational AI",
+      "reason": "Server reports unavailable credentials/service; no fabricated answer accepted."
+    }
+  ],
+  "simulationId": "2fb8997b-c863-41fc-af54-83bc9713852d",
+  "fittedModelId": "2d036ca3-9a46-4130-85ac-ef7ad4c2468c",
+  "simulationVerification": {
+    "completeGames": 10000,
+    "representativeGames": 1,
+    "homeWinProbability": 0.6912,
+    "monteCarloInterval95": [
+      0.6820730174588775,
+      0.7001801415641759
+    ],
+    "finalMonteCarloSE": 0.00461998441555813,
+    "parameterInterval95": [
+      0.51,
+      0.84
+    ],
+    "parameterBootstrapGames": 1000,
+    "evidenceGames": 22,
+    "evidencePlays": 1527,
+    "availabilityVerified": false,
+    "engineVersion": "pbp-runtime-4.0.0",
+    "modelVersion": "pbp-conditional-4.0.0",
+    "inputDataVersion": "e564be7f965af3633fc9c998229bc3689e9ec2e6d28bbe4a1afebef0297d5476"
+  },
+  "credentialsIncluded": false,
+  "physicalIphoneInstallationTested": false
+}

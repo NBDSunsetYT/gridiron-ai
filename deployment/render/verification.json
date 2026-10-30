@@ -17,12 +17,13 @@
   "deploymentStatus": "billing_verification_required",
   "publicUrl": null,
   "credentialsIncluded": false,
-  "asyncWorkerRegressionTests": 14,
+  "asyncWorkerRegressionTests": 18,
   "existingServiceRegressionTests": 6,
-  "totalComputeBoundaryTests": 20,
+  "totalComputeBoundaryTests": 24,
   "limitations": [
     "Render rejected an actual free-service creation with HTTP402: payment information required",
     "Follow-up service listing confirmed no resource was created",
     "Local container verification is not a public Render deployment"
-  ]
+  ],
+  "regressionTestEnvironment": "Current-source Python suites; local Docker checks above predate signed-input and serverless-inline additions. Actual Vercel runtime checks are recorded separately."
 }

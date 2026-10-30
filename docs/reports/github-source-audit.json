@@ -1,7 +1,7 @@
 {
   "status": "passed",
-  "checkedAt": "2026-10-30T18:56:11.430497+00:00",
-  "candidateSourceFiles": 325,
+  "checkedAt": "2026-10-30T19:14:01.586866+00:00",
+  "candidateSourceFiles": 336,
   "configuredCredentialByteScan": "passed against all Git index contents",
   "runtimeDatabasesAndSigningMaterialExcluded": true,
   "gitHub": {
@@ -21,21 +21,24 @@
     "actionsPinnedToOfficialCommitShas": true,
     "providerRedeployWorkflow": "prepared/manual/main-only/existing-services-only; required secrets not configured",
     "executedOnGitHub": true,
-    "githubRun": "https://github.com/NBDSunsetYT/gridiron-ai/actions/runs/41109225962",
+    "githubRun": "https://github.com/NBDSunsetYT/gridiron-ai/actions/runs/41111516709",
     "githubRunStatusAtCheck": "completed",
-    "githubRunConclusion": "failure",
+    "githubRunConclusion": "success",
     "initialFailure": "24/26 browser checks passed on initial commits; two iPhone checks were blocked by the Next.js dev overlay following an SVG list-key warning. Repaired the missing key; all28current browser checks now pass.",
     "vercelNativeGitIntegration": "unconfigured: the authorized Vercel git_namespaces response is empty; its GitHub App authorization is separate from ChatGPT connector access",
     "localFinalChecks": {
-      "applicationTypeScriptTests": 252,
+      "applicationTypeScriptTests": 259,
       "pythonModelingTests": 60,
       "browserTests": 28,
       "browserElapsedSeconds": 90,
       "focusedIphoneRegressionTests": 7,
       "productionNextBuild": "passed",
       "physicalIphoneInstallationTested": false,
-      "nodeWorkflowTests": 9
-    }
+      "nodeWorkflowTests": 9,
+      "applicationTypeScriptFiles": 41
+    },
+    "passingRuntimeSourceCommit": "56fa00ed196d1e9d178eb8e15811e6c90bc20d9b",
+    "largeBackupRepair": "Full259-test suite, typecheck and production Next build passed; actual hosted export retest pending deployment."
   },
   "credentialsIncluded": false,
   "dependencies": {
@@ -55,5 +58,5 @@
       "exposedProductionRuntime": false
     }
   },
-  "syntheticCredentialFixture": "One explicitly labeled sb_secret_SYNTHETIC_ADMIN rejection-test string; not a real key"
+  "syntheticCredentialFixture": "One explicitly labeled synthetic admin-key rejection-test string; not a real key"
 }

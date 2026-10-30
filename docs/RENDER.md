@@ -34,7 +34,7 @@ The two startup tests cover valid dynamic/default ports, stable-token requiremen
 
 The Render-specific Docker image built successfully and ran as UID 1001 on a dynamic port. Its actual HTTP health endpoint returned ready, anonymous compute returned 401, and the runtime contained no local environment file, user database or build CA. Source copies explicitly retain the runtime owner so restrictive source permissions do not break startup. See `deployment/render/verification.json`. These checks ran locally and do not establish a remote Render URL or deployment.
 
-The async worker has 14 additional regression tests; the combined worker and existing HTTP service suite passed 20 tests. They cover an independently generated Node/Python receipt vector, real fixture compute, RLS-scoped reads/claims, duplicate prevention, expired-token recovery, lease replacement, shutdown, safe errors and bounded gzip recovery. These fixture tests do not establish NFL calibration or a remote Render deployment.
+The current async worker has 18 regression tests; the combined worker and existing HTTP service suite passed 24 tests. Signed-input rejection and serverless request-bound execution are included. These source-level tests were rerun after the earlier local Docker checks. They cover an independently generated Node/Python receipt vector, real fixture compute, RLS-scoped reads/claims, duplicate prevention, expired-token recovery, lease replacement, shutdown, safe errors and bounded gzip recovery. These fixture tests do not establish NFL calibration or a remote Render deployment.
 
 ## Actual remote creation result
 

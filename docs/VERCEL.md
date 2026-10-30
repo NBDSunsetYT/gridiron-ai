@@ -1,12 +1,12 @@
 # Vercel frontend and API deployment
 
-The existing Next.js/React app stays intact. Vercel hosts its frontend and authenticated Node API; the existing Python/FastAPI engine can run as a private Vercel Service while Render account verification is blocked. Supabase Auth/PostgreSQL remains the durable account database. No native IPA, App Store or TestFlight release is part of this deployment.
+The existing Next.js/React app stays intact. Vercel hosts its frontend and authenticated Node API; the existing Python/FastAPI engine runs as a private Vercel Service while Render account verification is blocked. Supabase Auth/PostgreSQL remains the durable account database. No native IPA, App Store or TestFlight release is part of this deployment.
 
 ## Current verified account and scope
 
 The connected Vercel user is on the **Hobby** plan. The authorized team scope is `gridiron5`, ID `team_GWp3QPUQgohJPqe7ppe9pYmS`. Its initial HTTP 403 was resolved through Vercel's explicit team-authorization flow; a subsequent scoped project read succeeded. No different scope was used to bypass the requirement.
 
-The existing-project inspection returned no projects, so one project named `gridiron-ai` was created: `prj_ufIV2AZJcQAW7lNtQmH6hcyrWamH`. Node 22.x, Fluid Compute and a 300-second function timeout were selected without paid resource upgrades. Existing Supabase keys and the stable simulation token were transferred into encrypted server environment variables without printing values. The initial frontend deployment is READY at https://gridiron-ai-gray.vercel.app. The project now uses the Services framework preset for the next atomic web/Python deployment. Consult the final deployment report for the actual deployment ID, build status and production workflow checks.
+The existing-project inspection returned no projects, so one project named `gridiron-ai` was created: `prj_ufIV2AZJcQAW7lNtQmH6hcyrWamH`. Node 22.x, Fluid Compute and a 300-second function timeout were selected without paid resource upgrades. Existing Supabase keys and the stable simulation token were transferred into encrypted server environment variables without printing values. The atomic frontend/API/private-Python production deployment is READY at https://gridiron-ai-gray.vercel.app, deployment `dpl_KngiqGqVpG6o1iyrZ5ZQyKF5CnBp`. Native build logs verify both Next.js and Python builds; the production dependency endpoint reports Supabase and the private simulation service reachable. See `docs/reports/vercel-production-deployment.json` for the exact provider and HTTP checks. A passing health check does not establish a completed simulation or live AI response.
 
 ## Build and runtime settings
 

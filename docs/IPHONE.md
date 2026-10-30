@@ -2,8 +2,8 @@
 
 ## Use the hosted application
 
-1. Deploy GRIDIRON AI using the [deployment guide](DEPLOYMENT.md), or use the HTTPS URL provided with the delivery if one is available.
-2. Open that URL in **Safari** on your iPhone. Sign in to your account.
+1. Open [GRIDIRON AI](https://gridiron-ai-gray.vercel.app) in **Safari** on your iPhone.
+2. Sign in to your account. For a separately hosted copy, use its actual HTTPS deployment URL instead.
 3. Tap Safari's Share button, then **Add to Home Screen**. If the action is hidden, scroll down or choose Edit Actions.
 4. Keep the name GRIDIRON AI and tap **Add**.
 5. Open the new icon. The manifest uses standalone display, so the app opens without Safari's normal address bar. iOS still controls status and safe-area behavior; websites cannot force every system element away.
@@ -12,7 +12,7 @@ On supported Android browsers, use Install app or Add to Home screen. Desktop Ch
 
 ## Save the complete source ZIP to Files
 
-1. Tap the downloadable `gridiron-ai-v4-source.zip` link in the delivery.
+1. Tap the downloadable `gridiron-ai-pwa-source.zip` link in the delivery.
 2. In Safari, choose Download. If the archive opens in a preview, tap Share and **Save to Files**.
 3. Select iCloud Drive or On My iPhone and choose a folder. Tap Save.
 4. Open Files → Downloads (or your chosen folder). Tap the ZIP once to extract it.

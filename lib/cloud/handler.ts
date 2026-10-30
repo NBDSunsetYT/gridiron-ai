@@ -3,7 +3,7 @@ import {after} from 'next/server';
 import {z} from 'zod';
 import {ApiError,errorResponse,guardMutation,readJsonObject,requestOrigin} from '../auth';
 import {moneyToCents,SPORTSBOOKS} from '../ledger';
-import {encryptBackup,decryptBackup} from '../backups';
+import {encryptBackup,decryptBackup,BACKUP_EXPANDED_LIMIT} from '../backups';
 import {distribution,parlay} from '../model';
 import {TheOddsApi,providerStatuses,ProviderError,type Market} from '../providers';
 import {simulationParlay} from '../simulation-parlay';
@@ -13,8 +13,7 @@ import {cloudContracts,cloudSaveQuote,cloudSavePrediction,cloudSettleContract,cl
 import {cloudRunSimulation,cloudSimulationHistory,cloudJobHistory,cloudProcessJobs} from './simulations';
 import {verifyCloudResult,verifiedCloudJob} from './attestation';
 import {cloudImportContracts} from './imports';
-import {exportOwnedTables,OWNED_TYPED_EXPORT_TABLES} from './export';
-import {decodeCloudData} from './codec';
+import {exportOwnedTables,OWNED_TYPED_EXPORT_TABLES,portableCloudRecord} from './export';
 import {cloudJson} from './transport';
 import {probeAiProvider} from '../ai-provider';
 
@@ -59,10 +58,10 @@ async function exportCloud(ctx:CloudContext,password:string){
  const exported=await exportOwnedTables(ctx,['gridiron_records','conversations','conversation_messages',...OWNED_TYPED_EXPORT_TABLES]);
  const research:Record<string,any>={typedTables:Object.fromEntries(OWNED_TYPED_EXPORT_TABLES.map(table=>[table,exported[table]]))};
  let expandedBytes=Buffer.byteLength(JSON.stringify(research),'utf8');
- for(const stored of exported.gridiron_records){const row:Record<string,any>={...stored,data:decodeCloudData(stored.data)};let kind=row.kind,value:any={...row};if(kind.startsWith('research_records/')){kind='research_records';value.kind=row.kind.slice('research_records/'.length);value.data=row.data?._recordFormat==='saved-research-v1'?row.data.value:row.data;}else if(kind==='simulation_jobs'){value={...row,...row.data,data:row.data.data,result:row.data.result,status:row.data.status,kind:row.data.kind};}else if(kind==='simulation_inputs'){value={...row,job_id:row.data.jobId,data:row.data.input};}expandedBytes+=Buffer.byteLength(JSON.stringify(value),'utf8');if(expandedBytes>60_000_000)throw new ApiError('The complete expanded account export exceeds the interactive 60 MB recovery bound. No partial backup was returned; use a consistent project backup.',413);(research[kind]??=[]).push(value);}
+ for(const stored of exported.gridiron_records){const {kind,value}=portableCloudRecord(stored);expandedBytes+=Buffer.byteLength(JSON.stringify(value),'utf8');if(expandedBytes>BACKUP_EXPANDED_LIMIT)throw new ApiError('The complete expanded account export exceeds the interactive 160 MB recovery bound. No partial backup was returned; use a consistent project backup.',413);(research[kind]??=[]).push(value);}
  research.conversations=exported.conversations;research.conversation_messages=exported.conversation_messages;
  const backup={version:2,backend:'supabase',createdAt:new Date().toISOString(),email:user.email,ledger,rawLedger,settings,preferences:prefs,research,limitations:['Raw financial data is reconciled and all owned typed tables are included. Typed warehouse/model restoration is archived in the imported source payload until a dedicated typed restore operation is implemented. Consistent full PostgreSQL recovery still requires project backups. Authentication secrets are excluded.']};
- if(Buffer.byteLength(JSON.stringify(backup),'utf8')>60_000_000)throw new ApiError('The complete expanded account export exceeds the interactive 60 MB recovery bound. No partial backup was returned; use a consistent project backup.',413);
+ if(Buffer.byteLength(JSON.stringify(backup),'utf8')>BACKUP_EXPANDED_LIMIT)throw new ApiError('The complete expanded account export exceeds the interactive 160 MB recovery bound. No partial backup was returned; use a consistent project backup.',413);
  return encryptBackup(backup,password);
 }
 

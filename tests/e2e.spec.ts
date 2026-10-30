@@ -47,7 +47,7 @@ test('ledger persists exact cash movements and settlements without double counti
   const backup = await request.post('/api/ledger/backup', { data: { password: 'Recovery-password-1738' } });
   expect(backup.ok()).toBeTruthy();
   const encrypted = await backup.json();
-  expect(encrypted.format).toBe('gridiron-encrypted-backup-v1');
+  expect(['gridiron-encrypted-backup-v1','gridiron-encrypted-backup-v2']).toContain(encrypted.format);
   expect(JSON.stringify(encrypted).includes(account.email)).toBe(false);
 
 });

@@ -43,5 +43,16 @@
     "PITR": "not_configured_or_verified",
     "applicationEncryptedExport": "implemented; separate workflow verifies export and recovery",
     "documentation": "https://supabase.com/docs/guides/platform/backups"
+  },
+  "publicAuthSettings": {
+    "verifiedAt": "2026-10-30T19:04:46.182453+00:00",
+    "httpStatus": 200,
+    "emailProviderEnabled": true,
+    "signupDisabled": false,
+    "emailAutoConfirm": false,
+    "siteUrl": "not exposed by available authorized tooling",
+    "redirectAllowlist": "not exposed by available authorized tooling",
+    "emailDeliveryTested": false,
+    "confirmationSettingsModified": false
   }
 }

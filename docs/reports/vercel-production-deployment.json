@@ -1,0 +1,146 @@
+{
+  "checkedAt": "2026-10-30T19:02:02.723168+00:00",
+  "provider": "Vercel",
+  "plan": "hobby",
+  "teamId": "team_GWp3QPUQgohJPqe7ppe9pYmS",
+  "projectId": "prj_ufIV2AZJcQAW7lNtQmH6hcyrWamH",
+  "projectName": "gridiron-ai",
+  "framework": "services",
+  "deploymentId": "dpl_KngiqGqVpG6o1iyrZ5ZQyKF5CnBp",
+  "state": "READY",
+  "target": "production",
+  "url": "https://gridiron-ai-gray.vercel.app",
+  "uniqueUrl": "https://gridiron-qeptvvzro-gridiron5.vercel.app",
+  "aliases": [
+    "gridiron-ai-gray.vercel.app",
+    "gridiron-ai-gridiron5.vercel.app"
+  ],
+  "previousReadyDeploymentId": "dpl_FfZKZoWQd9LVE4WKPXFqPx5WBKuP",
+  "sourceCheckpoint": "56fa00ed196d1e9d178eb8e15811e6c90bc20d9b",
+  "sourceUpload": "Frozen 135-file source snapshot, then config/middleware compatibility fixes and modeling/.python-version; no database/env/signing files. Native SHA1 references verified uploads.",
+  "services": {
+    "web": "Next.js 15.5.28, Node 22.x, 300s Hobby maximum; Node middleware preserves existing backend rewrite",
+    "quant": "Existing FastAPI engine, Python 3.12 confirmed in native build logs; no public ingress rewrite",
+    "binding": {
+      "caller": "web",
+      "target": "quant",
+      "environmentVariable": "SIMULATION_SERVICE_URL",
+      "private": true,
+      "manuallyConfiguredUrl": false
+    },
+    "requestLifetime": "Next after() retains request while private Python computes inline and persists proof-bound results",
+    "threads": 1
+  },
+  "buildVerification": {
+    "nextBuild": "passed",
+    "pythonDependencies": "installed",
+    "pythonBytecode": "compiled",
+    "pythonBundle": "optimized",
+    "providerDeployment": "completed",
+    "resolvedFailures": [
+      {
+        "deploymentId": "dpl_4DPY512A6sCQXzjjVT5ip2ieDR1k",
+        "error": "INVALID_RUNTIME for optional python3.12 runtime",
+        "fix": "Use FastAPI detection and supported .python-version 3.12 files"
+      },
+      {
+        "deploymentId": "dpl_CGdsdcJyVezFQcba1oQFdbR6QxAv",
+        "error": "Services rejects Edge middleware",
+        "fix": "Use supported Next 15.5 Node middleware, retaining cloud rewrite and health bypass; four focused tests and typecheck passed"
+      }
+    ]
+  },
+  "httpChecks": [
+    {
+      "path": "/",
+      "status": 200,
+      "type": "text/html"
+    },
+    {
+      "path": "/manifest.webmanifest",
+      "status": 200,
+      "type": "application/manifest+json"
+    },
+    {
+      "path": "/icon-192.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "path": "/apple-touch-icon.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "path": "/api/health",
+      "status": 200,
+      "backend": "supabase",
+      "cloudOnly": true,
+      "configuration": {
+        "supabase": true,
+        "simulations": true,
+        "assistant": false
+      }
+    },
+    {
+      "path": "/api/health?check=dependencies",
+      "status": 200,
+      "state": "ready",
+      "checks": {
+        "supabase": "reachable",
+        "simulations": "reachable"
+      }
+    },
+    {
+      "path": "/api/ledger",
+      "status": 401,
+      "body": "Sign in to access your private Supabase records."
+    },
+    {
+      "path": "/health",
+      "status": 404,
+      "reason": "Private Python service not publicly rewritten"
+    },
+    {
+      "path": "/jobs",
+      "status": 404,
+      "reason": "Private Python service not publicly rewritten"
+    }
+  ],
+  "render": {
+    "status": "blocked",
+    "httpStatus": 402,
+    "reason": "Payment information required even for attempted free web service",
+    "billingUrl": "https://dashboard.render.com/billing",
+    "serviceCreated": false,
+    "paidResourcesCreated": false
+  },
+  "gitDeployment": {
+    "sourcePublished": true,
+    "repository": "https://github.com/NBDSunsetYT/gridiron-ai",
+    "nativeGitLinked": false,
+    "reason": "Vercel Git namespace discovery returned []; ChatGPT GitHub connector authorization is separate. Secure manual source deployment used.",
+    "workflow": "Prepared but provider CI secrets/Git app authorization not verified."
+  },
+  "secrets": {
+    "configuration": "Encrypted server-side project variables; original stable simulation token retained",
+    "serviceRoleKeyExposed": false,
+    "configuredSecretBytesScan": "passed",
+    "aiGenerationEnabled": false
+  },
+  "limitations": [
+    "Reachability is not an end-to-end simulation, database write, calibration, live data feed, or AI-generation test; consult separate production QA report.",
+    "OpenAI API key absent; live AI generation unavailable. Gateway paid traffic remains disabled.",
+    "Render dedicated workers and scheduled data ingestion not deployed due account HTTP402.",
+    "Services is Beta; Hobby limits remain 300seconds and 4.5 MB public non-streamed bodies.",
+    "Supabase confirmation email SiteURL/redirect allowlist and physical Safari/Home Screen installation not verified."
+  ],
+  "physicalIphoneTestPerformed": false,
+  "sourceFiles": 136,
+  "sourceManifestSha256": "c338c91b69af60ded017755fd1f9c000e21ae1678046184b41d4a0d781b099f7",
+  "runtimeErrorsReview": {
+    "result": "No runtime errors found",
+    "window": "10minutes immediately after deployment",
+    "note": "This predates complete production workflow QA."
+  }
+}

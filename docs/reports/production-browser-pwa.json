@@ -1,0 +1,54 @@
+{
+  "status": "passed",
+  "checkedAt": "2026-10-30T19:05:13.729Z",
+  "baseUrl": "https://gridiron-ai-gray.vercel.app",
+  "checks": [
+    {
+      "profile": "desktop-chromium",
+      "name": "Public HTTPS app, real PNG icons, standalone metadata, safe areas and responsive navigation",
+      "status": "passed"
+    },
+    {
+      "profile": "desktop-chromium",
+      "name": "Actual Supabase sign-in, secure server cookies and persistent QA ledger readback",
+      "status": "passed"
+    },
+    {
+      "profile": "desktop-chromium",
+      "name": "Fresh browser session reopens exact QA finances and attested 10,000-game distributions",
+      "status": "passed"
+    },
+    {
+      "profile": "desktop-chromium",
+      "name": "Actual offline shell with no private API or authenticated HTML cached",
+      "status": "passed"
+    },
+    {
+      "profile": "iphone-chromium",
+      "name": "Public HTTPS app, real PNG icons, standalone metadata, safe areas and responsive navigation",
+      "status": "passed"
+    },
+    {
+      "profile": "iphone-chromium",
+      "name": "Actual Supabase sign-in, secure server cookies and persistent QA ledger readback",
+      "status": "passed"
+    },
+    {
+      "profile": "iphone-chromium",
+      "name": "Fresh browser session reopens exact QA finances and attested 10,000-game distributions",
+      "status": "passed"
+    },
+    {
+      "profile": "iphone-chromium",
+      "name": "Actual offline shell with no private API or authenticated HTML cached",
+      "status": "passed"
+    }
+  ],
+  "accountScope": "Existing disposable SYNTHETIC QA owner only",
+  "financialWrites": false,
+  "accountsCreated": false,
+  "simulationComputedByThisScript": false,
+  "credentialsIncluded": false,
+  "physicalIphoneInstallationTested": false,
+  "browserBoundary": "Desktop Chromium and iPhone13 Chromium emulation; Safari/Home Screen installation requires an actual iPhone."
+}

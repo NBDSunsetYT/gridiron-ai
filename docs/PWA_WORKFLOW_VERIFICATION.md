@@ -90,6 +90,47 @@ errors, authentication failures, deadlines, synchronous compatibility and quoted
 CSV fields. They use clearly synthetic transport fixtures and do not establish
 that any hosted service has completed a real NFL run.
 
+The 10,000-game run also requests a separate whole-historical-game Bayesian
+bootstrap with ten replicates of 100 complete games. Those 1,000 additional
+games estimate a parameter-uncertainty interval separately from the base run's
+Monte Carlo interval. This small bootstrap remains noisy and does not measure
+all structural uncertainty. `QA_PARAMETER_BOOTSTRAP=0` explicitly omits it when
+necessary; an omitted parameter interval must remain `null`.
+
+After that report passes, run the larger modes sequentially using the same
+private credentials and origin:
+
+```sh
+node scripts/smoke-simulation-modes.mjs
+```
+
+This second script reuses the existing owned fitted-model ID from the report;
+it does not refit or mutate financial records. It runs 50,000 and 100,000
+complete games, verifies score and joint-outcome counts, shared-play player
+statistics, NFL-style scoring transitions, convergence diagnostics and
+reproducible representative games. If the original run includes the parameter
+bootstrap, its separate result must be identical across base run sizes. A fresh
+session must reopen both results with verified receipts, another owner must
+receive 404, and the financial summary must remain unchanged. Its actual status
+is recorded at `docs/reports/pwa-production-simulation-modes.json`.
+
+For a deployment-continuity check, retain these same disposable users and
+records. After the hosting provider confirms a distinct deployment is READY at
+the stable origin, set `QA_PREVIOUS_DEPLOYMENT_ID` and
+`QA_CURRENT_DEPLOYMENT_ID` to those verified IDs and run:
+
+```sh
+node scripts/verify-pwa-persistence.mjs
+```
+
+This script signs in with a fresh session and reads the original ledger,
+settlement, manual prediction, paper position, conversation, fitted artifact and
+all three saved simulation sizes. It verifies signed simulation receipts and
+cross-owner denial after redeployment. It performs no record mutations and
+writes its actual result to
+`docs/reports/pwa-production-redeploy-persistence.json`. Do not rerun the original
+financial smoke script into the now-populated account.
+
 All financial, contract and injury mechanics fixtures are visibly **SYNTHETIC** in
 the disposable account. Their prices and results are not actual DraftKings quotes
 or real player injury news. Real historical NFL source imports and simulation

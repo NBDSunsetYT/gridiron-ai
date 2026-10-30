@@ -1,0 +1,72 @@
+{
+  "status": "passed",
+  "startedAt": "2026-10-30T19:02:43.691Z",
+  "baseUrl": "https://gridiron-ai-gray.vercel.app",
+  "fittedModelId": "2d036ca3-9a46-4130-85ac-ef7ad4c2468c",
+  "existingTenThousandSimulationId": "2fb8997b-c863-41fc-af54-83bc9713852d",
+  "source": "Actual normalized historical NFL play-by-play from the prerequisite fitted model; not live projections or fabricated injury evidence.",
+  "runs": [
+    {
+      "id": "29e061bf-1954-4869-bc20-63e20daa3bfa",
+      "status": "passed",
+      "elapsedMilliseconds": 90276,
+      "completeGames": 50000,
+      "representativeGames": 1,
+      "homeWinProbability": 0.69782,
+      "monteCarloInterval95": [
+        0.693779912346261,
+        0.7018296932935563
+      ],
+      "finalMonteCarloSE": 0.002053617528168281,
+      "parameterInterval95": [
+        0.51,
+        0.84
+      ],
+      "parameterBootstrapGames": 1000,
+      "evidenceGames": 22,
+      "evidencePlays": 1527,
+      "availabilityVerified": false,
+      "engineVersion": "pbp-runtime-4.0.0",
+      "modelVersion": "pbp-conditional-4.0.0",
+      "inputDataVersion": "e564be7f965af3633fc9c998229bc3689e9ec2e6d28bbe4a1afebef0297d5476",
+      "independentParameterUncertaintyUnchanged": true
+    },
+    {
+      "id": "3f9e617b-a702-449a-8ec9-dbb60a5e46f4",
+      "status": "passed",
+      "elapsedMilliseconds": 166211,
+      "completeGames": 100000,
+      "representativeGames": 1,
+      "homeWinProbability": 0.69829,
+      "monteCarloInterval95": [
+        0.6954375677965505,
+        0.7011271983312612
+      ],
+      "finalMonteCarloSE": 0.0014514857074735528,
+      "parameterInterval95": [
+        0.51,
+        0.84
+      ],
+      "parameterBootstrapGames": 1000,
+      "evidenceGames": 22,
+      "evidencePlays": 1527,
+      "availabilityVerified": false,
+      "engineVersion": "pbp-runtime-4.0.0",
+      "modelVersion": "pbp-conditional-4.0.0",
+      "inputDataVersion": "e564be7f965af3633fc9c998229bc3689e9ec2e6d28bbe4a1afebef0297d5476",
+      "independentParameterUncertaintyUnchanged": true
+    }
+  ],
+  "financialWrites": false,
+  "credentialsIncluded": false,
+  "physicalIphoneInstallationTested": false,
+  "finishedAt": "2026-10-30T19:07:06.257Z",
+  "freshSessionReadback": true,
+  "crossOwnerAccessRejected": true,
+  "financialSummaryUnchanged": true,
+  "limitations": [
+    "Complete-game mechanics, reproducibility and persistence checks do not establish forecast calibration or market superiority.",
+    "Current historical input lacks verified availability labels; injury-adjusted projections remain withheld without evidence.",
+    "The parameter bootstrap is a separate uncertainty estimate, with finite inner simulation noise; structural uncertainty remains unestimated."
+  ]
+}
