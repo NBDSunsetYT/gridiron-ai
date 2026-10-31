@@ -85,6 +85,10 @@ describe('Automatic guest complete-game research',()=>{
   vi.setSystemTime(new Date('2026-10-30T22:00:00Z'));s.context.updatedAt=new Date().toISOString();s.cache.set('detail:'+s.sourceGame.id,{data:s.context,expires_at:'2026-10-31T00:00:00Z'});
   const dashboard=await publicDashboard();expect(dashboard.games[0].analysis!.id).toBe(valid.id);expect(dashboard.games[0].analysis!.stale).toBe(false);expect(dashboard.games[0].analysis!.status).toBe('completed');expect(s.jobs).toHaveLength(2);
  });
+ it('loads only the visible games current input hashes rather than decompressing a hundred historical models for Home',async()=>{
+  const storage=await import('../lib/public-nfl/store');vi.mocked(storage.latestJobs).mockClear();s.context.updatedAt=new Date().toISOString();s.cache.set('detail:'+s.sourceGame.id,{data:s.context,expires_at:'2026-10-31T00:00:00Z'});
+  await publicDashboard();expect(storage.latestJobs).toHaveBeenCalledExactlyOnceWith(100,[evidenceHash(s.sourceGame,s.context)]);
+ });
  it('rechecks a legacy failed context after60seconds even if it was incorrectly cached for10minutes',async()=>{
   const old={...structuredClone(s.context),inputVerified:undefined,injuries:{...s.context.injuries,status:'unavailable',items:[]},statisticsSources:s.context.statisticsSources.map((source:any)=>({...source,status:'unavailable'})),updatedAt:'2026-10-30T19:58:00Z'};
   s.cache.set('detail:'+s.sourceGame.id,{data:old,updated_at:'2026-10-30T19:58:00Z',expires_at:'2026-10-30T20:08:00Z'});

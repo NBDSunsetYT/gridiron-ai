@@ -127,6 +127,20 @@ describe('Automatic persistent player-prop research state machine',()=>{
   lab.getPropPerformance.mockImplementation(async()=>{vi.setSystemTime(new Date(Date.parse(now)+121000));return{status:'pending',overall:null};});
   const page=await propDashboard();expect(page.results.every(value=>value.currentContract!.verification.current===false&&value.stale&&value.currentValuation?.netValueCents===null)).toBe(true);expect(page.results[0].contract.observedAt).toBe(row.contract.observedAt);expect(page.results[0].probability.raw).toBe(row.probability.raw);
  });
+ it('queries only verified current model hashes instead of decompressing one hundred historical game results per screen',async()=>{
+  await completedRun();const row=[...s.snapshots.values()][0],hash='SYNTHETIC-VERIFIED-INPUT';publicStorage.latestJobs.mockClear();
+  storage.cachedGameStates.mockResolvedValue(new Map([[row.game.id,{pipeline:'public-nfl-6.0.0',verified:'true',updated_at:now,input_hash:hash}]]));
+  publicStorage.latestJobs.mockImplementation(async(_limit:number,hashes?:string[])=>{if(!hashes)throw Error('Unbounded historical result hydration is forbidden in the interactive path.');return[{id:row.simulationId,game_id:row.game.id,input_hash:hash,status:'completed'}];});
+  const page=await propDashboard();expect(page.results[0].modelInputsCurrent).toBe(true);expect(publicStorage.latestJobs).toHaveBeenCalledExactlyOnceWith(100,[hash]);
+ });
+ it('does not repeatedly create automatic scans after storage capacity has paused public ingestion',async()=>{
+  await completedRun();s.run.status='failed';s.run.error='New public research is paused to preserve personal-record storage. Saved research and Wallet remain available; storage capacity needs an operator review.';
+  vi.setSystemTime(new Date(Date.parse(now)+200000));const count=s.counter;s.after=[];await propDashboard({provider:'Kalshi'});expect(s.after).toHaveLength(0);expect(s.counter).toBe(count);
+ });
+ it('keeps older saved research visible when a later capacity-blocked run produced no new rows',async()=>{
+  const original=await completedRun(),rows=s.runRows.get(original.id);s.run={...structuredClone(s.run),id:'SYNTHETIC-CAPACITY-RUN',status:'failed',error:'Public research storage capacity needs an operator review.',data:{...s.run.data,previousRunId:original.id}};
+  const page=await propDashboard();expect(page.runId).toBe(s.run.id);expect(page.resultSetId).toBe(original.id);expect(page.totalResults).toBe(rows!.size);expect(page.status).toBe('failed');
+ });
  it('can compare a newly verified quote with the same current model without rewriting the old expired capture',async()=>{
   await completedRun();const row=structuredClone([...s.snapshots.values()][0]);row.stale=true;row.status='stale';const original=structuredClone(row),current={...row.contract,yesAskCents:'63',observedAt:new Date().toISOString()};const fresh=hydrateCurrent(row,current);expect(fresh.stale).toBe(false);expect(fresh.status).toBe('conditional');expect(fresh.probability.raw).toBe(original.probability.raw);expect(row).toEqual(original);expect(fresh.contract.yesAskCents).toBe(original.contract.yesAskCents);expect(fresh.currentContract!.yesAskCents).toBe('63');
  });

@@ -20,6 +20,8 @@ jobs:
     env:
       BASE_URL: https://gridiron-ai-gray.vercel.app
       QA_SIMULATION_DEADLINE_MS: '1200000'
+      # Inspect real saved partial rows without passing the full scanner gate.
+      QA_ALLOW_PARTIAL_RESEARCH: '1'
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
@@ -41,15 +43,19 @@ jobs:
       - run: npm ci
       - run: npx playwright install --with-deps chromium webkit
       - name: Verify the actual public backend and saved research
+        id: research
+        continue-on-error: true
         env:
           QA_REPORT_PATH: docs/reports/v7-production-public-workflow.json
         run: node tests/production-v7-public-workflow.mjs
       - name: Verify desktop and iPhone-sized Chromium against production
+        if: always()
         env:
           QA_BROWSER: chromium
           QA_REPORT_PATH: docs/reports/v7-production-public-chromium-browser.json
         run: node tests/production-v7-public-browser.mjs
       - name: Verify desktop and iPhone-sized WebKit against production
+        if: always()
         env:
           QA_BROWSER: webkit
           QA_REPORT_PATH: docs/reports/v7-production-public-webkit-browser.json
@@ -62,6 +68,14 @@ jobs:
             for (const file of ["docs/reports/v7-production-public-workflow.json","docs/reports/v7-production-public-chromium-browser.json","docs/reports/v7-production-public-webkit-browser.json"]) {
               if (existsSync(file)) console.log("GRIDIRON_PUBLIC_REPORT "+JSON.stringify({file,report:JSON.parse(readFileSync(file,"utf8"))}));
             }
+          '
+      - name: Require full-slate scanner acceptance
+        if: always()
+        run: |
+          node --input-type=module -e '
+            import {readFileSync} from "node:fs";
+            const report=JSON.parse(readFileSync("docs/reports/v7-production-public-workflow.json","utf8"));
+            if (report.status !== "passed" || report.fullScannerAcceptancePassed !== true) throw new Error("Full scanner acceptance remains blocked. Scoped saved-data browser checks do not convert partial research into a passed full scan.");
           '
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
