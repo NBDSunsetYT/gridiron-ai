@@ -1,0 +1,19 @@
+{
+  "scope": "Read-only cache preflight; no simulation POST",
+  "checkedAt": "2026-10-31T19:23:57.294Z",
+  "status": "passed",
+  "accountsCreated": false,
+  "financialWrites": false,
+  "simulationsStarted": 0,
+  "httpStatus": 200,
+  "analysisId": "0d4e4cb5-3ff6-4486-b691-e6d93b869ba7",
+  "gameId": "cfb:espn:401856743",
+  "simulations": 10000,
+  "verificationOrigin": {
+    "runId": 41233955566,
+    "jobId": 124633692446,
+    "sourceCommit": "adee573c5003c3c51d802ed63b96814d575477c2",
+    "runUrl": "https://github.com/NBDSunsetYT/gridiron-ai/actions/runs/41233955566",
+    "method": "Exact sanitized JSON emitted by completed actual GitHub runner job; no response mocking or new simulations."
+  }
+}

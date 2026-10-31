@@ -1,0 +1,33 @@
+{
+  "status": "failed",
+  "startedAt": "2026-10-31T19:24:05.264Z",
+  "baseUrl": "https://gridiron-ai-gray.vercel.app",
+  "mockedResponses": false,
+  "accountsCreated": false,
+  "financialWrites": false,
+  "physicalIphoneInstallationTested": false,
+  "fullAcceptancePassed": false,
+  "timeZone": "America/New_York",
+  "checks": [
+    {
+      "profile": "desktop-chromium",
+      "name": "The real guest opens NFL games and the NFL/CFB switch without a provider login",
+      "status": "passed"
+    },
+    {
+      "profile": "desktop-chromium",
+      "name": "The NFL player-props action invokes the distinct sportsbook-reference workflow and preserves its real access limitation",
+      "status": "passed"
+    }
+  ],
+  "error": "The production navigation must reach application HTTP200 before UI assertions.\n\nundefined !== 200\n",
+  "failureScreenshot": "artifacts/v8-production-browser-failure.png",
+  "finishedAt": "2026-10-31T19:24:08.849Z",
+  "verificationOrigin": {
+    "runId": 41233955566,
+    "jobId": 124633692446,
+    "sourceCommit": "adee573c5003c3c51d802ed63b96814d575477c2",
+    "runUrl": "https://github.com/NBDSunsetYT/gridiron-ai/actions/runs/41233955566",
+    "method": "Exact sanitized JSON emitted by completed actual GitHub runner job; no response mocking or new simulations."
+  }
+}

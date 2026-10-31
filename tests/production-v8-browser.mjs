@@ -11,7 +11,7 @@ const proxyRaw=process.env.HTTPS_PROXY||process.env.HTTP_PROXY,proxyUrl=proxyRaw
 const report={status:'running',startedAt:new Date().toISOString(),baseUrl:base.origin,mockedResponses:false,accountsCreated:false,financialWrites:false,physicalIphoneInstallationTested:false,fullAcceptancePassed:false,timeZone:process.env.QA_TIMEZONE||'America/New_York',checks:[]};
 const profiles=[['desktop-chromium',chromium,devices['Desktop Chrome']],['iphone-chromium',chromium,devices['iPhone 13']],['iphone-webkit',webkit,devices['iPhone 13']]];
 let browser,lastPage;
-async function navigate(page,url,options){const response=await page.goto(url,options);assert.equal(response?.status(),200,'The production navigation must reach application HTTP200 before UI assertions.');}
+async function navigate(page,url,options){const before=new URL(page.url()),target=new URL(url),response=await page.goto(url,options);if(response){assert.equal(response.status(),200,'A full production navigation must reach application HTTP200 before UI assertions.');return;}const reached=new URL(page.url());assert.ok(before.origin===target.origin&&before.pathname===target.pathname&&before.search===target.search&&reached.href===target.href,'A response-free navigation must remain in the same verified document at the requested SPA route.');}
 async function mark(profile,name,work){await work();report.checks.push({profile,name,status:'passed'});console.log(JSON.stringify({profile,name,status:'passed'}));}
 try{
  for(const[profile,type,device]of profiles){
