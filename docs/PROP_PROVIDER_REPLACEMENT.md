@@ -1,3 +1,5 @@
+> Historical staging report. Superseded by the live [9.0 integration](PROPLINE_V9.md). Original evidence below is preserved.
+
 # PropLine replacement — staged, not deployed
 
 Production remains version8.0.0. This feature branch prepares PropLine as the primary NFL/CFB sportsbook-prop source. It must not be merged/deployed as a verified working feed until an operator-owned key produces successful real boards on Render. No database migrations, user-data edits, production environment changes or purchases were made.

@@ -1,6 +1,6 @@
 {
   "checkedAt": "2026-10-31T22:15:17.565399+00:00",
-  "status": "live_provider_access_verified_frontend_deployment_pending",
+  "status": "production_ready_scoped",
   "provider": "PropLine",
   "renderServiceId": "srv-dbj680s9v7es7397nv2g",
   "renderUrl": "https://gridiron-propline-gateway.onrender.com",
@@ -70,5 +70,105 @@
       "identityCrosswalkStatus": "verified",
       "checkedAt": "2026-10-31T22:03:31.667209Z"
     }
-  ]
+  ],
+  "productionUrl": "https://gridiron-ai-gray.vercel.app",
+  "vercelDeployment": "dpl_GbNac3RttxQMZBQuRefqGp2ScBfL",
+  "latestInventory": [
+    {
+      "sport": "NFL",
+      "total": 14155,
+      "books": {
+        "draftkings": 1483,
+        "fanduel": 1210,
+        "betmgm": 1142,
+        "hardrock": 10320
+      },
+      "markets": {
+        "player_pass_yds": 1562,
+        "player_pass_tds": 350,
+        "player_pass_attempts": 100,
+        "player_pass_completions": 96,
+        "player_pass_interceptions": 172,
+        "player_rush_yds": 2718,
+        "player_rush_attempts": 138,
+        "player_rush_tds": 0,
+        "player_reception_yds": 5508,
+        "player_receptions": 1866,
+        "player_reception_tds": 0,
+        "player_anytime_td": 1645
+      },
+      "quota": {
+        "x-daily-limit": "5000",
+        "x-daily-used": "16",
+        "x-daily-remaining": "4984",
+        "x-daily-reset": "1793491200"
+      }
+    },
+    {
+      "sport": "CFB",
+      "total": 1313,
+      "books": {
+        "draftkings": 341,
+        "fanduel": 597,
+        "betmgm": 116,
+        "hardrock": 259
+      },
+      "markets": {
+        "player_pass_yds": 66,
+        "player_pass_tds": 52,
+        "player_pass_attempts": 20,
+        "player_pass_completions": 20,
+        "player_pass_interceptions": 0,
+        "player_rush_yds": 118,
+        "player_rush_attempts": 0,
+        "player_rush_tds": 0,
+        "player_reception_yds": 212,
+        "player_receptions": 108,
+        "player_reception_tds": 0,
+        "player_anytime_td": 717
+      },
+      "quota": {
+        "x-daily-limit": "5000",
+        "x-daily-used": "18",
+        "x-daily-remaining": "4982",
+        "x-daily-reset": "1793491200"
+      }
+    }
+  ],
+  "tests": {
+    "unit": 613,
+    "pythonFullSuite": 167,
+    "pythonGatewayFocused": 36,
+    "browserLocal": 52,
+    "browserProduction": 12,
+    "apiProduction": 8,
+    "pwaProduction": 15,
+    "postgresVerificationScripts": 5
+  },
+  "limitations": [
+    "Shared public quote persistence paused at existing storage reserve.",
+    "One model matchup per bounded request; whole-slate models not completed.",
+    "Calibration, fee-aware value and complete availability adjustments withheld where unsupported.",
+    "Private production save/restart and physical iPhone installation not tested."
+  ],
+  "injuryVerification": {
+    "NFL": {
+      "coverage": "available",
+      "matchedProviderPlayers": 198,
+      "sourceCounts": {
+        "espn": 198
+      },
+      "checkedAt": "2026-10-31T22:38:32.032713Z"
+    },
+    "CFB": {
+      "coverage": "available",
+      "matchedProviderPlayers": 1348,
+      "sourceCounts": {
+        "conference_report": 1348
+      },
+      "checkedAt": "2026-10-31T22:38:38.416770Z"
+    }
+  },
+  "renderDeployment": "dep-dbj6rbnb9u1s73d6u9cg",
+  "renderSourceCommit": "abc2153546b473cb2339bbd3229e5480d6182b86"
 }
