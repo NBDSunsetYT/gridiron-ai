@@ -98,7 +98,7 @@ class PropLineClient:
         with self.lock:
             now=self.clock();old=self.cache.get(sport)
             if old and now-old[0]<120:
-                result=copy.deepcopy(old[1]);result['items']=[r for r in result['items'] if -60<=now-stamp(r['sourceUpdatedAt'])<=300];result['totalResults']=len(result['items']);result['cached']=True;return result
+                result=copy.deepcopy(old[1]);result['items']=[r for r in result['items'] if -60<=now-stamp(r['sourceUpdatedAt'])<=300];result['totalResults']=len(result['items']);result['bookCounts']={k:sum(r['book']['key']==k for r in result['items']) for k in BOOKS};result['marketCounts']={k:sum(r['market']==k for r in result['items']) for k in MARKETS};result['status']='available' if result['items'] else 'unavailable';result['cached']=True;return result
             if now<self.until:raise DataProviderError('provider_quota_paused','PropLine requests are paused until its retry/reset time.',retryable=True,retry_after=math.ceil(self.until-now))
             day=datetime.fromtimestamp(now,timezone.utc).date()
             if day!=self.day:self.day=day;self.used=0
