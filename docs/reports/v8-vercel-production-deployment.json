@@ -29,7 +29,7 @@
     "groupsReturned": 0,
     "limitation": "Bounded initial retained-log inspection; not a full-workflow acceptance claim."
   },
-  "productionAcceptance": "partial_external_provider_and_shared_storage_blocks; actual repaired public API15passed; browser acceptance pending",
+  "productionAcceptance": "passed48scoped_public_checks; fullAcceptancePassedfalse due external/provider/storage and untested private/device scopes",
   "physicalIphoneInstallationTested": false,
   "limitations": [
     "No authenticated BALLDONTLIE or CollegeFootballData endpoint has been verified; account tiers remain unknown.",
@@ -66,5 +66,19 @@
     "scope": "Signed bounded ephemeral public CFB results only; no private context or database guard bypass.",
     "actualFreshRequestSameAnalysisId": true,
     "additionalSimulationTriggeredOnReopen": false
-  }
+  },
+  "productionBrowser": {
+    "checksPassed": 18,
+    "report": "v8-production-browser.json",
+    "githubRunId": 41234310104,
+    "mockedResponses": false,
+    "physicalIphoneInstallationTested": false
+  },
+  "productionPwa": {
+    "checksPassed": 15,
+    "report": "v8-production-pwa-verification.json",
+    "githubRunId": 41234310104
+  },
+  "fullAcceptancePassed": false,
+  "verificationSource": "v8-production-github-verification.json"
 }

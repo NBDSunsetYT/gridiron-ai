@@ -1,0 +1,45 @@
+{
+  "checkedAt": "2026-10-31T19:33:35.273056+00:00",
+  "status": "passed_public_scopes_only",
+  "fullAcceptancePassed": false,
+  "runId": 41234310104,
+  "jobId": 124634762761,
+  "testSourceCommit": "5bd25a1294fe26f6ef628fbffc3908597dfc1b1c",
+  "runUrl": "https://github.com/NBDSunsetYT/gridiron-ai/actions/runs/41234310104",
+  "artifactId": 13054527905,
+  "artifactName": "football-public-production-verification",
+  "reportRecovery": "Exact sanitized JSON emitted in completed authorized GitHub job logs; no report reconstructed from expected outcomes. Workspace artifact download failed, so only native log evidence is locally recovered.",
+  "deployedRuntimeSourceCommit": "118e1c8ad481de93ba8e9c2ab8c74deb3ef0b683",
+  "deploymentId": "dpl_Ea7Gp8ywKtp5qQbsKv7XFFrxqbGS",
+  "runtimeManifestSha256": "a77814c9bcb6f1670ee46e4f923803d9725bcbc1dbb6c7f12226641a54099dae",
+  "runtimeByteIdenticalAcrossTestSourceCommit": true,
+  "publicApiChecks": 15,
+  "publicBrowserChecks": 18,
+  "publicPwaChecks": 15,
+  "cachedPreflightAdditionalSimulations": 0,
+  "mockedResponses": false,
+  "productionFinancialWrites": false,
+  "accountsCreated": false,
+  "physicalIphoneInstallationTested": false,
+  "reports": [
+    {
+      "file": "v8-production-cache-verification.json",
+      "sha256": "cc00cd9fcedcef47f883f7c61341d639d2011f0f3931c1e42739145bba8ab9f3"
+    },
+    {
+      "file": "v8-production-browser.json",
+      "sha256": "b637fc6673a8f0e9146f9482c7f55f0907457de6919f00130874f04a0a203339"
+    },
+    {
+      "file": "v8-production-pwa-verification.json",
+      "sha256": "aeff6e8a2f888ddfb71a9fc8f48a96fdf555e9656494a177a19b7b6da96386c3"
+    }
+  ],
+  "remainingBlocks": [
+    "Render creation rejected402; no Render data gateway or authenticated BALLDONTLIE/CFBD endpoint verified.",
+    "Authorized DraftKings Predictions event-contract feed absent.",
+    "Shared database persistence remains paused at the450MBpublic reserve; guest caches are temporary.",
+    "No new8.0 private financial write/restart-save workflow or physical iPhone/OS standalone install claimed.",
+    "Models remain uncalibrated with an unpromoted weak retrospective college pilot."
+  ]
+}

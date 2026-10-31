@@ -1,0 +1,12 @@
+{
+  "scope": "Read-only cache preflight; no simulation POST",
+  "checkedAt": "2026-10-31T19:28:39.301Z",
+  "status": "passed",
+  "accountsCreated": false,
+  "financialWrites": false,
+  "simulationsStarted": 0,
+  "httpStatus": 200,
+  "analysisId": "0d4e4cb5-3ff6-4486-b691-e6d93b869ba7",
+  "gameId": "cfb:espn:401856743",
+  "simulations": 10000
+}

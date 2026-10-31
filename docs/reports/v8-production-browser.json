@@ -1,0 +1,109 @@
+{
+  "status": "passed_public_browser_scope",
+  "startedAt": "2026-10-31T19:28:41.479Z",
+  "baseUrl": "https://gridiron-ai-gray.vercel.app",
+  "mockedResponses": false,
+  "accountsCreated": false,
+  "financialWrites": false,
+  "physicalIphoneInstallationTested": false,
+  "fullAcceptancePassed": false,
+  "timeZone": "America/New_York",
+  "checks": [
+    {
+      "profile": "desktop-chromium",
+      "name": "The real guest opens NFL games and the NFL/CFB switch without a provider login",
+      "status": "passed"
+    },
+    {
+      "profile": "desktop-chromium",
+      "name": "The NFL player-props action invokes the distinct sportsbook-reference workflow and preserves its real access limitation",
+      "status": "passed"
+    },
+    {
+      "profile": "desktop-chromium",
+      "name": "Switching to College Football loads actual separate college games and survives a page restart",
+      "status": "passed"
+    },
+    {
+      "profile": "desktop-chromium",
+      "name": "The verified college matchup displays the actual coherent 10,000-game NCAA result and separate uncertainty",
+      "status": "passed"
+    },
+    {
+      "profile": "desktop-chromium",
+      "name": "The college research assistant uses actual citations and manual saving stays behind app identity",
+      "status": "passed"
+    },
+    {
+      "profile": "desktop-chromium",
+      "name": "CFB projections do not invent market prices, and switching sports never records a wager",
+      "status": "passed"
+    },
+    {
+      "profile": "iphone-chromium",
+      "name": "The real guest opens NFL games and the NFL/CFB switch without a provider login",
+      "status": "passed"
+    },
+    {
+      "profile": "iphone-chromium",
+      "name": "The NFL player-props action invokes the distinct sportsbook-reference workflow and preserves its real access limitation",
+      "status": "passed"
+    },
+    {
+      "profile": "iphone-chromium",
+      "name": "Switching to College Football loads actual separate college games and survives a page restart",
+      "status": "passed"
+    },
+    {
+      "profile": "iphone-chromium",
+      "name": "The verified college matchup displays the actual coherent 10,000-game NCAA result and separate uncertainty",
+      "status": "passed"
+    },
+    {
+      "profile": "iphone-chromium",
+      "name": "The college research assistant uses actual citations and manual saving stays behind app identity",
+      "status": "passed"
+    },
+    {
+      "profile": "iphone-chromium",
+      "name": "CFB projections do not invent market prices, and switching sports never records a wager",
+      "status": "passed"
+    },
+    {
+      "profile": "iphone-webkit",
+      "name": "The real guest opens NFL games and the NFL/CFB switch without a provider login",
+      "status": "passed"
+    },
+    {
+      "profile": "iphone-webkit",
+      "name": "The NFL player-props action invokes the distinct sportsbook-reference workflow and preserves its real access limitation",
+      "status": "passed"
+    },
+    {
+      "profile": "iphone-webkit",
+      "name": "Switching to College Football loads actual separate college games and survives a page restart",
+      "status": "passed"
+    },
+    {
+      "profile": "iphone-webkit",
+      "name": "The verified college matchup displays the actual coherent 10,000-game NCAA result and separate uncertainty",
+      "status": "passed"
+    },
+    {
+      "profile": "iphone-webkit",
+      "name": "The college research assistant uses actual citations and manual saving stays behind app identity",
+      "status": "passed"
+    },
+    {
+      "profile": "iphone-webkit",
+      "name": "CFB projections do not invent market prices, and switching sports never records a wager",
+      "status": "passed"
+    }
+  ],
+  "limitations": [
+    "Actual desktop and iPhone-sized Chromium/WebKit engines were tested; physical iPhone installation was not.",
+    "No production private account was created or financial write performed.",
+    "A successful public CFB workflow does not unblock the missing Render/BALLDONTLIE licensing/credential requirements or establish calibration."
+  ],
+  "finishedAt": "2026-10-31T19:29:44.995Z"
+}
