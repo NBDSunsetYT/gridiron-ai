@@ -32,7 +32,7 @@ Use Settings' encrypted account export and the builder's JSON export for persona
 | NFL/CFB complete-game simulation engine | Existing engine preserved. This release does not claim newly calibrated injury/roster/weather models or a new promoted statistical model. |
 | PropLine NFL/CFB references and injury reports | Existing authenticated Render adapter preserved. Availability and current inventory depend on the provider; quote freshness is enforced. |
 | DraftKings Predictions contracts | Authorized exact-contract feed remains unconfigured. Sportsbook prices are never substituted. |
-| Shared automatic quote/prediction warehouse persistence | Existing storage protection remains active above the450MB public-research reserve. No historical data was deleted to regain space. User drafts remain separate private writes. |
+| Shared automatic quote/prediction warehouse persistence | The organization was verified on the Free plan. Existing storage protection remains active above the450MB public-research reserve. No historical data was deleted to regain space. User drafts remain separate private writes. |
 | Whole-slate automatic simulations and research | Incomplete: current prop analysis processes one bounded verified matchup per request, with unavailable evidence withheld. |
 | Model calibration, full injury scenarios, automated numerical injury resimulation | Existing support remains partial; unavailable validated probabilities are not invented. |
 | Heavy compute hosting | Existing private Python service preserved; Render remains the PropLine gateway. No new paid worker was provisioned or unauthorized infrastructure migration performed. |

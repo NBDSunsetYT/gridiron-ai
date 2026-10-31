@@ -27,8 +27,8 @@
     "includesAutomaticRetryAndResearchDraftIsolation": true
   },
   "typecheck": "passed",
-  "productionBuild": "passed",
+  "productionBuild": "passed_final_accessibility_fix",
   "physicalIphoneTested": false,
   "productionAuthenticationPersistenceTested": false,
-  "productionDeploymentTests": "pending"
+  "productionDeploymentTests": "Initial API7 and PWA15 passed. Restored textarea accessibility fix verified locally; final live browser checks pending."
 }

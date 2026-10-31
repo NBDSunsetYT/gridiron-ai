@@ -1,0 +1,84 @@
+{
+  "version": "10.0.0",
+  "baseUrl": "https://gridiron-ai-gray.vercel.app",
+  "mocked": false,
+  "privateWrites": false,
+  "checkedAt": "2026-10-31T23:13:16.306Z",
+  "checks": [
+    {
+      "name": "Existing production app10 and Supabase/private Python dependencies respond",
+      "status": "passed"
+    },
+    {
+      "name": "NFL real published scoreboard identities, state and freshness",
+      "status": "passed"
+    },
+    {
+      "name": "NFL actual PropLine references remain separate from percentage contracts",
+      "status": "passed"
+    },
+    {
+      "name": "CFB real published scoreboard identities, state and freshness",
+      "status": "passed"
+    },
+    {
+      "name": "CFB actual PropLine references remain separate from percentage contracts",
+      "status": "passed"
+    },
+    {
+      "name": "Workspace and financial private reads require a verified app identity",
+      "status": "passed"
+    },
+    {
+      "name": "Guest draft submission cannot create private cloud records",
+      "status": "passed"
+    }
+  ],
+  "NFLScoreboard": {
+    "games": 14,
+    "live": 0,
+    "lastSuccessfulUpdate": "2026-10-31T23:13:17.373Z"
+  },
+  "NFLProps": {
+    "totalResults": 14134,
+    "books": {
+      "draftkings": 1483,
+      "fanduel": 1210,
+      "betmgm": 1123,
+      "hardrock": 10318
+    },
+    "persistence": {
+      "saved": false,
+      "status": "paused_capacity",
+      "count": 0,
+      "message": "New shared research persistence is paused to protect personal records. Published schedules can still be viewed; private saves require app sign-in."
+    }
+  },
+  "CFBScoreboard": {
+    "games": 56,
+    "live": 9,
+    "lastSuccessfulUpdate": "2026-10-31T23:13:33.015Z"
+  },
+  "CFBProps": {
+    "totalResults": 1057,
+    "books": {
+      "draftkings": 248,
+      "fanduel": 504,
+      "betmgm": 99,
+      "hardrock": 206
+    },
+    "persistence": {
+      "saved": false,
+      "status": "paused_capacity",
+      "count": 0,
+      "message": "New shared research persistence is paused to protect personal records. Published schedules can still be viewed; private saves require app sign-in."
+    }
+  },
+  "status": "passed_scoped",
+  "fullAcceptancePassed": false,
+  "limitations": [
+    "No authenticated production QA identity was available for sign-in and cross-device persistence tests.",
+    "No physical iPhone test was performed.",
+    "No new whole-slate simulation, calibration or fee-aware value claim is made."
+  ]
+}

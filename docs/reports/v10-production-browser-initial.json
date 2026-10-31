@@ -1,0 +1,36 @@
+{
+  "status": "failed",
+  "baseUrl": "https://gridiron-ai-gray.vercel.app",
+  "mockedResponses": false,
+  "physicalIphone": false,
+  "financialWrites": false,
+  "simulationsRequested": 0,
+  "checks": [
+    {
+      "profile": "desktop",
+      "name": "Real NFL PropLine quotes render without provider login or client API key",
+      "status": "passed"
+    },
+    {
+      "profile": "desktop",
+      "name": "Verified DraftKings Sportsbook filtering preserves market identity",
+      "status": "passed"
+    },
+    {
+      "profile": "desktop",
+      "name": "Exact Predictions contracts remain a separate unavailable source",
+      "status": "passed"
+    },
+    {
+      "profile": "desktop",
+      "name": "CFB quotes load separately and private history requires GRIDIRON identity",
+      "status": "passed"
+    },
+    {
+      "profile": "desktop",
+      "name": "Public10 live scoreboard shows actual observations and the new navigation",
+      "status": "passed"
+    }
+  ],
+  "error": "expect(locator).toHaveValue(expected) failed\n\nLocator: getByLabel('Notes', { exact: true })\nExpected: \"AUTOMATED QA GUEST DRAFT — NOT A WAGER\"\nTimeout: 90000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toHaveValue\" getByLabel('Notes', { exact: true }) with timeout 90000ms\n  - waiting for getByLabel('Notes', { exact: true })\n"
+}
