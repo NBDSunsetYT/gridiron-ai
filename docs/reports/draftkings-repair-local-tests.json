@@ -1,0 +1,40 @@
+{
+  "checkedAt": "2026-10-31T17:34:11.934528+00:00",
+  "applicationVersion": "7.0.1",
+  "status": "passed",
+  "unitTests": {
+    "files": 63,
+    "passed": 533,
+    "log": "/tmp/gridiron-dk-repair-unit.log"
+  },
+  "focusedProviderTests": {
+    "passed": 43,
+    "includedInUnitTotal": true
+  },
+  "focusedServiceAndSecurityTests": {
+    "passed": 28,
+    "includedInUnitTotal": true
+  },
+  "browserTests": {
+    "passed": 30,
+    "newDiagnosticChecks": 14,
+    "preservedMarketChecks": 16,
+    "profiles": [
+      "desktop-chromium",
+      "iphone-chromium"
+    ],
+    "scope": "local labeled synthetic source responses; not live vendor-feed verification"
+  },
+  "typeScript": "passed_nonincremental",
+  "productionBuild": "passed",
+  "predictionEngineChanged": false,
+  "databaseMigrationsAdded": false,
+  "financialLedgerChanged": false,
+  "secretsAdded": false,
+  "notRunForThisPatch": [
+    "New model training, historical calibration or expensive production simulations: the quantitative engine is unchanged.",
+    "Live authenticated DraftKings vendor quotes: no licensed provider credential is available.",
+    "Physical iPhone installation."
+  ],
+  "productionVerification": "Separate actual HTTPS and remote browser reports must be read; local source fixtures do not establish a live feed."
+}

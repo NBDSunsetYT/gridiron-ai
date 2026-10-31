@@ -1,0 +1,97 @@
+{
+  "checkedAt": "2026-10-31 17:18:50 UTC",
+  "scope": "Read-only production inspection; no values decrypted or disclosed, no deployments or configuration writes, no user records queried or changed.",
+  "applicationUrl": "https://gridiron-ai-gray.vercel.app",
+  "deployment": {
+    "id": "dpl_C1pqKr9AceYSeq19LL2XkNWZBp4f",
+    "url": "https://gridiron-8rxbduwc5-gridiron5.vercel.app",
+    "state": "READY",
+    "target": "production",
+    "sourceCommit": "40267101236d011fe6c9e091d2b7b3d5f4be7fab",
+    "runtimeSourceCommit": "09b4aec7d2747f67cd7f8263ef0dac1c9c459d23",
+    "note": "The source release contains documentation and test-only changes after the deployed runtime commit."
+  },
+  "environmentInspection": {
+    "method": "Authorized Vercel filter_project_envs, decrypt:false; encrypted values not output or saved.",
+    "listedVariables": 19,
+    "hiddenProductionVariables": 0,
+    "variables": [
+      {
+        "name": "GRIDIRON_DK_PREDICTIONS_FEED_URL",
+        "presentAnyTarget": false,
+        "presentProduction": false
+      },
+      {
+        "name": "GRIDIRON_DK_PREDICTIONS_FEED_AUTHORIZED",
+        "presentAnyTarget": false,
+        "presentProduction": false
+      },
+      {
+        "name": "GRIDIRON_DK_PREDICTIONS_FEED_TOKEN",
+        "presentAnyTarget": false,
+        "presentProduction": false
+      }
+    ],
+    "additionalVendorCredentialNameCheck": {
+      "patterns": [
+        "OPTIC*",
+        "BETSTAMP*",
+        "ODDS*",
+        "MARKET*",
+        "DRAFT*",
+        "GRIDIRON_DK*"
+      ],
+      "matchingVariables": 0,
+      "valuesInspected": false
+    }
+  },
+  "publicApiChecks": [
+    {
+      "path": "/api/nfl/markets?provider=DraftKings%20Predictions&limit=1",
+      "httpStatus": 200,
+      "status": "unavailable",
+      "primaryProvider": "DraftKings Predictions",
+      "totalResults": 0,
+      "runId": null,
+      "resultSetId": null
+    },
+    {
+      "path": "/api/props?provider=DraftKings%20Predictions&limit=1",
+      "httpStatus": 200,
+      "status": "unavailable",
+      "primaryProvider": "DraftKings Predictions",
+      "totalResults": 0,
+      "runId": null,
+      "resultSetId": null
+    }
+  ],
+  "verifiedCause": "No authorized DraftKings Predictions event-contract feed endpoint or authorization flag is configured in the production project or deployment. Current missing-source response happens before provider HTTP fetch; it is not evidence of a provider HTTP failure.",
+  "requestPolicy": "No private DraftKings routes, scraping, account credentials, sportsbook substitution or alternative-exchange research was attempted.",
+  "runtimeLogs": {
+    "recentQuery": {
+      "lookback": "10m",
+      "text": "DraftKings",
+      "deploymentId": "dpl_C1pqKr9AceYSeq19LL2XkNWZBp4f",
+      "status": "succeeded",
+      "matchingRows": 0
+    },
+    "initialQuery": {
+      "lookback": "1h",
+      "status": "rejected",
+      "httpStatus": 400,
+      "reason": "Hobby runtime log retention window; corrected with a narrower recent query."
+    },
+    "limitation": "No matching recent log does not prove historical absence of provider failures; the current configuration and source guard establish the missing-configuration diagnosis."
+  },
+  "renderInspection": {
+    "method": "Authorized list_workspaces followed by list_services(includePreviews:true) scoped explicitly to the same previously verified workspace.",
+    "accessibleWorkspaces": 1,
+    "services": 0,
+    "rawServiceResponse": "null",
+    "logs": "No service exists to provide backend logs.",
+    "changes": "none"
+  },
+  "configurationChanges": "none",
+  "dataChanges": "none",
+  "deploymentChanges": "none"
+}

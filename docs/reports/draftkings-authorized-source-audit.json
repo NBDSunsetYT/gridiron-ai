@@ -1,0 +1,214 @@
+{
+  "checkedAt": "2026-10-31T17:23:25.945756+00:00",
+  "scope": "Read-only investigation of authorized DraftKings Predictions Sports/NFL access; not DraftKings Sportsbook.",
+  "liveDraftKingsFeedVerified": false,
+  "exactLiveDraftKingsContractsAccessible": [],
+  "verifiedExactLiveDraftKingsContractCount": 0,
+  "zeroCountMeaning": "No exact live DraftKings contract/quote/rules combination was verified through accessible authorized responses. This does not establish that DraftKings has no NFL markets.",
+  "credentialsSuppliedToVendorRequests": false,
+  "privateDraftKingsApiRequested": false,
+  "geolocationOrAuthenticationBypassed": false,
+  "purchasesAccountsEmailsOrDatabaseWrites": false,
+  "publicDraftKingsInspection": {
+    "checkedAt": "2026-10-31T17:18:30.623643+00:00",
+    "url": "https://predictions.draftkings.com/en/markets/football/nfl",
+    "httpStatus": 200,
+    "bytes": 1110570,
+    "sha256": "f6bc7cd4289f9b2057ddf6638ac7307bcbea9a1a29b614119314a4a357ae7778",
+    "robotsUrl": "https://predictions.draftkings.com/robots.txt",
+    "robotsHttpStatus": 200,
+    "robotsDisallowedResourceRoutesRequested": false,
+    "inspectionMethod": "Offline decoding of the React Router loader-data array already included in the observed public HTML. No secondary application data endpoint was requested.",
+    "league": {
+      "sport": "Football",
+      "name": "NFL",
+      "leagueId": "88808"
+    },
+    "observedNavigation": [
+      "Game Lines",
+      "TD Scorers",
+      "Player Props",
+      "Player Props O/U",
+      "Halves",
+      "Futures",
+      "Awards"
+    ],
+    "embeddedIdentifiers": "Some event/selection IDs occur in CMS navigation and template-query configuration. They are not complete verified live contract records and were not treated as discoveries.",
+    "notObservedInDecodedLoaderData": [
+      "Contract price fields",
+      "Executable bid/ask",
+      "Quote timestamp",
+      "Exact contract ID with player/threshold/outcome",
+      "Settlement rules"
+    ],
+    "noMarketsTextCaveat": "Localized no-markets strings occur in the translation catalogue. Their presence is not evidence that the actual NFL inventory is empty.",
+    "conclusion": "Public route and NFL navigation are accessible; exact current NFL contract quotes and settlement mappings were not verified from this response."
+  },
+  "vendors": [
+    {
+      "name": "OpticOdds",
+      "classification": "Explicit DraftKings Predictions vendor candidate; credentials and entitlement required; live DK responses not verified.",
+      "documentation": [
+        "https://developer.opticodds.com/docs/sportsbooks",
+        "https://developer.opticodds.com/docs/opticodds-for-prediction-market-makers",
+        "https://developer.opticodds.com/reference/get_fixtures-active",
+        "https://developer.opticodds.com/reference/get_fixtures-odds"
+      ],
+      "verifiedDocumentation": {
+        "dedicatedVenueId": "draftkings_predictions",
+        "traditionalSportsbookIdIsDifferent": "draftkings",
+        "nativeIdentifiersField": "source_ids (nullable)",
+        "supportedPriceFormat": "PROBABILITY is documented; defaults differ between endpoint/guide examples, so must request the format explicitly.",
+        "fees": "Guide states that returned odds include fee adjustments by default; exclude_fees=true requests raw exchange prices.",
+        "otherDocumentedFields": [
+          "fixture/player/team IDs",
+          "points",
+          "timestamp",
+          "order_book (nullable)",
+          "deep_link (permission-dependent)"
+        ]
+      },
+      "actualRequests": [
+        {
+          "url": "https://api.opticodds.com/api/v3/sportsbooks",
+          "status": 401,
+          "body": {
+            "error": "API key is required"
+          }
+        },
+        {
+          "url": "https://api.opticodds.com/api/v3/fixtures/active?league=nfl&sportsbook=draftkings_predictions",
+          "status": 401,
+          "body": {
+            "error": "API key is required"
+          }
+        }
+      ],
+      "notVerified": [
+        "NFL venue entitlement",
+        "Any live DraftKings event/contract/prop",
+        "DraftKings-specific source_ids mapping",
+        "Raw Yes/No executable quote semantics",
+        "Exact exchange settlement text",
+        "Actual customer-specific fees"
+      ],
+      "nextVerification": "With an authorized entitled key, query the venue catalogue, discover active NFL fixtures, fetch their odds with explicit venue/format/fee settings, then validate native IDs and exact contract terms before publication. A normalized line or implied probability alone is insufficient."
+    },
+    {
+      "name": "Betstamp",
+      "classification": "Explicit DraftKings Predictions NFL/player-prop vendor candidate; no authenticated data verified.",
+      "documentation": [
+        "https://www.betstamp.com/odds/draftkings-predictions",
+        "https://www.betstamp.com/odds/DraftKings%20Predictions",
+        "https://www.betstamp.com/docs/api"
+      ],
+      "verifiedDocumentation": [
+        "Vendor explicitly advertises DraftKings Predictions, NFL, player props, game markets, REST and SSE.",
+        "Public documentation presents normalized Decimal/American prices and requires a scoped API key."
+      ],
+      "actualRequests": [
+        {
+          "url": "https://api.pro.betstamp.com/api/markets?league=NFL&periods=FT",
+          "status": 401,
+          "body": {
+            "error": {
+              "code": "missing_api_key",
+              "message": "Request is missing API key. Supply X-API-KEY."
+            }
+          }
+        }
+      ],
+      "notVerified": [
+        "Licensed customer entitlement",
+        "Actual DraftKings provider/book identifier",
+        "Exact native contract IDs",
+        "Executable Yes/No bid/ask",
+        "Fees",
+        "Full settlement rules"
+      ],
+      "nextVerification": "Obtain authorized scoped evaluation access and require a real exact-contract sample. Do not substitute ordinary DraftKings sportsbook rows or reconstruct exact prices by rounding normalized odds."
+    },
+    {
+      "name": "MetaBet",
+      "classification": "Official vendor page demonstrates a distinct DraftKings Predictions provider, but exact-contract production feed not verified.",
+      "documentation": [
+        "https://www.metabet.io/products/odds-api",
+        "https://www.metabet.io/documentation"
+      ],
+      "verifiedDocumentation": [
+        "Public NFL example contains DRAFTKINGS_PREDICTIONS separately from DRAFTKINGS.",
+        "Example includes event mapping, provider timestamps and normalized decimal moneyline/spread/total values."
+      ],
+      "actualLiveApiRequests": [],
+      "notVerified": [
+        "Authorized live API entitlement",
+        "Exact native event/contract IDs",
+        "Player-prop coverage for this venue",
+        "Yes/No bid/ask",
+        "Fees",
+        "Settlement rules"
+      ],
+      "sampleIsNotLiveVerification": true
+    },
+    {
+      "name": "Crawlora",
+      "classification": "Reference/navigation API; not a live contract-price feed.",
+      "documentation": [
+        "https://crawlora.net/docs/draft-kings-predictions"
+      ],
+      "verifiedDocumentation": "Its three documented endpoints cover category navigation, availability regions and rule-source links; the documentation explicitly excludes market quotes and trades.",
+      "notSuitableAsLivePriceReplacement": true
+    },
+    {
+      "name": "Crypto.com / CDNA official market-data API",
+      "classification": "An underlying exchange data surface was reachable, but it is not a verified DraftKings retail feed and is not licensed for this application by anonymous access.",
+      "documentation": [
+        "https://data.crypto.com/docs",
+        "https://data.crypto.com/quickstart",
+        "https://data.crypto.com/static/eula.pdf?v=eula_v3",
+        "https://exchange-developer.crypto.com/dcm/v1/docs/api/rest-single-page/"
+      ],
+      "actualRequests": [
+        {
+          "checkedAt": "2026-10-31T17:21:52.380515+00:00",
+          "url": "https://data-api.crypto.com/api/v1/predictions/events?kind=NFL&limit=5",
+          "status": 200,
+          "bytes": 33376,
+          "marketPayloadPublishedInThisReport": false
+        }
+      ],
+      "licenseBoundary": "The public documentation advertises anonymous personal/noncommercial read access, but requires MDLA for redistribution/commercial use/training. The linked EULA additionally restricts AI processing and derived/public redistribution absent consent. No claim is made that anonymous access licenses GRIDIRON AI use.",
+      "notVerified": [
+        "Exact identity with DraftKings retail offerings",
+        "DraftKings-specific price/bid/ask and account fees",
+        "Approved right to ingest into an AI research app"
+      ],
+      "integrated": false,
+      "rawPayloadNotRetainedInRepository": true
+    },
+    {
+      "name": "DKeX / Railbird direct",
+      "classification": "Official exchange/onboarding route; no authorized live API session or public exact retail feed verified.",
+      "documentation": [
+        "https://ir.aboutdraftkings.com/news/news-details/2026/DraftKings-Launches-Proprietary-Exchange-to-Bolster-Differentiated-Predictions-Experience/default.aspx",
+        "https://www.railbirdexchange.com/contact",
+        "https://www.railbirdexchange.com/regulatory-compliance"
+      ],
+      "verifiedDocumentation": [
+        "DraftKings announced DKeX integration June 26, 2026.",
+        "Official exchange contact page lists onboarding and FIX-connectivity contacts."
+      ],
+      "limitation": "An exchange rulebook or delayed daily exchange report does not establish current retail DraftKings executable quotes or account fees. No membership request or contact was sent."
+    }
+  ],
+  "recommendedPath": "Use an explicitly authorized DraftKings Predictions-entitled vendor evaluation key, preferably a candidate whose source_ids/order-book schema can preserve native identities. Require real NFL samples and exact settlement/fee metadata before enabling live comparisons. Keep verified manual capture optional and visibly manual. No silent exchange or sportsbook alias.",
+  "manualFallback": "Preserve the existing optional user-verified contract/screenshot/CSV capture. Require exact platform, event/contract ID, player/team, threshold/operator, Yes/No side, quote timestamp, source, fees and settlement terms; missing facts remain unavailable. A manual capture is never labeled a live feed.",
+  "finalAccessibleLiveDraftKingsMarkets": {
+    "winner": 0,
+    "spread": 0,
+    "total": 0,
+    "teamTotal": 0,
+    "playerProps": 0,
+    "reason": "No authorized live DraftKings contract response could be obtained with current access; vendor probes returned credential errors and public site inspection supplied navigation only."
+  }
+}

@@ -2,7 +2,7 @@ import {afterEach,beforeEach,describe,it,expect,vi} from 'vitest';
 import {playerPropFixture} from './fixtures/player-props';
 const s=vi.hoisted(()=>({run:null as any,after:[] as Array<()=>Promise<void>>,game:null as any,detail:null as any,complete:null as any,discovery:null as any,refreshed:null as any,contracts:new Map<string,any>(),snapshots:new Map<string,any>(),runRows:new Map<string,Set<string>>(),jobs:new Map<string,any>(),counter:0}));
 const source=vi.hoisted(()=>({loadSchedule:vi.fn(),publicGameDetail:vi.fn(),analyzePublicGame:vi.fn()}));
-const provider=vi.hoisted(()=>({discoverPlayerPropMarkets:vi.fn(),fetchPlayerPropMarkets:vi.fn(),draftKingsFeedConfigured:vi.fn(()=>true)}));
+const provider=vi.hoisted(()=>({discoverPlayerPropMarkets:vi.fn(),fetchPlayerPropMarkets:vi.fn(),draftKingsFeedConfigured:vi.fn(()=>true),draftKingsConfigurationDiagnostic:vi.fn<()=>any>()}));
 const storage=vi.hoisted(()=>({propWrite:vi.fn(),storeContracts:vi.fn(),storeResearch:vi.fn(),cachedGameStates:vi.fn()}));
 const publicStorage=vi.hoisted(()=>({latestJobs:vi.fn()}));
 const lab=vi.hoisted(()=>({getPropPerformance:vi.fn()}));
@@ -27,6 +27,7 @@ beforeEach(()=>{
  vi.useFakeTimers({toFake:['Date']});vi.setSystemTime(new Date(now));vi.clearAllMocks();
  lab.getPropPerformance.mockResolvedValue({status:'insufficient_evidence',eligibleResolved:0,overall:null});
  provider.draftKingsFeedConfigured.mockReturnValue(true);
+ provider.draftKingsConfigurationDiagnostic.mockImplementation(()=>provider.draftKingsFeedConfigured()?null:{code:'feed_not_configured',stage:'configuration',checkedAt:now,retryable:false,requiresOperator:true,httpStatus:null,message:'An authorized DraftKings Predictions feed is not connected.',action:'Connect an authorized event-contract source.'});
  const fixture=playerPropFixture(),contract=structuredClone(fixture.receiverYes.contract),detail:any=structuredClone(fixture.nfl.detail);
  detail.game={...detail.game,id:'2026_08_BAL_BUF',home:{id:'BUF',abbreviation:'BUF',name:'SYNTHETIC Home'},away:{id:'BAL',abbreviation:'BAL',name:'SYNTHETIC Away'}};
  Object.assign(contract,{gameId:detail.game.id,team:'BAL',opponent:'BUF',playerId:null});
@@ -60,6 +61,14 @@ describe('Automatic persistent player-prop research state machine',()=>{
   provider.draftKingsFeedConfigured.mockReturnValue(false);vi.stubEnv('GRIDIRON_KALSHI_BACKGROUND_RESEARCH','');
   const page=await nflMarketDashboard();expect(page.status).toBe('unavailable');expect(page.providers[0].provider).toBe('DraftKings Predictions');expect(page.results).toEqual([]);expect(page.runId).toBeNull();expect(s.after).toHaveLength(0);expect(storage.propWrite).not.toHaveBeenCalled();expect(source.publicGameDetail).not.toHaveBeenCalled();expect(provider.discoverPlayerPropMarkets).not.toHaveBeenCalled();expect((await refreshPropResearch()).status).toBe('unavailable');expect(storage.propWrite).not.toHaveBeenCalled();
   await expect(startPropScan()).rejects.toMatchObject({status:503});expect(storage.propWrite).not.toHaveBeenCalled();vi.unstubAllEnvs();
+ });
+ it('exposes the configuration reason before any source request or shared research write, including invalid configured URLs',async()=>{
+  provider.draftKingsConfigurationDiagnostic.mockReturnValue({code:'feed_configuration_invalid',stage:'configuration',checkedAt:now,retryable:false,requiresOperator:true,httpStatus:null,message:'The authorized source configuration is invalid.',action:'Correct the secure source URL.'});
+  for(const dashboard of [nflMarketDashboard,propDashboard]){
+   const page=await dashboard();expect(page.providers[0].diagnostic).toMatchObject({code:'feed_configuration_invalid',stage:'configuration',httpStatus:null,retryable:false});expect(page.runId).toBeNull();expect(page.totalResults).toBe(0);expect(page.message).toContain('configuration is invalid');
+  }
+  await expect(startPropScan()).rejects.toMatchObject({status:503,message:expect.stringContaining('configuration is invalid')});
+  expect(storage.propWrite).not.toHaveBeenCalled();expect(provider.discoverPlayerPropMarkets).not.toHaveBeenCalled();expect(source.analyzePublicGame).not.toHaveBeenCalled();expect(s.after).toHaveLength(0);
  });
  it('applies the same DraftKings-only default to the legacy player API even when an alternative run exists',async()=>{
   provider.draftKingsFeedConfigured.mockReturnValue(false);s.run={id:'SYNTHETIC-EXPLICIT-ALTERNATIVE',status:'queued',data:{provider:'Kalshi',pipelineVersion:'nfl-event-contract-research-7.0.0'},updated_at:now};

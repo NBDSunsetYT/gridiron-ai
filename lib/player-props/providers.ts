@@ -3,7 +3,7 @@ import {performance} from 'node:perf_hooks';
 import {z} from 'zod';
 import {source,sha} from '../public-nfl/sources';
 import type {ResearchSource,PublicGame} from '../public-nfl/types';
-import type {PropMarketContract,PropMarketDiscovery,PropPlayerIdentity,PropProviderOptions,PropProviderStatus} from './market-types';
+import type {PropMarketContract,PropMarketDiscovery,PropPlayerIdentity,PropProviderOptions,PropProviderStatus,PropProviderDiagnostic,PropProviderDiagnosticCode} from './market-types';
 import {PROP_STATS,isGameMarket} from './market-types';
 import {KALSHI_GAME_SERIES,normalizeKalshiGameMarket,normalizeAuthorizedGameContract} from './game-markets';
 import {KALSHI_PROP_SERIES,FOOTBALL_TERMS_URL,FOOTBALL_TERMS_SHA256,KALSHI_FEE_SOURCE,kalshiPropEventTicker,normalizeKalshiPropMarket,resolvePlayerPropIdentity,canonicalPropTeam,canonicalPropName,unverifiedPropFees,type StructuredTarget} from './normalize';
@@ -16,16 +16,30 @@ const pending=new Map<string,Promise<PropMarketDiscovery>>();
 const milliseconds=(value:string)=>Date.parse(value);
 const cleanUrl=(url:URL)=>url.origin+url.pathname;
 export function draftKingsFeedConfigured(){return Boolean(process.env.GRIDIRON_DK_PREDICTIONS_FEED_URL&&process.env.GRIDIRON_DK_PREDICTIONS_FEED_AUTHORIZED==='1');}
-async function readBytes(url:string,transport:typeof fetch,headers:Record<string,string>={},maximum=MAX_SOURCE_BYTES){
+type SourceFailure='http'|'response_too_large'|'empty_response'|'invalid_json'|'unsupported_feed_schema'|'unsupported_pagination';
+class ProviderSourceError extends Error{
+ constructor(readonly reason:SourceFailure,readonly httpStatus:number|null=null,readonly retryAfterSeconds:number|null=null){super('The authorized market response could not be verified.');this.name='ProviderSourceError';}
+}
+/** Public diagnostics contain fixed explanations and observations, never a
+ * configured endpoint, provider error body, server token or raw exception. */
+function diagnostic(code:PropProviderDiagnosticCode,checkedAt:string,message:string,action:string,options:Partial<PropProviderDiagnostic>={}):PropProviderDiagnostic{return{code,stage:'source',checkedAt,retryable:false,requiresOperator:false,httpStatus:null,message,action,...options};}
+export function draftKingsConfigurationDiagnostic(observedAt:string=new Date().toISOString()):PropProviderDiagnostic|null{
+ const endpoint=process.env.GRIDIRON_DK_PREDICTIONS_FEED_URL,authorized=process.env.GRIDIRON_DK_PREDICTIONS_FEED_AUTHORIZED==='1';
+ if(!endpoint)return diagnostic('feed_not_configured',observedAt,'The app has no authorized DraftKings Predictions NFL contract feed connected.','An app operator must connect an authorized event-contract data source. You do not need a Supabase dashboard account or sportsbook password.',{stage:'configuration',requiresOperator:true,missingConfiguration:authorized?['feed']:['feed','authorization']});
+ if(!authorized)return diagnostic('authorization_not_configured',observedAt,'A DraftKings Predictions feed connection was entered, but its data-access authorization has not been confirmed.','The app operator must confirm the source is authorized before the app can request its contracts.',{stage:'configuration',requiresOperator:true,missingConfiguration:['authorization']});
+ try{configuredFeedUrl();return null;}catch{return diagnostic('feed_configuration_invalid',observedAt,'The authorized feed connection is configured incorrectly. No request was sent to it.','The app operator must correct the secure feed connection. No private endpoint or credential is shown here.',{stage:'configuration',requiresOperator:true});}
+}
+async function readBytes(url:string,transport:typeof fetch,headers:Record<string,string>={},maximum=MAX_SOURCE_BYTES,onStatus?:(status:number)=>void){
  const response=await transport(url,{method:'GET',headers:{Accept:'application/json,application/pdf,*/*',...headers},cache:'no-store',redirect:'error',signal:AbortSignal.timeout(10000)});
- if(!response.ok)throw new Error('The authorized market source could not be verified.');
- if(Number(response.headers.get('content-length')||0)>maximum)throw new Error('Market source exceeds its safe ingestion bound.');
- const reader=response.body?.getReader();if(!reader)throw new Error('Market source returned no readable body.');
+ onStatus?.(response.status);
+ if(!response.ok){const raw=response.headers.get('retry-after'),retry=raw&&/^\d{1,6}$/.test(raw)?Math.min(86400,Number(raw)):null;await response.body?.cancel().catch(()=>{});throw new ProviderSourceError('http',response.status,retry);}
+ if(Number(response.headers.get('content-length')||0)>maximum){await response.body?.cancel().catch(()=>{});throw new ProviderSourceError('response_too_large',response.status);}
+ const reader=response.body?.getReader();if(!reader)throw new ProviderSourceError('empty_response',response.status);
  const chunks:Uint8Array[]=[];let size=0;
- for(;;){const {done,value}=await reader.read();if(done)break;size+=value.byteLength;if(size>maximum){await reader.cancel();throw new Error('Market source exceeds its safe ingestion bound.');}chunks.push(value);}
+ for(;;){const {done,value}=await reader.read();if(done)break;size+=value.byteLength;if(size>maximum){await reader.cancel();throw new ProviderSourceError('response_too_large',response.status);}chunks.push(value);}
  return Buffer.concat(chunks);
 }
-async function readJson(url:string,transport:typeof fetch,headers:Record<string,string>={},maximum=MAX_SOURCE_BYTES):Promise<any>{return JSON.parse((await readBytes(url,transport,headers,maximum)).toString('utf8'));}
+async function readJson(url:string,transport:typeof fetch,headers:Record<string,string>={},maximum=MAX_SOURCE_BYTES,onStatus?:(status:number)=>void):Promise<any>{let status:number|null=null;const bytes=await readBytes(url,transport,headers,maximum,s=>{status=s;onStatus?.(s);});try{return JSON.parse(bytes.toString('utf8'));}catch{throw new ProviderSourceError('invalid_json',status);}}
 function pacedPublicTransport(transport:typeof fetch,deadline:number):typeof fetch{
  let nextRequestAt=performance.now();
  return async(input,options)=>{
@@ -85,26 +99,75 @@ export function normalizeVerifiedManualProp(input:unknown,games:PublicGame[],cat
 function configuredFeedUrl():URL|null{
  const raw=process.env.GRIDIRON_DK_PREDICTIONS_FEED_URL;if(!raw)return null;
  const url=new URL(raw),host=url.hostname.toLowerCase();
- if(url.protocol!=='https:'||url.username||url.password||url.port&&url.port!=='443'||isIP(host)||host==='localhost'||host.endsWith('.localhost')||host.endsWith('.local')||!host.includes('.')||[...url.searchParams.keys()].some(key=>/token|key|secret|password/i.test(key)))throw Error('The authorized feed URL must use a public HTTPS host and server-side header credentials.');
+ const token=process.env.GRIDIRON_DK_PREDICTIONS_FEED_TOKEN;
+ if(url.protocol!=='https:'||url.username||url.password||url.port&&url.port!=='443'||isIP(host)||host==='localhost'||host.endsWith('.localhost')||host.endsWith('.local')||!host.includes('.')||[...url.searchParams.keys()].some(key=>/token|key|secret|password|signature|authorization/i.test(key))||Boolean(token&&(raw.includes(token)||/[\r\n]/.test(token))))throw Error('The authorized feed URL must use a public HTTPS host and server-side header credentials.');
  return url;
 }
+export const DRAFTKINGS_PREDICTIONS_NFL_URL='https://predictions.draftkings.com/en/markets/football/nfl';
+function safeRejectedId(value:unknown){const token=process.env.GRIDIRON_DK_PREDICTIONS_FEED_TOKEN;return typeof value==='string'&&/^[A-Za-z0-9._:/-]{1,200}$/.test(value)&&(!token||!value.includes(token))?value:'unverified';}
+function contractFailure(error:unknown):'identity_mismatch'|'unsupported_contracts'{
+ const identityMessages=new Set(['Contract matchup, kickoff or team disagrees with the verified schedule.','The exact GSIS player, roster name and team mapping could not be verified.','The exact scheduled game and team could not be verified.']);
+ if(error instanceof Error&&identityMessages.has(error.message))return'identity_mismatch';
+ if(error instanceof z.ZodError){if(error.issues.some(issue=>['provider','marketType','stat','settlement','rules','rulesUrl','sourceUrl'].includes(String(issue.path[0]))))return'unsupported_contracts';if(error.issues.some(issue=>['playerId','playerName','gameId','eventStart','team'].includes(String(issue.path[0]))))return'identity_mismatch';}
+ return'unsupported_contracts';
+}
+function sourceFailureDiagnostic(error:unknown,observedAt:string):PropProviderDiagnostic{
+ const retry='The app can retry this source later. No alternative prices have been substituted.',operator='The app operator must review the authorized source connection with its provider; no sportsbook password is needed.';
+ if(error instanceof ProviderSourceError){
+  const status=error.httpStatus,extra={httpStatus:status};
+  if(error.reason==='http'){
+   if(status===401){const missing=!process.env.GRIDIRON_DK_PREDICTIONS_FEED_TOKEN;return diagnostic(missing?'credentials_missing':'authentication_failed',observedAt,missing?'The configured feed returned HTTP401 and no server credential is configured.':'The configured feed rejected the server authentication with HTTP401.',operator,{...extra,requiresOperator:true});}
+   if(status===403)return diagnostic('access_denied',observedAt,'The configured feed denied access with HTTP403. The response does not establish whether entitlement, region or another access rule caused it.',operator,{...extra,requiresOperator:true});
+   if(status===404)return diagnostic('endpoint_not_found',observedAt,'The configured feed endpoint returned HTTP404. This is not evidence that DraftKings has no NFL markets.',operator,{...extra,requiresOperator:true});
+   if(status===429)return diagnostic('source_rate_limited',observedAt,'The authorized feed is temporarily rate limited (HTTP429).',retry,{...extra,retryable:true,retryAfterSeconds:error.retryAfterSeconds});
+   if(status===408||status===504)return diagnostic('source_timeout',observedAt,'The authorized feed request timed out.',retry,{...extra,retryable:true});
+   if(status!==null&&status>=500)return diagnostic('source_unavailable',observedAt,'The authorized feed returned a server error. Current contracts could not be verified.',retry,{...extra,retryable:true});
+   return diagnostic('source_request_failed',observedAt,'The authorized feed rejected the request. Its response does not establish an empty NFL market list.',operator,{...extra,requiresOperator:true});
+  }
+  if(error.reason==='unsupported_feed_schema')return diagnostic('unsupported_feed_schema',observedAt,'The feed responded, but its provider identity or contract schema does not match the supported DraftKings Predictions event-contract format.',operator,{...extra,requiresOperator:true});
+  if(error.reason==='unsupported_pagination')return diagnostic('unsupported_pagination',observedAt,'The feed returned unsupported or repeating pagination. Complete NFL contract coverage could not be verified.',operator,{...extra,requiresOperator:true});
+  return diagnostic('unsupported_response',observedAt,error.reason==='response_too_large'?'The authorized feed response exceeded its safe ingestion bound.':error.reason==='empty_response'?'The authorized feed returned no readable response body.':'The authorized feed did not return a valid JSON response.',operator,{...extra,requiresOperator:true});
+ }
+ const name=error&&typeof error==='object'&&'name'in error?String(error.name):'',code=error&&typeof error==='object'&&'code'in error?String(error.code):'';
+ if(name==='TimeoutError'||name==='AbortError'||code==='ETIMEDOUT')return diagnostic('source_timeout',observedAt,'The authorized feed request did not finish before its timeout.',retry,{retryable:true});
+ return diagnostic('source_network_error',observedAt,'The app could not establish a verified response from the configured feed. No HTTP access decision or empty market list was received.',retry,{retryable:true});
+}
 async function discoverDraftKings(games:PublicGame[],transport:typeof fetch,observedAt:string,includeGames=false):Promise<{contracts:PropMarketContract[];status:PropProviderStatus;sources:ResearchSource[];rejected:PropMarketDiscovery['rejected'];complete:boolean}>{
- const info:Omit<PropProviderStatus,'status'|'message'>={provider:'DraftKings Predictions',checkedAt:observedAt,contracts:0,sourceUrl:'https://predictions.draftkings.com/en',categories:[]};
- if(!draftKingsFeedConfigured())return{contracts:[],status:{...info,status:'unavailable',message:'An authorized DraftKings Predictions NFL event-contract feed is not connected. DraftKings Sportsbook odds and separately selected exchange alternatives are not DraftKings Predictions prices.'},sources:[],rejected:[],complete:true};
- const contracts:PropMarketContract[]=[],rejected:PropMarketDiscovery['rejected']=[];let complete=true;
+ const info:Omit<PropProviderStatus,'status'|'message'>={provider:'DraftKings Predictions',checkedAt:observedAt,contracts:0,sourceUrl:DRAFTKINGS_PREDICTIONS_NFL_URL,categories:[]},configuration=draftKingsConfigurationDiagnostic(observedAt);
+ if(configuration)return{contracts:[],status:{...info,status:'unavailable',message:configuration.message,diagnostic:configuration},sources:[],rejected:[],complete:true};
+ const contracts:PropMarketContract[]=[],rejected:PropMarketDiscovery['rejected']=[],states=new Map<string,string>();let complete=true,received=0,skippedOutOfScope=0,httpStatus:number|null=null,identityRejected=0;
+ const counts=(unique:PropMarketContract[])=>({received,accepted:unique.length,rejected:rejected.length,skippedOutOfScope,currentQuotes:unique.filter(c=>c.verification.current).length,compatibleContracts:unique.filter(c=>c.settlement.modelCompatible).length,closedContracts:unique.filter(c=>states.get(c.id)!=='open').length,unmappedIdentities:unique.filter(c=>!isGameMarket(c.stat)&&c.mapping.status!=='verified').length,duplicates:contracts.length-unique.length});
  try{
   const base=configuredFeedUrl()!,headers:Record<string,string>={};if(process.env.GRIDIRON_DK_PREDICTIONS_FEED_TOKEN)headers.Authorization='Bearer '+process.env.GRIDIRON_DK_PREDICTIONS_FEED_TOKEN;
   let cursor:string|undefined;
   for(let page=0;page<MAX_PAGES;page++){
    const url=new URL(base);if(cursor)url.searchParams.set('cursor',cursor);
-   const body=await readJson(url.href,transport,headers);
-   if(!['gridiron-player-prop-contracts-v1','gridiron-nfl-event-contracts-v1'].includes(body?.schema)||body.provider!=='DraftKings Predictions'||!Array.isArray(body.contracts)||body.contracts.length>1000)throw Error('Unsupported authorized feed schema.');
-   for(const value of body.contracts){if(!includeGames&&isGameMarket(String(value?.stat)))continue;try{contracts.push(normalizeAuthorizedPropContract(value,games,[],observedAt));}catch{rejected.push({contractId:typeof value?.contractId==='string'?value.contractId.slice(0,200):'unverified',reason:'The authorized source returned an unsupported identity, threshold, price or settlement definition.'});}}
+   const body=await readJson(url.href,transport,headers,MAX_SOURCE_BYTES,status=>{httpStatus=status;});
+   if(!['gridiron-player-prop-contracts-v1','gridiron-nfl-event-contracts-v1'].includes(body?.schema)||body.provider!=='DraftKings Predictions'||!Array.isArray(body.contracts)||body.contracts.length>1000)throw new ProviderSourceError('unsupported_feed_schema',httpStatus);
+   received+=body.contracts.length;
+   for(const value of body.contracts){
+    if(!includeGames&&isGameMarket(String(value?.stat))){skippedOutOfScope++;continue;}
+    try{const contract=normalizeAuthorizedPropContract(value,games,[],observedAt);contracts.push(contract);states.set(contract.id,value.status);}catch(error){const reason=contractFailure(error);if(reason==='identity_mismatch')identityRejected++;rejected.push({contractId:safeRejectedId(value?.contractId),reason:reason==='identity_mismatch'?'The contract identity could not be matched to the verified NFL schedule or required identity fields.':'The contract price, threshold, rules or safe event-contract definition could not be verified.'});}
+   }
    if(body.nextCursor===null||body.nextCursor===undefined||body.nextCursor===''){cursor=undefined;break;}
-   if(typeof body.nextCursor!=='string'||body.nextCursor.length>500||body.nextCursor===cursor)throw Error('Unsupported market pagination.');cursor=body.nextCursor;if(page===MAX_PAGES-1)complete=false;
+   if(typeof body.nextCursor!=='string'||body.nextCursor.length>500||body.nextCursor===cursor)throw new ProviderSourceError('unsupported_pagination',httpStatus);cursor=body.nextCursor;if(page===MAX_PAGES-1)complete=false;
   }
-  const unique=[...new Map(contracts.map(c=>[c.id,c])).values()];return{contracts:unique,status:{...info,status:unique.length&&complete&&unique.every(c=>c.settlement.modelCompatible&&c.verification.current)?'available':'partial',contracts:unique.length,categories:[...new Set(unique.map(c=>c.category))],message:unique.length?'Observed authorized DraftKings Predictions event-contract snapshots. Prices, fees and exceptional settlement coverage remain individually audited.':'No supported current NFL player contracts were verified in the authorized source.'},sources:[source('dk-authorized-player-props','Authorized DraftKings Predictions contract feed',cleanUrl(base),observedAt,complete?'available':'partial','Operator-authorized event-contract integration; not a public DraftKings API or sportsbook substitution.')],rejected,complete};
- }catch{return{contracts:[],status:{...info,status:'unavailable',message:'The authorized DraftKings contract feed could not be verified. No fallback price or unsupported market definition was invented.'},sources:[],rejected,complete:false};}
+  const unique=[...new Map(contracts.map(c=>[c.id,c])).values()],coverage=counts(unique),pricePresent=unique.some(c=>Boolean(c.yesAskCents||c.noAskCents||c.displayedYesPercent!=null||c.displayedNoPercent!=null));
+  let report:PropProviderDiagnostic;
+  if(!complete)report=diagnostic('pagination_incomplete',observedAt,'The authorized feed still has additional pages after the bounded refresh. This is partial coverage, not evidence that no NFL markets exist.','The app operator must review pagination or narrow the authorized feed scope.',{stage:'source',requiresOperator:true,httpStatus});
+  else if(received===0)report=diagnostic('no_nfl_markets',observedAt,'The authorized feed responded successfully and returned an empty NFL contract list for this request.','Check again when the provider lists NFL contracts; reconnecting accounts is not required.',{stage:'contracts',httpStatus});
+  else if(skippedOutOfScope===received)report=diagnostic('no_requested_markets',observedAt,'The connected feed returned NFL contracts, but none belong to the requested player-market scope.','Choose all NFL markets to inspect the available game contracts.',{stage:'contracts',httpStatus});
+  else if(!unique.length)report=diagnostic(identityRejected===rejected.length?'identity_mismatch':'unsupported_contracts',observedAt,identityRejected===rejected.length?'NFL contracts were returned, but none could be matched to the verified schedule or required player/team identity.':'NFL contracts were returned, but all were rejected because their exact definitions, prices or rules could not be verified.','The app operator must review the rejected contract definitions. No missing record is treated as an empty NFL market list.',{stage:identityRejected===rejected.length?'identity':'contracts',requiresOperator:true,httpStatus});
+  else if(coverage.closedContracts===unique.length)report=diagnostic('markets_not_open',observedAt,'The connected feed returned verified NFL contracts, but all are closed or suspended.','Wait for the source to list open markets; historical contracts are not called current.',{stage:'contracts',httpStatus});
+  else if(!pricePresent)report=diagnostic('quotes_unavailable',observedAt,'The connected feed returned NFL contract definitions without a displayed percentage or quoted offer.','The provider must supply current prices before market comparisons can be shown.',{stage:'contracts',httpStatus});
+  else if(!coverage.currentQuotes)report=diagnostic('stale_quotes',observedAt,'The connected feed returned NFL prices, but none passes the current quote timestamp and open-market checks.','Refresh verified source prices. Saved observations remain historical.',{stage:'contracts',httpStatus,retryable:true});
+  else if(!coverage.compatibleContracts)report=diagnostic('unsupported_contracts',observedAt,'The authorized feed is connected and returned NFL prices, but none of the verified settlement definitions is supported by the current model.','The contracts remain identified; unsupported model probabilities and valuations are withheld.',{stage:'contracts',httpStatus});
+  else if(rejected.length||coverage.compatibleContracts<unique.length||coverage.currentQuotes<unique.length)report=diagnostic('partial_coverage',observedAt,'The authorized feed is connected. Some returned contracts have unsupported definitions or lack a current verified quote.','Inspect each contract’s evidence and limitations. Unsupported outcomes remain withheld.',{stage:'contracts',httpStatus});
+  else report=diagnostic('available',observedAt,'Current authorized DraftKings Predictions event-contract definitions and prices were verified.','Player identity, fees, settlement exceptions and model support are checked separately before analysis.',{stage:'contracts',httpStatus});
+  report={...report,counts:coverage,...identityRejected?{issues:[{code:'identity_mismatch' as const,contracts:identityRejected}]}:{}};
+  const status=report.code==='available'||report.code==='no_nfl_markets'||report.code==='no_requested_markets'?'available':'partial';
+  return{contracts:unique,status:{...info,status,contracts:unique.length,categories:[...new Set(unique.map(c=>c.category))],message:report.message,diagnostic:report},sources:[source('dk-authorized-player-props','Authorized DraftKings Predictions contract feed',cleanUrl(base),observedAt,complete?'available':'partial','Operator-authorized event-contract integration; not a public DraftKings API or sportsbook substitution.')],rejected,complete};
+ }catch(error){const unique=[...new Map(contracts.map(c=>[c.id,c])).values()],report={...sourceFailureDiagnostic(error,observedAt),counts:counts(unique)};return{contracts:[],status:{...info,status:'unavailable',message:report.message,diagnostic:report},sources:[],rejected,complete:false};}
 }
 
 async function discoverKalshi(games:PublicGame[],transport:typeof fetch,observedAt:string,includeGames=false){
@@ -153,15 +216,27 @@ async function discoverKalshi(games:PublicGame[],transport:typeof fetch,observed
 export async function discoverPlayerPropMarkets(games:PublicGame[],options:PropProviderOptions={}):Promise<PropMarketDiscovery>{
  const now=options.now??new Date(),observedAt=now.toISOString(),transport=options.transport??fetch;
  const upcoming=games.filter(game=>game.status!=='final'&&milliseconds(game.startTime)>now.getTime()&&milliseconds(game.startTime)<=now.getTime()+7*86400000).sort((a,b)=>milliseconds(a.startTime)-milliseconds(b.startTime)).slice(0,32);
- const key=sha({games:upcoming.map(g=>[g.id,g.home.id,g.away.id,g.startTime]),includeGameMarkets:options.includeGameMarkets===true,provider:options.provider??'legacy_all'});
+ const key=sha({games:upcoming.map(g=>[g.id,g.home.id,g.away.id,g.startTime]),includeGameMarkets:options.includeGameMarkets===true,provider:options.provider??'legacy_all',configuration:sha({url:process.env.GRIDIRON_DK_PREDICTIONS_FEED_URL??null,authorization:process.env.GRIDIRON_DK_PREDICTIONS_FEED_AUTHORIZED??null,token:process.env.GRIDIRON_DK_PREDICTIONS_FEED_TOKEN??null})});
  if(!options.force&&!options.transport&&cached?.key===key&&cached.until>now.getTime())return structuredClone(cached.value);
  if(!options.transport&&pending.has(key))return pending.get(key)!;
  const task=(async()=>{
-  const notSelected=(provider:'DraftKings Predictions'|'Kalshi')=>({contracts:[] as PropMarketContract[],rejected:[],sources:[],complete:true,status:{provider,status:'unavailable' as const,checkedAt:observedAt,contracts:0,categories:[],sourceUrl:provider==='DraftKings Predictions'?'https://predictions.draftkings.com/en':KALSHI_PROP_DOCS,message:`${provider} was not queried in this explicitly selected ${options.provider} scan. No source substitution or equivalent-price claim is made.`}});
+  const notSelected=(provider:'DraftKings Predictions'|'Kalshi')=>{const message=`${provider} was not queried in this explicitly selected ${options.provider} scan. No source substitution or equivalent-price claim is made.`,report=diagnostic('not_selected',observedAt,message,'Select this provider explicitly to check its own authorized data connection.');return{contracts:[] as PropMarketContract[],rejected:[],sources:[],complete:true,status:{provider,status:'unavailable' as const,checkedAt:observedAt,contracts:0,categories:[],sourceUrl:provider==='DraftKings Predictions'?DRAFTKINGS_PREDICTIONS_NFL_URL:KALSHI_PROP_DOCS,message,diagnostic:report}};};
   const [dk,kalshi]=await Promise.all([options.provider==='Kalshi'?Promise.resolve(notSelected('DraftKings Predictions')):discoverDraftKings(upcoming,transport,observedAt,options.includeGameMarkets),options.provider==='DraftKings Predictions'?Promise.resolve(notSelected('Kalshi')):discoverKalshi(upcoming,transport,observedAt,options.includeGameMarkets)]);
   const contracts=[...dk.contracts,...kalshi.contracts],value:PropMarketDiscovery={contracts,providers:[dk.status,kalshi.status],sources:[...dk.sources,...kalshi.sources],checkedAt:observedAt,complete:dk.complete&&kalshi.complete,rejected:[...dk.rejected,...kalshi.rejected],neededGames:[...new Set(contracts.map(c=>c.gameId))]};
   if(!options.transport)cached={key,until:now.getTime()+CACHE_MS,value};return structuredClone(value);
  })().finally(()=>{if(!options.transport)pending.delete(key);});if(!options.transport)pending.set(key,task);return task;
 }
-export async function fetchPlayerPropMarkets(games:PublicGame[],catalog:PropPlayerIdentity[],options:PropProviderOptions={}):Promise<PropMarketDiscovery>{const value=await discoverPlayerPropMarkets(games,options);return{...value,contracts:value.contracts.map(contract=>contract.sourceKind==='public_exchange'?resolvePlayerPropIdentity(contract,catalog):resolveAuthorizedIdentity(contract,catalog))};}
+export async function fetchPlayerPropMarkets(games:PublicGame[],catalog:PropPlayerIdentity[],options:PropProviderOptions={}):Promise<PropMarketDiscovery>{
+ const value=await discoverPlayerPropMarkets(games,options),contracts=value.contracts.map(contract=>contract.sourceKind==='public_exchange'?resolvePlayerPropIdentity(contract,catalog):resolveAuthorizedIdentity(contract,catalog));
+ const providers=value.providers.map(provider=>{
+  if(provider.provider!=='DraftKings Predictions'||!provider.diagnostic)return provider;
+  const playerContracts=contracts.filter(c=>c.provider==='DraftKings Predictions'&&!isGameMarket(c.stat));
+  if(!catalog.length){if(!playerContracts.length||!['available','partial_coverage'].includes(provider.diagnostic.code))return provider;const report=diagnostic('identity_verification_pending',value.checkedAt,'The authorized feed is connected, but a verified NFL roster catalog is not available to check these player identities.','The app must refresh verified roster evidence before publishing those player predictions; no identity or statistics are guessed.',{stage:'identity',httpStatus:provider.diagnostic.httpStatus,retryable:true,counts:provider.diagnostic.counts});return{...provider,status:'partial' as const,message:report.message,diagnostic:report};}
+  const failed=contracts.filter(c=>c.provider==='DraftKings Predictions'&&!isGameMarket(c.stat)&&c.mapping.status!=='verified').length;if(!failed)return{...provider,diagnostic:{...provider.diagnostic,...provider.diagnostic.counts?{counts:{...provider.diagnostic.counts,unmappedIdentities:0}}:{}}};
+  const issue={code:'identity_mismatch' as const,contracts:failed},existing=provider.diagnostic.issues??[],issues=[...existing.filter(v=>v.code!=='identity_mismatch'),{...issue,contracts:failed+existing.filter(v=>v.code==='identity_mismatch').reduce((n,v)=>n+v.contracts,0)}],counts=provider.diagnostic.counts?{...provider.diagnostic.counts,unmappedIdentities:failed}:undefined;
+  const replace=['available','partial_coverage'].includes(provider.diagnostic.code),conflict=playerContracts.some(c=>c.mapping.status==='conflict'),report=replace?diagnostic('identity_mismatch',value.checkedAt,'The authorized feed is connected, but some player contracts could not be matched uniquely to the verified NFL roster and source player ID.','The affected predictions are withheld until the app can verify the exact player identity. Game contracts and verified players remain separate.',{stage:'identity',httpStatus:provider.diagnostic.httpStatus,requiresOperator:conflict,retryable:!conflict}):provider.diagnostic;
+  return{...provider,status:'partial' as const,message:report.message,diagnostic:{...report,...counts?{counts}:{},issues}};
+ });
+ return{...value,contracts,providers};
+}
 function resolveAuthorizedIdentity(contract:PropMarketContract,catalog:PropPlayerIdentity[]):PropMarketContract{if(isGameMarket(contract.stat))return contract;const resolved=resolvePlayerPropIdentity(contract,catalog);if(resolved.playerId&&resolved.playerId!==contract.providerPlayerId)return{...resolved,playerId:null,mapping:{status:'conflict',method:'exact_GSIS_name_and_current_roster_team',reason:'The authorized source player ID disagrees with the current NFL roster.'}};return resolved;}

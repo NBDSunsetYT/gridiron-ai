@@ -8,7 +8,7 @@ import {publicRateLimit} from '../public-nfl/store';
 import {publicGameDetail,loadSchedule} from '../public-nfl/service';
 import {createAiProviderClient} from '../ai-provider';
 import {PROP_STATS,NFL_MARKET_STATS} from './market-types';
-import {normalizeVerifiedManualProp,draftKingsFeedConfigured} from './providers';
+import {normalizeVerifiedManualProp,draftKingsConfigurationDiagnostic} from './providers';
 import {startPropScan,propDashboard,nflMarketDashboard,propResearchDetail,finalizeMarketFreshness} from './service';
 import {buildPropResearch} from './math';
 import type {PropFilters} from './store';
@@ -41,7 +41,7 @@ export async function handlePlayerProps(request:Request,path:string[]=[],scope:'
  try{
   const dashboard=scope==='all'?nflMarketDashboard:propDashboard;
   if(!path.length&&request.method==='GET')return json(await dashboard(filters(request,scope)));
-  if(path[0]==='analyze'&&path.length===1&&request.method==='POST'){guardMutation(request);fields(await readJsonObject(request),[]);const filter=filters(request,scope),provider=filter.provider??'DraftKings Predictions';if(provider==='DraftKings Predictions'&&!draftKingsFeedConfigured())return json(await dashboard({...filter,provider}));await publicRateLimit(request,'props-scan',12,3600000);const run=await startPropScan(scope==='all'?'all_nfl_user':'user',provider);return json({...(await dashboard(filter)),runId:run.id,status:run.status},202);}
+  if(path[0]==='analyze'&&path.length===1&&request.method==='POST'){guardMutation(request);fields(await readJsonObject(request),[]);const filter=filters(request,scope),provider=filter.provider??'DraftKings Predictions';if(provider==='DraftKings Predictions'&&draftKingsConfigurationDiagnostic())return json(await dashboard({...filter,provider}));await publicRateLimit(request,'props-scan',12,3600000);const run=await startPropScan(scope==='all'?'all_nfl_user':'user',provider);return json({...(await dashboard(filter)),runId:run.id,status:run.status},202);}
   if(path[0]==='results'&&path.length===2&&request.method==='GET')return json(await propResearchDetail(path[1]));
   if(path[0]==='performance'&&path.length===1&&request.method==='GET'){const lab=await import('./model-lab');return json(await lab.getPropPerformance());}
   if(path[0]==='assistant'&&path.length===1&&request.method==='POST'){

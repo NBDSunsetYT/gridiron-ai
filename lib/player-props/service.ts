@@ -4,7 +4,7 @@ import {ApiError} from '../auth';
 import {sharedJob,latestJobs} from '../public-nfl/store';
 import {loadSchedule,publicGameDetail,analyzePublicGame,PUBLIC_PIPELINE_VERSION,evidenceHash} from '../public-nfl/service';
 import {sha} from '../public-nfl/sources';
-import {discoverPlayerPropMarkets,fetchPlayerPropMarkets,draftKingsFeedConfigured} from './providers';
+import {discoverPlayerPropMarkets,fetchPlayerPropMarkets,draftKingsFeedConfigured,draftKingsConfigurationDiagnostic} from './providers';
 import {resolvePlayerPropIdentity,recheckPropMarketFreshness} from './normalize';
 import {buildPropResearch,exactPropDistribution,valueProp} from './math';
 import {applyPropCalibration,type PropCalibrator} from './evaluation';
@@ -23,7 +23,8 @@ function selectedGames(games:PublicGame[]){return games.filter(game=>game.status
 async function performance(){try{const module=await import('./model-lab');return await module.getPropPerformance();}catch{return{status:'unavailable',eligibleResolved:null,overall:null,message:'Historical model performance could not be verified right now. Existing observations remain preserved; unavailable metrics are not zero accuracy.'};}}
 
 export async function startPropScan(trigger='user',provider:'DraftKings Predictions'|'Kalshi'='DraftKings Predictions'){
- if(provider==='DraftKings Predictions'&&!draftKingsFeedConfigured())throw new ApiError('Authorized DraftKings Predictions NFL contract data is unavailable. No alternative-exchange research was queued.',503);
+ const configuration=provider==='DraftKings Predictions'?draftKingsConfigurationDiagnostic():null;
+ if(configuration)throw new ApiError(configuration.message+' '+configuration.action,503);
  const current=await propRun();
  if(current&&current.data.provider===provider&&current.data.pipelineVersion===NFL_MARKET_PIPELINE_VERSION&&(['queued','running'].includes(current.status)||Date.now()-Date.parse(current.updated_at)<(current.status==='failed'?15000:MAX_SCAN_AGE))){if(current.status==='queued'||current.status==='running'&&Date.now()-Date.parse(current.updated_at)>4*60000)dispatch(current.id);return current;}
  const schedule=await loadSchedule(),games=selectedGames(schedule.games);
@@ -33,16 +34,16 @@ export async function startPropScan(trigger='user',provider:'DraftKings Predicti
 function header(run:PropRun|null,games:PublicGame[]):Omit<PropScan,'results'|'performance'|'totalResults'|'nextCursor'>{const result=run?.result??{};return{status:run?.status??'unavailable',message:run?.error??undefined,runId:run?.id??null,updatedAt:run?.updated_at??new Date().toISOString(),games,providers:result.providers??[],progress:result.progress??{completed:0,total:0,phase:'Ready to discover verified contracts',gamesComplete:0,gamesTotal:0},sources:result.sources??[],limitations:result.limitations??['No authorized live DraftKings Predictions feed is configured. Available alternatives are labeled by their actual provider.','Raw simulation estimates are not calibrated probabilities or proof of positive expected value.']};}
 export async function propDashboard(filter:PropFilters={}):Promise<PropScan>{
  const provider=filter.provider??'DraftKings Predictions';
- if(provider==='DraftKings Predictions'&&!draftKingsFeedConfigured())return unavailableDraftKingsDashboard('player',{...filter,provider});
+ if(provider==='DraftKings Predictions'&&draftKingsConfigurationDiagnostic())return unavailableDraftKingsDashboard('player',{...filter,provider});
  return marketDashboard({...filter,scope:'player',provider});
 }
 export async function nflMarketDashboard(filter:PropFilters={}):Promise<PropScan>{
- if((filter.provider??'DraftKings Predictions')==='DraftKings Predictions'&&!draftKingsFeedConfigured())return unavailableDraftKingsDashboard(filter.scope??'all',filter);
+ if((filter.provider??'DraftKings Predictions')==='DraftKings Predictions'&&draftKingsConfigurationDiagnostic())return unavailableDraftKingsDashboard(filter.scope??'all',filter);
  return marketDashboard({...filter,scope:filter.scope??'all',provider:filter.provider??'DraftKings Predictions'});
 }
 async function unavailableDraftKingsDashboard(scope:'all'|'player'|'game',filter:PropFilters):Promise<PropScan>{
- const schedule=await loadSchedule(),at=new Date().toISOString(),message='An authorized DraftKings Predictions NFL event-contract feed is not connected. No alternative market prices or alternative simulations are substituted. You can browse verified NFL games or explicitly select a separately labelled exchange.';
- return{status:'unavailable',message,runId:null,resultSetId:null,updatedAt:at,games:selectedGames(schedule.games),providers:[{provider:'DraftKings Predictions',status:'unavailable',checkedAt:at,contracts:0,message,sourceUrl:'https://predictions.draftkings.com/en',categories:[]},{provider:'Kalshi',status:'unavailable',checkedAt:at,contracts:0,message:'Optional separate exchange. Select Kalshi explicitly to retrieve its own contracts; these are not DraftKings Predictions prices.',sourceUrl:'https://docs.kalshi.com/getting_started/quick_start_market_data',categories:[]}],results:[],progress:{completed:0,total:0,phase:'DraftKings Predictions contract feed unavailable',gamesComplete:0,gamesTotal:0},sources:schedule.sources,limitations:[message,'A percentage price is distinct from executable bid/ask, after-fee break-even and calibrated model probability.'],performance:{status:'unavailable',n:null,brier:null,logLoss:null,message:'No current authorized DraftKings contract archive is connected; unavailable evidence is not zero model accuracy.'},totalResults:0,nextCursor:null,primaryProvider:'DraftKings Predictions',marketScope:scope,ranking:filter.ranking??'coverage'};
+ const schedule=await loadSchedule(),at=new Date().toISOString(),diagnostic=draftKingsConfigurationDiagnostic(at),message=(diagnostic?diagnostic.message+' '+diagnostic.action:'An authorized DraftKings Predictions NFL event-contract feed is not connected.')+' No alternative market prices or simulations are substituted.';
+ return{status:'unavailable',message,runId:null,resultSetId:null,updatedAt:at,games:selectedGames(schedule.games),providers:[{provider:'DraftKings Predictions',status:'unavailable',checkedAt:at,contracts:0,message,sourceUrl:'https://predictions.draftkings.com/en/markets/football/nfl',categories:[],...diagnostic?{diagnostic}:{}},{provider:'Kalshi',status:'unavailable',checkedAt:at,contracts:0,message:'Optional separate exchange. Select Kalshi explicitly to retrieve its own contracts; these are not DraftKings Predictions prices.',sourceUrl:'https://docs.kalshi.com/getting_started/quick_start_market_data',categories:[]}],results:[],progress:{completed:0,total:0,phase:'DraftKings Predictions source needs operator configuration',gamesComplete:0,gamesTotal:0},sources:schedule.sources,limitations:[message,'A percentage price is distinct from executable bid/ask, after-fee break-even and calibrated model probability.'],performance:{status:'unavailable',n:null,brier:null,logLoss:null,message:'No current authorized DraftKings contract archive is connected; unavailable evidence is not zero model accuracy.'},totalResults:0,nextCursor:null,primaryProvider:'DraftKings Predictions',marketScope:scope,ranking:filter.ranking??'coverage'};
 }
 async function marketDashboard(filter:PropFilters):Promise<PropScan>{
  let readUnavailable=false;const [schedule,run]=await Promise.all([loadSchedule(),propRun().catch(()=>{readUnavailable=true;return null;})]),games=selectedGames(schedule.games);

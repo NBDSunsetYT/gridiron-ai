@@ -1,10 +1,12 @@
-# GRIDIRON AI 7.0
+# GRIDIRON AI 7.0.1
 
 GRIDIRON AI is an installable NFL research app with public game analysis and a private personal wallet. The existing application has been upgraded; its previous ledger, research tools and data remain preserved.
 
 The existing application is hosted at **https://gridiron-ai-gray.vercel.app**. Version 7 makes DraftKings Predictions the explicit primary event-contract reference and adds an all-NFL market research workflow alongside the existing player-prop scanner. Exact threshold distributions, immutable snapshots, controlled calibration, private joint simulations and event-contract Wallet records are preserved. Executed release checks and remaining limitations are recorded in [DELIVERY_V7.md](docs/DELIVERY_V7.md); earlier evidence remains in [DELIVERY_V6.md](docs/DELIVERY_V6.md) and [DELIVERY_V5.md](docs/DELIVERY_V5.md).
 
 **Current integration limits:** direct DraftKings Predictions contract access is not configured, and new public research is paused at the database reserve boundary. Saved research and private Wallet remain available. Complete scanner acceptance is blocked pending additional persistent capacity; see [the verified delivery report](docs/DELIVERY_V7.md).
+
+The 7.0.1 repair distinguishes missing authorized feed configuration, credential rejection, empty verified feeds, rate limits, outages, unsupported contracts and identity/quote checks. The deployed source has no configured licensed DraftKings feed; zero verified accessible contracts is not evidence that the platform has no NFL markets. See [the precise diagnosis, tested providers and optional manual fallback](docs/DRAFTKINGS_ACCESS.md).
 
 ## Open the app
 

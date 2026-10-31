@@ -9,7 +9,7 @@ const privateStore=vi.hoisted(()=>({record:vi.fn(),records:vi.fn(),saveRecord:vi
 const privateMessages=vi.hoisted(()=>({cloudCreateConversation:vi.fn(),cloudAppendMessage:vi.fn(),cloudContracts:vi.fn()}));
 const shared=vi.hoisted(()=>({propWrite:vi.fn(),propBatch:vi.fn(),publicRateLimit:vi.fn()}));
 const privateJobs=vi.hoisted(()=>({readPrivatePropResearch:vi.fn(),queuePrivatePropResearch:vi.fn()}));
-const sourceAccess=vi.hoisted(()=>({draftKingsFeedConfigured:vi.fn(()=>true)}));
+const sourceAccess=vi.hoisted(()=>({draftKingsFeedConfigured:vi.fn(()=>true),draftKingsConfigurationDiagnostic:vi.fn<()=>any>()}));
 vi.mock('next/server',()=>({after:vi.fn()}));
 vi.mock('../lib/player-props/service',()=>service);
 vi.mock('../lib/public-nfl/service',()=>nfl);
@@ -31,6 +31,7 @@ function request(path:string,body?:unknown,origin='https://gridiron.example.test
 beforeEach(()=>{
  vi.clearAllMocks();vi.stubEnv('APP_URL','https://gridiron.example.test');vi.stubEnv('APP_ORIGIN','');vi.stubEnv('OPENAI_API_KEY','');
  sourceAccess.draftKingsFeedConfigured.mockReturnValue(true);
+ sourceAccess.draftKingsConfigurationDiagnostic.mockImplementation(()=>sourceAccess.draftKingsFeedConfigured()?null:{code:'feed_not_configured',stage:'configuration',checkedAt:new Date().toISOString(),retryable:false,requiresOperator:true,httpStatus:null,message:'Authorized feed not connected.',action:'Connect an authorized source.'});
  state.user=null;state.records.clear();const f=playerPropFixture();state.scan=f.scan;state.rows={...f.receiverYes,id:researchId};
  service.startPropScan.mockResolvedValue({id:'SYNTHETIC-SCAN',status:'queued'});service.propDashboard.mockImplementation(async()=>structuredClone(state.scan));service.propResearchDetail.mockImplementation(async(id:string)=>{if(id!==researchId)throw new ApiError('Research snapshot not found.',404);return structuredClone(state.rows);});
  service.nflMarketDashboard.mockImplementation(async()=>structuredClone(state.scan));
@@ -56,6 +57,11 @@ describe('Public prop research and private account boundaries',()=>{
  it('reports missing primary authorization without silently queuing or rate-writing alternative research',async()=>{
   sourceAccess.draftKingsFeedConfigured.mockReturnValue(false);const response=await handlePlayerProps(request('analyze',{}),['analyze'],'all');expect(response.status).toBe(200);expect(service.nflMarketDashboard).toHaveBeenCalledWith({provider:'DraftKings Predictions'});expect(service.startPropScan).not.toHaveBeenCalled();expect(shared.publicRateLimit).not.toHaveBeenCalled();
   const selected=new Request('https://gridiron.example.test/api/nfl/markets/analyze?provider=Kalshi',{method:'POST',headers:{Origin:'https://gridiron.example.test','Content-Type':'application/json'},body:'{}'});expect((await handlePlayerProps(selected,['analyze'],'all')).status).toBe(202);expect(service.startPropScan).toHaveBeenLastCalledWith('all_nfl_user','Kalshi');
+ });
+ it('returns diagnosed invalid-source configuration without consuming a scan slot or queuing work',async()=>{
+  sourceAccess.draftKingsConfigurationDiagnostic.mockReturnValue({code:'feed_configuration_invalid',stage:'configuration',checkedAt:new Date().toISOString(),retryable:false,requiresOperator:true,httpStatus:null,message:'The configured source URL cannot be used.',action:'Correct the source URL.'});
+  const response=await handlePlayerProps(request('analyze',{}),['analyze'],'all');
+  expect(response.status).toBe(200);expect(service.nflMarketDashboard).toHaveBeenCalledWith({provider:'DraftKings Predictions'});expect(service.startPropScan).not.toHaveBeenCalled();expect(shared.publicRateLimit).not.toHaveBeenCalled();expect(privateStore.saveRecord).not.toHaveBeenCalled();
  });
  it('allows only an empty one-tap scan request, never client statistics, arbitrary URLs or account overrides',async()=>{
   const response=await handlePlayerProps(request('analyze',{}),['analyze']);expect(response.status).toBe(202);expect(service.startPropScan).toHaveBeenCalledOnce();expect(response.headers.get('Cache-Control')).toBe('no-store');

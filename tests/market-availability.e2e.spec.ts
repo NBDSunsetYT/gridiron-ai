@@ -1,0 +1,46 @@
+/** SYNTHETIC source-diagnostic transports only. No production market data. */
+import {test,expect,type Page} from '@playwright/test';
+import {playerPropFixture} from './fixtures/player-props';
+
+type Code='feed_not_configured'|'no_nfl_markets'|'source_rate_limited'|'unsupported_contracts'|'identity_mismatch'|'stale_quotes';
+const labels:Record<Code,{stage:string;operator:boolean;retryable:boolean;http:number|null;message:string;action:string;status:string}>={
+ feed_not_configured:{stage:'configuration',operator:true,retryable:false,http:null,message:'SYNTHETIC: an authorized DraftKings Predictions feed is not connected.',action:'SYNTHETIC: an app operator must arrange authorized market access.',status:'unavailable'},
+ no_nfl_markets:{stage:'contracts',operator:false,retryable:false,http:200,message:'SYNTHETIC: the authorized feed responded successfully with an empty NFL contract list.',action:'SYNTHETIC: check back when the provider lists NFL contracts.',status:'available'},
+ source_rate_limited:{stage:'source',operator:false,retryable:true,http:429,message:'SYNTHETIC: the market source is temporarily limiting requests.',action:'SYNTHETIC: retry the source check later.',status:'unavailable'},
+ unsupported_contracts:{stage:'contracts',operator:true,retryable:false,http:200,message:'SYNTHETIC: contracts were retrieved but their settlement definitions are not supported.',action:'SYNTHETIC: settlement definitions need verification.',status:'partial'},
+ identity_mismatch:{stage:'identity',operator:true,retryable:false,http:200,message:'SYNTHETIC: retrieved contracts could not be mapped to verified NFL player identities.',action:'SYNTHETIC: player identities need source verification.',status:'partial'},
+ stale_quotes:{stage:'contracts',operator:false,retryable:false,http:200,message:'SYNTHETIC: contract definitions were retrieved but their quotes are stale.',action:'SYNTHETIC: wait for current verified market prices.',status:'partial'},
+};
+async function transport(page:Page,initial:Code){
+ const fixture=playerPropFixture(),now=new Date().toISOString(),posts:unknown[]=[];let code=initial,reads=0;
+ const data=()=>{const state=labels[code];const received=['unsupported_contracts','identity_mismatch','stale_quotes'].includes(code)?20:0;
+ return{...fixture.scan,status:'unavailable',runId:null,resultSetId:null,results:[],nextCursor:null,totalResults:0,progress:{completed:0,total:0,phase:'SYNTHETIC source diagnosis',gamesComplete:0,gamesTotal:0},providers:[{provider:'DraftKings Predictions',status:state.status,checkedAt:now,contracts:received,message:state.message,sourceUrl:'https://predictions.draftkings.com/en/markets/football/nfl',categories:[],diagnostic:{code,stage:state.stage,checkedAt:now,retryable:state.retryable,requiresOperator:state.operator,httpStatus:state.http,message:state.message,action:state.action,counts:{received,accepted:code==='stale_quotes'?20:0,rejected:received,skippedOutOfScope:0,currentQuotes:0,compatibleContracts:0,closedContracts:0,unmappedIdentities:code==='identity_mismatch'?20:0}}}]};};
+ await page.route('**/api/auth**',route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(new URL(route.request().url()).pathname==='/api/auth/providers'?{emailPassword:true,apple:false}:{user:null})}));
+ await page.route('**/api/nfl**',route=>{const path=new URL(route.request().url()).pathname;if(path==='/api/nfl')return route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(fixture.nfl.dashboard)});if(path==='/api/nfl/markets/analyze')posts.push(route.request().postDataJSON());else reads++;return route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(data())});});
+ await page.route('**/api/props**',route=>{if(route.request().method()==='POST')posts.push(route.request().postDataJSON());else reads++;return route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(data())});});
+ return{posts,get reads(){return reads;},recover:()=>{code='no_nfl_markets';}};
+}
+
+test('an unconnected feed explains the missing access without claiming no NFL markets exist',async({page})=>{
+ const t=await transport(page,'feed_not_configured');await page.goto('/#markets');const source=page.getByRole('region',{name:'DraftKings Predictions source availability',exact:true});
+ await expect(source.getByRole('heading',{name:'DraftKings feed not connected',exact:true})).toBeVisible();await expect(source).toContainText('NFL contract listings have not been checked');await expect(source).toContainText('App operator action required');await expect(source.locator('.market-availability-time')).not.toContainText('Time unavailable');await expect(source.getByRole('button',{name:'Retry source check',exact:true})).toHaveCount(0);await expect(page.getByRole('button',{name:'ANALYZE ALL NFL MARKETS',exact:true})).toBeDisabled();expect(t.posts).toEqual([]);
+ await expect(page.getByRole('link',{name:'Open DraftKings Predictions NFL'})).toHaveAttribute('href','https://predictions.draftkings.com/en/markets/football/nfl');await expect(source).not.toContainText('This feed returned no NFL contracts');await source.getByRole('button',{name:'Optional verified manual entry',exact:true}).click();await expect(page.getByRole('dialog')).toContainText('YOUR GRIDIRON AI ACCOUNT');expect(t.posts).toEqual([]);expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
+});
+
+test('a verified empty NFL listing is distinct from a disconnected market source',async({page})=>{
+ await transport(page,'no_nfl_markets');await page.goto('/#markets');const source=page.getByRole('region',{name:'DraftKings Predictions source availability',exact:true});await expect(source.getByRole('heading',{name:'This feed returned no NFL contracts',exact:true})).toBeVisible();await expect(source).toContainText('responded successfully');await expect(source).not.toContainText('App operator action required');await expect(source).not.toContainText('feed not connected');await expect(page.getByRole('heading',{name:'No NFL contracts were returned by this feed.',exact:true})).toBeVisible();await expect(page.locator('[data-testid^="prop-research-"]')).toHaveCount(0);await source.getByRole('link',{name:'Browse NFL games',exact:true}).click();await expect(page.getByRole('heading',{name:'Every matchup. One tap.'})).toBeVisible();
+});
+
+test('a temporary rate limit offers a real source retry and updates the diagnosis on recovery',async({page})=>{
+ const t=await transport(page,'source_rate_limited');await page.goto('/#props');const source=page.getByRole('region',{name:'DraftKings Predictions source availability',exact:true});await expect(source.getByRole('heading',{name:'DraftKings updates are temporarily paused',exact:true})).toBeVisible();await source.getByText('Verification details',{exact:true}).click();await expect(source).toContainText('HTTP 429');const before=t.reads;t.recover();await source.getByRole('button',{name:'Retry source check',exact:true}).click();await expect(source.getByRole('heading',{name:'This feed returned no NFL contracts',exact:true})).toBeVisible();expect(t.reads).toBeGreaterThan(before);expect(t.posts).toEqual([]);await expect(page.getByRole('dialog')).toHaveCount(0);
+});
+
+for(const [code,title] of [['unsupported_contracts','These contract rules are not supported yet'],['identity_mismatch','Player or team identity needs verification'],['stale_quotes','Fresh DraftKings prices are not available']] as const){
+ test(`${code} explains the evidence failure without pretending the feed is disconnected`,async({page})=>{
+  await transport(page,code);await page.goto('/#markets');const source=page.getByRole('region',{name:'DraftKings Predictions source availability',exact:true});await expect(source.getByRole('heading',{name:title,exact:true})).toBeVisible();await expect(source).not.toContainText('feed not connected');await source.getByText('Verification details',{exact:true}).click();await expect(source).toContainText('Contracts received');await expect(source).toContainText('20');await expect(page.locator('[data-testid^="prop-research-"]')).toHaveCount(0);expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
+ });
+}
+
+test('Home shows the verified connection diagnosis and its timestamp before any market analysis',async({page})=>{
+ const t=await transport(page,'feed_not_configured');await page.goto('/');const source=page.getByRole('region',{name:'DraftKings Predictions source availability',exact:true});await expect(source.getByRole('heading',{name:'DraftKings feed not connected',exact:true})).toBeVisible();await expect(source).toContainText('NFL contract listings have not been checked');await expect(source.locator('.market-availability-time')).not.toContainText('Time unavailable');await expect(page.getByRole('button',{name:/Analyze SYNTHETIC Away at SYNTHETIC Home/})).toBeVisible();expect(t.posts).toEqual([]);await source.getByRole('link',{name:'Market details',exact:true}).click();await expect(page.getByRole('heading',{name:'Every market. The exact contract.'})).toBeVisible();expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);await page.screenshot({path:`test-results/dk-diagnostic-${test.info().project.name}.png`,fullPage:false});
+});
