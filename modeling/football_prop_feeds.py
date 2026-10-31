@@ -71,7 +71,7 @@ def normalize(events,sport,now=None):
                      'timestampMeaning':'PropLine observation; original sportsbook publication time is unverified.',
                      'settlementRules':None,'fees':None,'executionVerified':False,'draftKingsPredictionsEquivalent':False,
                      'sourceUrl':DOCS,'modelProbability':None,'calibratedProbability':None,'expectedValue':None})
-                    if len(rows)>10000:raise DataProviderError('response_bound','The football board exceeds the safe row limit.')
+                    if len(rows)>50000:raise DataProviderError('response_bound','The football board exceeds the safe row limit.')
     rows.sort(key=lambda r:(r['book']['key']!='draftkings',r['kickoff'],r['id']))
     return rows,rejected
 
@@ -137,7 +137,7 @@ class PropLineClient:
                 elif code==429:self.until=now+300
 
             value={'provider':'PropLine','sport':sport,'dataFamily':'sportsbook_reference','status':'available' if rows else 'unavailable',
-             'providerHttpStatus':200,'checkedAt':utc_now(),'items':rows,'rejectedRows':rejected,'quota':quota,'cached':False,
+             'providerHttpStatus':200,'checkedAt':utc_now(),'items':rows,'totalResults':len(rows),'marketCounts':{k:sum(r['market']==k for r in rows) for k in MARKETS},'bookCounts':{k:sum(r['book']['key']==k for r in rows) for k in BOOKS},'rejectedRows':rejected,'quota':quota,'cached':False,
              'diagnostic':{'code':'verified_provider_rows' if rows else 'no_verified_current_props','message':'Current provider rows were validated.' if rows else 'No current supported sportsbook props passed identity and freshness checks.'},
              'fallbackVerified':False,'identityCrosswalkStatus':crosswalk_status}
             self.cache[sport]=(now,value);return copy.deepcopy(value)

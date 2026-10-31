@@ -100,11 +100,14 @@ from .football_prop_feeds import PropLineClient, choose_feed
 prop_line = PropLineClient()
 
 @app.get('/data/props/{sport}')
-async def football_props(sport: str, authorization: str | None = Header(default=None)):
+async def football_props(sport: str, cursor: int = 0, limit: int = 500, authorization: str | None = Header(default=None)):
     authorize_data_bridge(authorization)
     require_render_runtime()
     if sport not in ('NFL','CFB'):
         raise HTTPException(422,'Choose NFL or CFB.')
     # ParlayAPI is deliberately disabled until its official endpoint/schema and
     # entitlement are verified. An access-denied docs page is not a spec.
-    return await asyncio.to_thread(choose_feed, prop_line.read, None, sport)
+    if cursor<0 or cursor>50000 or not 1<=limit<=500:raise HTTPException(422,'Choose a bounded page.')
+    value=await asyncio.to_thread(choose_feed, prop_line.read, None, sport)
+    rows=value.get('items',[])
+    return {**value,'items':rows[cursor:cursor+limit],'totalResults':len(rows),'nextCursor':cursor+limit if cursor+limit<len(rows) else None}
