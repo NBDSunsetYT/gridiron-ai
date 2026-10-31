@@ -93,3 +93,18 @@ async def nfl_resource(resource: str, request: Request, authorization: str | Non
 # is separately owned and tested; it does not change existing NFL simulations.
 from .cfbd_data import create_cfbd_router
 app.include_router(create_cfbd_router(authorize_data_bridge))
+
+# Primary football sportsbook provider. Legacy BDL routes remain available for
+# compatibility; they are not a fallback for DraftKings Predictions contracts.
+from .football_prop_feeds import PropLineClient, choose_feed
+prop_line = PropLineClient()
+
+@app.get('/data/props/{sport}')
+async def football_props(sport: str, authorization: str | None = Header(default=None)):
+    authorize_data_bridge(authorization)
+    require_render_runtime()
+    if sport not in ('NFL','CFB'):
+        raise HTTPException(422,'Choose NFL or CFB.')
+    # ParlayAPI is deliberately disabled until its official endpoint/schema and
+    # entitlement are verified. An access-denied docs page is not a spec.
+    return await asyncio.to_thread(choose_feed, prop_line.read, None, sport)

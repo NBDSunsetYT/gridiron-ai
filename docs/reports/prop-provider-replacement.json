@@ -1,0 +1,53 @@
+{
+  "checkedAt": "2026-10-31T20:09:04.773495+00:00",
+  "status": "blocked_not_deployed",
+  "propLine": {
+    "documentationHttp": 200,
+    "documentationSha256": "8f8ea4132918bf45176efbd49cb4ee1a4f4d11d825f1115b874a639aa072817b",
+    "documentedFreeDailyRequests": 1000,
+    "documentedSports": [
+      "NFL",
+      "CFB"
+    ],
+    "authenticatedOperatorKeyVerified": false,
+    "publicDemoProbes": {
+      "NFL": {
+        "http": 429,
+        "code": "daily_limit_exceeded",
+        "remaining": 0
+      },
+      "CFB": {
+        "http": 429,
+        "code": "daily_limit_exceeded",
+        "remaining": 0
+      }
+    },
+    "verifiedLiveMarkets": 0
+  },
+  "parlayApi": {
+    "documentationHttp": 403,
+    "bodyClassification": "access_denied_1010",
+    "freeTierVerified": false,
+    "schemaVerified": false,
+    "readerEnabled": false
+  },
+  "render": {
+    "services": 0,
+    "credentialsStored": false,
+    "paidResourcesCreated": false
+  },
+  "database": {
+    "changed": false,
+    "sharedQuoteCachingImplemented": false,
+    "reason": "Live schema unverified; existing guarded provider table does not yet admit PropLine/ParlayAPI; public storage reserve already paused."
+  },
+  "tests": {
+    "unit": 606,
+    "newPython": 11,
+    "existingGatewayPython": 22,
+    "typecheck": "passed",
+    "productionBuild": "passed"
+  },
+  "productionChanged": false,
+  "providerCredentialValuesInReport": false
+}
