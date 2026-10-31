@@ -1,0 +1,45 @@
+{
+  "checkedAt": "2026-10-31T05:08:05.892Z",
+  "primaryPlatform": "DraftKings Predictions",
+  "canonicalNflPage": "https://predictions.draftkings.com/en/markets/football/nfl",
+  "observations": [
+    {
+      "url": "https://predictions.draftkings.com/en",
+      "status": 200,
+      "bytes": 977197
+    },
+    {
+      "url": "https://predictions.draftkings.com/en/markets/football/nfl",
+      "status": 200,
+      "bytes": 1113269,
+      "contractIdsPresent": false,
+      "teamMatchupQuotesPresent": false,
+      "meaning": "This observed public HTML contained navigation and an empty market count, not a verified live NFL contract feed."
+    },
+    {
+      "url": "https://predictions.draftkings.com/robots.txt",
+      "status": 200,
+      "disallowedResourceRoutes": true,
+      "restrictedEndpointsRequested": false
+    }
+  ],
+  "feeReference": {
+    "url": "https://myaccount.draftkings.com/documents/fee-disclosure?product=predict",
+    "checkedAt": "2026-10-31T05:08:05.891Z",
+    "version": "2eda9f727eb9e4647e36fba89159c31425198f719422e7d7feb647c6c32669b6",
+    "verified": true
+  },
+  "feeDocumentSha256": "6bc4c401ebc06b74cd8f4f062a317360a84fa4a26741a3f7f523c7e60cc2921b",
+  "standardPricingCalculator": "/api/nfl/pricing",
+  "brokerPromoFeeNotUsedAsCurrentTotal": true,
+  "automaticDraftKingsFeedConnected": false,
+  "authorizedFeedCredentialsPresent": false,
+  "traditionalSportsbookOddsSubstituted": false,
+  "kalshiEquivalentClaimed": false,
+  "limitations": [
+    "No public documented authorized DraftKings Predictions live NFL contract feed was verified.",
+    "The documented vendor Betstamp feed requires credentials and presents normalized decimal/American prices; its public sample does not prove exact executable exchange quotes, fees or settlement rules.",
+    "Official standard fee terms are publicly readable. Applying them to an actual fill still requires verified venue, account pricing, quantity and execution details.",
+    "No private resource APIs, login session, geolocation bypass or customer account data was accessed."
+  ]
+}

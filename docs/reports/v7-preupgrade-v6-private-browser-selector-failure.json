@@ -1,0 +1,21 @@
+{
+  "status": "failed",
+  "startedAt": "2026-10-31T05:00:56.325Z",
+  "baseUrl": "https://gridiron-ai-gray.vercel.app",
+  "profile": "iPhone13 chromium emulation",
+  "engine": "chromium",
+  "accountsCreated": false,
+  "financialWrites": "Explicit SYNTHETIC QA void/refund workflow only",
+  "researchWrites": "Private account-report conversation only",
+  "credentialsIncluded": false,
+  "physicalIphoneInstallationTested": false,
+  "checks": [
+    {
+      "name": "GRIDIRON sign-in opens the real private Wallet with secure cookies",
+      "status": "passed"
+    }
+  ],
+  "version": "6.0.0",
+  "finishedAt": "2026-10-31T05:01:33.537Z",
+  "error": "locator.selectOption: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('dialog').getByLabel('Record type', { exact: true })\u001b[22m\n"
+}

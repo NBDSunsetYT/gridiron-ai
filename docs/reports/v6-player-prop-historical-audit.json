@@ -1,0 +1,452 @@
+{
+  "protocol": "retrospective-fixed-player-thresholds-6.0.0",
+  "status": "retrospective_research_only",
+  "createdAt": "2026-10-30T21:57:39.327749+00:00",
+  "season": 2026,
+  "trainingThroughWeek": 6,
+  "heldoutWeek": 7,
+  "fixedThresholds": {
+    "passingYards": 199.5,
+    "rushingYards": 59.5,
+    "receivingYards": 40.5
+  },
+  "selection": "First heldout games by actual recorded event time; each team's prior-prefix volume leader per statistic; no heldout statistic is used to select a player or threshold.",
+  "cutoff": "2026-10-23T00:00:00Z",
+  "trainingPlays": 12929,
+  "trainingGames": 93,
+  "n": 12,
+  "games": [
+    {
+      "id": "2026_07_NE_CHI",
+      "home": "CHI",
+      "away": "NE",
+      "eventStart": "2026-10-23T00:15:46.593Z",
+      "eventStartMeaning": "Earliest actual source time_of_day, not an invented scheduled kickoff",
+      "simulations": 10000,
+      "scoreHistogramCounts": {
+        "CHI": 10000,
+        "NE": 10000
+      },
+      "modelVersion": "pbp-conditional-4.0.0"
+    },
+    {
+      "id": "2026_07_PIT_NO",
+      "home": "NO",
+      "away": "PIT",
+      "eventStart": "2026-10-25T13:32:50.450Z",
+      "eventStartMeaning": "Earliest actual source time_of_day, not an invented scheduled kickoff",
+      "simulations": 10000,
+      "scoreHistogramCounts": {
+        "NO": 10000,
+        "PIT": 10000
+      },
+      "modelVersion": "pbp-conditional-4.0.0"
+    }
+  ],
+  "observations": [
+    {
+      "gameId": "2026_07_NE_CHI",
+      "playerId": "00-0039918",
+      "team": "CHI",
+      "stat": "passingYards",
+      "threshold": 199.5,
+      "operator": "gt",
+      "actual": 308,
+      "outcome": 1,
+      "rawProbability": 0.027,
+      "calibratedProbability": null,
+      "brier": 0.9467289999999999,
+      "logLoss": 3.611918412977808,
+      "monteCarloInterval95": [
+        0.024000277570977537,
+        0.03036298488768252
+      ],
+      "simulations": 10000,
+      "trainingOpportunities": 96,
+      "retrospective": true
+    },
+    {
+      "gameId": "2026_07_NE_CHI",
+      "playerId": "00-0036275",
+      "team": "CHI",
+      "stat": "rushingYards",
+      "threshold": 59.5,
+      "operator": "gt",
+      "actual": 78,
+      "outcome": 1,
+      "rawProbability": 0.5178,
+      "calibratedProbability": null,
+      "brier": 0.23251683999999997,
+      "logLoss": 0.6581662116646997,
+      "monteCarloInterval95": [
+        0.5080014349846411,
+        0.5275848946733628
+      ],
+      "simulations": 10000,
+      "trainingOpportunities": 91,
+      "retrospective": true
+    },
+    {
+      "gameId": "2026_07_NE_CHI",
+      "playerId": "00-0040735",
+      "team": "CHI",
+      "stat": "receivingYards",
+      "threshold": 40.5,
+      "operator": "gt",
+      "actual": 130,
+      "outcome": 1,
+      "rawProbability": 0.6669,
+      "calibratedProbability": null,
+      "brier": 0.11095560999999997,
+      "logLoss": 0.40511516934387637,
+      "monteCarloInterval95": [
+        0.6575997214546802,
+        0.6760720998891881
+      ],
+      "simulations": 10000,
+      "trainingOpportunities": 43,
+      "retrospective": true
+    },
+    {
+      "gameId": "2026_07_NE_CHI",
+      "playerId": "00-0039851",
+      "team": "NE",
+      "stat": "passingYards",
+      "threshold": 199.5,
+      "operator": "gt",
+      "actual": 321,
+      "outcome": 1,
+      "rawProbability": 0.6119,
+      "calibratedProbability": null,
+      "brier": 0.15062161,
+      "logLoss": 0.4911864085136422,
+      "monteCarloInterval95": [
+        0.6023075195371549,
+        0.6214065416274878
+      ],
+      "simulations": 10000,
+      "trainingOpportunities": 190,
+      "retrospective": true
+    },
+    {
+      "gameId": "2026_07_NE_CHI",
+      "playerId": "00-0036875",
+      "team": "NE",
+      "stat": "rushingYards",
+      "threshold": 59.5,
+      "operator": "gt",
+      "actual": 22,
+      "outcome": 0,
+      "rawProbability": 0.1949,
+      "calibratedProbability": null,
+      "brier": 0.037986009999999994,
+      "logLoss": 0.21678878567620194,
+      "monteCarloInterval95": [
+        0.18725388266169696,
+        0.2027804331440899
+      ],
+      "simulations": 10000,
+      "trainingOpportunities": 69,
+      "retrospective": true
+    },
+    {
+      "gameId": "2026_07_NE_CHI",
+      "playerId": "00-0038621",
+      "team": "NE",
+      "stat": "receivingYards",
+      "threshold": 40.5,
+      "operator": "gt",
+      "actual": 23,
+      "outcome": 0,
+      "rawProbability": 0.4113,
+      "calibratedProbability": null,
+      "brier": 0.16916769,
+      "logLoss": 0.5298385629479214,
+      "monteCarloInterval95": [
+        0.401691469061078,
+        0.4209766522498799
+      ],
+      "simulations": 10000,
+      "trainingOpportunities": 29,
+      "retrospective": true
+    },
+    {
+      "gameId": "2026_07_PIT_NO",
+      "playerId": "00-0040743",
+      "team": "NO",
+      "stat": "passingYards",
+      "threshold": 199.5,
+      "operator": "gt",
+      "actual": 278,
+      "outcome": 1,
+      "rawProbability": 0.7824,
+      "calibratedProbability": null,
+      "brier": 0.047349760000000005,
+      "logLoss": 0.2453891602615295,
+      "monteCarloInterval95": [
+        0.7742053005011444,
+        0.7903778172190974
+      ],
+      "simulations": 10000,
+      "trainingOpportunities": 246,
+      "retrospective": true
+    },
+    {
+      "gameId": "2026_07_PIT_NO",
+      "playerId": "00-0038551",
+      "team": "NO",
+      "stat": "rushingYards",
+      "threshold": 59.5,
+      "operator": "gt",
+      "actual": 6,
+      "outcome": 0,
+      "rawProbability": 0.0556,
+      "calibratedProbability": null,
+      "brier": 0.0030913599999999996,
+      "logLoss": 0.05720547377077918,
+      "monteCarloInterval95": [
+        0.05127705863589792,
+        0.06026423911595942
+      ],
+      "simulations": 10000,
+      "trainingOpportunities": 49,
+      "retrospective": true
+    },
+    {
+      "gameId": "2026_07_PIT_NO",
+      "playerId": "00-0037239",
+      "team": "NO",
+      "stat": "receivingYards",
+      "threshold": 40.5,
+      "operator": "gt",
+      "actual": 56,
+      "outcome": 1,
+      "rawProbability": 0.9156,
+      "calibratedProbability": null,
+      "brier": 0.007123360000000005,
+      "logLoss": 0.08817569090372546,
+      "monteCarloInterval95": [
+        0.9099906788405526,
+        0.9208901417137408
+      ],
+      "simulations": 10000,
+      "trainingOpportunities": 60,
+      "retrospective": true
+    },
+    {
+      "gameId": "2026_07_PIT_NO",
+      "playerId": "00-0023459",
+      "team": "PIT",
+      "stat": "passingYards",
+      "threshold": 199.5,
+      "operator": "gt",
+      "actual": 212,
+      "outcome": 1,
+      "rawProbability": 0.5523,
+      "calibratedProbability": null,
+      "brier": 0.20043529,
+      "logLoss": 0.5936639020749952,
+      "monteCarloInterval95": [
+        0.5425357058295498,
+        0.5620241279408774
+      ],
+      "simulations": 10000,
+      "trainingOpportunities": 251,
+      "retrospective": true
+    },
+    {
+      "gameId": "2026_07_PIT_NO",
+      "playerId": "00-0037228",
+      "team": "PIT",
+      "stat": "rushingYards",
+      "threshold": 59.5,
+      "operator": "gt",
+      "actual": 101,
+      "outcome": 1,
+      "rawProbability": 0.5651,
+      "calibratedProbability": null,
+      "brier": 0.18913800999999997,
+      "logLoss": 0.5707525723463394,
+      "monteCarloInterval95": [
+        0.555360433849034,
+        0.5747895695631039
+      ],
+      "simulations": 10000,
+      "trainingOpportunities": 82,
+      "retrospective": true
+    },
+    {
+      "gameId": "2026_07_PIT_NO",
+      "playerId": "00-0035640",
+      "team": "PIT",
+      "stat": "receivingYards",
+      "threshold": 40.5,
+      "operator": "gt",
+      "actual": 56,
+      "outcome": 1,
+      "rawProbability": 0.5165,
+      "calibratedProbability": null,
+      "brier": 0.23377225000000004,
+      "logLoss": 0.6606799904224439,
+      "monteCarloInterval95": [
+        0.5067010602231303,
+        0.5262862678306373
+      ],
+      "simulations": 10000,
+      "trainingOpportunities": 51,
+      "retrospective": true
+    }
+  ],
+  "excluded": [],
+  "brier": 0.19407389916666665,
+  "logLoss": 0.6774066950753301,
+  "calibrationDiagnostic": [
+    {
+      "from": 0.0,
+      "to": 0.1,
+      "n": 2,
+      "predicted": 0.041299999999999996,
+      "observed": 0.5,
+      "interval95": null
+    },
+    {
+      "from": 0.1,
+      "to": 0.2,
+      "n": 1,
+      "predicted": 0.1949,
+      "observed": 0.0,
+      "interval95": null
+    },
+    {
+      "from": 0.2,
+      "to": 0.3,
+      "n": 0,
+      "predicted": null,
+      "observed": null,
+      "interval95": null
+    },
+    {
+      "from": 0.3,
+      "to": 0.4,
+      "n": 0,
+      "predicted": null,
+      "observed": null,
+      "interval95": null
+    },
+    {
+      "from": 0.4,
+      "to": 0.5,
+      "n": 1,
+      "predicted": 0.4113,
+      "observed": 0.0,
+      "interval95": null
+    },
+    {
+      "from": 0.5,
+      "to": 0.6,
+      "n": 4,
+      "predicted": 0.537925,
+      "observed": 1.0,
+      "interval95": null
+    },
+    {
+      "from": 0.6,
+      "to": 0.7,
+      "n": 2,
+      "predicted": 0.6394,
+      "observed": 1.0,
+      "interval95": null
+    },
+    {
+      "from": 0.7,
+      "to": 0.8,
+      "n": 1,
+      "predicted": 0.7824,
+      "observed": 1.0,
+      "interval95": null
+    },
+    {
+      "from": 0.8,
+      "to": 0.9,
+      "n": 0,
+      "predicted": null,
+      "observed": null,
+      "interval95": null
+    },
+    {
+      "from": 0.9,
+      "to": 1.0,
+      "n": 1,
+      "predicted": 0.9156,
+      "observed": 1.0,
+      "interval95": null
+    }
+  ],
+  "calibrationStatus": "INSUFFICIENT EVIDENCE. Small retrospective cohort; no approved player-prop calibrator.",
+  "calibratedProbabilitiesAvailable": false,
+  "productionEligible": false,
+  "promotion": "NOT PROMOTED",
+  "marketBenchmark": null,
+  "inputConversion": {
+    "normalizedPlays": 12929,
+    "excluded": {
+      "penalty_or_missing_possession": 2304,
+      "unsupported_event": 1138,
+      "unsupported_lateral": 6,
+      "unknown_or_extreme_clock_duration": 3
+    },
+    "maxTrainingWeek": 6,
+    "limitations": [
+      "Penalties/laterals and unknown clock durations excluded; this selection can bias the fitted model.",
+      "No injury, roster, weather or license entitlement metadata supplied by this adapter.",
+      "time_of_day is source event time; no claim it represents publication time."
+    ]
+  },
+  "sources": [
+    {
+      "id": "nflverse-pbp",
+      "name": "nflverse play-by-play",
+      "kind": "pbp",
+      "url": "https://github.com/nflverse/nflverse-data/releases/download/pbp/play_by_play_2026.csv.gz",
+      "season": 2026,
+      "checkedAt": "2026-10-30T21:54:37.840597+00:00",
+      "sourceUpdatedAt": "2026-10-30T15:52:36+00:00",
+      "version": "653bf713cb9851a8a9d37787388f27a3a339c0e3429d0e64f611402d4328fe6f",
+      "etag": "\"0x8DF369DD1C4C949\"",
+      "bytes": 7433373,
+      "status": "available",
+      "schemaVerified": true,
+      "access": "Public nflverse release asset; upstream attribution and source terms apply.",
+      "publicationAt": null,
+      "reliability": "retrieved_and_schema_checked; historical first-publication time unknown",
+      "lastCheckedAt": "2026-10-30T21:57:26.685125+00:00"
+    },
+    {
+      "id": "nflverse-player_stats",
+      "name": "nflverse player_stats",
+      "kind": "player_stats",
+      "url": "https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_2026.csv.gz",
+      "season": 2026,
+      "checkedAt": "2026-10-30T21:54:37.986995+00:00",
+      "sourceUpdatedAt": "2026-10-30T15:54:32+00:00",
+      "version": "fba3940e405b05b3c20d7b86f1bf217ad52aa720481917d2c14f53e195e793a2",
+      "etag": "\"0x8DF369E171118F2\"",
+      "bytes": 488530,
+      "status": "available",
+      "schemaVerified": true,
+      "access": "Public nflverse release asset; upstream attribution and source terms apply.",
+      "publicationAt": null,
+      "reliability": "retrieved_and_schema_checked; historical first-publication time unknown",
+      "lastCheckedAt": "2026-10-30T21:57:28.281276+00:00"
+    }
+  ],
+  "historicalFirstPublicationVerified": false,
+  "prospectiveSnapshotsCreated": 0,
+  "personalFinancialRecordsChanged": false,
+  "limitations": [
+    "Current public files were collected after these historical games. Historical first-publication times and later revisions cannot be verified; this is not a prospective accuracy claim.",
+    "Small fixed holdout and correlated player contracts do not establish calibration or market advantage. Sampling intervals describe simulation noise only.",
+    "Historical participation/usage is reused; injuries, active/limited/inactive mixtures, numerical weather effects and future roster changes are not fitted in this audit.",
+    "The selected thresholds are predeclared research thresholds, not invented historical DraftKings quotes. Unavailable market prices/fees remain unavailable."
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "checkedAt": "2026-10-31T05:03:43.561290+00:00",
+  "repository": "https://github.com/NBDSunsetYT/gridiron-ai",
+  "branch": "recovery/v6.0.0",
+  "commit": "d858b6896be1b108751d916cac39aa0edb2ecbd1",
+  "source": "Verified complete pre-v7 v6 archive recovered in a separate worktree; current v7 working tree and main preserved.",
+  "remoteRefVerified": true,
+  "sourceFileApiVerified": "lib/player-props/service.ts",
+  "trackedFiles": 460,
+  "archiveFiles": 468,
+  "generatedNativeFilesIgnored": 8,
+  "configuredSecretsIncluded": false,
+  "ciUrl": "https://github.com/NBDSunsetYT/gridiron-ai/actions/runs/41170401892",
+  "ciStatus": "completed",
+  "ciConclusion": "success",
+  "ciCheckedAt": "2026-10-31T05:09:01.277063+00:00",
+  "ciMetrics": [
+    "Ran 92 tests in 151.894s",
+    "62 passed (5.3m)"
+  ]
+}

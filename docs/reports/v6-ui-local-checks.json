@@ -1,0 +1,53 @@
+{
+  "status": "passed",
+  "checkedAt": "2026-10-30T22:25:30.232228+00:00",
+  "scope": "Local browser-only SYNTHETIC transport fixtures; not production market or model validation",
+  "browserChecks": 26,
+  "projects": [
+    "desktop-chromium",
+    "iphone-chromium"
+  ],
+  "typecheck": "passed",
+  "whitespaceCheck": "passed",
+  "reactReview": "Applied relevant React skill checks: lazy charts and route component, typed shared API contracts, stable effects/request guards, private identity gates, accessible controls, no private localStorage records, reduced-motion styles.",
+  "verifiedFlows": [
+    "One home tap sends one automatic scan request and survives refresh without repeating it",
+    "Raw simulation probability is distinct from unavailable calibrated probability and fee-aware value",
+    "Current observed quotes remain distinct from immutable captured prices",
+    "Changed contract definitions cannot reuse an old threshold probability for current valuation",
+    "Filters query the server before pagination and additional outcomes remain accessible",
+    "Provider failures remain honest retry states without fake research or developer login",
+    "Guest combination requests require an app identity and never write a wager",
+    "Contract Wallet payload preserves actual price, inclusive stake, quantity, fees and settlement timestamp without synthetic odds",
+    "Shared-game combination probability is distinct from its independence comparison and saved private results reopen",
+    "Hypothetical availability comparisons preserve the current baseline",
+    "Private financial report metadata is identified as sourced records and retained on conversation reopen",
+    "Pages from a different physical cached result set are discarded instead of being merged into current research",
+    "A failed HTTP200 background scan visibly explains the pause, retains saved cards, and offers a real retry action",
+    "Verified required/current source hashes recover outdated queued jobs once; explicitly unverified inputs never auto-enqueue"
+  ],
+  "actualUserFinancialWrites": false,
+  "productionTestsIncluded": false,
+  "physicalIphoneInstallationTested": false,
+  "screenshotsDirectory": "/tmp/gridiron-v6-ui-screenshots",
+  "localServer": "Stopped; isolated DATA_DIR was /tmp/gridiron-v6-ui-e2e",
+  "focusedFollowupChecks": {
+    "copyAccuracy": {
+      "passed": 2,
+      "scope": "Both desktop/iPhone one-tap cases verify Yes+No outcome counts are labeled outcomes, not distinct contracts."
+    },
+    "paginationIntegrity": {
+      "passed": 4,
+      "scope": "Both desktop/iPhone existing pagination and new physical-result-set mismatch cases passed."
+    },
+    "failedScanVisibility": {
+      "passed": 2,
+      "scope": "A saved failed HTTP200 scan shows its server explanation, retains prior research cards, and submits an actual retry request in both desktop/iPhone viewports."
+    },
+    "verifiedInputRecovery": {
+      "passed": 6,
+      "newDistinctChecks": 4,
+      "scope": "Two new source-recovery scenarios and the preserved legacy guest flow passed on desktop/iPhone. Stale queued inputs request a verified required hash once; unverified metadata enqueues nothing and recovers once after verification."
+    }
+  }
+}

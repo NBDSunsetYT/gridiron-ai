@@ -1,0 +1,59 @@
+name: Publish verified source archive
+
+# The release tag is created only after the normal verification workflow passes.
+# This job packages source only; it never receives production service credentials.
+on:
+  push:
+    tags: ['v[0-9]*']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source:
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 22
+      - name: Check the tagged version
+        run: |
+          node --input-type=module -e '
+            import {readFileSync} from "node:fs";
+            const version=JSON.parse(readFileSync("package.json","utf8")).version;
+            if (process.env.GITHUB_REF_NAME !== `v${version}`) throw new Error("Release tag must match package version");
+          '
+      - name: Require successful verification for this exact commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh run list --repo "$GITHUB_REPOSITORY" --commit "$GITHUB_SHA" --event push --workflow ci.yml --json status,conclusion > /tmp/gridiron-verification-runs.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          runs=json.loads(Path('/tmp/gridiron-verification-runs.json').read_text())
+          if not any(row['status']=='completed' and row['conclusion']=='success' for row in runs):
+              raise SystemExit('The exact release commit needs a successful Verify GRIDIRON AI run. Wait for verification, then rerun this release workflow.')
+          PY
+      - name: Package the complete allowlisted source
+        run: node scripts/package.mjs
+      - name: Validate archive paths, integrity and credential boundaries
+        run: |
+          archive="$(node -p "'artifacts/gridiron-ai-v'+require('./package.json').version.split('.')[0]+'-source.zip'")"
+          python scripts/verify-source-archive.py "$archive" --report artifacts/source-archive-verification.json
+      - name: Publish source and checksums to this release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ! gh release view "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release create "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --verify-tag --title "GRIDIRON AI $GITHUB_REF_NAME" --notes "Source-only release. See README.md and the versioned delivery report for executed production checks and integration limitations."
+          fi
+          gh release upload "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" artifacts/*-source.zip artifacts/*-source.sha256 artifacts/source-archive-verification.json --clobber

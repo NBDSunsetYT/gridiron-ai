@@ -1,0 +1,224 @@
+{
+  "status": "passed",
+  "purpose": "Actual historical complete-game cross-language implementation parity; not prospective calibration or historical market-price validation",
+  "checkedAt": "2026-10-31T05:10:32.040Z",
+  "game": {
+    "id": "2026_07_NE_CHI",
+    "home": "CHI",
+    "away": "NE",
+    "eventStart": "2026-10-23T00:15:46.593Z"
+  },
+  "source": "https://github.com/nflverse/nflverse-data/releases/tag/pbp; retrospective implementation parity, no historical market prices",
+  "inputVersion": "63e74470ec8a0c966f7c822e4986f61957f83ef6826e7ae234f0e8bb94eb9d22",
+  "evidenceCutoff": "2026-10-23T00:00:00+00:00",
+  "engineVersion": "pbp-runtime-7.0.0",
+  "completeGames": 10000,
+  "independentParameterCompleteGames": 1000,
+  "verifiedOutcomeComparisons": 14,
+  "examples": [
+    {
+      "researchDefinitionId": "RESEARCH-home-win",
+      "stat": "gameWinner",
+      "team": "CHI",
+      "side": "YES",
+      "threshold": 0,
+      "operator": "gt",
+      "rawSimulationProbability": 0.5399,
+      "parameterSensitivityInterval95": [
+        0.37,
+        0.81
+      ],
+      "calibratedProbability": null
+    },
+    {
+      "researchDefinitionId": "RESEARCH-home-win",
+      "stat": "gameWinner",
+      "team": "CHI",
+      "side": "NO",
+      "threshold": 0,
+      "operator": "gt",
+      "rawSimulationProbability": 0.4454,
+      "parameterSensitivityInterval95": [
+        0.19,
+        0.61
+      ],
+      "calibratedProbability": null
+    },
+    {
+      "researchDefinitionId": "RESEARCH-away-win",
+      "stat": "gameWinner",
+      "team": "NE",
+      "side": "YES",
+      "threshold": 0,
+      "operator": "gt",
+      "rawSimulationProbability": 0.4454,
+      "parameterSensitivityInterval95": [
+        0.19,
+        0.61
+      ],
+      "calibratedProbability": null
+    },
+    {
+      "researchDefinitionId": "RESEARCH-away-win",
+      "stat": "gameWinner",
+      "team": "NE",
+      "side": "NO",
+      "threshold": 0,
+      "operator": "gt",
+      "rawSimulationProbability": 0.5399,
+      "parameterSensitivityInterval95": [
+        0.37,
+        0.81
+      ],
+      "calibratedProbability": null
+    },
+    {
+      "researchDefinitionId": "RESEARCH-home-margin",
+      "stat": "spread",
+      "team": "CHI",
+      "side": "YES",
+      "threshold": 3.5,
+      "operator": "gt",
+      "rawSimulationProbability": 0.4636,
+      "parameterSensitivityInterval95": [
+        0.31,
+        0.75
+      ],
+      "calibratedProbability": null
+    },
+    {
+      "researchDefinitionId": "RESEARCH-home-margin",
+      "stat": "spread",
+      "team": "CHI",
+      "side": "NO",
+      "threshold": 3.5,
+      "operator": "gt",
+      "rawSimulationProbability": 0.5364,
+      "parameterSensitivityInterval95": [
+        0.25,
+        0.69
+      ],
+      "calibratedProbability": null
+    },
+    {
+      "researchDefinitionId": "RESEARCH-away-margin",
+      "stat": "spread",
+      "team": "NE",
+      "side": "YES",
+      "threshold": 3.5,
+      "operator": "gt",
+      "rawSimulationProbability": 0.3851,
+      "parameterSensitivityInterval95": [
+        0.12,
+        0.57
+      ],
+      "calibratedProbability": null
+    },
+    {
+      "researchDefinitionId": "RESEARCH-away-margin",
+      "stat": "spread",
+      "team": "NE",
+      "side": "NO",
+      "threshold": 3.5,
+      "operator": "gt",
+      "rawSimulationProbability": 0.6149,
+      "parameterSensitivityInterval95": [
+        0.43,
+        0.88
+      ],
+      "calibratedProbability": null
+    },
+    {
+      "researchDefinitionId": "RESEARCH-total",
+      "stat": "totalPoints",
+      "team": null,
+      "side": "YES",
+      "threshold": 44.5,
+      "operator": "gt",
+      "rawSimulationProbability": 0.4241,
+      "parameterSensitivityInterval95": [
+        0.2,
+        0.64
+      ],
+      "calibratedProbability": null
+    },
+    {
+      "researchDefinitionId": "RESEARCH-total",
+      "stat": "totalPoints",
+      "team": null,
+      "side": "NO",
+      "threshold": 44.5,
+      "operator": "gt",
+      "rawSimulationProbability": 0.5759,
+      "parameterSensitivityInterval95": [
+        0.36,
+        0.8
+      ],
+      "calibratedProbability": null
+    },
+    {
+      "researchDefinitionId": "RESEARCH-home-total",
+      "stat": "teamTotal",
+      "team": "CHI",
+      "side": "YES",
+      "threshold": 20.5,
+      "operator": "gt",
+      "rawSimulationProbability": 0.5301,
+      "parameterSensitivityInterval95": [
+        0.33,
+        0.68
+      ],
+      "calibratedProbability": null
+    },
+    {
+      "researchDefinitionId": "RESEARCH-home-total",
+      "stat": "teamTotal",
+      "team": "CHI",
+      "side": "NO",
+      "threshold": 20.5,
+      "operator": "gt",
+      "rawSimulationProbability": 0.4699,
+      "parameterSensitivityInterval95": [
+        0.32,
+        0.67
+      ],
+      "calibratedProbability": null
+    },
+    {
+      "researchDefinitionId": "RESEARCH-away-total",
+      "stat": "teamTotal",
+      "team": "NE",
+      "side": "YES",
+      "threshold": 20.5,
+      "operator": "gt",
+      "rawSimulationProbability": 0.4926,
+      "parameterSensitivityInterval95": [
+        0.19,
+        0.78
+      ],
+      "calibratedProbability": null
+    },
+    {
+      "researchDefinitionId": "RESEARCH-away-total",
+      "stat": "teamTotal",
+      "team": "NE",
+      "side": "NO",
+      "threshold": 20.5,
+      "operator": "gt",
+      "rawSimulationProbability": 0.5074,
+      "parameterSensitivityInterval95": [
+        0.22,
+        0.81
+      ],
+      "calibratedProbability": null
+    }
+  ],
+  "actualMarketContractsUsed": false,
+  "marketPrices": null,
+  "personalFinancialRecordsChanged": false,
+  "limitations": [
+    "Research thresholds are explicit implementation checks, not invented DraftKings contract listings.",
+    "Python and TypeScript agreeing does not establish statistical calibration or market advantage.",
+    "Winner ties compare the selected full-payout event, excluding partial payouts from full hits."
+  ]
+}

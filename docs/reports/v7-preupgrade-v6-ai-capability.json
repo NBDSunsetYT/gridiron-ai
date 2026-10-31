@@ -1,0 +1,41 @@
+{
+  "status": "passed",
+  "startedAt": "2026-10-31T05:09:39.211Z",
+  "baseUrl": "https://gridiron-ai-gray.vercel.app",
+  "credentialsIncluded": false,
+  "billingChanged": false,
+  "financialWrites": false,
+  "maximumGenerationRequests": 1,
+  "generationRequests": 0,
+  "checks": [
+    {
+      "name": "A normal authenticated session independently verifies the exact server-marked disposable QA owner",
+      "status": "passed"
+    },
+    {
+      "name": "The real configured assistant provider returns a private non-secret capability status without a generation or billing change",
+      "status": "passed"
+    }
+  ],
+  "capability": {
+    "provider": "openai",
+    "model": "gpt-4.1-mini",
+    "configured": false,
+    "ready": false,
+    "reason": "missing_credentials",
+    "message": "GRIDIRON INTELLIGENCE requires a server-side OPENAI_API_KEY. Your records remain available; no mock responses are substituted.",
+    "generationVerified": false,
+    "creditCheck": null
+  },
+  "generation": {
+    "status": "not_requested",
+    "generatedByAI": false,
+    "reason": "missing_credentials"
+  },
+  "finishedAt": "2026-10-31T05:09:41.428Z",
+  "limitations": [
+    "A successful status probe alone does not establish model generation or tool calling.",
+    "No billing settings, top-ups, account verification, provider credentials or external authorizations are changed.",
+    "A provider readiness failure is reported as an integration limitation; calculated financial reports and source-only briefs are separate tested features."
+  ]
+}

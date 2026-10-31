@@ -1,0 +1,772 @@
+{
+  "protocol": "retrospective-predeclared-game-markets-7.0.0",
+  "status": "retrospective_research_only",
+  "createdAt": "2026-10-31T04:53:30.114389+00:00",
+  "source": "https://github.com/nflverse/nflverse-data/releases/tag/pbp",
+  "datasetSha256": "653bf713cb9851a8a9d37787388f27a3a339c0e3429d0e64f611402d4328fe6f",
+  "trainingThroughWeek": 6,
+  "heldoutWeek": 7,
+  "cutoff": "2026-10-23T00:00:00Z",
+  "trainingPlays": 12929,
+  "trainingGames": 93,
+  "n": 20,
+  "independentGameBlocks": 4,
+  "selection": "First heldout games by recorded event time; all five predeclared research definitions evaluated for every game. No outcome-based market or threshold selection.",
+  "definitions": [
+    {
+      "id": "home_winner",
+      "kind": "home_win",
+      "equality": "no",
+      "period": "full_game_including_overtime"
+    },
+    {
+      "id": "home_margin_above_3_5",
+      "kind": "spread",
+      "threshold": 3.5,
+      "direction": "over",
+      "equality": "no",
+      "period": "full_game_including_overtime"
+    },
+    {
+      "id": "total_above_44_5",
+      "kind": "total",
+      "threshold": 44.5,
+      "direction": "over",
+      "equality": "no",
+      "period": "full_game_including_overtime"
+    },
+    {
+      "id": "home_total_above_20_5",
+      "kind": "team_total",
+      "team": "home",
+      "threshold": 20.5,
+      "direction": "over",
+      "equality": "no",
+      "period": "full_game_including_overtime"
+    },
+    {
+      "id": "away_total_above_20_5",
+      "kind": "team_total",
+      "team": "away",
+      "threshold": 20.5,
+      "direction": "over",
+      "equality": "no",
+      "period": "full_game_including_overtime"
+    }
+  ],
+  "games": [
+    {
+      "id": "2026_07_NE_CHI",
+      "home": "CHI",
+      "away": "NE",
+      "eventStart": "2026-10-23T00:15:46.593Z",
+      "actualHome": 30,
+      "actualAway": 24,
+      "simulations": 10000,
+      "scoreHistogramCounts": {
+        "CHI": 10000,
+        "NE": 10000
+      },
+      "modelVersion": "pbp-conditional-4.0.0",
+      "engineVersion": "pbp-runtime-7.0.0",
+      "parameterCompleteGames": 1000
+    },
+    {
+      "id": "2026_07_PIT_NO",
+      "home": "NO",
+      "away": "PIT",
+      "eventStart": "2026-10-25T13:32:50.450Z",
+      "actualHome": 10,
+      "actualAway": 16,
+      "simulations": 10000,
+      "scoreHistogramCounts": {
+        "NO": 10000,
+        "PIT": 10000
+      },
+      "modelVersion": "pbp-conditional-4.0.0",
+      "engineVersion": "pbp-runtime-7.0.0",
+      "parameterCompleteGames": 1000
+    },
+    {
+      "id": "2026_07_IND_MIN",
+      "home": "MIN",
+      "away": "IND",
+      "eventStart": "2026-10-25T17:02:24.443Z",
+      "actualHome": 16,
+      "actualAway": 10,
+      "simulations": 10000,
+      "scoreHistogramCounts": {
+        "MIN": 10000,
+        "IND": 10000
+      },
+      "modelVersion": "pbp-conditional-4.0.0",
+      "engineVersion": "pbp-runtime-7.0.0",
+      "parameterCompleteGames": 1000
+    },
+    {
+      "id": "2026_07_SF_ATL",
+      "home": "ATL",
+      "away": "SF",
+      "eventStart": "2026-10-25T17:02:43.540Z",
+      "actualHome": 29,
+      "actualAway": 20,
+      "simulations": 10000,
+      "scoreHistogramCounts": {
+        "ATL": 10000,
+        "SF": 10000
+      },
+      "modelVersion": "pbp-conditional-4.0.0",
+      "engineVersion": "pbp-runtime-7.0.0",
+      "parameterCompleteGames": 1000
+    }
+  ],
+  "observations": [
+    {
+      "gameId": "2026_07_NE_CHI",
+      "category": "home_win",
+      "definition": {
+        "id": "home_winner",
+        "kind": "home_win",
+        "equality": "no",
+        "period": "full_game_including_overtime"
+      },
+      "rawProbability": 0.5399,
+      "calibratedProbability": null,
+      "outcome": 1,
+      "brier": 0.21169200999999996,
+      "logLoss": 0.6163713417578957,
+      "monteCarloInterval95": [
+        0.5301179749181381,
+        0.5496513820118821
+      ],
+      "parameterSensitivityInterval95": [
+        0.37,
+        0.81
+      ],
+      "simulations": 10000,
+      "retrospective": true
+    },
+    {
+      "gameId": "2026_07_NE_CHI",
+      "category": "spread",
+      "definition": {
+        "id": "home_margin_above_3_5",
+        "kind": "spread",
+        "threshold": 3.5,
+        "direction": "over",
+        "equality": "no",
+        "period": "full_game_including_overtime"
+      },
+      "rawProbability": 0.4636,
+      "calibratedProbability": null,
+      "outcome": 1,
+      "brier": 0.28772496,
+      "logLoss": 0.7687331675165404,
+      "monteCarloInterval95": [
+        0.4538420276042889,
+        0.47338592747709635
+      ],
+      "parameterSensitivityInterval95": [
+        0.31,
+        0.75
+      ],
+      "simulations": 10000,
+      "retrospective": true
+    },
+    {
+      "gameId": "2026_07_NE_CHI",
+      "category": "total",
+      "definition": {
+        "id": "total_above_44_5",
+        "kind": "total",
+        "threshold": 44.5,
+        "direction": "over",
+        "equality": "no",
+        "period": "full_game_including_overtime"
+      },
+      "rawProbability": 0.4241,
+      "calibratedProbability": null,
+      "outcome": 1,
+      "brier": 0.3316608100000001,
+      "logLoss": 0.8577860025015921,
+      "monteCarloInterval95": [
+        0.41444470948479806,
+        0.4338135814678705
+      ],
+      "parameterSensitivityInterval95": [
+        0.2,
+        0.64
+      ],
+      "simulations": 10000,
+      "retrospective": true
+    },
+    {
+      "gameId": "2026_07_NE_CHI",
+      "category": "team_total",
+      "definition": {
+        "id": "home_total_above_20_5",
+        "kind": "team_total",
+        "team": "home",
+        "threshold": 20.5,
+        "direction": "over",
+        "equality": "no",
+        "period": "full_game_including_overtime"
+      },
+      "rawProbability": 0.5301,
+      "calibratedProbability": null,
+      "outcome": 1,
+      "brier": 0.22080601,
+      "logLoss": 0.6346896109883766,
+      "monteCarloInterval95": [
+        0.5203082668090508,
+        0.5398686164890345
+      ],
+      "parameterSensitivityInterval95": [
+        0.33,
+        0.68
+      ],
+      "simulations": 10000,
+      "retrospective": true
+    },
+    {
+      "gameId": "2026_07_NE_CHI",
+      "category": "team_total",
+      "definition": {
+        "id": "away_total_above_20_5",
+        "kind": "team_total",
+        "team": "away",
+        "threshold": 20.5,
+        "direction": "over",
+        "equality": "no",
+        "period": "full_game_including_overtime"
+      },
+      "rawProbability": 0.4926,
+      "calibratedProbability": null,
+      "outcome": 1,
+      "brier": 0.25745476000000006,
+      "logLoss": 0.7080577932956995,
+      "monteCarloInterval95": [
+        0.4828059761202031,
+        0.5023997070556827
+      ],
+      "parameterSensitivityInterval95": [
+        0.19,
+        0.78
+      ],
+      "simulations": 10000,
+      "retrospective": true
+    },
+    {
+      "gameId": "2026_07_PIT_NO",
+      "category": "home_win",
+      "definition": {
+        "id": "home_winner",
+        "kind": "home_win",
+        "equality": "no",
+        "period": "full_game_including_overtime"
+      },
+      "rawProbability": 0.4312,
+      "calibratedProbability": null,
+      "outcome": 0,
+      "brier": 0.18593344000000003,
+      "logLoss": 0.564226400493106,
+      "monteCarloInterval95": [
+        0.42152164410907594,
+        0.44093119406672915
+      ],
+      "parameterSensitivityInterval95": [
+        0.24,
+        0.52
+      ],
+      "simulations": 10000,
+      "retrospective": true
+    },
+    {
+      "gameId": "2026_07_PIT_NO",
+      "category": "spread",
+      "definition": {
+        "id": "home_margin_above_3_5",
+        "kind": "spread",
+        "threshold": 3.5,
+        "direction": "over",
+        "equality": "no",
+        "period": "full_game_including_overtime"
+      },
+      "rawProbability": 0.3466,
+      "calibratedProbability": null,
+      "outcome": 0,
+      "brier": 0.12013156000000001,
+      "logLoss": 0.4255657798151673,
+      "monteCarloInterval95": [
+        0.3373332964257107,
+        0.35598451427441286
+      ],
+      "parameterSensitivityInterval95": [
+        0.19,
+        0.43
+      ],
+      "simulations": 10000,
+      "retrospective": true
+    },
+    {
+      "gameId": "2026_07_PIT_NO",
+      "category": "total",
+      "definition": {
+        "id": "total_above_44_5",
+        "kind": "total",
+        "threshold": 44.5,
+        "direction": "over",
+        "equality": "no",
+        "period": "full_game_including_overtime"
+      },
+      "rawProbability": 0.3582,
+      "calibratedProbability": null,
+      "outcome": 0,
+      "brier": 0.12830724000000002,
+      "logLoss": 0.44347855030638067,
+      "monteCarloInterval95": [
+        0.34885863220855756,
+        0.36765026972936626
+      ],
+      "parameterSensitivityInterval95": [
+        0.2,
+        0.56
+      ],
+      "simulations": 10000,
+      "retrospective": true
+    },
+    {
+      "gameId": "2026_07_PIT_NO",
+      "category": "team_total",
+      "definition": {
+        "id": "home_total_above_20_5",
+        "kind": "team_total",
+        "team": "home",
+        "threshold": 20.5,
+        "direction": "over",
+        "equality": "no",
+        "period": "full_game_including_overtime"
+      },
+      "rawProbability": 0.4226,
+      "calibratedProbability": null,
+      "outcome": 0,
+      "brier": 0.17859076,
+      "logLoss": 0.5492200117533023,
+      "monteCarloInterval95": [
+        0.412949843687676,
+        0.43230959926010454
+      ],
+      "parameterSensitivityInterval95": [
+        0.22,
+        0.49
+      ],
+      "simulations": 10000,
+      "retrospective": true
+    },
+    {
+      "gameId": "2026_07_PIT_NO",
+      "category": "team_total",
+      "definition": {
+        "id": "away_total_above_20_5",
+        "kind": "team_total",
+        "team": "away",
+        "threshold": 20.5,
+        "direction": "over",
+        "equality": "no",
+        "period": "full_game_including_overtime"
+      },
+      "rawProbability": 0.4949,
+      "calibratedProbability": null,
+      "outcome": 0,
+      "brier": 0.24492601,
+      "logLoss": 0.6829988495081302,
+      "monteCarloInterval95": [
+        0.48510452971336737,
+        0.5046993870700134
+      ],
+      "parameterSensitivityInterval95": [
+        0.39,
+        0.75
+      ],
+      "simulations": 10000,
+      "retrospective": true
+    },
+    {
+      "gameId": "2026_07_IND_MIN",
+      "category": "home_win",
+      "definition": {
+        "id": "home_winner",
+        "kind": "home_win",
+        "equality": "no",
+        "period": "full_game_including_overtime"
+      },
+      "rawProbability": 0.5668,
+      "calibratedProbability": null,
+      "outcome": 1,
+      "brier": 0.18766224000000004,
+      "logLoss": 0.5677487711656117,
+      "monteCarloInterval95": [
+        0.5570642120530546,
+        0.5764844857646231
+      ],
+      "parameterSensitivityInterval95": [
+        0.43,
+        0.74
+      ],
+      "simulations": 10000,
+      "retrospective": true
+    },
+    {
+      "gameId": "2026_07_IND_MIN",
+      "category": "spread",
+      "definition": {
+        "id": "home_margin_above_3_5",
+        "kind": "spread",
+        "threshold": 3.5,
+        "direction": "over",
+        "equality": "no",
+        "period": "full_game_including_overtime"
+      },
+      "rawProbability": 0.4588,
+      "calibratedProbability": null,
+      "outcome": 1,
+      "brier": 0.29289744,
+      "logLoss": 0.7791408937269214,
+      "monteCarloInterval95": [
+        0.44905118921036075,
+        0.46858045225538286
+      ],
+      "parameterSensitivityInterval95": [
+        0.34,
+        0.66
+      ],
+      "simulations": 10000,
+      "retrospective": true
+    },
+    {
+      "gameId": "2026_07_IND_MIN",
+      "category": "total",
+      "definition": {
+        "id": "total_above_44_5",
+        "kind": "total",
+        "threshold": 44.5,
+        "direction": "over",
+        "equality": "no",
+        "period": "full_game_including_overtime"
+      },
+      "rawProbability": 0.283,
+      "calibratedProbability": null,
+      "outcome": 0,
+      "brier": 0.08008899999999998,
+      "logLoss": 0.33267943838251657,
+      "monteCarloInterval95": [
+        0.27425584573543743,
+        0.29191080955743604
+      ],
+      "parameterSensitivityInterval95": [
+        0.22,
+        0.42
+      ],
+      "simulations": 10000,
+      "retrospective": true
+    },
+    {
+      "gameId": "2026_07_IND_MIN",
+      "category": "team_total",
+      "definition": {
+        "id": "home_total_above_20_5",
+        "kind": "team_total",
+        "team": "home",
+        "threshold": 20.5,
+        "direction": "over",
+        "equality": "no",
+        "period": "full_game_including_overtime"
+      },
+      "rawProbability": 0.4579,
+      "calibratedProbability": null,
+      "outcome": 0,
+      "brier": 0.20967240999999998,
+      "logLoss": 0.6123047927158445,
+      "monteCarloInterval95": [
+        0.4481530084679245,
+        0.46767932419488634
+      ],
+      "parameterSensitivityInterval95": [
+        0.42,
+        0.54
+      ],
+      "simulations": 10000,
+      "retrospective": true
+    },
+    {
+      "gameId": "2026_07_IND_MIN",
+      "category": "team_total",
+      "definition": {
+        "id": "away_total_above_20_5",
+        "kind": "team_total",
+        "team": "away",
+        "threshold": 20.5,
+        "direction": "over",
+        "equality": "no",
+        "period": "full_game_including_overtime"
+      },
+      "rawProbability": 0.3283,
+      "calibratedProbability": null,
+      "outcome": 0,
+      "brier": 0.10778088999999999,
+      "logLoss": 0.3979434667093183,
+      "monteCarloInterval95": [
+        0.31916357814539736,
+        0.33756828689509283
+      ],
+      "parameterSensitivityInterval95": [
+        0.17,
+        0.53
+      ],
+      "simulations": 10000,
+      "retrospective": true
+    },
+    {
+      "gameId": "2026_07_SF_ATL",
+      "category": "home_win",
+      "definition": {
+        "id": "home_winner",
+        "kind": "home_win",
+        "equality": "no",
+        "period": "full_game_including_overtime"
+      },
+      "rawProbability": 0.1771,
+      "calibratedProbability": null,
+      "outcome": 1,
+      "brier": 0.6771644099999999,
+      "logLoss": 1.7310407341933491,
+      "monteCarloInterval95": [
+        0.16974217488631396,
+        0.18470581126146898
+      ],
+      "parameterSensitivityInterval95": [
+        0.02,
+        0.46
+      ],
+      "simulations": 10000,
+      "retrospective": true
+    },
+    {
+      "gameId": "2026_07_SF_ATL",
+      "category": "spread",
+      "definition": {
+        "id": "home_margin_above_3_5",
+        "kind": "spread",
+        "threshold": 3.5,
+        "direction": "over",
+        "equality": "no",
+        "period": "full_game_including_overtime"
+      },
+      "rawProbability": 0.1347,
+      "calibratedProbability": null,
+      "outcome": 1,
+      "brier": 0.74874409,
+      "logLoss": 2.004705195565819,
+      "monteCarloInterval95": [
+        0.1281487160047896,
+        0.14153183320482665
+      ],
+      "parameterSensitivityInterval95": [
+        0.02,
+        0.38
+      ],
+      "simulations": 10000,
+      "retrospective": true
+    },
+    {
+      "gameId": "2026_07_SF_ATL",
+      "category": "total",
+      "definition": {
+        "id": "total_above_44_5",
+        "kind": "total",
+        "threshold": 44.5,
+        "direction": "over",
+        "equality": "no",
+        "period": "full_game_including_overtime"
+      },
+      "rawProbability": 0.4999,
+      "calibratedProbability": null,
+      "outcome": 1,
+      "brier": 0.25010001,
+      "logLoss": 0.6933472005626123,
+      "monteCarloInterval95": [
+        0.4901021004111254,
+        0.5096979763885487
+      ],
+      "parameterSensitivityInterval95": [
+        0.37,
+        0.64
+      ],
+      "simulations": 10000,
+      "retrospective": true
+    },
+    {
+      "gameId": "2026_07_SF_ATL",
+      "category": "team_total",
+      "definition": {
+        "id": "home_total_above_20_5",
+        "kind": "team_total",
+        "team": "home",
+        "threshold": 20.5,
+        "direction": "over",
+        "equality": "no",
+        "period": "full_game_including_overtime"
+      },
+      "rawProbability": 0.3126,
+      "calibratedProbability": null,
+      "outcome": 1,
+      "brier": 0.47251876000000004,
+      "logLoss": 1.1628308609947609,
+      "monteCarloInterval95": [
+        0.3035879520213925,
+        0.321755970567937
+      ],
+      "parameterSensitivityInterval95": [
+        0.16,
+        0.56
+      ],
+      "simulations": 10000,
+      "retrospective": true
+    },
+    {
+      "gameId": "2026_07_SF_ATL",
+      "category": "team_total",
+      "definition": {
+        "id": "away_total_above_20_5",
+        "kind": "team_total",
+        "team": "away",
+        "threshold": 20.5,
+        "direction": "over",
+        "equality": "no",
+        "period": "full_game_including_overtime"
+      },
+      "rawProbability": 0.7746,
+      "calibratedProbability": null,
+      "outcome": 0,
+      "brier": 0.6000051599999999,
+      "logLoss": 1.489878677376461,
+      "monteCarloInterval95": [
+        0.7663058268607574,
+        0.7826832812340669
+      ],
+      "parameterSensitivityInterval95": [
+        0.58,
+        0.94
+      ],
+      "simulations": 10000,
+      "retrospective": true
+    }
+  ],
+  "calibrationDiagnostic": [
+    {
+      "from": 0.0,
+      "to": 0.1,
+      "n": 0,
+      "predicted": null,
+      "observed": null
+    },
+    {
+      "from": 0.1,
+      "to": 0.2,
+      "n": 2,
+      "predicted": 0.15589999999999998,
+      "observed": 1.0
+    },
+    {
+      "from": 0.2,
+      "to": 0.3,
+      "n": 1,
+      "predicted": 0.283,
+      "observed": 0.0
+    },
+    {
+      "from": 0.3,
+      "to": 0.4,
+      "n": 4,
+      "predicted": 0.336425,
+      "observed": 0.25
+    },
+    {
+      "from": 0.4,
+      "to": 0.5,
+      "n": 9,
+      "predicted": 0.4606222222222222,
+      "observed": 0.5555555555555556
+    },
+    {
+      "from": 0.5,
+      "to": 0.6,
+      "n": 3,
+      "predicted": 0.5456,
+      "observed": 1.0
+    },
+    {
+      "from": 0.6,
+      "to": 0.7,
+      "n": 0,
+      "predicted": null,
+      "observed": null
+    },
+    {
+      "from": 0.7,
+      "to": 0.8,
+      "n": 1,
+      "predicted": 0.7746,
+      "observed": 0.0
+    },
+    {
+      "from": 0.8,
+      "to": 0.9,
+      "n": 0,
+      "predicted": null,
+      "observed": null
+    },
+    {
+      "from": 0.9,
+      "to": 1.0,
+      "n": 0,
+      "predicted": null,
+      "observed": null
+    }
+  ],
+  "brier": 0.2896930985,
+  "logLoss": 0.8011373769664702,
+  "brierGameBlockBootstrap95": [
+    0.173599099,
+    0.4561849635
+  ],
+  "inputConversion": {
+    "normalizedPlays": 12929,
+    "excluded": {
+      "penalty_or_missing_possession": 2304,
+      "unsupported_event": 1138,
+      "unsupported_lateral": 6,
+      "unknown_or_extreme_clock_duration": 3
+    },
+    "maxTrainingWeek": 6,
+    "limitations": [
+      "Penalties/laterals and unknown clock durations excluded; this selection can bias the fitted model.",
+      "No injury, roster, weather or license entitlement metadata supplied by this adapter.",
+      "time_of_day is source event time; no claim it represents publication time."
+    ]
+  },
+  "calibratedProbabilitiesAvailable": false,
+  "historicalFirstPublicationVerified": false,
+  "productionEligible": false,
+  "promotion": "NOT PROMOTED",
+  "marketBenchmark": null,
+  "prospectiveSnapshotsCreated": 0,
+  "personalFinancialRecordsChanged": false,
+  "limitations": [
+    "Small retrospective cohort with correlated within-game contracts; independent game-block count, not row count, determines evidence strength.",
+    "Current public historical files may include later revisions. Historical first-publication times are unknown; this cannot validate prospective deployment.",
+    "Research thresholds are predeclared examples, not fabricated DraftKings contracts or prices. Market benchmark, fees and profitability are unavailable.",
+    "Injury mixtures, numerical weather and future usage are not fully modeled. Parameter sensitivity excludes unestimated structural uncertainty.",
+    "Calibration diagnostics and game-block intervals on this small sample do not establish calibration or superiority."
+  ]
+}

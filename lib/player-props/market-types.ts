@@ -1,0 +1,31 @@
+import type {PublicGame,ResearchSource} from '../public-nfl/types';
+
+export const PROP_STATS=['passingYards','passingTouchdowns','passingAttempts','completions','interceptions','rushingYards','carries','receivingYards','receptions','touchdowns','rushingTouchdowns','receivingTouchdowns','targets'] as const;
+export type PropStat=typeof PROP_STATS[number];
+export const GAME_MARKET_STATS=['gameWinner','spread','totalPoints','teamTotal'] as const;
+export type GameMarketStat=typeof GAME_MARKET_STATS[number];
+export type NflMarketStat=PropStat|GameMarketStat;
+export const NFL_MARKET_STATS=[...PROP_STATS,...GAME_MARKET_STATS] as const;
+export const isGameMarket=(value:string):value is GameMarketStat=>GAME_MARKET_STATS.includes(value as GameMarketStat);
+export type PropOperator='gt'|'gte'|'lt'|'lte'|'eq';
+export type PropPlayerIdentity={id:string;name:string;team:string;position?:string;jersey?:string|number|null;aliases?:string[];rosterWeek?:number;sourceUrl?:string};
+export type PropFees={calculationStatus:'verified_explicit'|'unverified';entryFeeCents:string|null;winFeeCents:string|null;rounding:'none'|'up_to_cent'|'collateral_total_up_to_cent'|null;type:string|null;multiplier:string|null;sourceUrl:string|null;reason:string;observedAt:string};
+export type PropMarketContract={
+ id:string;contractId:string;eventId:string;gameId:string;eventStart:string;
+ provider:'DraftKings Predictions'|'Kalshi';sourceKind:'authorized_feed'|'public_exchange'|'manual_verified';
+ playerId:string|null;playerName:string;providerPlayerId:string|null;team:string;opponent:string;position:string|null;
+ stat:NflMarketStat;category:string;threshold:number;operator:PropOperator;title:string;sourceThreshold:{floorStrike:number|null;capStrike:number|null;strikeType:string};
+ subject?:{kind:'player'|'team'|'game';teamId:string|null};
+ displayedYesPercent?:string|null;displayedNoPercent?:string|null;
+ yesAskCents:string|null;noAskCents:string|null;yesBidCents:string|null;noBidCents:string|null;lastTradedPriceCents:string|null;
+ quotedAt:string|null;observedAt:string;sourceUpdatedAt:string|null;quoteTimestampMeaning:string;
+ liquidity:{yesAskContracts:string|null;yesBidContracts:string|null;noAskContracts:string|null;noBidContracts:string|null;openInterest:string|null;volume:string|null};
+ fees:PropFees;rules:string;rulesUrl:string;rulesHash:string;sourceUrl:string;draftKingsEquivalent:boolean;
+ mapping:{status:'verified'|'unmapped'|'conflict';method:string;reason:string|null;rosterWeek?:number};
+ verification:{current:boolean;quoteVerified:boolean;executionVerified:false;issues:string[]};
+ settlement:{modelCompatible:boolean;rulesVerified:boolean;fullGame:boolean;overtimeIncluded:boolean;nonParticipationPolicy:'fair_price'|'void'|'stat_zero'|'unknown';probabilityBasis:'conditional_on_participation_and_normal_completion'|'conditional_on_normal_completion';unconditionalValuationSupported:boolean;statCoverage:string;reason:string;termsVersion:string|null;tiePayoutCents?:string|null;exceptionPolicy?:'fair_price'|'void'|'unknown';payoutCents?:string};
+};
+export type PropProviderStatus={provider:string;status:'available'|'partial'|'unavailable';checkedAt:string;contracts:number;message:string;sourceUrl:string;categories:string[]};
+export type PropMarketDiscovery={contracts:PropMarketContract[];providers:PropProviderStatus[];sources:ResearchSource[];checkedAt:string;complete:boolean;rejected:Array<{contractId:string;reason:string}>;neededGames:string[]};
+export type PropProviderOptions={force?:boolean;now?:Date;transport?:typeof fetch;includeGameMarkets?:boolean;provider?:'DraftKings Predictions'|'Kalshi'};
+export type PropGame=PublicGame;

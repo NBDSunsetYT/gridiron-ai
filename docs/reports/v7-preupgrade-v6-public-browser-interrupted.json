@@ -1,0 +1,27 @@
+{
+  "status": "interrupted",
+  "baseUrl": "https://gridiron-ai-gray.vercel.app",
+  "engine": "chromium",
+  "checks": [
+    {
+      "profile": "desktop-chromium",
+      "name": "A fresh guest opens real NFL games and Home | Games | Props | AI | Wallet without technical setup",
+      "status": "passed"
+    },
+    {
+      "profile": "desktop-chromium",
+      "name": "The Props navigation opens actual saved public research without an extra explicit scan",
+      "status": "passed"
+    },
+    {
+      "profile": "desktop-chromium",
+      "name": "Server-filtered exact player thresholds render real probabilities, separate uncertainty, honest calibration/fee limits and preserved quote rules",
+      "status": "passed"
+    }
+  ],
+  "reason": "Stopped remaining read-only browser requests at the database-backup owner request to avoid competing for the small database CPU during a consistent encrypted checkpoint. This is not a complete browser acceptance pass.",
+  "mockedResponses": false,
+  "financialWrites": false,
+  "physicalIphoneInstallationTested": false,
+  "finishedAt": "2026-10-31T04:56:28.744Z"
+}

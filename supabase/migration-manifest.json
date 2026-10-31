@@ -1,6 +1,6 @@
 {
   "projectRef": "qdtdjbapdipopncklsdb",
-  "source": "Supabase list_migrations after all ten successful applications",
+  "source": "Supabase list_migrations after all eighteen successful applications",
   "method": "Aligned source filenames only; SQL bytes and remote history unchanged",
   "migrations": [
     {
@@ -71,6 +71,69 @@
       "authoredVersion": "20261030195805",
       "liveVersion": "20261030195938",
       "sha256": "d893dedb03993f45bd0f3cea13617f1eecf14a9248b70ce481f16fa4bf4a1b98",
+      "sqlUnchanged": true
+    },
+    {
+      "name": "gridiron_event_contract_wallet",
+      "authoredVersion": "20261030211310",
+      "liveVersion": "20261030214623",
+      "sha256": "98ab331bc0c3f35e67ca22f62314d78f5feedb542427a3a8d30f30f8ea5fcdc0",
+      "sqlUnchanged": true
+    },
+    {
+      "name": "gridiron_player_prop_intelligence",
+      "authoredVersion": "20261030211347",
+      "liveVersion": "20261030214648",
+      "sha256": "2fb3e336cfb91606fea7e2099b241699482573bbdf14a71e8f5040eb23607948",
+      "sqlUnchanged": true
+    },
+    {
+      "name": "gridiron_public_research_capacity",
+      "authoredVersion": "20261030212335",
+      "liveVersion": "20261030214710",
+      "sha256": "c5e941a9efae4be503074f32a87a71c27ff56ba7203b482704f5e4bd8521eee4",
+      "sqlUnchanged": true
+    },
+    {
+      "name": "gridiron_release_compute_capacity",
+      "authoredVersion": "20261030222753",
+      "liveVersion": "20261030222948",
+      "sha256": "85032928cae4dbfc5a0499da763e0decd57cf1f8815e3c460b530b19a3c335e8",
+      "sqlUnchanged": true
+    },
+    {
+      "name": "gridiron_private_recovery_checkpoints",
+      "authoredVersion": "20261031045156",
+      "liveVersion": "20261031045314",
+      "sha256": "b95b9dc6738305f2b6f19197120a7dd5bfced70a3d6eff3106b293549c2eee62",
+      "sqlUnchanged": true
+    },
+    {
+      "name": "gridiron_nfl_contract_research",
+      "authoredVersion": "20261031045122",
+      "liveVersion": "20261031051146",
+      "sha256": "067f390e98e150bd53de6fdcafe44c6c82c630ca5230b1dd6938fd57a2fc0f27",
+      "sqlUnchanged": true
+    },
+    {
+      "name": "gridiron_fractional_contract_fees",
+      "authoredVersion": "20261031050454",
+      "liveVersion": "20261031051148",
+      "sha256": "d589eb7172fa4e488bbefea88b2ff532a284e1f77331fb282f3ecfc7d5f0b78c",
+      "sqlUnchanged": true
+    },
+    {
+      "name": "gridiron_snapshot_storage_compatibility",
+      "authoredVersion": "20261031051404",
+      "liveVersion": "20261031051552",
+      "sha256": "ad6e1024e6df1dfdf218535a9c9887a597d8b6fc160da04f30d5e12ff14d3a54",
+      "sqlUnchanged": true
+    },
+    {
+      "name": "gridiron_v7_compute_capacity",
+      "authoredVersion": "20261031052049",
+      "liveVersion": "20261031052144",
+      "sha256": "83c338ac47d742219762405f85bcbbb66e00c7d3d3d2106f99d71ae0b594102e",
       "sqlUnchanged": true
     }
   ]

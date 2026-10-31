@@ -1,0 +1,21 @@
+{
+  "status": "failed",
+  "startedAt": "2026-10-31T05:03:53.062Z",
+  "baseUrl": "https://gridiron-ai-gray.vercel.app",
+  "profile": "iPhone13 webkit emulation",
+  "engine": "webkit",
+  "accountsCreated": false,
+  "financialWrites": "Explicit SYNTHETIC QA void/refund workflow only",
+  "researchWrites": "Private account-report conversation only",
+  "credentialsIncluded": false,
+  "physicalIphoneInstallationTested": false,
+  "checks": [
+    {
+      "name": "GRIDIRON sign-in opens the real private Wallet with secure cookies",
+      "status": "passed"
+    }
+  ],
+  "version": "6.0.0",
+  "finishedAt": "2026-10-31T05:04:03.333Z",
+  "error": "expect(locator).toBeVisible() failed\n\nLocator: getByRole('dialog')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" getByRole('dialog') with timeout 5000ms\n  - waiting for getByRole('dialog')\n"
+}

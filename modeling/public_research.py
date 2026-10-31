@@ -27,7 +27,7 @@ from .fit import fit_csv, utc
 from .nflverse_adapter import normalize, number
 from .simulator import Evidence, simulate, evaluate_contract
 
-VERSION = 'automatic-nfl-research-5.0.2'
+VERSION = 'automatic-nfl-research-7.0.0'
 BASE = 'https://github.com/nflverse/nflverse-data/releases/download'
 TEAMS = {'ARI','ATL','BAL','BUF','CAR','CHI','CIN','CLE','DAL','DEN','DET','GB','HOU','IND','JAX','KC','LA','LAC','LV','MIA','MIN','NE','NO','NYG','NYJ','PHI','PIT','SEA','SF','TB','TEN','WAS'}
 ALIASES = {'LAR':'LA','WSH':'WAS','JAC':'JAX','OAK':'LV','SD':'LAC'}
@@ -52,6 +52,11 @@ _model_lock = threading.Lock()
 
 class ResearchUnavailable(ValueError):
     """Evidence is unavailable; callers must not replace it with guessed data."""
+    def __init__(self,message,*,retryable=False,upstream_status_code=None):
+        super().__init__(message)
+        self.retryable=bool(retryable)
+        self.status_code=503 if self.retryable else 422
+        self.upstream_status_code=upstream_status_code
 
 
 def stamp():
@@ -189,9 +194,11 @@ def fetch_dataset(kind, season, ttl=900):
             os.chmod(manifest, 0o600)
             return Dataset(path, meta)
         except urllib.error.HTTPError as error:
-            raise ResearchUnavailable(f'nflverse {kind} source returned HTTP {error.code}; no substitute data was invented.') from None
+            retryable=error.code in (408,429) or 500<=error.code<=599
+            raise ResearchUnavailable(f'nflverse {kind} source returned HTTP {error.code}; no substitute data was invented.',
+                                      retryable=retryable,upstream_status_code=error.code) from None
         except (OSError, EOFError) as error:
-            raise ResearchUnavailable(f'nflverse {kind} source is temporarily unavailable.') from None
+            raise ResearchUnavailable(f'nflverse {kind} source is temporarily unavailable.',retryable=True) from None
         finally:
             temporary.unlink(missing_ok=True)
 
@@ -312,6 +319,17 @@ def normalized_evidence(raw_rows, labels, source_version, collected_at):
     return target.getvalue(), report
 
 
+def automatic_feature_version(evidence_version,scenario,reports,roster,definitions,what_if=None,selected_outcomes=None):
+    """Statistical features only; audit collection clocks remain in fitted bytes."""
+    keys=('playerId','team','status','practiceParticipation','injury','week')
+    injuries=[{key:report.get(key) for key in keys} for report in reports]
+    injuries.sort(key=lambda report:tuple(str(report.get(key) or '') for key in keys))
+    return hashlib.sha256(json.dumps({'evidenceVersion':evidence_version,'scenario':scenario,
+        'injuries':injuries,'rosters':sorted((pid,row.get('team'),row.get('status')) for pid,row in roster.items()),
+        'contracts':definitions,'whatIf':what_if,'selectedOutcomes':selected_outcomes},
+        sort_keys=True,separators=(',',':')).encode()).hexdigest()
+
+
 def player_usage(model, roster, snap_rows, injuries, names, teams):
     excluded = {row['playerId']:row['availabilityAssessment'] for row in injuries if row.get('playerId') and row['status'] in ('out','questionable','doubtful','injured_reserve')}
     latest_game = defaultdict(str)
@@ -393,6 +411,11 @@ def analyze_public(data, fetcher=fetch_dataset, now=None):
     context = data.get('inputContext') or {}
     if not isinstance(context,dict):
         raise ResearchUnavailable('Research context must be an object.')
+    what_if = context.get('whatIf')
+    if what_if is not None and (not isinstance(what_if,dict) or set(what_if)!={'playerId','status'} or
+            not isinstance(what_if.get('playerId'),str) or not what_if['playerId'] or
+            what_if.get('status') not in ('active','limited','inactive')):
+        raise ResearchUnavailable('A hypothetical availability scenario requires only an exact playerId and active|limited|inactive status. Unsupported snap, pace, weather and efficiency multipliers are not applied.')
     datasets, sources = {}, []
     with ThreadPoolExecutor(max_workers=5) as pool:
         pending = {pool.submit(fetcher,kind,game['season']):kind for kind in ASSETS}
@@ -402,7 +425,15 @@ def analyze_public(data, fetcher=fetch_dataset, now=None):
                 datasets[kind] = future.result()
                 sources.append(datasets[kind].metadata)
             except (ValueError,OSError,EOFError) as error:
+                # A temporary provider outage must not become a permanent
+                # insufficient-evidence result (or a completed partial cache).
+                # Retrying the existing fenced job can recheck current bytes.
+                if isinstance(error,ResearchUnavailable) and error.retryable:
+                    raise error
+                if isinstance(error,(OSError,EOFError)):
+                    raise ResearchUnavailable('A published NFL research source is temporarily unavailable.',retryable=True) from None
                 if kind=='pbp':
+                    if isinstance(error,ResearchUnavailable):raise error
                     raise ResearchUnavailable(str(error)) from None
                 sources.append({'id':'nflverse-'+kind,'kind':kind,'url':source_url(kind,game['season']),'status':'unavailable','checkedAt':stamp(),'reason':str(error)[:300]})
     teams = {game['home'],game['away']}
@@ -464,6 +495,24 @@ def analyze_public(data, fetcher=fetch_dataset, now=None):
             scenario_audit.append({'playerId':candidate['playerId'],'status':'withheld','reason':str(error)})
     elif confirmed:
         scenario_audit.append({'status':'withheld','reason':'Joint availability effects for multiple reported OUT players have no validated joint historical cohort.'})
+    if what_if is not None:
+        if what_if['playerId'] not in roster:
+            raise ResearchUnavailable('The hypothetical player is not on the current verified matchup roster.')
+        if any(report['playerId']!=what_if['playerId'] for report in confirmed):
+            raise ResearchUnavailable('A hypothetical change combined with another reported OUT player requires a validated joint availability cohort; no combined multiplier was invented.')
+        try:
+            cohort = Evidence(fit['model'],game['home'],game['away'],what_if)
+        except ValueError as error:
+            raise ResearchUnavailable('This hypothetical availability scenario has insufficient historical evidence: '+str(error)) from None
+        scenario = dict(what_if)
+        scenario_audit.append({'playerId':scenario['playerId'],'status':'hypothetical_applied',
+                               'assumedAvailability':scenario['status'],'historicalGames':len(cohort.games),
+                               'method':'Conditioned on explicitly labeled historical availability. Current reports are unchanged.'})
+        if scenario['status'] in ('active','limited'):
+            withheld.pop(scenario['playerId'],None)
+            if scenario['playerId'] in usage:
+                usage[scenario['playerId']].update(projectionWithheld=False,withheldReason=None,
+                                                  hypotheticalAvailability=scenario['status'])
     definitions = context.get('contractDefinitions') or []
     if not isinstance(definitions,list) or len(definitions)>32:
         raise ResearchUnavailable('Verified contract definitions exceed the supported research bound.')
@@ -471,6 +520,15 @@ def analyze_public(data, fetcher=fetch_dataset, now=None):
     for definition in definitions:
         if not isinstance(definition,dict):
             raise ResearchUnavailable('A verified contract definition must be an object.')
+        if definition.get('period','full_game_including_overtime') not in ('full_game_including_overtime','full_game'):
+            withheld_contracts.append({'id':definition.get('id'),'reason':'Only full-game outcomes including overtime are modeled; regulation-only, half and quarter settlement rules are unsupported.'})
+            continue
+        if definition.get('overtimeIncluded',True) is not True or definition.get('includesOvertime',True) is not True:
+            withheld_contracts.append({'id':definition.get('id'),'reason':'A full-game score distribution includes overtime; an explicit overtime exclusion is unsupported.'})
+            continue
+        if definition.get('kind')=='player' and definition.get('stat')=='touchdowns' and definition.get('touchdownScope')!='offensive_rushing_receiving_only':
+            withheld_contracts.append({'id':definition.get('id'),'reason':'This engine does not attribute player return or defensive touchdowns. Verified offensive rushing/receiving-only settlement scope is required.'})
+            continue
         if definition.get('kind')=='player' and (definition.get('playerId') in withheld or definition.get('playerId') not in roster):
             withheld_contracts.append({'id':definition.get('id'),'reason':'Current player availability or roster evidence does not support a forecast.'})
             continue
@@ -483,8 +541,14 @@ def analyze_public(data, fetcher=fetch_dataset, now=None):
     definitions = accepted
     if time.monotonic()-started>140 and count>10000:
         raise ResearchUnavailable('Data collection used the available research budget; request the standard 10,000-game mode or retry cached data.')
+    selected_outcomes = context.get('selectedOutcomes')
     result = simulate(fit['model'],game['home'],game['away'],count,seed,game['startTime'],definitions or None,scenario,
-                      postseason=game['week']>18,parameter_uncertainty={'replicates':10,'gamesPerReplicate':100},representative_games=1)
+                      postseason=game['week']>18,parameter_uncertainty={'replicates':10,'gamesPerReplicate':100},representative_games=1,
+                      selected_outcomes=selected_outcomes,parameter_player_ids=sorted(pid for pid in roster if pid not in withheld))
+    if what_if is not None:
+        result['hypothetical'] = {'kind':'availability_what_if','assumptions':dict(what_if),
+                                  'currentReportsChanged':False,'calibratedAvailabilityMixture':False,
+                                  'message':'A user-requested hypothetical availability cohort, not a statement of current player availability.'}
     hidden = {pid:reason for pid,reason in withheld.items() if pid in result['players']}
     for pid in hidden:
         del result['players'][pid]
@@ -519,7 +583,18 @@ def analyze_public(data, fetcher=fetch_dataset, now=None):
     result['uncertainty']['weatherAdjustment'] = 'not_applied_without_validated_weather_model'
     result['publicPlayerForecastsWithheld'] = hidden
     result['publicLimitations'] = limitations
+    catalog = []
+    for pid,player in roster.items():
+        actual_names = [player.get('full_name'),player.get('football_name'),player.get('display_name'),
+                        ' '.join(str(player.get(key) or '') for key in ('first_name','last_name')).strip()]
+        actual_names = list(dict.fromkeys(value.strip() for value in actual_names if isinstance(value,str) and value.strip()))
+        catalog.append({'id':pid,'name':player.get('full_name') or names.get(pid) or None,
+                        'team':player.get('team'),'position':player.get('position'),
+                        'jersey':player.get('jersey_number') or None,'aliases':actual_names,
+                        'rosterStatus':player.get('status'),'rosterWeek':_integer(player.get('week')) or None,
+                        'source':datasets['rosters'].metadata['url'] if 'rosters' in datasets else None})
     research = {'version':VERSION,'teams':fit['model'].get('teamResearch',{}),'players':usage,'playerNames':names,
+                'playerCatalog':sorted(catalog,key=lambda player:(player['team'] or '',player['name'] or '',player['id'])),
                 'playerStatistics':player_statistics,'teamStatistics':team_statistics,
                 'injuries':reports,'practiceReports':reports,'confirmedInactives':[],
                 'injuryCoverage':{'status':'available' if reports else 'not_yet_reported' if 'injuries' in datasets else 'unavailable',
@@ -532,6 +607,8 @@ def analyze_public(data, fetcher=fetch_dataset, now=None):
                 'snapCounts':{'status':'available' if 'snaps' in datasets else 'unavailable','source':datasets['snaps'].metadata['url'] if 'snaps' in datasets else None},
                 'sources':sources,'training':{**fit['summary'],**conversion,'selectedMatchupPlays':len(raw),'evidenceVersion':evidence_version,'rosterWeek':roster_week,'availabilityConflictsExcluded':conflicts},
                 'availability':{'collectionVerifiedAt':pbp_source['checkedAt'],'historicalFirstPublicationVerified':False,'currentSourceBeforeKickoff':True},'limitations':limitations}
+    if what_if is not None:
+        research['whatIf'] = result['hypothetical']
     summary = {'kind':'calculated_research_digest','aiGenerated':False,
                'text':f"{count:,} complete games were simulated from {fit['summary']['plays']:,} verified historical play records. "
                       f"The fitted baseline estimates {game['home']} at {result['homeWinProbability']*100:.1f}% to win. "
@@ -539,8 +616,11 @@ def analyze_public(data, fetcher=fetch_dataset, now=None):
                       +('A supported inactive-player cohort was applied. ' if injury_adjusted else 'Injury effects are not fully modeled; unsupported player distributions were withheld. ')
                       +'These estimates remain research-only and are not guarantees.',
                'citations':[{'url':s['url'],'checkedAt':s.get('checkedAt'),'sourceUpdatedAt':s.get('sourceUpdatedAt')} for s in sources if s.get('status')=='available']}
-    input_version = hashlib.sha256(json.dumps({'evidenceVersion':evidence_version,'scenario':scenario,
-        'injuries':[{k:r.get(k) for k in ('playerId','team','status','practiceParticipation','injury','week')} for r in reports],
-        'rosters':sorted((pid,r.get('team'),r.get('status')) for pid,r in roster.items()),'contracts':definitions},sort_keys=True,separators=(',',':')).encode()).hexdigest()
+    input_version=automatic_feature_version(evidence_version,scenario,reports,roster,definitions,what_if,selected_outcomes)
+    # Preserve the fitted-byte SHA (which honestly includes collection-time
+    # provenance) and expose a separate feature fingerprint. A fresh source
+    # check is not itself a new statistical input. Consumers must still audit
+    # pipeline/engine versions, simulation count, seed and current availability.
+    result['inputFeatureVersion']=input_version
     return {'result':result,'research':research,'summary':summary,'inputVersion':input_version,'modelVersion':fit['model']['version'],
             'calculatedAt':stamp(),'asOf':fit['model']['asOf'],'elapsedSeconds':time.monotonic()-started,'source':'automatic_public_nflverse','requiresDatasetUpload':False}

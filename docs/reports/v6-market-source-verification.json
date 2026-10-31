@@ -1,0 +1,96 @@
+{
+  "status": "passed",
+  "checkedAt": "2026-10-30T21:46:50.316Z",
+  "scope": "Actual documented public nested-event source discovery across all trusted NFL games in the next seven days; no production prices were fabricated or seeded",
+  "games": [
+    "2026_08_BAL_BUF",
+    "2026_08_TEN_CIN",
+    "2026_08_ARI_DAL",
+    "2026_08_MIN_DET",
+    "2026_08_IND_JAX",
+    "2026_08_LV_NYJ",
+    "2026_08_CLE_PIT",
+    "2026_08_ATL_TB",
+    "2026_08_LAC_LA",
+    "2026_08_KC_DEN",
+    "2026_08_NE_MIA",
+    "2026_08_PHI_WAS",
+    "2026_08_CHI_SEA",
+    "2026_09_JAX_BAL"
+  ],
+  "source": "Kalshi documented public market-data API",
+  "contractsObserved": 4100,
+  "modelCompatibleConditionalContracts": 3552,
+  "unsupportedTotalTouchdownContracts": 548,
+  "elapsedSeconds": 6.847,
+  "categories": [
+    "Passing yards",
+    "Passing touchdowns",
+    "Passing attempts",
+    "Passing completions",
+    "Interceptions thrown",
+    "Rushing yards",
+    "Rushing attempts",
+    "Receiving yards",
+    "Receptions",
+    "Touchdowns"
+  ],
+  "draftKingsAuthorizedFeedConfigured": false,
+  "tradesPlaced": false,
+  "accountsAccessed": false,
+  "financialRecordsAccessed": false,
+  "configuredSecretsIncluded": false,
+  "contractTerms": {
+    "url": "https://assets.kalshi.com/contract_terms/FOOTBALLENTITYSTAT.pdf",
+    "sha256": "667ec1a9b87681a4f26225ad2bbcd0a90b7032a6843a48a493ba5d77669e99fe",
+    "overtimeIncludedByDefault": true,
+    "nonParticipationAndExceptionalFairPriceCasesModeled": false
+  },
+  "fees": {
+    "sourceUrl": "https://kalshi.com/docs/kalshi-fee-schedule.pdf",
+    "sha256": "c326a69f596a11e8f8be2620402d39a8d4823920c21cc97c93a114d862699601",
+    "effectiveDate": "2026-07-07",
+    "exactAccountEntryFeesVerified": false,
+    "entryFeeCents": null,
+    "unconditionalNetValueAfterFees": null
+  },
+  "limitations": [
+    "These are separately labeled Kalshi contracts, not DraftKings Predictions prices or proven equivalent settlement definitions.",
+    "Public quotes were observed at collection; authenticated execution and a quote-change timestamp are not verified.",
+    "A current NFL roster must independently resolve GSIS identities before model evaluation.",
+    "All-touchdown contracts require scoring categories outside the offensive-only player model and are withheld from exact model valuation.",
+    "The source check does not establish model calibration, unconditional contract settlement probability or future provider availability.",
+    "Complete pagination refers to source collection, not complete model coverage. Unsupported rules and scoring types remain withheld; private/backend batches and browser pagination avoid exposing the 14.9 MB internal collection as one request."
+  ],
+  "gamesWithListedContracts": [
+    "2026_08_ARI_DAL",
+    "2026_08_ATL_TB",
+    "2026_08_BAL_BUF",
+    "2026_08_CLE_PIT",
+    "2026_08_IND_JAX",
+    "2026_08_LV_NYJ",
+    "2026_08_MIN_DET",
+    "2026_08_TEN_CIN",
+    "2026_08_LAC_LA",
+    "2026_08_KC_DEN",
+    "2026_08_NE_MIA",
+    "2026_08_PHI_WAS",
+    "2026_08_CHI_SEA"
+  ],
+  "rejectedSourceDefinitions": 65,
+  "rejectedReasons": {
+    "Market event, type, status or participant identity did not match the trusted NFL game.": 39,
+    "Contract identifier disagrees with the structured player, team or threshold.": 26
+  },
+  "completeMarketPagination": true,
+  "failedDataSources": [],
+  "internalUnpagedPayloadBytes": 14923623,
+  "providerStatus": {
+    "DraftKings Predictions": "unavailable",
+    "Kalshi": "partial"
+  },
+  "focusedTests": {
+    "passed": 17,
+    "failed": 0
+  }
+}

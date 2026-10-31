@@ -1,0 +1,47 @@
+{
+  "status": "passed",
+  "startedAt": "2026-10-31T05:10:08.883Z",
+  "baseUrl": "https://gridiron-ai-gray.vercel.app",
+  "credentialsIncluded": false,
+  "billingChanged": false,
+  "financialWrites": false,
+  "maximumGenerationRequests": 1,
+  "generationRequests": 0,
+  "checks": [
+    {
+      "name": "A normal authenticated session independently verifies the exact server-marked disposable QA owner",
+      "status": "passed"
+    },
+    {
+      "name": "The actual assistant capability probe returns a private non-secret status without a generation or billing change",
+      "status": "passed"
+    }
+  ],
+  "providerSelection": "explicit_read_only_probe",
+  "capability": {
+    "provider": "vercel-gateway",
+    "model": "openai/gpt-4.1-mini",
+    "configured": false,
+    "ready": false,
+    "reason": "missing_credentials",
+    "message": "Vercel AI Gateway requires server-side VERCEL_OIDC_TOKEN or AI_GATEWAY_API_KEY. No direct OpenAI fallback was attempted.",
+    "generationVerified": false,
+    "creditCheck": {
+      "httpStatus": null,
+      "checkedAt": "2026-10-31T05:10:10.113Z",
+      "includedCreditEligibility": "unverified",
+      "includedCreditsAuthorized": false
+    }
+  },
+  "generation": {
+    "status": "not_requested",
+    "generatedByAI": false,
+    "reason": "missing_credentials"
+  },
+  "finishedAt": "2026-10-31T05:10:10.141Z",
+  "limitations": [
+    "A successful status probe alone does not establish model generation or tool calling.",
+    "No billing settings, top-ups, account verification, provider credentials or external authorizations are changed.",
+    "A provider readiness failure is reported as an integration limitation; calculated financial reports and source-only briefs are separate tested features."
+  ]
+}

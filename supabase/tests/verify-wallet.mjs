@@ -1,0 +1,60 @@
+/** Local PostgreSQL semantics only: no managed database or real account writes. */
+import {PGlite} from '@electric-sql/pglite';
+import {readFileSync,readdirSync} from 'node:fs';
+import assert from 'node:assert/strict';
+let db=new PGlite();const directory=new URL('../migrations/',import.meta.url);
+const bootstrap=`create role anon;create role authenticated;create role service_role bypassrls;create schema auth;create table auth.users(id uuid primary key,email text);create table auth.sessions(id uuid primary key,user_id uuid references auth.users(id));create function auth.uid() returns uuid language sql stable as $$select (nullif(current_setting('request.jwt.claims',true),'')::jsonb->>'sub')::uuid$$;create function auth.jwt() returns jsonb language sql stable as $$select coalesce(nullif(current_setting('request.jwt.claims',true),'')::jsonb,'{}'::jsonb)$$;grant usage on schema auth to authenticated;grant execute on function auth.uid(),auth.jwt() to authenticated;`;await db.exec(bootstrap);
+for(const name of readdirSync(directory).filter(name=>name.endsWith('.sql')&&name<'20261030200000').sort())await db.exec(readFileSync(new URL(name,directory),'utf8'));
+const owners=['10000000-0000-4000-8000-000000000041','10000000-0000-4000-8000-000000000042'];
+for(const id of owners)await db.query('insert into auth.users(id,email)values($1,$2)',[id,'SYNTHETIC-'+id+'@example.test']);
+const owner=async id=>{await db.exec('reset role');await db.query("select set_config('request.jwt.claims',$1,false)",[JSON.stringify({sub:id})]);await db.exec('set role authenticated');};
+const rpc=async(name,payload)=>(await db.query(payload===undefined?`select public.${name}() value`:`select public.${name}($1::jsonb) value`,payload===undefined?[]:[JSON.stringify(payload)])).rows[0].value;
+await owner(owners[0]);await rpc('gridiron_post_transaction',{sportsbook:'DraftKings',type:'starting_balance',amount:'1000.00'});
+const legacy=await rpc('gridiron_place_bet',{sportsbook:'DraftKings',event:'SYNTHETIC preserved wager',market:'Moneyline',selection:'SYNTHETIC selection',stake:'100.00',odds:-110});
+await db.exec('reset role');const prior=(await db.query('select to_jsonb(w) value from public.wagers w where id=$1',[legacy.id])).rows[0].value;
+const migration=readdirSync(directory).find(name=>name.endsWith('_gridiron_event_contract_wallet.sql'));assert.ok(migration);
+await db.exec(readFileSync(new URL(migration,directory),'utf8'));
+const preserved=(await db.query('select to_jsonb(w) value from public.wagers w where id=$1',[legacy.id])).rows[0].value;
+for(const[key,value]of Object.entries(prior))assert.deepEqual(preserved[key],value,'Existing wager changed: '+key);
+assert.equal(preserved.market_instrument,'sportsbook');assert.equal(preserved.contract_price_cents,null);console.log('WALLET EXISTING ROW PRESERVATION PASSED');
+await db.exec('set role anon');await assert.rejects(rpc('gridiron_place_bet',{}),/permission denied/);
+await owner(owners[0]);
+const payload={sportsbook:'DraftKings',event:'SYNTHETIC event contract',market:'Receiving yards',selection:'YES over40.5',player:'SYNTHETIC player',marketInstrument:'event_contract',contractPriceCents:'62.5',contractQuantity:20,entryFeeCents:'25',stake:'12.75',placementTime:'2025-01-03T12:00:00Z'};
+const bet=await rpc('gridiron_place_bet',payload);assert.equal(bet.odds,null);assert.equal(bet.marketInstrument,'event_contract');
+let report=await rpc('gridiron_ledger');assert.equal(report.summary.availableBalanceCents,88725);assert.equal(report.summary.pendingExposureCents,11275);assert.equal(report.summary.realizedPlCents,0);
+const read=report.bets.find(row=>row.id===bet.id);assert.equal(read.player,payload.player);assert.equal(read.odds,null);assert.equal(read.contractPriceCents,'62.500000');assert.equal(read.contractQuantity,20);assert.equal(read.entryFeeCents,'25');
+await assert.rejects(rpc('gridiron_place_bet',{...payload,odds:-110}),/do not have American odds/);
+await assert.rejects(rpc('gridiron_place_bet',{...payload,stake:'12.74'}),/exactly/);
+await assert.rejects(rpc('gridiron_place_bet',{...payload,contractPriceCents:'62.5000001'}),/Exact contract fill/);
+await assert.rejects(rpc('gridiron_settle_bet',{id:bet.id,result:'won'}),/Actual contract/);
+await assert.rejects(rpc('gridiron_settle_bet',{id:bet.id,result:'won',payout:'19.80',settlementTime:'2025-01-02T12:00:00Z'}),/Invalid settlement/);
+assert.equal((await rpc('gridiron_ledger')).summary.availableBalanceCents,88725,'Rejected operations partially debited account');
+await owner(owners[1]);assert.equal((await rpc('gridiron_ledger')).summary.cashBalanceCents,0);await assert.rejects(rpc('gridiron_settle_bet',{id:bet.id,result:'lost'}),/not found/);assert.equal((await db.query('select count(*)::int n from public.wagers')).rows[0].n,0);
+await owner(owners[0]);await rpc('gridiron_settle_bet',{id:legacy.id,result:'won',payout:'175.00'});await rpc('gridiron_settle_bet',{id:bet.id,result:'won',payout:'19.80',settlementTime:'2025-01-04T12:00:00Z'});
+report=await rpc('gridiron_ledger');assert.equal(report.summary.cashBalanceCents,108205);assert.equal(report.summary.realizedPlCents,8205);assert.equal(report.summary.pendingExposureCents,0);
+await assert.rejects(rpc('gridiron_settle_bet',{id:bet.id,result:'won',payout:'19.80'}),/already settled/);console.log('WALLET EXACT CONTRACT STAKE/PAYOUT/DATES/ISOLATION PASSED');
+const feeLoss=await rpc('gridiron_place_bet',{...payload,contractPriceCents:'99',contractQuantity:1,entryFeeCents:'5',stake:'1.04'});await rpc('gridiron_settle_bet',{id:feeLoss.id,result:'won',payout:'1.00'});
+const voided=await rpc('gridiron_place_bet',payload);await assert.rejects(rpc('gridiron_settle_bet',{id:voided.id,result:'voided'}),/Actual contract refund/);await rpc('gridiron_settle_bet',{id:voided.id,result:'voided',payout:'12.50'});
+report=await rpc('gridiron_ledger');assert.equal(report.summary.cashBalanceCents,108176);assert.equal(report.summary.realizedPlCents,8176);console.log('WALLET WINNING NET LOSS/ACTUAL VOID REFUND PASSED');
+// Upgrade preserves existing exact fees and admits verified fractional-cent fill metadata.
+const fractionalMigration=readdirSync(directory).find(name=>name.endsWith('_gridiron_fractional_contract_fees.sql'));assert.ok(fractionalMigration);
+await db.exec('reset role');await db.exec(readFileSync(new URL(fractionalMigration,directory),'utf8'));await owner(owners[0]);
+assert.equal((await rpc('gridiron_ledger')).bets.find(row=>row.id===bet.id).entryFeeCents,'25','Prior whole-cent fee serialization must remain stable.');
+const tinyPayload={...payload,event:'SYNTHETIC fractional-cent event contract',contractPriceCents:'0.1',contractQuantity:1,entryFeeCents:'0.9',stake:'0.01'};
+for(const badFee of ['-0.9','0.9000001','NaN'])await assert.rejects(rpc('gridiron_place_bet',{...tinyPayload,entryFeeCents:badFee}),/exact nonnegative/);
+await assert.rejects(rpc('gridiron_place_bet',{...tinyPayload,entryFeeCents:'0.89'}),/exactly/);
+const tiny=await rpc('gridiron_place_bet',tinyPayload);report=await rpc('gridiron_ledger');assert.equal(report.summary.availableBalanceCents,108175);assert.equal(report.summary.pendingExposureCents,1);assert.equal(report.summary.realizedPlCents,8176);assert.equal(report.bets.find(row=>row.id===tiny.id).entryFeeCents,'0.9');
+await rpc('gridiron_settle_bet',{id:tiny.id,result:'won',payout:'1.00',settlementTime:'2025-01-04T12:00:00Z'});report=await rpc('gridiron_ledger');assert.equal(report.summary.cashBalanceCents,108275);assert.equal(report.summary.realizedPlCents,8275);assert.equal(report.summary.pendingExposureCents,0);console.log('WALLET FRACTIONAL FEE/WHOLE CASH/99CENT PROFIT/LEGACY SERIALIZATION PASSED');
+
+const archive=await rpc('gridiron_export_financial'),saved=archive.bets.find(row=>row.id===bet.id);assert.equal(saved.odds,null);assert.equal(saved.contract_price_cents,'62.500000');assert.equal(saved.market_instrument,'event_contract');assert.equal(saved.entry_fee_cents,'25');
+// Restore into a genuinely empty separate database, rather than colliding
+// with the source account's existing globally unique journal/wager IDs.
+await db.close();db=new PGlite();await db.exec(bootstrap);
+for(const name of readdirSync(directory).filter(name=>name.endsWith('.sql')&&name<'20261030200000').sort())await db.exec(readFileSync(new URL(name,directory),'utf8'));
+await db.exec(readFileSync(new URL(migration,directory),'utf8'));
+await db.exec(readFileSync(new URL(fractionalMigration,directory),'utf8'));
+await db.query('insert into auth.users(id,email)values($1,$2)',[owners[1],'SYNTHETIC-RESTORE@example.test']);
+await owner(owners[1]);const imported=(await db.query('select public.gridiron_import_backup($1::jsonb,$2) value',[JSON.stringify({version:2,rawLedger:archive,ledger:{summary:report.summary},research:{}}),'f'.repeat(64)])).rows[0].value;
+assert.equal(imported.imported,true);const reopened=await rpc('gridiron_ledger'),restored=reopened.bets.find(row=>row.id===bet.id);assert.equal(reopened.summary.cashBalanceCents,108275);assert.equal(restored.odds,null);assert.equal(restored.player,payload.player);assert.equal(restored.contractPriceCents,'62.500000');assert.equal(restored.entryFeeCents,'25');assert.equal(reopened.bets.find(row=>row.id===tiny.id).entryFeeCents,'0.9');assert.equal(reopened.summary.realizedPlCents,8275);
+const duplicate=(await db.query('select public.gridiron_import_backup($1::jsonb,$2) value',[JSON.stringify({version:2,rawLedger:archive,ledger:{summary:report.summary},research:{}}),'f'.repeat(64)])).rows[0].value;assert.equal(duplicate.duplicate,true);console.log('WALLET CONTRACT EXPORT/IMPORT/RETRY PRESERVATION PASSED');
+await db.close();

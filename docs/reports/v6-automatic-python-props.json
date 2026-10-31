@@ -1,0 +1,355 @@
+{
+  "status": "passed",
+  "checkedAt": "2026-10-30T21:22:00.315717+00:00",
+  "pipeline": "automatic-nfl-research-6.0.0",
+  "game": {
+    "id": "2026_08_BAL_BUF",
+    "home": "BUF",
+    "away": "BAL",
+    "startTime": "2026-11-01T18:00:00Z",
+    "season": 2026,
+    "week": 8
+  },
+  "source": "Actual automatically fetched current2026 publicnflverse release assets; no uploaded dataset",
+  "baseCompleteGames": 10000,
+  "parameterCompleteGames": 1000,
+  "elapsedSeconds": 10.025417892997211,
+  "currentPlayerCatalog": 158,
+  "publishedPlayerDistributions": 26,
+  "withheldPlayerDistributions": 2,
+  "exactHistogramCountsReconciled": true,
+  "parameterEncoding": "gzip_base64_int32le_shared_player_stats_v1",
+  "parameterCompressedBytes": 110203,
+  "parameterUncompressedBytes": 1352000,
+  "parameterIncludesWithheldPlayers": false,
+  "injuryReports": 27,
+  "injuryImpact": {
+    "fullyAdjusted": false,
+    "availabilityWeightsCalibrated": false,
+    "scenario": null,
+    "scenarioAudit": [],
+    "withheldPlayers": {
+      "00-0032398": "Current roster does not list this player as active; a participation scenario is not supported.",
+      "00-0034798": "Current roster does not list this player as active; a participation scenario is not supported."
+    }
+  },
+  "sources": [
+    {
+      "id": "nflverse-injuries",
+      "name": "nflverse injuries",
+      "kind": "injuries",
+      "url": "https://github.com/nflverse/nflverse-data/releases/download/injuries/injuries_2026.csv.gz",
+      "season": 2026,
+      "checkedAt": "2026-10-30T21:21:50.742480+00:00",
+      "sourceUpdatedAt": "2026-10-30T13:59:25+00:00",
+      "version": "c5615421f8b1fc8d189a6475f1ae5884e30acb1ebdd81c61ab089b5ac09e8b43",
+      "etag": "\"0x8DF368E01E8B9C6\"",
+      "bytes": 50957,
+      "status": "available",
+      "schemaVerified": true,
+      "access": "Public nflverse release asset; upstream attribution and source terms apply.",
+      "publicationAt": null,
+      "reliability": "retrieved_and_schema_checked; historical first-publication time unknown"
+    },
+    {
+      "id": "nflverse-snaps",
+      "name": "nflverse snap counts",
+      "kind": "snaps",
+      "url": "https://github.com/nflverse/nflverse-data/releases/download/snap_counts/snap_counts_2026.csv.gz",
+      "season": 2026,
+      "checkedAt": "2026-10-30T21:21:50.796656+00:00",
+      "sourceUpdatedAt": "2026-10-30T11:01:36+00:00",
+      "version": "d0acc389f757892912cad08eb6b92de07f1db10af360e3011fff6a626189db45",
+      "etag": "\"0x8DF36752AF41875\"",
+      "bytes": 190301,
+      "status": "available",
+      "schemaVerified": true,
+      "access": "Public nflverse release asset; upstream attribution and source terms apply.",
+      "publicationAt": null,
+      "reliability": "retrieved_and_schema_checked; historical first-publication time unknown"
+    },
+    {
+      "id": "nflverse-rosters",
+      "name": "nflverse rosters",
+      "kind": "rosters",
+      "url": "https://github.com/nflverse/nflverse-data/releases/download/rosters/roster_2026.csv.gz",
+      "season": 2026,
+      "checkedAt": "2026-10-30T21:21:50.821060+00:00",
+      "sourceUpdatedAt": "2026-10-30T14:07:09+00:00",
+      "version": "d98ef12c07d427036e5ee035d1bf674ba7049578ced73471e5594412853ebcc8",
+      "etag": "\"0x8DF368F16AB2C98\"",
+      "bytes": 377942,
+      "status": "available",
+      "schemaVerified": true,
+      "access": "Public nflverse release asset; upstream attribution and source terms apply.",
+      "publicationAt": null,
+      "reliability": "retrieved_and_schema_checked; historical first-publication time unknown"
+    },
+    {
+      "id": "nflverse-pbp",
+      "name": "nflverse play-by-play",
+      "kind": "pbp",
+      "url": "https://github.com/nflverse/nflverse-data/releases/download/pbp/play_by_play_2026.csv.gz",
+      "season": 2026,
+      "checkedAt": "2026-10-30T21:21:50.903390+00:00",
+      "sourceUpdatedAt": "2026-10-30T15:52:36+00:00",
+      "version": "653bf713cb9851a8a9d37787388f27a3a339c0e3429d0e64f611402d4328fe6f",
+      "etag": "\"0x8DF369DD1C4C949\"",
+      "bytes": 7433373,
+      "status": "available",
+      "schemaVerified": true,
+      "access": "Public nflverse release asset; upstream attribution and source terms apply.",
+      "publicationAt": null,
+      "reliability": "retrieved_and_schema_checked; historical first-publication time unknown"
+    },
+    {
+      "id": "nflverse-depth",
+      "name": "nflverse depth charts",
+      "kind": "depth",
+      "url": "https://github.com/nflverse/nflverse-data/releases/download/depth_charts/depth_charts_2026.csv.gz",
+      "season": 2026,
+      "checkedAt": "2026-10-30T21:21:51.084017+00:00",
+      "sourceUpdatedAt": "2026-10-30T13:59:48+00:00",
+      "version": "49726e81b4af8ead92aee7862fec5536c3db9da2d421a8b0a6c2dad7f754dae3",
+      "etag": "\"0x8DF368E0FC13E8D\"",
+      "bytes": 13993960,
+      "status": "available",
+      "schemaVerified": true,
+      "access": "Public nflverse release asset; upstream attribution and source terms apply.",
+      "publicationAt": null,
+      "reliability": "retrieved_and_schema_checked; historical first-publication time unknown"
+    },
+    {
+      "id": "nflverse-team_stats",
+      "name": "nflverse team_stats",
+      "kind": "team_stats",
+      "url": "https://github.com/nflverse/nflverse-data/releases/download/stats_team/stats_team_week_2026.csv.gz",
+      "season": 2026,
+      "checkedAt": "2026-10-30T21:21:51.115890+00:00",
+      "sourceUpdatedAt": "2026-10-30T15:54:37+00:00",
+      "version": "8c6e89554d54a9bcfb824dd8aed46ef1e4f81fb71c33414fcaa06da1fb807ee7",
+      "etag": "\"0x8DF369E1991C8DC\"",
+      "bytes": 29952,
+      "status": "available",
+      "schemaVerified": true,
+      "access": "Public nflverse release asset; upstream attribution and source terms apply.",
+      "publicationAt": null,
+      "reliability": "retrieved_and_schema_checked; historical first-publication time unknown"
+    },
+    {
+      "id": "nflverse-player_stats",
+      "name": "nflverse player_stats",
+      "kind": "player_stats",
+      "url": "https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_2026.csv.gz",
+      "season": 2026,
+      "checkedAt": "2026-10-30T21:21:51.121686+00:00",
+      "sourceUpdatedAt": "2026-10-30T15:54:32+00:00",
+      "version": "fba3940e405b05b3c20d7b86f1bf217ad52aa720481917d2c14f53e195e793a2",
+      "etag": "\"0x8DF369E171118F2\"",
+      "bytes": 488530,
+      "status": "available",
+      "schemaVerified": true,
+      "access": "Public nflverse release asset; upstream attribution and source terms apply.",
+      "publicationAt": null,
+      "reliability": "retrieved_and_schema_checked; historical first-publication time unknown"
+    }
+  ],
+  "examples": [
+    {
+      "playerId": "00-0034857",
+      "player": "Josh Allen",
+      "stat": "passingYards",
+      "threshold": 225.5,
+      "thresholdSource": "Predeclared hypothetical research grid, not a DraftKings or live market contract",
+      "yesProbability": 0.5648,
+      "noProbability": 0.4352,
+      "samplingInterval95": [
+        0.5550597791698588,
+        0.5744904546413014
+      ],
+      "parameterSensitivityInterval95": [
+        0.35,
+        0.75
+      ],
+      "calibratedProbability": null
+    },
+    {
+      "playerId": "00-0034857",
+      "player": "Josh Allen",
+      "stat": "passingTouchdowns",
+      "threshold": 1.5,
+      "thresholdSource": "Predeclared hypothetical research grid, not a DraftKings or live market contract",
+      "yesProbability": 0.5107,
+      "noProbability": 0.4893,
+      "samplingInterval95": [
+        0.500900195959935,
+        0.5204915864749325
+      ],
+      "parameterSensitivityInterval95": [
+        0.34,
+        0.61
+      ],
+      "calibratedProbability": null
+    },
+    {
+      "playerId": "00-0034857",
+      "player": "Josh Allen",
+      "stat": "passingAttempts",
+      "threshold": 32.5,
+      "thresholdSource": "Predeclared hypothetical research grid, not a DraftKings or live market contract",
+      "yesProbability": 0.2066,
+      "noProbability": 0.7934,
+      "samplingInterval95": [
+        0.1987781620299656,
+        0.21464716821394744
+      ],
+      "parameterSensitivityInterval95": [
+        0.06,
+        0.43
+      ],
+      "calibratedProbability": null
+    },
+    {
+      "playerId": "00-0034857",
+      "player": "Josh Allen",
+      "stat": "completions",
+      "threshold": 20.5,
+      "thresholdSource": "Predeclared hypothetical research grid, not a DraftKings or live market contract",
+      "yesProbability": 0.3822,
+      "noProbability": 0.6178,
+      "samplingInterval95": [
+        0.37272300024279315,
+        0.3917674697733381
+      ],
+      "parameterSensitivityInterval95": [
+        0.16,
+        0.57
+      ],
+      "calibratedProbability": null
+    },
+    {
+      "playerId": "00-0034857",
+      "player": "Josh Allen",
+      "stat": "interceptions",
+      "threshold": 0.5,
+      "thresholdSource": "Predeclared hypothetical research grid, not a DraftKings or live market contract",
+      "yesProbability": 0.3811,
+      "noProbability": 0.6189,
+      "samplingInterval95": [
+        0.37162867197694843,
+        0.3906626428355983
+      ],
+      "parameterSensitivityInterval95": [
+        0.14,
+        0.51
+      ],
+      "calibratedProbability": null
+    },
+    {
+      "playerId": "00-0032764",
+      "player": "Derrick Henry",
+      "stat": "rushingYards",
+      "threshold": 49.5,
+      "thresholdSource": "Predeclared hypothetical research grid, not a DraftKings or live market contract",
+      "yesProbability": 0.8796,
+      "noProbability": 0.1204,
+      "samplingInterval95": [
+        0.8730755078823443,
+        0.8858329605546381
+      ],
+      "parameterSensitivityInterval95": [
+        0.71,
+        0.95
+      ],
+      "calibratedProbability": null
+    },
+    {
+      "playerId": "00-0032764",
+      "player": "Derrick Henry",
+      "stat": "carries",
+      "threshold": 11.5,
+      "thresholdSource": "Predeclared hypothetical research grid, not a DraftKings or live market contract",
+      "yesProbability": 0.9899,
+      "noProbability": 0.0101,
+      "samplingInterval95": [
+        0.9877434785006571,
+        0.9916802798957538
+      ],
+      "parameterSensitivityInterval95": [
+        0.95,
+        1
+      ],
+      "calibratedProbability": null
+    },
+    {
+      "playerId": "00-0039064",
+      "player": "Zay Flowers",
+      "stat": "receivingYards",
+      "threshold": 49.5,
+      "thresholdSource": "Predeclared hypothetical research grid, not a DraftKings or live market contract",
+      "yesProbability": 0.7897,
+      "noProbability": 0.2103,
+      "samplingInterval95": [
+        0.7816022366460311,
+        0.7975752746979987
+      ],
+      "parameterSensitivityInterval95": [
+        0.69,
+        0.92
+      ],
+      "calibratedProbability": null
+    },
+    {
+      "playerId": "00-0039064",
+      "player": "Zay Flowers",
+      "stat": "receptions",
+      "threshold": 3.5,
+      "thresholdSource": "Predeclared hypothetical research grid, not a DraftKings or live market contract",
+      "yesProbability": 0.8776,
+      "noProbability": 0.1224,
+      "samplingInterval95": [
+        0.8710308716516049,
+        0.8838791327788602
+      ],
+      "parameterSensitivityInterval95": [
+        0.71,
+        0.97
+      ],
+      "calibratedProbability": null
+    },
+    {
+      "playerId": "00-0039064",
+      "player": "Zay Flowers",
+      "stat": "touchdowns",
+      "threshold": 0.5,
+      "thresholdSource": "Predeclared hypothetical research grid, not a DraftKings or live market contract",
+      "yesProbability": 0.4924,
+      "noProbability": 0.5076,
+      "samplingInterval95": [
+        0.4826061116915428,
+        0.5021997250836913
+      ],
+      "parameterSensitivityInterval95": [
+        0.22,
+        0.69
+      ],
+      "calibratedProbability": null
+    }
+  ],
+  "fullyCalibrated": false,
+  "liveMarketQuotesUsed": false,
+  "limitations": [
+    "Research thresholds are explicitly hypothetical; no real DraftKings contract or market quote was invented.",
+    "Parameter sensitivity intervals include finite inner simulation noise and are not validated predictive coverage.",
+    "Historical first-publication times and fully injury-adjusted structural models remain unverified."
+  ],
+  "typeScriptParameterDecoderVerified": {
+    "status": "passed",
+    "exactThresholdExamples": 10,
+    "players": 26,
+    "stats": 13,
+    "replicates": 10,
+    "gamesPerReplicate": 100,
+    "pythonTypeScriptIntervalsIdentical": true
+  }
+}

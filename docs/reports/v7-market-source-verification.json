@@ -1,0 +1,511 @@
+{
+  "executedAt": "2026-10-31T05:06:18.647Z",
+  "elapsedSeconds": 10.457,
+  "source": "Actual documented public exchange data. Not DraftKings prices; no DB or simulation writes.",
+  "complete": true,
+  "contracts": 5217,
+  "games": 14,
+  "byStat": {
+    "passingYards": {
+      "contracts": 238,
+      "compatible": 238,
+      "current": 238
+    },
+    "passingTouchdowns": {
+      "contracts": 109,
+      "compatible": 109,
+      "current": 109
+    },
+    "passingAttempts": {
+      "contracts": 78,
+      "compatible": 78,
+      "current": 78
+    },
+    "completions": {
+      "contracts": 78,
+      "compatible": 78,
+      "current": 78
+    },
+    "interceptions": {
+      "contracts": 78,
+      "compatible": 78,
+      "current": 78
+    },
+    "rushingYards": {
+      "contracts": 635,
+      "compatible": 635,
+      "current": 635
+    },
+    "carries": {
+      "contracts": 122,
+      "compatible": 122,
+      "current": 122
+    },
+    "receivingYards": {
+      "contracts": 1418,
+      "compatible": 1418,
+      "current": 1418
+    },
+    "receptions": {
+      "contracts": 908,
+      "compatible": 908,
+      "current": 908
+    },
+    "touchdowns": {
+      "contracts": 553,
+      "compatible": 0,
+      "current": 553
+    },
+    "gameWinner": {
+      "contracts": 28,
+      "compatible": 28,
+      "current": 28
+    },
+    "spread": {
+      "contracts": 356,
+      "compatible": 356,
+      "current": 356
+    },
+    "totalPoints": {
+      "contracts": 266,
+      "compatible": 266,
+      "current": 266
+    },
+    "teamTotal": {
+      "contracts": 350,
+      "compatible": 350,
+      "current": 350
+    }
+  },
+  "providers": [
+    {
+      "provider": "DraftKings Predictions",
+      "checkedAt": "2026-10-31T05:06:08.712Z",
+      "contracts": 0,
+      "sourceUrl": "https://predictions.draftkings.com/en",
+      "categories": [],
+      "status": "unavailable",
+      "message": "An authorized DraftKings Predictions NFL event-contract feed is not connected. DraftKings Sportsbook odds and separately selected exchange alternatives are not DraftKings Predictions prices."
+    },
+    {
+      "provider": "Kalshi",
+      "status": "partial",
+      "checkedAt": "2026-10-31T05:06:08.712Z",
+      "contracts": 5217,
+      "sourceUrl": "https://docs.kalshi.com/getting_started/quick_start_market_data",
+      "categories": [
+        "Passing yards",
+        "Passing touchdowns",
+        "Passing attempts",
+        "Passing completions",
+        "Interceptions thrown",
+        "Rushing yards",
+        "Rushing attempts",
+        "Receiving yards",
+        "Receptions",
+        "Touchdowns",
+        "Game winner",
+        "Winning margin",
+        "Total points",
+        "Team total points"
+      ],
+      "message": "Verified public Kalshi player-stat contracts, separately labeled from DraftKings Predictions. Unsupported touchdown coverage, participation exceptions, missing fees and uncalibrated models withhold complete or unconditional value claims."
+    }
+  ],
+  "rejected": [
+    {
+      "contractId": "KXNFLRSHYDS-26NOV01KCDEN-DENRHARVEY12-10",
+      "reason": "Market event, type, status or participant identity did not match the trusted NFL game."
+    },
+    {
+      "contractId": "KXNFLRSHYDS-26NOV01KCDEN-DENRHARVEY12-15",
+      "reason": "Market event, type, status or participant identity did not match the trusted NFL game."
+    },
+    {
+      "contractId": "KXNFLRSHYDS-26NOV01KCDEN-DENRHARVEY12-20",
+      "reason": "Market event, type, status or participant identity did not match the trusted NFL game."
+    },
+    {
+      "contractId": "KXNFLRSHYDS-26NOV01KCDEN-DENRHARVEY12-25",
+      "reason": "Market event, type, status or participant identity did not match the trusted NFL game."
+    },
+    {
+      "contractId": "KXNFLRSHYDS-26NOV01KCDEN-DENRHARVEY12-30",
+      "reason": "Market event, type, status or participant identity did not match the trusted NFL game."
+    },
+    {
+      "contractId": "KXNFLRECYDS-26NOV01TENCIN-TENCTATE14-20",
+      "reason": "Market event, type, status or participant identity did not match the trusted NFL game."
+    },
+    {
+      "contractId": "KXNFLRECYDS-26NOV01TENCIN-TENCTATE14-25",
+      "reason": "Market event, type, status or participant identity did not match the trusted NFL game."
+    },
+    {
+      "contractId": "KXNFLRECYDS-26NOV01TENCIN-TENCTATE14-30",
+      "reason": "Market event, type, status or participant identity did not match the trusted NFL game."
+    },
+    {
+      "contractId": "KXNFLRECYDS-26NOV01TENCIN-TENCTATE14-40",
+      "reason": "Market event, type, status or participant identity did not match the trusted NFL game."
+    },
+    {
+      "contractId": "KXNFLRECYDS-26NOV01TENCIN-TENCTATE14-50",
+      "reason": "Market event, type, status or participant identity did not match the trusted NFL game."
+    },
+    {
+      "contractId": "KXNFLRECYDS-26NOV01TENCIN-TENCTATE14-55",
+      "reason": "Market event, type, status or participant identity did not match the trusted NFL game."
+    },
+    {
+      "contractId": "KXNFLRECYDS-26NOV01TENCIN-TENCTATE14-60",
+      "reason": "Market event, type, status or participant identity did not match the trusted NFL game."
+    },
+    {
+      "contractId": "KXNFLRECYDS-26NOV01TENCIN-TENCTATE14-70",
+      "reason": "Market event, type, status or participant identity did not match the trusted NFL game."
+    },
+    {
+      "contractId": "KXNFLRECYDS-26NOV01TENCIN-TENCTATE14-80",
+      "reason": "Market event, type, status or participant identity did not match the trusted NFL game."
+    },
+    {
+      "contractId": "KXNFLRECYDS-26NOV01TENCIN-TENCTATE14-90",
+      "reason": "Market event, type, status or participant identity did not match the trusted NFL game."
+    },
+    {
+      "contractId": "KXNFLRECYDS-26NOV01TENCIN-TENCTATE14-100",
+      "reason": "Market event, type, status or participant identity did not match the trusted NFL game."
+    },
+    {
+      "contractId": "KXNFLRECYDS-26NOV01TENCIN-TENCTATE14-110",
+      "reason": "Market event, type, status or participant identity did not match the trusted NFL game."
+    },
+    {
+      "contractId": "KXNFLRECYDS-26NOV01TENCIN-TENCTATE14-120",
+      "reason": "Market event, type, status or participant identity did not match the trusted NFL game."
+    },
+    {
+      "contractId": "KXNFLRECYDS-26NOV01TENCIN-TENCTATE14-130",
+      "reason": "Market event, type, status or participant identity did not match the trusted NFL game."
+    },
+    {
+      "contractId": "KXNFLRECYDS-26NOV01KCDEN-DENRHARVEY12-10",
+      "reason": "Market event, type, status or participant identity did not match the trusted NFL game."
+    },
+    {
+      "contractId": "KXNFLRECYDS-26NOV01KCDEN-DENRHARVEY12-15",
+      "reason": "Market event, type, status or participant identity did not match the trusted NFL game."
+    },
+    {
+      "contractId": "KXNFLRECYDS-26NOV01KCDEN-DENRHARVEY12-20",
+      "reason": "Market event, type, status or participant identity did not match the trusted NFL game."
+    },
+    {
+      "contractId": "KXNFLRECYDS-26NOV01KCDEN-DENRHARVEY12-25",
+      "reason": "Market event, type, status or participant identity did not match the trusted NFL game."
+    },
+    {
+      "contractId": "KXNFLRECYDS-26NOV01KCDEN-DENRHARVEY12-30",
+      "reason": "Market event, type, status or participant identity did not match the trusted NFL game."
+    },
+    {
+      "contractId": "KXNFLRECYDS-26NOV01KCDEN-DENRHARVEY12-40",
+      "reason": "Market event, type, status or participant identity did not match the trusted NFL game."
+    }
+  ],
+  "gameSamples": [
+    {
+      "id": "Kalshi:KXNFLGAME-26NOV01ARIDAL-DAL",
+      "gameId": "2026_08_ARI_DAL",
+      "stat": "gameWinner",
+      "threshold": 0,
+      "operator": "gt",
+      "subject": {
+        "kind": "team",
+        "teamId": "DAL"
+      },
+      "playerId": null,
+      "provider": "Kalshi",
+      "draftKingsEquivalent": false,
+      "rulesVerified": true,
+      "modelCompatible": true,
+      "rules": "If Dallas wins the Arizona vs Dallas Pro Football game originally scheduled for Nov 1, 2026, then the market resolves to Yes.\n\nThe following market refers to the team who wins the Arizona vs Dallas Pro Football game originally scheduled for Nov 1, 2026. If the game ends in a tie, the market will resolve to $0.50 for each team. If the game is postponed but begins within 48 hours from its originally scheduled start time, the market will remain open and resolve based on the official final result. If the game is not started within 48 hours, the market will resolve to a fair price. Kalshi is not affiliated, associated, authorized, endorsed by, or in any way officially connected with the Governing League. All trademarks, logos, and brand names are the property of their respective owners.",
+      "rulesUrl": "https://assets.kalshi.com/contract_terms/FOOTBALLGAMEWIN.pdf",
+      "rulesHash": "e4d5797b59d1fc048c543f5478983b4c1b1de2cccaeb4fe429abaccb431f3e2e",
+      "observedAt": "2026-10-31T05:06:08.712Z",
+      "quotedAt": null,
+      "displayedYesPercent": null,
+      "yesAskCents": "75",
+      "fees": "unverified"
+    },
+    {
+      "id": "Kalshi:KXNFLSPREAD-26NOV01ARIDAL-DAL28",
+      "gameId": "2026_08_ARI_DAL",
+      "stat": "spread",
+      "threshold": 27.5,
+      "operator": "gt",
+      "subject": {
+        "kind": "team",
+        "teamId": "DAL"
+      },
+      "playerId": null,
+      "provider": "Kalshi",
+      "draftKingsEquivalent": false,
+      "rulesVerified": true,
+      "modelCompatible": true,
+      "rules": "If Dallas wins by more than 27.5 points in the Arizona vs Dallas Pro Football game originally scheduled for Nov 1, 2026, then the market resolves to Yes.\n\nKalshi is not affiliated, associated, authorized, endorsed by, or in any way officially connected with the Governing League. All trademarks, logos, and brand names are the property of their respective owners.",
+      "rulesUrl": "https://assets.kalshi.com/contract_terms/FOOTBALLSPREAD.pdf",
+      "rulesHash": "ff775364cdc495cf58e3768af886f4284a0d53da66a4375734246cdcebb9b749",
+      "observedAt": "2026-10-31T05:06:08.712Z",
+      "quotedAt": null,
+      "displayedYesPercent": null,
+      "yesAskCents": "8",
+      "fees": "unverified"
+    },
+    {
+      "id": "Kalshi:KXNFLTOTAL-26NOV01ARIDAL-32",
+      "gameId": "2026_08_ARI_DAL",
+      "stat": "totalPoints",
+      "threshold": 31.5,
+      "operator": "gt",
+      "subject": {
+        "kind": "game",
+        "teamId": null
+      },
+      "playerId": null,
+      "provider": "Kalshi",
+      "draftKingsEquivalent": false,
+      "rulesVerified": true,
+      "modelCompatible": true,
+      "rules": "If Arizona and Dallas collectively score more than 31.5 points in the Arizona vs Dallas Pro Football game originally scheduled for Nov 1, 2026, then the market resolves to Yes.\n\nKalshi is not affiliated, associated, authorized, endorsed by, or in any way officially connected with the Governing League. All trademarks, logos, and brand names are the property of their respective owners.",
+      "rulesUrl": "https://assets.kalshi.com/contract_terms/FOOTBALLTOTALS.pdf",
+      "rulesHash": "f79e9391e80d5452c8d1640f562e4c84132b69cb250a669cb545ed78d376143d",
+      "observedAt": "2026-10-31T05:06:08.712Z",
+      "quotedAt": null,
+      "displayedYesPercent": null,
+      "yesAskCents": "97",
+      "fees": "unverified"
+    },
+    {
+      "id": "Kalshi:KXNFLTEAMTOTAL-26NOV01ARIDAL-DAL4",
+      "gameId": "2026_08_ARI_DAL",
+      "stat": "teamTotal",
+      "threshold": 3.5,
+      "operator": "gt",
+      "subject": {
+        "kind": "team",
+        "teamId": "DAL"
+      },
+      "playerId": null,
+      "provider": "Kalshi",
+      "draftKingsEquivalent": false,
+      "rulesVerified": true,
+      "modelCompatible": true,
+      "rules": "If Dallas scores over 3.5 points in the Arizona vs Dallas Pro Football game originally scheduled for Nov 1, 2026, then the market resolves to Yes.\n\nKalshi is not affiliated, associated, authorized, endorsed by, or in any way officially connected with the Governing League. All trademarks, logos, and brand names are the property of their respective owners.",
+      "rulesUrl": "https://assets.kalshi.com/contract_terms/FOOTBALLENTITYSTAT.pdf",
+      "rulesHash": "f452eed7240127d862c8b6d6ddc0dd0e2e6ec90d59a5d12151c974db76ed3227",
+      "observedAt": "2026-10-31T05:06:08.712Z",
+      "quotedAt": null,
+      "displayedYesPercent": null,
+      "yesAskCents": "99",
+      "fees": "unverified"
+    }
+  ],
+  "sources": [
+    {
+      "id": "kalshi-public-player-prop-docs",
+      "name": "Kalshi public market-data API documentation reference",
+      "url": "https://docs.kalshi.com/getting_started/quick_start_market_data",
+      "collectedAt": "2026-10-31T05:06:08.712Z",
+      "publishedAt": null,
+      "status": "partial",
+      "note": "Documentation reference, not a statistical data retrieval in this scan. Fixed read-only public endpoints are used; no orders or DraftKings equivalence is implied."
+    },
+    {
+      "id": "kalshi-player-props-KXNFLPASSYDS",
+      "name": "Kalshi Passing yards contract quotes",
+      "url": "https://external-api.kalshi.com/trade-api/v2/events?series_ticker=KXNFLPASSYDS&with_nested_markets=true",
+      "collectedAt": "2026-10-31T05:06:08.712Z",
+      "publishedAt": null,
+      "status": "available",
+      "note": "Observed BBO from nested market definitions; opposite-side liquidity follows the documented binary YES/NO complement. Updated metadata time is not used as quote freshness."
+    },
+    {
+      "id": "kalshi-player-props-KXNFLPASSTDS",
+      "name": "Kalshi Passing touchdowns contract quotes",
+      "url": "https://external-api.kalshi.com/trade-api/v2/events?series_ticker=KXNFLPASSTDS&with_nested_markets=true",
+      "collectedAt": "2026-10-31T05:06:08.712Z",
+      "publishedAt": null,
+      "status": "available",
+      "note": "Observed BBO from nested market definitions; opposite-side liquidity follows the documented binary YES/NO complement. Updated metadata time is not used as quote freshness."
+    },
+    {
+      "id": "kalshi-player-props-KXNFLPASSATT",
+      "name": "Kalshi Passing attempts contract quotes",
+      "url": "https://external-api.kalshi.com/trade-api/v2/events?series_ticker=KXNFLPASSATT&with_nested_markets=true",
+      "collectedAt": "2026-10-31T05:06:08.712Z",
+      "publishedAt": null,
+      "status": "available",
+      "note": "Observed BBO from nested market definitions; opposite-side liquidity follows the documented binary YES/NO complement. Updated metadata time is not used as quote freshness."
+    },
+    {
+      "id": "kalshi-player-props-KXNFLPASSCOMP",
+      "name": "Kalshi Passing completions contract quotes",
+      "url": "https://external-api.kalshi.com/trade-api/v2/events?series_ticker=KXNFLPASSCOMP&with_nested_markets=true",
+      "collectedAt": "2026-10-31T05:06:08.712Z",
+      "publishedAt": null,
+      "status": "available",
+      "note": "Observed BBO from nested market definitions; opposite-side liquidity follows the documented binary YES/NO complement. Updated metadata time is not used as quote freshness."
+    },
+    {
+      "id": "kalshi-player-props-KXNFLPASSINT",
+      "name": "Kalshi Interceptions thrown contract quotes",
+      "url": "https://external-api.kalshi.com/trade-api/v2/events?series_ticker=KXNFLPASSINT&with_nested_markets=true",
+      "collectedAt": "2026-10-31T05:06:08.712Z",
+      "publishedAt": null,
+      "status": "available",
+      "note": "Observed BBO from nested market definitions; opposite-side liquidity follows the documented binary YES/NO complement. Updated metadata time is not used as quote freshness."
+    },
+    {
+      "id": "kalshi-player-props-KXNFLRSHYDS",
+      "name": "Kalshi Rushing yards contract quotes",
+      "url": "https://external-api.kalshi.com/trade-api/v2/events?series_ticker=KXNFLRSHYDS&with_nested_markets=true",
+      "collectedAt": "2026-10-31T05:06:08.712Z",
+      "publishedAt": null,
+      "status": "available",
+      "note": "Observed BBO from nested market definitions; opposite-side liquidity follows the documented binary YES/NO complement. Updated metadata time is not used as quote freshness."
+    },
+    {
+      "id": "kalshi-player-props-KXNFLRSHATT",
+      "name": "Kalshi Rushing attempts contract quotes",
+      "url": "https://external-api.kalshi.com/trade-api/v2/events?series_ticker=KXNFLRSHATT&with_nested_markets=true",
+      "collectedAt": "2026-10-31T05:06:08.712Z",
+      "publishedAt": null,
+      "status": "available",
+      "note": "Observed BBO from nested market definitions; opposite-side liquidity follows the documented binary YES/NO complement. Updated metadata time is not used as quote freshness."
+    },
+    {
+      "id": "kalshi-player-props-KXNFLRECYDS",
+      "name": "Kalshi Receiving yards contract quotes",
+      "url": "https://external-api.kalshi.com/trade-api/v2/events?series_ticker=KXNFLRECYDS&with_nested_markets=true",
+      "collectedAt": "2026-10-31T05:06:08.712Z",
+      "publishedAt": null,
+      "status": "available",
+      "note": "Observed BBO from nested market definitions; opposite-side liquidity follows the documented binary YES/NO complement. Updated metadata time is not used as quote freshness."
+    },
+    {
+      "id": "kalshi-player-props-KXNFLREC",
+      "name": "Kalshi Receptions contract quotes",
+      "url": "https://external-api.kalshi.com/trade-api/v2/events?series_ticker=KXNFLREC&with_nested_markets=true",
+      "collectedAt": "2026-10-31T05:06:08.712Z",
+      "publishedAt": null,
+      "status": "available",
+      "note": "Observed BBO from nested market definitions; opposite-side liquidity follows the documented binary YES/NO complement. Updated metadata time is not used as quote freshness."
+    },
+    {
+      "id": "kalshi-player-props-KXNFLTD",
+      "name": "Kalshi Touchdowns contract quotes",
+      "url": "https://external-api.kalshi.com/trade-api/v2/events?series_ticker=KXNFLTD&with_nested_markets=true",
+      "collectedAt": "2026-10-31T05:06:08.712Z",
+      "publishedAt": null,
+      "status": "available",
+      "note": "Observed BBO from nested market definitions; opposite-side liquidity follows the documented binary YES/NO complement. Updated metadata time is not used as quote freshness."
+    },
+    {
+      "id": "kalshi-player-props-KXNFLSPREAD",
+      "name": "Kalshi Winning margin contract quotes",
+      "url": "https://external-api.kalshi.com/trade-api/v2/events?series_ticker=KXNFLSPREAD&with_nested_markets=true",
+      "collectedAt": "2026-10-31T05:06:08.712Z",
+      "publishedAt": null,
+      "status": "available",
+      "note": "Observed BBO from nested market definitions; opposite-side liquidity follows the documented binary YES/NO complement. Updated metadata time is not used as quote freshness."
+    },
+    {
+      "id": "kalshi-player-props-KXNFLTOTAL",
+      "name": "Kalshi Total points contract quotes",
+      "url": "https://external-api.kalshi.com/trade-api/v2/events?series_ticker=KXNFLTOTAL&with_nested_markets=true",
+      "collectedAt": "2026-10-31T05:06:08.712Z",
+      "publishedAt": null,
+      "status": "available",
+      "note": "Observed BBO from nested market definitions; opposite-side liquidity follows the documented binary YES/NO complement. Updated metadata time is not used as quote freshness."
+    },
+    {
+      "id": "kalshi-player-props-KXNFLTEAMTOTAL",
+      "name": "Kalshi Team total points contract quotes",
+      "url": "https://external-api.kalshi.com/trade-api/v2/events?series_ticker=KXNFLTEAMTOTAL&with_nested_markets=true",
+      "collectedAt": "2026-10-31T05:06:08.712Z",
+      "publishedAt": null,
+      "status": "available",
+      "note": "Observed BBO from nested market definitions; opposite-side liquidity follows the documented binary YES/NO complement. Updated metadata time is not used as quote freshness."
+    },
+    {
+      "id": "kalshi-player-props-KXNFLGAME",
+      "name": "Kalshi Game winner contract quotes",
+      "url": "https://external-api.kalshi.com/trade-api/v2/events?series_ticker=KXNFLGAME&with_nested_markets=true",
+      "collectedAt": "2026-10-31T05:06:08.712Z",
+      "publishedAt": null,
+      "status": "available",
+      "note": "Observed BBO from nested market definitions; opposite-side liquidity follows the documented binary YES/NO complement. Updated metadata time is not used as quote freshness."
+    },
+    {
+      "id": "kalshi-game-terms-FOOTBALLGAMEWIN",
+      "name": "Kalshi full-game settlement terms",
+      "url": "https://assets.kalshi.com/contract_terms/FOOTBALLGAMEWIN.pdf",
+      "collectedAt": "2026-10-31T05:06:08.712Z",
+      "publishedAt": null,
+      "status": "partial",
+      "note": "Public full-game terms include overtime, exceptional payouts and cancellation conditions; exact current bytes are retained by hash.",
+      "version": "57b57e1ad96466e413e9274c0d2598225997e35d71262eb63c4ae13858b81d38"
+    },
+    {
+      "id": "kalshi-game-terms-FOOTBALLSPREAD",
+      "name": "Kalshi full-game settlement terms",
+      "url": "https://assets.kalshi.com/contract_terms/FOOTBALLSPREAD.pdf",
+      "collectedAt": "2026-10-31T05:06:08.712Z",
+      "publishedAt": null,
+      "status": "partial",
+      "note": "Public full-game terms include overtime, exceptional payouts and cancellation conditions; exact current bytes are retained by hash.",
+      "version": "1daaea87a853adcb485bdb80fb8bd5c5fa7c831d8e237f7446bc16ea43705f5a"
+    },
+    {
+      "id": "kalshi-game-terms-FOOTBALLTOTALS",
+      "name": "Kalshi full-game settlement terms",
+      "url": "https://assets.kalshi.com/contract_terms/FOOTBALLTOTALS.pdf",
+      "collectedAt": "2026-10-31T05:06:08.712Z",
+      "publishedAt": null,
+      "status": "partial",
+      "note": "Public full-game terms include overtime, exceptional payouts and cancellation conditions; exact current bytes are retained by hash.",
+      "version": "84be6b2cc3a16e1c3997824a6ec1ebac878a76f98609318cc223e67a6ace1572"
+    },
+    {
+      "id": "kalshi-player-prop-regulatory-terms",
+      "name": "Kalshi full-game player-stat settlement terms",
+      "url": "https://assets.kalshi.com/contract_terms/FOOTBALLENTITYSTAT.pdf",
+      "collectedAt": "2026-10-31T05:06:08.712Z",
+      "publishedAt": null,
+      "status": "available",
+      "note": "Participation and exceptional fair-price rules are retained. A changed document requires re-verification.",
+      "version": "667ec1a9b87681a4f26225ad2bbcd0a90b7032a6843a48a493ba5d77669e99fe"
+    },
+    {
+      "id": "kalshi-player-prop-fees",
+      "name": "Kalshi current fee schedule",
+      "url": "https://kalshi.com/docs/kalshi-fee-schedule.pdf",
+      "collectedAt": "2026-10-31T05:06:08.712Z",
+      "publishedAt": null,
+      "status": "partial",
+      "note": "Exact account/broker fees and effective override/rounding terms are not established; after-cost valuation is withheld.",
+      "version": "c326a69f596a11e8f8be2620402d39a8d4823920c21cc97c93a114d862699601"
+    },
+    {
+      "id": "kalshi-player-prop-identities",
+      "name": "Kalshi structured player and team identities",
+      "url": "https://external-api.kalshi.com/trade-api/v2/structured_targets",
+      "collectedAt": "2026-10-31T05:06:08.712Z",
+      "publishedAt": null,
+      "status": "available",
+      "note": "Only entity identity is used. Vendor player projections, roster status and other statistics are not imported as model evidence."
+    }
+  ]
+}

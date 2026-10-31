@@ -15,7 +15,7 @@ from fastapi.testclient import TestClient
 from modeling.service import app
 from modeling.public_research import (ResearchUnavailable, validate_game, source_url,
     select_plays, current_rosters, injury_records, availability_labels,
-    normalized_evidence, player_usage, verified_statistics, BoundedReader, analyze_public, fetch_dataset, stamp)
+    normalized_evidence, player_usage, verified_statistics, BoundedReader, analyze_public, fetch_dataset, stamp,automatic_feature_version)
 
 NOW = datetime(2026,10,30,12,tzinfo=timezone.utc)
 GAME = {'id':'2026_08_BAL_BUF','home':'BUF','away':'BAL','startTime':'2026-11-01T18:00:00Z','season':2026,'week':8}
@@ -96,6 +96,17 @@ class PublicResearchTests(unittest.TestCase):
         self.assertEqual(rows[0]['available_at'],'2026-10-30T12:00:00Z')
         self.assertEqual(rows[0]['availability'],'{"SYNTH-OUT":"inactive"}')
         self.assertIn('Missing data never means inactive',report['availabilityProvenance'])
+
+    def test_feature_fingerprint_ignores_collection_clocks_and_report_order_but_preserves_material_changes(self):
+        reports=[{'playerId':'SYNTH-Q','team':'BUF','status':'questionable','practiceParticipation':'limited','injury':'ankle','week':8,'checkedAt':'2026-10-30T12:00:00Z'},
+                 {'playerId':'SYNTH-WR','team':'BAL','status':'out','week':8,'checkedAt':'2026-10-30T12:00:00Z'}]
+        roster={'SYNTH-Q':{'team':'BUF','status':'ACT'},'SYNTH-WR':{'team':'BAL','status':'ACT'}}
+        original=automatic_feature_version('SYNTH-SOURCE-V1',None,reports,roster,[])
+        refreshed=[{**row,'checkedAt':'2026-10-31T12:00:00Z','sourceUpdatedAt':'2026-10-31T12:00:00Z'} for row in reversed(reports)]
+        self.assertEqual(original,automatic_feature_version('SYNTH-SOURCE-V1',None,refreshed,roster,[]))
+        self.assertNotEqual(original,automatic_feature_version('SYNTH-SOURCE-V2',None,reports,roster,[]))
+        self.assertNotEqual(original,automatic_feature_version('SYNTH-SOURCE-V1',None,[{**reports[0],'status':'out'},reports[1]],roster,[]))
+        self.assertNotEqual(original,automatic_feature_version('SYNTH-SOURCE-V1',None,reports,{**roster,'SYNTH-Q':{'team':'BUF','status':'RES'}},[]))
 
     def test_reported_injury_and_nonactive_roster_player_predictions_are_withheld(self):
         model={'rows':[{'qb':'SYNTH-Q','receiver':'SYNTH-WR','runner':'','o':'BUF','at':'2026-10-01T17:00:00Z','game':'SYNTH-G'}],

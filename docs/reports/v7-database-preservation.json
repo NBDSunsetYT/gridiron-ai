@@ -1,0 +1,94 @@
+{
+  "checkedAt": "2026-10-31T05:16:57.505864+00:00",
+  "projectRef": "qdtdjbapdipopncklsdb",
+  "existingProjectReused": true,
+  "dataReset": false,
+  "existingRecordsDeleted": false,
+  "publicTables": 57,
+  "publicTablesWithRls": 57,
+  "migrations": 18,
+  "migrationsApplied": [
+    "gridiron_private_recovery_checkpoints",
+    "gridiron_nfl_contract_research",
+    "gridiron_fractional_contract_fees",
+    "gridiron_snapshot_storage_compatibility"
+  ],
+  "privateCheckpoint": {
+    "verified": true,
+    "tables": 49,
+    "cipherBytes": 2042,
+    "sha256": "0fa869c07ab5014714f28d6d734db8d659d84a1b8b9adeb9dc8a157da00d9472",
+    "method": "Single-statement MVCC snapshot of current private/account/ledger and user-scoped public data families plus auth.users and auth.identities",
+    "localGpgDecryption": true,
+    "all49RowCountsMatched": true,
+    "plaintextWrittenToDisk": false,
+    "keyInRepository": false,
+    "excludedSharedTables": 10,
+    "fullCurrentPublicSharedResearchBackupVerified": false,
+    "fullProviderAuthStorageRestoreVerified": false,
+    "priorVerifiedV6PublicAuthCheckpointRetained": true
+  },
+  "financialPreservation": {
+    "isolatedSyntheticQaOwnerCashBeforeCents": 50800,
+    "isolatedSyntheticQaOwnerCashAfterCents": 50800,
+    "isolatedSyntheticQaRealizedPlBeforeCents": 5800,
+    "isolatedSyntheticQaRealizedPlAfterCents": 5800,
+    "isolatedSyntheticQaPostingsBefore": 23,
+    "isolatedSyntheticQaPostingsAfter": 23,
+    "originalNonQaUsersBefore": 1,
+    "originalNonQaUsersAfter": 1
+  },
+  "security": {
+    "publicPageFunctionSecurityInvoker": true,
+    "privateCapacityHelperAnonymousExecute": false,
+    "privateRecoveryTablePublicGrants": false,
+    "newWarningFindings": 0,
+    "intentionalInfo": [
+      "Private recovery table has RLS with no client policies and all client grants revoked."
+    ],
+    "preexistingWarnings": [
+      "Supabase Auth leaked-password protection is disabled."
+    ]
+  },
+  "storageAdmission": {
+    "thresholdBytes": 450000000,
+    "scope": "New public contracts/prediction snapshots/full shared game jobs and results only; private financial operations and existing cached jobs/fenced failures remain available.",
+    "providerPlanChanged": false,
+    "paidResourcesStarted": false,
+    "observedDatabaseBytesAfter": 385431219,
+    "actual75FilesystemChecksMilliseconds": 164.084
+  },
+  "nativeGlobalPage": {
+    "returnedRows": 5,
+    "availableOutcomes": 8434,
+    "elapsedMilliseconds": 345.105,
+    "provider": "Kalshi (historical alternative data, never labeled DraftKings)"
+  },
+  "rollingCompatibility": {
+    "explicitV7StorageRequestRequired": true,
+    "legacyV6WriterFullFormatPreserved": true,
+    "historicalSnapshotsRewritten": false,
+    "compactRowsCreatedDuringUnsafeWindow": 0
+  },
+  "localVerification": {
+    "all18MigrationsCompile": true,
+    "legacyLedgerAndRlsPassed": true,
+    "walletFractionalFeeAndRestorePassed": true,
+    "legacyV6SnapshotBytePreservationPassed": true,
+    "gameCategoryAndIdentityPassed": true,
+    "globalRankingAndStaleWithholdingPassed": true,
+    "capacityBoundaryAndPrivateFinancialHeadroomPassed": true
+  },
+  "authReturnProbe": {
+    "syntheticInvalidTokenOnly": true,
+    "emailsSent": false,
+    "bothProductionOriginFormsRedirectedTo": "http://localhost:3000/",
+    "configurationCorrected": false,
+    "blocker": "Connected Supabase management tools do not expose Auth configuration mutation; no Management API token is configured. Confirmation and security were not bypassed."
+  },
+  "limits": [
+    "Two full-current public-research export attempts were aborted/rolled back after resource/time limits; they are not claimed as successful backups.",
+    "Original private records were not changed; QA financial records are explicitly synthetic and isolated.",
+    "Final physical iPhone installation and real provider/email delivery are outside this database audit."
+  ]
+}

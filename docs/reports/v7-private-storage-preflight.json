@@ -1,0 +1,70 @@
+{
+  "status": "passed",
+  "scope": "private_storage_preflight",
+  "startedAt": "2026-10-31T04:59:43.045Z",
+  "baseUrl": "https://gridiron-ai-gray.vercel.app",
+  "financialWrites": false,
+  "accountsCreated": false,
+  "marketQuoteAcceptancePassed": false,
+  "fullScannerAcceptancePassed": false,
+  "checks": [
+    {
+      "name": "The actual deployed app reaches its persistent database and complete-game backend",
+      "status": "passed"
+    },
+    {
+      "name": "A real immutable pre-kickoff player snapshot reconciles its exact threshold with 10000 stored game frequencies",
+      "status": "passed"
+    },
+    {
+      "name": "A completed actual published game retains coherent scores, shared player statistics, sources and inspectable complete-game traces",
+      "status": "passed"
+    },
+    {
+      "name": "A separate HTTPS read reopens the same immutable research; this prerequisite makes no current-quote claim",
+      "status": "passed"
+    }
+  ],
+  "version": "6.0.0",
+  "researchId": "4da6e10de8c3733032ed35a46bcab859096992a4a85c3a9652a3c9f33ee5c47b",
+  "historicalPropSimulationId": "0a23d6b6-64b7-4b02-9a20-7ecf1c3c2f53",
+  "sample": {
+    "researchId": "4da6e10de8c3733032ed35a46bcab859096992a4a85c3a9652a3c9f33ee5c47b",
+    "simulationId": "0a23d6b6-64b7-4b02-9a20-7ecf1c3c2f53",
+    "gameId": "2026_08_KC_DEN",
+    "playerId": "00-0039732",
+    "playerName": "Bo Nix",
+    "category": "passingYards",
+    "side": "YES",
+    "threshold": 175,
+    "rawProbability": 0.5176,
+    "calibratedProbability": null
+  },
+  "game": {
+    "id": "2026_08_KC_DEN",
+    "home": "DEN",
+    "away": "KC",
+    "startTime": "2026-11-01T21:25:00.000Z"
+  },
+  "analysisId": "63755c93-8207-47fd-a434-e9050fdcdd29",
+  "completeGameAudit": {
+    "completeGames": 10000,
+    "players": 26,
+    "withheldPlayers": 5,
+    "representativeGames": 1,
+    "modelVersion": "pbp-conditional-4.0.0",
+    "inputDataVersion": "2e93cbd5e38d1c67d18191d4d88a2bdb167613ed78368b7842465436ab2f7ecd",
+    "homeWinProbability": 0.3201
+  },
+  "gameAnalysisStale": false,
+  "gameAndHistoricalPropShareVersion": false,
+  "currentQuoteVerified": false,
+  "observedQuoteFlag": false,
+  "finishedAt": "2026-10-31T04:59:48.265Z",
+  "limitations": [
+    "This verifies only the public evidence needed to test private saving and account isolation, not full live market discovery.",
+    "A separate v6 public workflow failed its current-quote freshness check; that failure remains preserved and is not replaced by this report.",
+    "Historical prop and current published game versions may differ; each is independently verified and its own ID is retained.",
+    "Financial fixtures are synthetic account arithmetic, unrelated to the historical market outcome or price."
+  ]
+}

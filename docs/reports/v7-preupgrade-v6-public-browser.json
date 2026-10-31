@@ -1,0 +1,37 @@
+{
+  "status": "failed",
+  "startedAt": "2026-10-31T04:53:05.697Z",
+  "baseUrl": "https://gridiron-ai-gray.vercel.app",
+  "environment": "production_https",
+  "publicPrerequisiteScope": "private_storage_preflight",
+  "fullScannerAcceptanceIncluded": false,
+  "engine": "chromium",
+  "guest": true,
+  "mockedResponses": false,
+  "financialWrites": false,
+  "accountsCreated": false,
+  "csvUploads": false,
+  "physicalIphoneInstallationTested": false,
+  "explicitScanAction": false,
+  "checks": [
+    {
+      "profile": "desktop-chromium",
+      "name": "A fresh guest opens real NFL games and Home | Games | Props | AI | Wallet without technical setup",
+      "status": "passed"
+    },
+    {
+      "profile": "desktop-chromium",
+      "name": "The Props navigation opens actual saved public research without an extra explicit scan",
+      "status": "passed"
+    },
+    {
+      "profile": "desktop-chromium",
+      "name": "Server-filtered exact player thresholds render real probabilities, separate uncertainty, honest calibration/fee limits and preserved quote rules",
+      "status": "passed"
+    }
+  ],
+  "finishedAt": "2026-10-31T04:56:28.753Z",
+  "error": "expect(locator).toBeVisible() failed\n\nLocator: getByTestId('prop-research-ec26a978cbde05dba9ee2ab796cb3c44d74944ee05d22557fbab3a2586a8bc9d').locator('.prop-assistant-answer')\nExpected: visible\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" getByTestId('prop-research-ec26a978cbde05dba9ee2ab796cb3c44d74944ee05d22557fbab3a2586a8bc9d').locator('.prop-assistant-answer') with timeout 90000ms\n  - waiting for getByTestId('prop-research-ec26a978cbde05dba9ee2ab796cb3c44d74944ee05d22557fbab3a2586a8bc9d').locator('.prop-assistant-answer')\n  - Target page, context or browser has been closed\n",
+  "testInterruptedByOperator": true,
+  "interruptionReason": "Stopped the owned read-only browser process at the database-backup owner request to reduce shared database CPU load during a consistent encrypted checkpoint. The target-closed error is retained verbatim; this run is not a complete browser pass."
+}

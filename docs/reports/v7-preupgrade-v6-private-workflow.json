@@ -1,0 +1,86 @@
+{
+  "status": "passed",
+  "startedAt": "2026-10-31T04:59:48.362Z",
+  "baseUrl": "https://gridiron-ai-gray.vercel.app",
+  "accountScope": "Exactly two pre-provisioned, confirmed, disposable SYNTHETIC QA app identities",
+  "publicPrerequisiteScope": "private_storage_preflight",
+  "liveMarketAcceptanceIncluded": false,
+  "gameId": "2026_08_KC_DEN",
+  "publicAnalysisId": "63755c93-8207-47fd-a434-e9050fdcdd29",
+  "publicResearchId": "4da6e10de8c3733032ed35a46bcab859096992a4a85c3a9652a3c9f33ee5c47b",
+  "checks": [
+    {
+      "name": "Guests can reopen verified NFL research while private records and saving require an app identity",
+      "status": "passed"
+    },
+    {
+      "name": "Sign-in capabilities reflect actual provider configuration without exposing provider credentials",
+      "status": "passed"
+    },
+    {
+      "name": "Two actual GRIDIRON AI logins establish secure server cookies without a backend dashboard",
+      "status": "passed"
+    },
+    {
+      "name": "Event-contract fill price, quantity, entry fees, actual payout and transfers preserve exact owner-scoped Wallet arithmetic",
+      "status": "passed"
+    },
+    {
+      "name": "Private preferences persist, cross-origin mutations fail and another account cannot retrieve them",
+      "status": "passed"
+    },
+    {
+      "name": "A completed public simulation saves privately and idempotently with cross-owner access rejected",
+      "status": "passed"
+    },
+    {
+      "name": "An actual player-prop snapshot saves privately and idempotently without becoming a wager",
+      "status": "passed"
+    },
+    {
+      "name": "The private assistant calculates actual recorded withdrawals and P/L without a model key and saves its explicit non-LLM provenance",
+      "status": "passed"
+    },
+    {
+      "name": "The signed-in research question and cited response are saved only in the owner’s conversation history",
+      "status": "passed"
+    },
+    {
+      "name": "Fresh sign-in restores exact finances, preferences, saved automatic simulation and private conversation",
+      "status": "passed"
+    },
+    {
+      "name": "Guest research and public explanations contain no personal question, finances, preferences or private history",
+      "status": "passed"
+    },
+    {
+      "name": "App sign-out protects personal records while public research remains available",
+      "status": "passed"
+    }
+  ],
+  "credentialsIncluded": false,
+  "emailsSent": false,
+  "realUserDataChanged": false,
+  "physicalIphoneInstallationTested": false,
+  "appleConfigured": false,
+  "fixture": {
+    "cashBalanceCents": 50800,
+    "realizedPlCents": 5800,
+    "totalDepositsCents": 10000,
+    "totalWithdrawalsCents": 15000,
+    "contractCostCents": 4200,
+    "actualContractPayoutCents": 10000
+  },
+  "savedSimulationId": "9018fab1-57e0-47f6-ab78-abc355af6762",
+  "savedPropId": "a3b2f59a-b9ff-40c6-a83f-4d3b733a8c1f",
+  "financialConversationId": "6d4019d5-8a92-41de-9227-b15caefbeba1",
+  "conversationId": "b00c2761-ce89-4fee-84c7-ab8806f5df22",
+  "summaryMethod": "evidence_brief",
+  "finishedAt": "2026-10-31T05:00:07.261Z",
+  "limitations": [
+    "Financial fixtures and the private preference/question marker are explicitly synthetic and owned by disposable test identities.",
+    "The NFL simulation itself is the actual automatic real-data result verified by the separate guest acceptance report.",
+    "Provider-disabled Apple and sourced briefs are not live OpenAI validation; exact private account reports are transparently labeled calculated_account_report.",
+    "Email confirmation delivery and physical iPhone installation are not tested."
+  ]
+}

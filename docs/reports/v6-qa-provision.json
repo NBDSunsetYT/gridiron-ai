@@ -1,0 +1,29 @@
+{
+  "status": "passed",
+  "checkedAt": "2026-10-30T21:14:04.161650+00:00",
+  "scope": "Exactly two fixed UUIDs and reserved@example.test disposable QA identities, approved by coordinating agent before Auth writes",
+  "method": "Official Supabase Auth Admin API inside a five-minute, independently authenticated, fixed-target validation Edge Function",
+  "createdSyntheticIdentities": 2,
+  "emailsSent": false,
+  "financialWrites": false,
+  "realUserRecordsChanged": false,
+  "credentialsIncluded": false,
+  "appIdentityVerification": {
+    "signIn200": 2,
+    "expectedUserIds": true,
+    "secureHttpOnlySameSiteCookies": true,
+    "independentGetUserAndServerMarker": true,
+    "emptyWallets": true,
+    "validationSessionsLoggedOut": true
+  },
+  "provisionEndpoint": {
+    "name": "gridiron-v6-validation-setup",
+    "existingFunctionReplaced": false,
+    "immediatelyDisabled": true,
+    "disabledVersion": 2,
+    "verifyJwt": true,
+    "actualDisabledStatus": 410,
+    "adminCodeRetainedInActiveVersion": false
+  },
+  "cleanup": "Required after all production private acceptance checks; only exact fixed QA owners through the existing session-revoking deletion function."
+}

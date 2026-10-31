@@ -78,7 +78,10 @@ assert.equal((await db.query("select count(*)::int n from public.shared_nfl_snap
 await assert.rejects(shared({action:'job_complete',id:job.id,lease,result:{simulations:10000}}),/Stale worker lease/);
 await shared({action:'invalidate_game',gameId:'SYNTHETIC-GAME'});
 assert.equal((await db.query("select count(*)::int n from public.shared_nfl_snapshots where game_id='SYNTHETIC-GAME'")).rows[0].n,1);
-await db.exec('reset role');await db.exec('update gridiron_shared_private.compute_budget set games=150000');await db.exec('set role anon');
+await db.exec('reset role');await db.exec('update gridiron_shared_private.compute_budget set games=490000');await db.exec('set role anon');
+const finalAllowed=await shared({action:'job_enqueue',gameId:'SYNTHETIC-FINAL-CAPACITY',inputHash:'SYNTHETIC-FINAL-CAPACITY-HASH',data:{simulations:10000}});
+assert.equal((await shared({action:'job_claim',id:finalAllowed.id,lease})).status,'running');
+await db.exec('reset role');assert.equal((await db.query('select games from gridiron_shared_private.compute_budget')).rows[0].games,500000);await db.exec('set role anon');
 const limited=await shared({action:'job_enqueue',gameId:'SYNTHETIC-CAPACITY',inputHash:'SYNTHETIC-CAPACITY-HASH',data:{simulations:10000}});
 assert.equal(await shared({action:'job_claim',id:limited.id,lease}),null);
 assert.match((await db.query('select error from public.shared_nfl_jobs where id=$1',[limited.id])).rows[0].error,/capacity/);
