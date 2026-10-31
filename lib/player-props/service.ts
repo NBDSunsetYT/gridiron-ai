@@ -32,8 +32,9 @@ export async function startPropScan(trigger='user',provider:'DraftKings Predicti
 }
 function header(run:PropRun|null,games:PublicGame[]):Omit<PropScan,'results'|'performance'|'totalResults'|'nextCursor'>{const result=run?.result??{};return{status:run?.status??'unavailable',message:run?.error??undefined,runId:run?.id??null,updatedAt:run?.updated_at??new Date().toISOString(),games,providers:result.providers??[],progress:result.progress??{completed:0,total:0,phase:'Ready to discover verified contracts',gamesComplete:0,gamesTotal:0},sources:result.sources??[],limitations:result.limitations??['No authorized live DraftKings Predictions feed is configured. Available alternatives are labeled by their actual provider.','Raw simulation estimates are not calibrated probabilities or proof of positive expected value.']};}
 export async function propDashboard(filter:PropFilters={}):Promise<PropScan>{
- if(filter.provider==='DraftKings Predictions'&&!draftKingsFeedConfigured())return unavailableDraftKingsDashboard('player',filter);
- return marketDashboard({...filter,scope:'player'});
+ const provider=filter.provider??'DraftKings Predictions';
+ if(provider==='DraftKings Predictions'&&!draftKingsFeedConfigured())return unavailableDraftKingsDashboard('player',{...filter,provider});
+ return marketDashboard({...filter,scope:'player',provider});
 }
 export async function nflMarketDashboard(filter:PropFilters={}):Promise<PropScan>{
  if((filter.provider??'DraftKings Predictions')==='DraftKings Predictions'&&!draftKingsFeedConfigured())return unavailableDraftKingsDashboard(filter.scope??'all',filter);

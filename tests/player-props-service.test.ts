@@ -61,6 +61,10 @@ describe('Automatic persistent player-prop research state machine',()=>{
   const page=await nflMarketDashboard();expect(page.status).toBe('unavailable');expect(page.providers[0].provider).toBe('DraftKings Predictions');expect(page.results).toEqual([]);expect(page.runId).toBeNull();expect(s.after).toHaveLength(0);expect(storage.propWrite).not.toHaveBeenCalled();expect(source.publicGameDetail).not.toHaveBeenCalled();expect(provider.discoverPlayerPropMarkets).not.toHaveBeenCalled();expect((await refreshPropResearch()).status).toBe('unavailable');expect(storage.propWrite).not.toHaveBeenCalled();
   await expect(startPropScan()).rejects.toMatchObject({status:503});expect(storage.propWrite).not.toHaveBeenCalled();vi.unstubAllEnvs();
  });
+ it('applies the same DraftKings-only default to the legacy player API even when an alternative run exists',async()=>{
+  provider.draftKingsFeedConfigured.mockReturnValue(false);s.run={id:'SYNTHETIC-EXPLICIT-ALTERNATIVE',status:'queued',data:{provider:'Kalshi',pipelineVersion:'nfl-event-contract-research-7.0.0'},updated_at:now};
+  const page=await propDashboard();expect(page.status).toBe('unavailable');expect(page.runId).toBeNull();expect(page.results).toEqual([]);expect(s.after).toHaveLength(0);expect(storage.propWrite).not.toHaveBeenCalled();expect(provider.discoverPlayerPropMarkets).not.toHaveBeenCalled();
+ });
  it('continues an explicitly selected alternative job after the phone closes without enabling new alternative scans',async()=>{
   provider.draftKingsFeedConfigured.mockReturnValue(false);vi.stubEnv('GRIDIRON_KALSHI_BACKGROUND_RESEARCH','');
   const run=await startPropScan('user','Kalshi');s.after=[];

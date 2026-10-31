@@ -22,7 +22,7 @@ function fields(value:Record<string,any>,keys:string[]){if(Object.keys(value).so
 function filters(request:Request,scope:'player'|'all'='player'):PropFilters{
  const query=new URL(request.url).searchParams,result:PropFilters={};
  const category=query.get('category');if(category){if(!(scope==='all'?NFL_MARKET_STATS:PROP_STATS).includes(category as any))throw new ApiError('Choose a supported NFL market category.');result.category=category;}
- const provider=query.get('provider');if(provider){if(!['DraftKings Predictions','Kalshi'].includes(provider))throw new ApiError('Choose a verified market provider.');result.provider=provider as PropFilters['provider'];}else if(scope==='all')result.provider='DraftKings Predictions';
+ const provider=query.get('provider');if(provider){if(!['DraftKings Predictions','Kalshi'].includes(provider))throw new ApiError('Choose a verified market provider.');result.provider=provider as PropFilters['provider'];}else result.provider='DraftKings Predictions';
  const requestedScope=query.get('scope');if(requestedScope){if(!['all','player','game'].includes(requestedScope)||scope==='player'&&requestedScope!=='player')throw new ApiError('Choose a supported NFL market scope.');result.scope=requestedScope as PropFilters['scope'];}
  const ranking=query.get('ranking');if(ranking){if(!['coverage','calibrated','disagreement','reliability','uncertainty','injury','movement'].includes(ranking))throw new ApiError('Choose an evidence-supported research ranking.');result.ranking=ranking as PropFilters['ranking'];}
  const game=query.get('gameId');if(game){if(!/^\d{4}_\d{2,3}_[A-Z0-9]{2,3}_[A-Z0-9]{2,3}$/.test(game))throw new ApiError('Invalid NFL game identifier.');result.gameId=game;}
