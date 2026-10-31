@@ -149,6 +149,20 @@
       "liveVersion": "20261031220149",
       "sha256": "ab8bc8771c282f593bf4ff68ce4a561acef3cb675abea6a4acfd64de07d8cd60",
       "sqlUnchanged": true
+    },
+    {
+      "name": "v10_saved_workspaces",
+      "authoredVersion": "20261031225047",
+      "liveVersion": "20261031225446",
+      "sha256": "9df2557c9d3113fd21722dae6657b87aa6135fa6ae0da49f1f27f77780952f25",
+      "sqlUnchanged": true
+    },
+    {
+      "name": "v10_workspace_version_index",
+      "authoredVersion": "20261031230122",
+      "liveVersion": "20261031230130",
+      "sha256": "2b9e5c05ff82e032ad0c5d96b88d4d97e12575c4703529389c2dee737a709947",
+      "sqlUnchanged": true
     }
   ]
 }

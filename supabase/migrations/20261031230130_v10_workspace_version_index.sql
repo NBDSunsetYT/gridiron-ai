@@ -1,0 +1,1 @@
+create index research_workspace_versions_workspace_owner_revision on public.research_workspace_versions(workspace_id,user_id,revision desc);

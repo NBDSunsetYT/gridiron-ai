@@ -1,9 +1,10 @@
 import {sportsDataBridgeConfiguration} from './sportsbook-reference/bridge';
 import {footballStorage,persistProviderQuotes} from './college-football/store';
 import {compareFreeProp} from './free-prop-comparison';
+import type {CloudContext} from './cloud/context';
 import {createHash} from 'node:crypto';
 const hash=(v:unknown)=>createHash('sha256').update(JSON.stringify(v)).digest('hex');
-export async function freeProps(sport:'NFL'|'CFB',cursor=0,analyze=false){
+export async function freeProps(sport:'NFL'|'CFB',cursor=0,analyze=false,ctx?:CloudContext){
  const unavailable=(message:string)=>({sport,status:'unavailable',provider:null,items:[],totalResults:0,diagnostic:{message},primaryProvider:'PropLine',fallbackVerified:false});
  if(sportsDataBridgeConfiguration())return unavailable('The secure Render prop gateway is not connected.');
  const response=await fetch(new URL('/data/props/'+sport+'?cursor='+cursor+'&limit=500',process.env.GRIDIRON_RENDER_DATA_URL!),{headers:{Authorization:'Bearer '+process.env.GRIDIRON_DATA_BRIDGE_TOKEN},cache:'no-store',redirect:'error',signal:AbortSignal.timeout(55000)});
@@ -14,7 +15,8 @@ export async function freeProps(sport:'NFL'|'CFB',cursor=0,analyze=false){
  for(const event of events){try{
   if(sport==='CFB'){
    const source=await import('./college-football/service');let detail=await source.collegeGameDetail('cfb:espn:'+event);
-   if(analyze&&!detail.analysis&&detail.canAnalyze)detail=await source.analyzeCollegeGame(detail.game.id,10000);
+   if(analyze&&!detail.analysis&&detail.canAnalyze)detail=await source.analyzeCollegeGame(detail.game.id,10000,ctx);
+   if(ctx?.user&&detail.analysis&&!detail.analysis.stale){try{await source.savePublishedCollegeAnalysis(ctx,detail.game.id,detail.analysis.id);analysisChecks.push({eventId:event,privateSimulationSaved:true});}catch{analysisChecks.push({eventId:event,privateSimulationSaved:false,reason:'The full simulation could not be saved privately. Public evidence remains available; retry the save from game research.'});}}
    analysisChecks.push({eventId:event,ready:detail.canAnalyze,reason:detail.message,simulationId:detail.analysis?.id??null});if(detail.analysis?.result&&!detail.analysis.stale)modelStates.set(event,{result:detail.analysis.result,research:detail.analysis.research,stale:false,gameId:detail.game.id,analysisId:detail.analysis.id});
   }else{const source=await import('./public-nfl/service'),schedule=await source.loadSchedule(),game=schedule.games.find(g=>String(g.espnId)===event);if(game){const job=await(await import('./sportsbook-reference/service')).existingModel(game);if(!job&&analyze)await source.analyzePublicGame(game.id,10000);if(job?.result)modelStates.set(event,{result:job.result.result,research:job.result.research,stale:false,gameId:game.id,analysisId:job.id});}}
  }catch{analysisChecks.push({eventId:event,status:'unavailable',reason:'Current source evidence or compute capacity could not be verified. No substitute probability was supplied.'});}}

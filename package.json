@@ -1,6 +1,6 @@
 {
   "name": "gridiron-ai",
-  "version": "9.0.0",
+  "version": "10.0.0",
   "description": "Evidence-driven NFL research and private auditable bankroll terminal",
   "main": "index.js",
   "scripts": {
@@ -17,7 +17,7 @@
     "ios:prepare": "node scripts/ios-prepare.mjs",
     "ios:archive": "node scripts/ios-archive.mjs",
     "ios:open": "cap open ios",
-    "test:postgres": "node supabase/tests/verify-local.mjs && node supabase/tests/verify-wallet.mjs && node supabase/tests/verify-props.mjs && node supabase/tests/verify-wallet-sport.mjs && node supabase/tests/verify-college.mjs"
+    "test:postgres": "node supabase/tests/verify-local.mjs && node supabase/tests/verify-wallet.mjs && node supabase/tests/verify-props.mjs && node supabase/tests/verify-wallet-sport.mjs && node supabase/tests/verify-college.mjs && node supabase/tests/verify-workspaces.mjs"
   },
   "keywords": [],
   "author": "",

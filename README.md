@@ -1,3 +1,7 @@
+# GRIDIRON AI10.0
+
+Existing-app upgrade: [operational scope, recovery and remaining requirements](docs/GRIDIRON_V10.md).
+
 # GRIDIRON AI 9.0.0
 
 GRIDIRON AI is an installable NFL and College Football research app with public game analysis and a private personal wallet. The existing application has been upgraded; its previous ledger, research tools and data remain preserved.
