@@ -1,0 +1,11 @@
+{
+  "checkedAt": "2026-10-31T23:26:53.048602+00:00",
+  "siteUrl": "https://gridiron-ai-gray.vercel.app",
+  "callbackAllowed": "https://gridiron-ai-gray.vercel.app/auth/callback",
+  "defaultVerifyRedirect": 303,
+  "callbackVerifyRedirect": 303,
+  "syntheticInvalidTokenOnly": true,
+  "accountsChanged": false,
+  "emailsSent": false,
+  "validTokenConfirmationTested": false
+}

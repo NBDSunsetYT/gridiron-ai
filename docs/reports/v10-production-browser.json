@@ -1,0 +1,103 @@
+{
+  "status": "passed_scoped",
+  "baseUrl": "https://gridiron-ai-gray.vercel.app",
+  "mockedResponses": false,
+  "physicalIphone": false,
+  "financialWrites": false,
+  "simulationsRequested": 0,
+  "checks": [
+    {
+      "profile": "desktop",
+      "name": "Real NFL PropLine quotes render without provider login or client API key",
+      "status": "passed"
+    },
+    {
+      "profile": "desktop",
+      "name": "Verified DraftKings Sportsbook filtering preserves market identity",
+      "status": "passed"
+    },
+    {
+      "profile": "desktop",
+      "name": "Exact Predictions contracts remain a separate unavailable source",
+      "status": "passed"
+    },
+    {
+      "profile": "desktop",
+      "name": "CFB quotes load separately and private history requires GRIDIRON identity",
+      "status": "passed"
+    },
+    {
+      "profile": "desktop",
+      "name": "Public10 live scoreboard shows actual observations and the new navigation",
+      "status": "passed"
+    },
+    {
+      "profile": "desktop",
+      "name": "Guest combination calculator and interrupted draft survive refresh without a financial write",
+      "status": "passed"
+    },
+    {
+      "profile": "iphone-chromium",
+      "name": "Real NFL PropLine quotes render without provider login or client API key",
+      "status": "passed"
+    },
+    {
+      "profile": "iphone-chromium",
+      "name": "Verified DraftKings Sportsbook filtering preserves market identity",
+      "status": "passed"
+    },
+    {
+      "profile": "iphone-chromium",
+      "name": "Exact Predictions contracts remain a separate unavailable source",
+      "status": "passed"
+    },
+    {
+      "profile": "iphone-chromium",
+      "name": "CFB quotes load separately and private history requires GRIDIRON identity",
+      "status": "passed"
+    },
+    {
+      "profile": "iphone-chromium",
+      "name": "Public10 live scoreboard shows actual observations and the new navigation",
+      "status": "passed"
+    },
+    {
+      "profile": "iphone-chromium",
+      "name": "Guest combination calculator and interrupted draft survive refresh without a financial write",
+      "status": "passed"
+    },
+    {
+      "profile": "iphone-webkit",
+      "name": "Real NFL PropLine quotes render without provider login or client API key",
+      "status": "passed"
+    },
+    {
+      "profile": "iphone-webkit",
+      "name": "Verified DraftKings Sportsbook filtering preserves market identity",
+      "status": "passed"
+    },
+    {
+      "profile": "iphone-webkit",
+      "name": "Exact Predictions contracts remain a separate unavailable source",
+      "status": "passed"
+    },
+    {
+      "profile": "iphone-webkit",
+      "name": "CFB quotes load separately and private history requires GRIDIRON identity",
+      "status": "passed"
+    },
+    {
+      "profile": "iphone-webkit",
+      "name": "Public10 live scoreboard shows actual observations and the new navigation",
+      "status": "passed"
+    },
+    {
+      "profile": "iphone-webkit",
+      "name": "Guest combination calculator and interrupted draft survive refresh without a financial write",
+      "status": "passed"
+    }
+  ],
+  "verifiedDeployment": "dpl_2CqRuYtrMzWMSZnCvbMj5aRGEdz1",
+  "runtimeSourceCommit": "4214b86e17d2f998ecaa06343c3455572af1631a",
+  "verificationRecordedAt": "2026-10-31T23:25:42.660200+00:00"
+}

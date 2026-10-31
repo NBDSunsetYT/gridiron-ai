@@ -1,0 +1,36 @@
+{
+  "version": "10.0.0",
+  "productionUrl": "https://gridiron-ai-gray.vercel.app",
+  "backendGateway": "https://gridiron-propline-gateway.onrender.com",
+  "vercelDeployment": "dpl_2CqRuYtrMzWMSZnCvbMj5aRGEdz1",
+  "runtimeGitHubCommit": "4214b86e17d2f998ecaa06343c3455572af1631a",
+  "runtimeManifestSha256": "7a69436da588460b37b0523505a673e88a48a6959d91fb5489ba55345a223f68",
+  "supabaseProject": "qdtdjbapdipopncklsdb",
+  "supabasePlanVerified": "free",
+  "dataReset": false,
+  "newPaidResources": false,
+  "fullMasterSpecificationComplete": false,
+  "physicalIphoneTested": false,
+  "actualNewAccountSignInAndCrossDeviceTested": false,
+  "scopeReport": "docs/GRIDIRON_V10.md",
+  "deploymentStatus": "READY",
+  "productionChecksPassed": 40,
+  "limitations": [
+    "Authenticated production save/restart/cross-device workflow has not been run with an isolated QA identity.",
+    "Exact DraftKings Predictions feed and general AI provider credentials remain unavailable.",
+    "Whole-slate automatic simulation, validated availability mixtures and calibrated fee-aware valuation remain incomplete.",
+    "Shared research persistence remains capacity-guarded on the existing Supabase Free plan.",
+    "Distinct custom wallet account management has not been added; existing exact accounting remains preserved."
+  ],
+  "authRedirectVerification": {
+    "checkedAt": "2026-10-31T23:26:53.048602+00:00",
+    "siteUrl": "https://gridiron-ai-gray.vercel.app",
+    "callbackAllowed": "https://gridiron-ai-gray.vercel.app/auth/callback",
+    "defaultVerifyRedirect": 303,
+    "callbackVerifyRedirect": 303,
+    "syntheticInvalidTokenOnly": true,
+    "accountsChanged": false,
+    "emailsSent": false,
+    "validTokenConfirmationTested": false
+  }
+}

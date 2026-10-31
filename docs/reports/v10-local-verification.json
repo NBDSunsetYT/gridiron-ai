@@ -30,5 +30,11 @@
   "productionBuild": "passed_final_accessibility_fix",
   "physicalIphoneTested": false,
   "productionAuthenticationPersistenceTested": false,
-  "productionDeploymentTests": "Initial API7 and PWA15 passed. Restored textarea accessibility fix verified locally; final live browser checks pending."
+  "productionDeploymentTests": {
+    "api": 7,
+    "browser": 18,
+    "pwa": 15,
+    "status": "passed_scoped",
+    "authenticatedCrossDeviceAcceptance": false
+  }
 }

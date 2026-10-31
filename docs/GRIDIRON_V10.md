@@ -28,7 +28,7 @@ Use Settings' encrypted account export and the builder's JSON export for persona
 | Exact ledger, deposits/withdrawals, settlements and account isolation | Existing implementation preserved; PostgreSQL and browser regression suites exercise accounting. No live personal wagers were entered. |
 | Distinct Predictions/Sportsbook/custom wallet accounts | Still incomplete: legacy DraftKings/Hard Rock account labels are preserved. Recorded wager instrument distinguishes event contracts from sportsbook bets, but separate custom account management was not added. |
 | Versioned combination cloud writes | New migration applied; real PostgreSQL RPC write/retry/conflict checks passed inside a rolled-back transaction. Synthetic two-owner PostgreSQL integration tests passed. |
-| Full sign-in, cross-device cloud saves | Not production end-to-end verified without an isolated authenticated QA identity. Existing email-confirmation return-URL configuration remains unresolved through available integrations. |
+| Full sign-in, cross-device cloud saves | Not production end-to-end verified without an isolated authenticated QA identity. The owner corrected Auth URL Configuration. Public verification tests with deliberately invalid synthetic tokens now return303 to the canonical app and `/auth/callback`, not localhost. A valid-token confirmation/login and cross-device save were not tested. |
 | NFL/CFB complete-game simulation engine | Existing engine preserved. This release does not claim newly calibrated injury/roster/weather models or a new promoted statistical model. |
 | PropLine NFL/CFB references and injury reports | Existing authenticated Render adapter preserved. Availability and current inventory depend on the provider; quote freshness is enforced. |
 | DraftKings Predictions contracts | Authorized exact-contract feed remains unconfigured. Sportsbook prices are never substituted. |
@@ -40,3 +40,7 @@ Use Settings' encrypted account export and the builder's JSON export for persona
 | iPhone | Responsive/browser/PWA tests are scoped checks; physical installation is not claimed. |
 
 The supplied10.0 text ends at the financial test list. No missing continuation was assumed. This document is an implementation scope report, not a claim that every master requirement is complete.
+
+## Existing security notices
+
+Supabase still reports the existing [leaked-password protection warning](https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection). The private encrypted checkpoint table intentionally has no client-access policy, producing an informational [RLS-no-policy notice](https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy). Neither new workspace table introduced a security advisory; both have owner-read policies and deny direct client writes. The version ownership foreign key has a covering index.

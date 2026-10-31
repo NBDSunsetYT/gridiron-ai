@@ -3,7 +3,7 @@
   "baseUrl": "https://gridiron-ai-gray.vercel.app",
   "mocked": false,
   "privateWrites": false,
-  "checkedAt": "2026-10-31T23:13:16.306Z",
+  "checkedAt": "2026-10-31T23:23:51.786Z",
   "checks": [
     {
       "name": "Existing production app10 and Supabase/private Python dependencies respond",
@@ -37,15 +37,15 @@
   "NFLScoreboard": {
     "games": 14,
     "live": 0,
-    "lastSuccessfulUpdate": "2026-10-31T23:13:17.373Z"
+    "lastSuccessfulUpdate": "2026-10-31T23:23:52.814Z"
   },
   "NFLProps": {
-    "totalResults": 14134,
+    "totalResults": 14136,
     "books": {
       "draftkings": 1483,
-      "fanduel": 1210,
+      "fanduel": 1218,
       "betmgm": 1123,
-      "hardrock": 10318
+      "hardrock": 10312
     },
     "persistence": {
       "saved": false,
@@ -56,15 +56,15 @@
   },
   "CFBScoreboard": {
     "games": 56,
-    "live": 9,
-    "lastSuccessfulUpdate": "2026-10-31T23:13:33.015Z"
+    "live": 7,
+    "lastSuccessfulUpdate": "2026-10-31T23:24:04.212Z"
   },
   "CFBProps": {
-    "totalResults": 1057,
+    "totalResults": 750,
     "books": {
-      "draftkings": 248,
-      "fanduel": 504,
-      "betmgm": 99,
+      "draftkings": 223,
+      "fanduel": 253,
+      "betmgm": 68,
       "hardrock": 206
     },
     "persistence": {
@@ -80,5 +80,8 @@
     "No authenticated production QA identity was available for sign-in and cross-device persistence tests.",
     "No physical iPhone test was performed.",
     "No new whole-slate simulation, calibration or fee-aware value claim is made."
-  ]
+  ],
+  "verifiedDeployment": "dpl_2CqRuYtrMzWMSZnCvbMj5aRGEdz1",
+  "runtimeSourceCommit": "4214b86e17d2f998ecaa06343c3455572af1631a",
+  "verificationRecordedAt": "2026-10-31T23:25:42.659897+00:00"
 }
