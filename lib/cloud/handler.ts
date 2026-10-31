@@ -17,6 +17,7 @@ import {exportOwnedTables,OWNED_TYPED_EXPORT_TABLES,portableCloudRecord} from '.
 import {cloudJson} from './transport';
 import {probeAiProvider} from '../ai-provider';
 import {registerCloudAccount} from './app-auth';
+import {wagerMetadata} from '../wager-record';
 
 const json=cloudJson;
 const publicLimits=new Map<string,{count:number;until:number}>();
@@ -77,7 +78,7 @@ export async function handleCloudRequest(request:Request,pathParts:string[]){
   if(path==='ledger'){
    result=method==='GET'?json(await rpc(ctx,'gridiron_ledger')):method==='POST'?json(await rpc(ctx,'gridiron_post_transaction',await inputBody(request)),201):method==='PUT'?json(await rpc(ctx,'gridiron_reverse_transaction',await inputBody(request))):json({error:'Method not supported.'},405);
   }else if(path==='bets'){
-   const p=await inputBody(request);result=json(await rpc(ctx,p.action==='settle'?'gridiron_settle_bet':p.action==='place'?'gridiron_place_bet':(()=>{throw new ApiError('Choose place or settle.');})(),p),201);
+   const p=await inputBody(request);if(p.action==='place')wagerMetadata(p,moneyToCents(p.stake));result=json(await rpc(ctx,p.action==='settle'?'gridiron_settle_bet':p.action==='place'?'gridiron_place_bet':(()=>{throw new ApiError('Choose place or settle.');})(),p),201);
   }else if(path==='account'){
    if(method==='GET')result=json({user:{id:user.id,email:user.email},settings:await cloudSettings(ctx),capabilities:{passkeys:false,notifications:false},backend:'supabase'});
    else if(method==='PATCH')result=json({settings:await rpc(ctx,'gridiron_update_settings',await inputBody(request))});
@@ -116,7 +117,7 @@ export async function handleCloudRequest(request:Request,pathParts:string[]){
   else if(path==='ledger/import'){const {financialImportPlan}=await import('../imports');const plan=financialImportPlan(await inputBody(request));if(plan.rows.length>500)throw new ApiError('Supabase imports support at most 500 reviewed rows per atomic batch.');const imported=await rpc(ctx,'gridiron_import_transactions',{rows:plan.rows,importId:plan.digest});result=json({...imported,digest:plan.digest,sourceHash:plan.sourceHash,duplicate:imported.imported===0},imported.imported===0?200:201);}
   else if(path==='ledger/reconcile')result=json(await rpc(ctx,'gridiron_reconcile',await inputBody(request)));
   else if(path==='ledger/backup'){const p=await inputBody(request);result=json(await exportCloud(ctx,p.password));result.headers.set('Content-Disposition','attachment; filename="gridiron-cloud-backup.encrypted.json"');}
-  else if(path==='ledger/export'){const ledger=await rpc(ctx,'gridiron_ledger'),keys=['id','type','sportsbook','amount','date','note','reference'],text=[keys.join(','),...ledger.transactions.map((r:any)=>keys.map(k=>csvValue(r[k])).join(','))].join('\r\n');result=new Response(text,{headers:{'Content-Type':'text/csv; charset=utf-8','Content-Disposition':'attachment; filename="gridiron-ledger.csv"'}});}
+  else if(path==='ledger/export'){const ledger=await rpc(ctx,'gridiron_ledger'),bets=query.get('kind')==='bets',keys=bets?['id','sportsbook','event','player','market','selection','marketInstrument','odds','contractPriceCents','contractQuantity','entryFeeCents','stake','placedAt','settledAt','result','payout','notes']:['id','type','sportsbook','amount','date','note','reference'],text=[keys.join(','),...(bets?ledger.bets:ledger.transactions).map((r:any)=>keys.map(k=>csvValue(r[k])).join(','))].join('\r\n');result=new Response(text,{headers:{'Content-Type':'text/csv; charset=utf-8','Content-Disposition':`attachment; filename="gridiron-${bets?'bets':'ledger'}.csv"`}});}
   else if(path==='migrate'){const p=await inputBody(request,100*1024*1024);const decrypted=await decryptBackup(p.envelope,p.password),hash=createHash('sha256').update(JSON.stringify(decrypted)).digest('hex'),r=await ctx.client.rpc('gridiron_import_backup',{payload:decrypted,import_hash:hash});if(r.error)cloudError(r.error);result=json({migration:r.data,sourcePreserved:true});}
   else if(path==='devices'){
    if(method==='GET'){const values=await records(ctx,'device_registration',{limit:100});result=json({registered:values.length>0,count:values.length,encryptionConfigured:Boolean(process.env.DEVICE_TOKEN_ENCRYPTION_KEY),deliveryConfigured:false,message:'Native device registration is separate from APNs delivery. No Apple signing or APNs provider credential is configured.'});}

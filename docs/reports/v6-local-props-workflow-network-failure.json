@@ -1,0 +1,99 @@
+{
+  "status": "failed",
+  "startedAt": "2026-10-30T21:54:31.662Z",
+  "baseUrl": "http://127.0.0.1:3446",
+  "environment": "local_fullstack",
+  "guest": true,
+  "accountsCreated": false,
+  "financialWrites": false,
+  "csvUploads": false,
+  "syntheticProductionData": false,
+  "physicalIphoneInstallationTested": false,
+  "checks": [
+    {
+      "name": "A guest reaches the actual v6 API, persistent database and complete-game backend without a provider login",
+      "status": "passed"
+    },
+    {
+      "name": "Published upcoming NFL games load automatically in the Props screen without a dataset upload",
+      "status": "passed"
+    },
+    {
+      "name": "Analyze All Player Props starts or resumes a durable background research run using an empty request body",
+      "status": "passed"
+    }
+  ],
+  "upcomingGames": 14,
+  "scanInitiation": "Resumed the single previously authorized local Analyze All Player Props request",
+  "runId": "626eb6ed-9a84-4f5b-840a-dd709ea502de",
+  "lastProgress": {
+    "phase": "Research paused; saved snapshots remain available",
+    "total": 8200,
+    "completed": 5300,
+    "gamesTotal": 13,
+    "gamesComplete": 8
+  },
+  "lastStatus": "failed",
+  "finishedAt": "2026-10-30T22:01:12.309Z",
+  "error": "The real background research run did not complete within the bounded acceptance window.",
+  "diagnosis": {
+    "source": "Read-only live SQL and actual local API progress; existing records preserved",
+    "runStatus": "failed",
+    "runError": "Player research storage is temporarily unavailable. Existing records are preserved.",
+    "completedGames": 8,
+    "storedOutcomeRows": 5300,
+    "failedGames": [
+      {
+        "gameId": "2026_08_LAC_LA",
+        "message": "Current quotes could not be verified; the complete 10,000-game result was retained."
+      },
+      {
+        "gameId": "2026_08_KC_DEN",
+        "message": "Statistical worker returned a failure in under one second."
+      },
+      {
+        "gameId": "2026_08_NE_MIA",
+        "message": "Statistical worker returned a failure in under one second."
+      },
+      {
+        "gameId": "2026_08_PHI_WAS",
+        "message": "Statistical worker returned a failure in under one second, before the scan checkpoint failed."
+      }
+    ],
+    "notCalibrationEvidence": true,
+    "outboundProbe": {
+      "recordedAt": "2026-10-30T22:07:15.542911+00:00",
+      "observedOriginStatuses": {
+        "raw.githubusercontent.com": 503,
+        "qdtdjbapdipopncklsdb.supabase.co": 503,
+        "external-api.kalshi.com": 503
+      },
+      "subsequentGithubProbeStatus": 200,
+      "managedEnvironmentObservation": {
+        "current": true,
+        "connectivity": "connected",
+        "networkPolicy": "unrestricted",
+        "state": "enforced",
+        "diagnosticFailure": null
+      },
+      "interpretation": "Three independent outbound origins failed together, then a subsequent check recovered. Source/transport unavailability must be retried distinctly from unsupported statistical evidence."
+    }
+  },
+  "retryAttempt": {
+    "status": "failed",
+    "startedAt": "2026-10-30T22:10:36.462Z",
+    "finishedAt": "2026-10-30T22:22:09.471Z",
+    "runId": "76a16655-7e78-4b5c-bc79-aebdff912cc3",
+    "lastProgress": {
+      "phase": "Research paused; saved snapshots remain available",
+      "total": 8200,
+      "completed": 704,
+      "gamesTotal": 13,
+      "gamesComplete": 1
+    },
+    "lastStatus": "failed",
+    "error": "The actual research run failed: Research paused; saved snapshots remain available. Previously saved rows were preserved.",
+    "passedChecks": 3
+  },
+  "remainingExternalBlocker": "Execution-proxy HTTPS tunnel intermittently returned HTTP503 with Envoy remote connection Invalid argument; native provider tooling remained reachable. Neither failed attempt is marked passed."
+}

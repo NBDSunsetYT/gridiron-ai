@@ -9,7 +9,7 @@ async function probe(url:URL,headers?:HeadersInit):Promise<Check>{
  * server-held credentials and never reads or returns personal account rows. */
 export async function GET(request:Request){
  const backend=selectedBackend(),configuration={supabase:Boolean(process.env.SUPABASE_URL&&process.env.SUPABASE_PUBLISHABLE_KEY),simulations:Boolean(process.env.SIMULATION_SERVICE_URL&&(process.env.SIMULATION_SERVICE_TOKEN?.length??0)>=32),assistant:Boolean(process.env.OPENAI_API_KEY)};
- const base={application:'GRIDIRON AI',version:'5.0.0',backend,cloudOnly:cloudOnlyDeployment(),configuration};
+ const base={application:'GRIDIRON AI',version:'6.0.0',backend,cloudOnly:cloudOnlyDeployment(),configuration};
  if(new URL(request.url).searchParams.get('check')!=='dependencies')return Response.json({...base,status:'ok'},{headers:{'Cache-Control':'no-store'}});
  const checks:{supabase:Check;simulations:Check}={supabase:'not_configured',simulations:'not_configured'};
  await Promise.all([

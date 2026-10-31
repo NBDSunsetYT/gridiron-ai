@@ -15,6 +15,7 @@ from fastapi import FastAPI, Header, HTTPException, Request
 
 from .fit import fit_csv
 from .simulator import simulate
+from .public_research import ResearchUnavailable
 from .cloud_worker import CloudWorker, Config, WorkerError
 
 @asynccontextmanager
@@ -91,6 +92,11 @@ def guarded(work):
         raise HTTPException(429, "Another simulation/fit is running; retry after it completes")
     try:
         return work()
+    except ResearchUnavailable as exc:
+        if exc.retryable:
+            raise HTTPException(503,'A verified NFL research source is temporarily unavailable. Retry shortly; no replacement statistics or probabilities were invented.',
+                                headers={'Retry-After':'15','X-Gridiron-Retryable':'true'}) from exc
+        raise HTTPException(422,str(exc),headers={'X-Gridiron-Retryable':'false'}) from exc
     except (ValueError, KeyError, TypeError, OverflowError) as exc:
         raise HTTPException(422, str(exc)) from exc
     finally:
@@ -143,7 +149,7 @@ async def public_analysis(request: Request, authorization: str | None = Header(d
 
 
 def simulate_data(data):
-    if set(data)-{'model','home','away','simulations','seed','eventStart','contracts','scenario','postseason','parameterUncertainty','representativeGames'}:
+    if set(data)-{'model','home','away','simulations','seed','eventStart','contracts','scenario','postseason','parameterUncertainty','representativeGames','selectedOutcomes'}:
         raise HTTPException(422,'Unsupported simulation assumptions. Weather, snap shares and arbitrary player multipliers are not silently applied.')
     model = data.get("model", {})
     try:
@@ -156,7 +162,7 @@ def simulate_data(data):
     if not isinstance(count, int) or not 1000 <= count <= 100000:
         raise HTTPException(422, "simulations must be1000..100000")
     def work():
-        return simulate(model, data["home"], data["away"], count, data.get("seed", 1), data.get("eventStart"), data.get("contracts"), data.get("scenario"), data.get("postseason", False),parameter_uncertainty=data.get('parameterUncertainty'),representative_games=data.get('representativeGames',0))
+        return simulate(model, data["home"], data["away"], count, data.get("seed", 1), data.get("eventStart"), data.get("contracts"), data.get("scenario"), data.get("postseason", False),parameter_uncertainty=data.get('parameterUncertainty'),representative_games=data.get('representativeGames',0),selected_outcomes=data.get('selectedOutcomes'))
     return guarded(work)
 
 

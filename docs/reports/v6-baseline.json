@@ -1,0 +1,50 @@
+{
+  "status": "passed",
+  "checkedAt": "2026-10-30T21:14:04.161650+00:00",
+  "sourceCommit": "f9930d6c66345b32c426b134bdd4a1159cf1ce51",
+  "existingApplicationUrl": "https://gridiron-ai-gray.vercel.app",
+  "existingDeploymentId": "dpl_4PakhDosuivMZSAj3DHFZBVhNceC",
+  "deploymentBeforeUpgrade": "READY",
+  "architecture": "Existing Vercel Services Next.js web/API plus private FastAPI/Python compute; existing Supabase PostgreSQL",
+  "health": {
+    "status": 200,
+    "version": "5.0.0",
+    "supabase": "reachable",
+    "simulations": "reachable",
+    "assistantConfigured": false
+  },
+  "tests": {
+    "applicationUnitTests": 324,
+    "pythonTests": 74,
+    "typecheck": "passed",
+    "postgresMigrations": 10,
+    "postgresLedgerSecurityVerification": "passed"
+  },
+  "recovery": {
+    "gitBundle": "/workspace/gridiron-recovery/20261030T210630Z-v6-pre-upgrade/gridiron-ai-main.bundle",
+    "gitBundleVerified": true,
+    "databaseCheckpoint": "/workspace/gridiron-recovery/20261030T2107-v6-before-props",
+    "databaseCheckpointPerformedBy": "coordinating root agent; encrypted consistent snapshot with local decrypt verification"
+  },
+  "credentials": {
+    "githubConnectorAvailable": true,
+    "vercelNativeConnectorAvailable": true,
+    "renderServicesObserved": 0,
+    "supabaseManagementTokenPresent": false,
+    "openaiApiKeyPresent": false,
+    "authorizedDraftKingsFeedCredentialPresent": false,
+    "valuesIncluded": false
+  },
+  "auth": {
+    "emailPassword": true,
+    "apple": false,
+    "confirmationReturnOrigin": "http://localhost:3000",
+    "probeUsedRealUserToken": false,
+    "emailsSent": false
+  },
+  "limitations": [
+    "Render previously rejected free-service creation with billing verification; no paid resource or new service was initiated.",
+    "Current Auth return-URL configuration still requires an authorized operator correction; guest research and confirmed-account password sign-in are separate.",
+    "Baseline checks establish the existing application, not completion of the v6 upgrade."
+  ]
+}

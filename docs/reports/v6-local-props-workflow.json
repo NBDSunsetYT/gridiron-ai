@@ -1,0 +1,39 @@
+{
+  "status": "failed",
+  "startedAt": "2026-10-30T22:10:36.462Z",
+  "baseUrl": "http://127.0.0.1:3446",
+  "environment": "local_fullstack",
+  "guest": true,
+  "accountsCreated": false,
+  "financialWrites": false,
+  "csvUploads": false,
+  "syntheticProductionData": false,
+  "physicalIphoneInstallationTested": false,
+  "checks": [
+    {
+      "name": "A guest reaches the actual v6 API, persistent database and complete-game backend without a provider login",
+      "status": "passed"
+    },
+    {
+      "name": "Published upcoming NFL games load automatically in the Props screen without a dataset upload",
+      "status": "passed"
+    },
+    {
+      "name": "Analyze All Player Props starts or resumes a durable background research run using an empty request body",
+      "status": "passed"
+    }
+  ],
+  "upcomingGames": 14,
+  "scanInitiation": "Actual one-tap POST /api/props/analyze with no simulation, dataset or market configuration",
+  "runId": "76a16655-7e78-4b5c-bc79-aebdff912cc3",
+  "lastProgress": {
+    "phase": "Research paused; saved snapshots remain available",
+    "total": 8200,
+    "completed": 704,
+    "gamesTotal": 13,
+    "gamesComplete": 1
+  },
+  "lastStatus": "failed",
+  "finishedAt": "2026-10-30T22:22:09.471Z",
+  "error": "The actual research run failed: Research paused; saved snapshots remain available. Previously saved rows were preserved."
+}

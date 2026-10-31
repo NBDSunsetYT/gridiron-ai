@@ -25,7 +25,14 @@ export async function handlePublicNfl(request:Request,parts:string[]=[]):Promise
    const queuedAt=new Date().toISOString();
    after(async()=>{
     let status:Record<string,any>;
-    try{status={...await refreshPublicResearch(),status:'completed',queuedAt,completedAt:new Date().toISOString()};}
+    try{
+     status={...await refreshPublicResearch(),status:'completed',queuedAt,completedAt:new Date().toISOString()};
+     // The existing authenticated database schedule also continues player-prop
+     // ingestion and prospective model auditing. Personal wagers are never settled.
+     const props=await import('../player-props/service');
+     status.playerProps=await props.refreshPropResearch();status.completedAt=new Date().toISOString();
+     after(async()=>{try{const lab=await import('../player-props/model-lab');await lab.refreshPropModelLab();}catch{/* Existing snapshots and private records remain unchanged. */}});
+    }
     catch{status={status:'failed',queuedAt,completedAt:new Date().toISOString(),message:'Automatic refresh is temporarily unavailable. Previously saved research remains available.'};}
     await putCache('status','background',status,createHash('sha256').update(JSON.stringify(status)).digest('hex'),86400000).catch(()=>{});
    });

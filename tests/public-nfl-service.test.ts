@@ -5,7 +5,7 @@ vi.mock('../lib/public-nfl/markets',()=>({fetchPublicMarkets:vi.fn(async()=>stru
 vi.mock('../lib/ai-provider',()=>({createAiProviderClient:vi.fn(async()=>({model:'SYNTHETIC-AI-TRANSPORT',client:{chat:{completions:{create:async()=>({choices:[{message:{content:'SYNTHETIC returned explanation which may repeat a private user question.'}}]})}}}}))}));
 vi.mock('../lib/public-nfl/store',()=>({
  sharedCache:vi.fn(async(k:string,id:string)=>s.cache.get(k+':'+id)||null),fresh:(v:any)=>Boolean(v&&Date.parse(v.expires_at)>Date.now()),putCache:vi.fn(async(k:string,id:string,data:any,hash:string,ttl:number)=>{s.cache.set(k+':'+id,{kind:k,key:id,data,input_hash:hash,updated_at:new Date().toISOString(),expires_at:new Date(Date.now()+ttl).toISOString()});}),
- latestJob:vi.fn(async(id:string)=>[...s.jobs].reverse().find(j=>j.game_id===id)||null),latestJobs:vi.fn(async()=>[...s.jobs].reverse()),
+ latestJob:vi.fn(async(id:string,hash?:string)=>[...s.jobs].reverse().find(j=>j.game_id===id&&(!hash||j.input_hash===hash))||null),latestJobs:vi.fn(async(_limit=100,hashes?:string[])=>[...s.jobs].reverse().filter(j=>!hashes||hashes.includes(j.input_hash))),cachedContextStates:vi.fn(async(ids:string[])=>new Map(ids.filter(id=>s.cache.has('detail:'+id)).map(id=>[id,s.cache.get('detail:'+id)]))),
  sharedWrite:vi.fn(async(p:any)=>{
   if(p.action==='job_enqueue'){let job=s.jobs.find(j=>j.game_id===p.gameId&&j.input_hash===p.inputHash);if(!job){job={id:'SYNTHETIC-JOB-'+s.jobs.length,game_id:p.gameId,input_hash:p.inputHash,status:'queued',data:p.data,result:null,error:null,lease:null,created_at:new Date().toISOString(),updated_at:new Date().toISOString()};s.jobs.push(job);}return structuredClone(job);}
   const job=s.jobs.find(j=>j.id===p.id);
@@ -15,14 +15,15 @@ vi.mock('../lib/public-nfl/store',()=>({
   return{};
  })
 }));
-vi.mock('../lib/public-nfl/sources',async original=>{const real:any=await original();return{...real,fetchPublicSchedule:vi.fn(async()=>({games:[s.sourceGame],sources:[],updatedAt:new Date().toISOString(),inputVersion:'SYNTHETIC-VERSION'})),fetchInjuries:vi.fn(async()=>structuredClone(s.context.injuries)),fetchWeather:vi.fn(async()=>structuredClone(s.context.weather)),fetchStatisticsVersion:vi.fn(async()=>({version:'SYNTHETIC-PBP-V1',source:{id:'pbp',name:'SYNTHETIC fixture',url:'https://example.invalid',collectedAt:new Date().toISOString(),status:'available'}}))};});
+vi.mock('../lib/public-nfl/sources',async original=>{const real:any=await original();return{...real,fetchPublicSchedule:vi.fn(async()=>({games:[s.sourceGame],sources:[],updatedAt:new Date().toISOString(),inputVersion:'SYNTHETIC-VERSION'})),fetchInjuries:vi.fn(async()=>structuredClone(s.context.injuries)),fetchWeather:vi.fn(async()=>structuredClone(s.context.weather)),fetchStatisticsVersion:vi.fn(async()=>({version:s.context.statisticsVersion,source:s.context.statisticsSources[0],sources:structuredClone(s.context.statisticsSources)}))};});
 import {PUBLIC_PIPELINE_VERSION,analyzePublicGame,evidenceHash,publicGameDetail,publicDashboard,executePublicJob,publicAssistant} from '../lib/public-nfl/service';
 import {sharedWrite} from '../lib/public-nfl/store';
+import {fetchStatisticsVersion} from '../lib/public-nfl/sources';
 function engine(){return{result:{simulations:10000,home:'BUF',away:'BAL',homeWinProbability:.5,awayWinProbability:.5,tieProbability:0,modelVersion:'SYNTHETIC-TRANSPORT-FIXTURE',scoreDistributions:{BUF:{histogram:[{value:7,count:5000},{value:14,count:5000}]},BAL:{histogram:[{value:7,count:5000},{value:14,count:5000}]}},monteCarloInterval95:[.49,.51],model:{rows:['SYNTHETIC private artifact']},csv:'SYNTHETIC raw evidence'},research:{playerNames:{'SYNTHETIC-P':'SYNTHETIC PLAYER'},injuryImpact:{fullyAdjusted:false},playerStatistics:{status:'available'},password:'SYNTHETIC NEVER PUBLIC'},inputVersion:'SYNTHETIC-V1'};}
 beforeEach(()=>{
  vi.useFakeTimers({toFake:['Date']});vi.setSystemTime(new Date('2026-10-30T20:00:00Z'));vi.stubEnv('OPENAI_API_KEY','');vi.stubEnv('SIMULATION_SERVICE_URL','https://private.example.test/');vi.stubEnv('SIMULATION_SERVICE_TOKEN','SYNTHETIC-SERVER-SECRET-01234567890123456789');
  s.cache.clear();s.jobs=[];s.after=[];s.sourceGame={id:'2026_08_BAL_BUF',season:2026,week:8,startTime:'2026-11-01T18:00:00Z',status:'scheduled',home:{id:'BUF',abbreviation:'BUF',name:'Buffalo Bills'},away:{id:'BAL',abbreviation:'BAL',name:'Baltimore Ravens'},sources:[]};
- s.context={injuries:{status:'available',items:[{id:'SYNTHETIC-P',status:'Questionable',practiceParticipation:'Limited'}],checkedAt:new Date().toISOString(),sources:[],message:'SYNTHETIC injury mechanics'},weather:{status:'partial',checkedAt:new Date().toISOString(),temperatureF:65,message:'SYNTHETIC partial forecast',sources:[]},markets:{status:'unavailable',items:[],checkedAt:new Date().toISOString(),sources:[],message:'No verified contract feed.'},statisticsVersion:'SYNTHETIC-PBP-V1',sources:[],updatedAt:new Date().toISOString(),pipelineVersion:PUBLIC_PIPELINE_VERSION};
+ s.context={injuries:{status:'available',items:[{id:'SYNTHETIC-P',status:'Questionable',practiceParticipation:'Limited'}],checkedAt:new Date().toISOString(),sources:[],message:'SYNTHETIC injury mechanics'},weather:{status:'partial',checkedAt:new Date().toISOString(),temperatureF:65,message:'SYNTHETIC partial forecast',sources:[]},markets:{status:'unavailable',items:[],checkedAt:new Date().toISOString(),sources:[],message:'No verified contract feed.'},statisticsVersion:'SYNTHETIC-PBP-V1',inputVerified:true,statisticsSources:['pbp','injuries','snaps','rosters','depth','player-stats','team-stats'].map(kind=>({id:'nflverse-'+kind,name:'SYNTHETIC '+kind,url:'https://example.invalid/'+kind,collectedAt:new Date().toISOString(),status:'available',version:'SYNTHETIC-V1'})),sources:[],updatedAt:new Date().toISOString(),pipelineVersion:PUBLIC_PIPELINE_VERSION};
  s.cache.set('schedule:2026',{data:{games:[s.sourceGame],sources:[],updatedAt:new Date().toISOString(),inputVersion:'SYNTHETIC-VERSION'},expires_at:'2026-10-31T00:00:00Z'});
  s.cache.set('detail:'+s.sourceGame.id,{data:structuredClone(s.context),expires_at:'2026-10-31T00:00:00Z'});
 });
@@ -46,4 +47,41 @@ describe('Automatic guest complete-game research',()=>{
  it('offers a source-based explanation without a provider key and cannot query personal account records through the public question',async()=>{const response=await publicAssistant(s.sourceGame.id,'Show my private withdrawals and credentials');expect(response.status).toBe('evidence_brief');expect(response.summary.generatedByAI).toBe(false);expect(response.summary.text).toMatch(/has not finished/);expect(response.summary.text).not.toMatch(/password|withdrawals|credentials/);expect(sharedWrite).not.toHaveBeenCalled();});
  it('never places an arbitrary user-question AI answer in the shared game cache',async()=>{vi.stubEnv('OPENAI_API_KEY','SYNTHETIC-NOT-A-REAL-PROVIDER-KEY');const answer=await publicAssistant(s.sourceGame.id,'SYNTHETIC personal detail that must never appear in shared research');expect(answer.summary.generatedByAI).toBe(true);expect(s.cache.has('summary:'+s.sourceGame.id)).toBe(false);const generic=await publicAssistant(s.sourceGame.id);expect(generic.summary.generatedByAI).toBe(true);expect(s.cache.get('summary:'+s.sourceGame.id).data.summary.method).toBe('openai');});
  it('does not create a new pregame forecast after kickoff or accept unsupported simulation counts',async()=>{vi.setSystemTime(new Date('2026-11-01T18:01:00Z'));await expect(analyzePublicGame(s.sourceGame.id)).rejects.toMatchObject({status:409});await expect(analyzePublicGame(s.sourceGame.id,999999)).rejects.toMatchObject({status:400});expect(s.jobs).toHaveLength(0);});
+ it('fails closed before enqueueing when injury or statistical verification is unavailable and caches failures for only60seconds',async()=>{
+  s.cache.delete('detail:'+s.sourceGame.id);s.context.injuries={...s.context.injuries,status:'unavailable',items:[]};s.context.statisticsSources=s.context.statisticsSources.map((source:any)=>({...source,status:'unavailable'}));s.context.statisticsVersion='SYNTHETIC-OUTAGE';
+  const detail=await publicGameDetail(s.sourceGame.id);expect(detail.inputsVerified).toBe(false);expect(detail.requiredInputHash).toBeNull();
+  const failed=s.cache.get('detail:'+s.sourceGame.id);expect(Date.parse(failed.expires_at)-Date.now()).toBe(60000);expect(failed.data.inputVerified).toBe(false);
+  await expect(analyzePublicGame(s.sourceGame.id)).rejects.toMatchObject({status:503});expect(s.jobs).toHaveLength(0);expect(vi.mocked(sharedWrite).mock.calls.filter(([payload])=>payload.action==='job_enqueue')).toHaveLength(0);
+ });
+ it('does not accept an unavailable critical asset or failed injury check as a healthy partial report',async()=>{
+  for(const kind of ['nflverse-pbp','nflverse-rosters','nflverse-snaps']){
+   s.cache.delete('detail:'+s.sourceGame.id);const original=structuredClone(s.context.statisticsSources);s.context.statisticsSources=s.context.statisticsSources.map((source:any)=>source.id===kind?{...source,status:'unavailable'}:source);
+   await expect(analyzePublicGame(s.sourceGame.id)).rejects.toMatchObject({status:503});expect(s.jobs).toHaveLength(0);s.context.statisticsSources=original;
+  }
+  s.cache.delete('detail:'+s.sourceGame.id);s.context.injuries={...s.context.injuries,status:'partial',items:[]};
+  const valid=await analyzePublicGame(s.sourceGame.id);expect(valid.inputsVerified).toBe(true);expect(valid.status).toBe('queued');
+ });
+ it('recovers an older valid snapshot after a newer outage failure without reserving or rerunning another10k games',async()=>{
+  vi.stubGlobal('fetch',vi.fn(async()=>Response.json(engine())));await analyzePublicGame(s.sourceGame.id);await s.after[0]();const original=structuredClone(s.context),valid=s.jobs[0],outage={...structuredClone(valid),id:'SYNTHETIC-FAILED-OUTAGE',input_hash:'SYNTHETIC-MISSING-SOURCE-HASH',status:'failed',result:null,error:'Research is busy. Retry automatically.',created_at:'2026-10-30T20:00:01Z'};s.jobs.push(outage);
+  s.cache.delete('detail:'+s.sourceGame.id);s.context.injuries={...s.context.injuries,status:'unavailable',items:[]};s.context.statisticsSources=s.context.statisticsSources.map((source:any)=>({...source,status:'unavailable'}));s.context.statisticsVersion='SYNTHETIC-OUTAGE';
+  const missing=await publicGameDetail(s.sourceGame.id);expect(missing.inputsVerified).toBe(false);expect(missing.analysis!.stale).toBe(true);
+  vi.setSystemTime(new Date('2026-10-30T20:01:02Z'));s.context={...original,updatedAt:new Date().toISOString()};
+  const recovered=await publicGameDetail(s.sourceGame.id);expect(recovered.status).toBe('ready');expect(recovered.analysis!.id).toBe(valid.id);expect(recovered.requiredInputHash).toBe(valid.input_hash);expect(recovered.analysis!.stale).toBe(false);
+  const reused=await analyzePublicGame(s.sourceGame.id);expect(reused.analysis!.id).toBe(valid.id);expect(s.jobs).toHaveLength(2);expect(fetch).toHaveBeenCalledOnce();expect(outage.status).toBe('failed');
+ });
+ it('marks a known changed pending job stale and exposes the verified required input hash',async()=>{
+  await analyzePublicGame(s.sourceGame.id);const old=s.jobs[0],scheduled=s.after.length;s.context.injuries.items[0].status='Out';s.cache.set('detail:'+s.sourceGame.id,{data:s.context,expires_at:'2026-10-31T00:00:00Z'});
+  const stale=await publicGameDetail(s.sourceGame.id);expect(stale.analysis!.status).toBe('stale');expect(stale.analysis!.stale).toBe(true);expect(stale.requiredInputHash).not.toBe(old.input_hash);expect(stale.analysis!.inputsVerified).toBe(true);expect(s.after).toHaveLength(scheduled);
+  const next=await analyzePublicGame(s.sourceGame.id);expect(next.status).toBe('queued');expect(next.analysis!.inputHash).toBe(next.requiredInputHash);expect(s.jobs).toHaveLength(2);
+ });
+ it('keeps unchanged reverified dashboard results fresh and prefers their older matching snapshot over a failed newer hash',async()=>{
+  vi.stubGlobal('fetch',vi.fn(async()=>Response.json(engine())));await analyzePublicGame(s.sourceGame.id);await s.after[0]();const valid=s.jobs[0];s.jobs.push({...structuredClone(valid),id:'SYNTHETIC-NEWER-FAILED',input_hash:'SYNTHETIC-BAD-HASH',status:'failed',error:'Research is busy.',result:null});
+  vi.setSystemTime(new Date('2026-10-30T22:00:00Z'));s.context.updatedAt=new Date().toISOString();s.cache.set('detail:'+s.sourceGame.id,{data:s.context,expires_at:'2026-10-31T00:00:00Z'});
+  const dashboard=await publicDashboard();expect(dashboard.games[0].analysis!.id).toBe(valid.id);expect(dashboard.games[0].analysis!.stale).toBe(false);expect(dashboard.games[0].analysis!.status).toBe('completed');expect(s.jobs).toHaveLength(2);
+ });
+ it('rechecks a legacy failed context after60seconds even if it was incorrectly cached for10minutes',async()=>{
+  const old={...structuredClone(s.context),inputVerified:undefined,injuries:{...s.context.injuries,status:'unavailable',items:[]},statisticsSources:s.context.statisticsSources.map((source:any)=>({...source,status:'unavailable'})),updatedAt:'2026-10-30T19:58:00Z'};
+  s.cache.set('detail:'+s.sourceGame.id,{data:old,updated_at:'2026-10-30T19:58:00Z',expires_at:'2026-10-30T20:08:00Z'});
+  const detail=await publicGameDetail(s.sourceGame.id);expect(fetchStatisticsVersion).toHaveBeenCalledOnce();expect(detail.inputsVerified).toBe(true);expect(s.cache.get('detail:'+s.sourceGame.id).data.inputVerified).toBe(true);
+ });
 });

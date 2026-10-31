@@ -5,6 +5,9 @@ yards, play clocks, player identities and kick success come from fitted evidence
 This is an auditable research baseline, not a validated professional odds model.
 """
 import argparse
+import array
+import base64
+import gzip
 import json
 import math
 import random
@@ -18,8 +21,11 @@ try:
 except ImportError:
     from fit import VERSION, ENHANCED_VERSION, utc
 
-STATS = ("passingAttempts", "completions", "passingYards", "passingTouchdowns", "interceptions", "targets", "receptions", "receivingYards", "receivingTouchdowns", "carries", "rushingYards", "rushingTouchdowns")
-ENGINE_VERSION = 'pbp-runtime-4.0.0'
+STATS = ("passingAttempts", "completions", "passingYards", "passingTouchdowns", "interceptions", "targets", "receptions", "receivingYards", "receivingTouchdowns", "carries", "rushingYards", "rushingTouchdowns", "touchdowns")
+ENGINE_VERSION = 'pbp-runtime-6.0.0'
+DISTRIBUTION_ENCODING = 'exact_integer_frequency_v1'
+PARAMETER_SAMPLE_ENCODING = 'gzip_base64_int32le_shared_player_stats_v1'
+MAX_PARAMETER_SAMPLE_BYTES = 8_000_000
 
 
 def wilson(success, n):
@@ -301,6 +307,10 @@ def simulate_game(evidence, rng, teams, postseason=False, trace=False):
 
 
 def evaluate_contract(contract, scores, players):
+    if not isinstance(contract, dict):
+        raise ValueError("A contract definition must be an object")
+    if contract.get('equality', 'push') not in ('push', 'yes', 'no'):
+        raise ValueError("equality must be push|yes|no")
     kind = contract.get("kind")
     if kind == "home_win":
         if scores[0] == scores[1]:
@@ -329,7 +339,7 @@ def evaluate_contract(contract, scores, players):
     else:
         raise ValueError("Unknown contract kind")
     threshold = contract.get("threshold")
-    if not isinstance(threshold, (float, int)) or not math.isfinite(threshold) or contract.get("direction") not in ("over", "under"):
+    if isinstance(threshold, bool) or not isinstance(threshold, (float, int)) or not math.isfinite(threshold) or contract.get("direction") not in ("over", "under"):
         raise ValueError("Finite threshold and over|under direction required")
     if value == threshold:
         rule = contract.get("equality", "push")
@@ -339,7 +349,59 @@ def evaluate_contract(contract, scores, players):
     return value > threshold if contract["direction"] == "over" else value < threshold
 
 
-def simulate(model, home, away, simulations=10000, seed=1, event_start=None, contracts=None, scenario=None, postseason=False, parameter_uncertainty=None, representative_games=0, **kwargs):
+def validate_selected_outcomes(contracts, selected_outcomes):
+    if selected_outcomes is None or selected_outcomes == {}:
+        return {}
+    if not isinstance(selected_outcomes, dict) or not 2 <= len(selected_outcomes) <= 12:
+        raise ValueError('A hypothetical combination requires 2..12 distinct contract selections')
+    ids = {contract['id'] for contract in contracts}
+    if any(key not in ids or value not in ('yes', 'no') for key, value in selected_outcomes.items()):
+        raise ValueError('Selected outcomes must reference simulated contract IDs and yes|no outcomes')
+    return dict(selected_outcomes)
+
+
+def combination_summary(contracts, joint, selected_outcomes, simulations):
+    """Evaluate selected YES/NO legs on the same complete simulated games."""
+    selected_outcomes = validate_selected_outcomes(contracts, selected_outcomes)
+    if not selected_outcomes:
+        return None
+    indices = [(index, contract['id'], selected_outcomes[contract['id']])
+               for index, contract in enumerate(contracts) if contract['id'] in selected_outcomes]
+    wins, resolved, marginals = 0, 0, Counter()
+    pairs = Counter()
+    for encoded, count in joint.items():
+        outcomes = encoded.split('|')
+        matches = [outcomes[index] == selection for index, _, selection in indices]
+        wins += count * all(matches)
+        resolved += count * all(outcomes[index] != 'push' for index, _, _ in indices)
+        for index, matched in enumerate(matches):
+            marginals[index] += count * matched
+            for other in range(index):
+                pairs[(other, index)] += count * (matched and matches[other])
+    probability = wins / simulations
+    independent = math.prod(marginals[index] / simulations for index in range(len(indices)))
+    correlations = []
+    for (first, second), hits in pairs.items():
+        p, q, both = marginals[first] / simulations, marginals[second] / simulations, hits / simulations
+        denominator = math.sqrt(p * (1-p) * q * (1-q))
+        correlations.append({'first':indices[first][1], 'second':indices[second][1],
+                             'jointProbability':both, 'independenceProbability':p*q,
+                             'phi':(both-p*q)/denominator if denominator else None})
+    return {'kind':'hypothetical_shared_game_combination', 'selectedOutcomes':selected_outcomes,
+            'simulations':simulations, 'allSelectedWinCount':wins,
+            'jointProbability':probability, 'independenceAssumptionProbability':independent,
+            'differenceFromIndependence':probability-independent,
+            'pushAffectedProbability':1-resolved/simulations,
+            'conditionalAllNonPushProbability':wins/resolved if resolved else None,
+            'monteCarloSE':math.sqrt(probability*(1-probability)/simulations),
+            'monteCarloInterval95':wilson(wins,simulations), 'pairwise':correlations,
+            'parameterInterval95':None, 'offeredCombinationVerified':False,
+            'limitations':['Joint outcomes come from shared full-game events; the independence product is a separate comparison, not the joint estimate.',
+                           'This is statistical research, not proof these event contracts can be combined into a sportsbook parlay.',
+                           'Push/void payouts, combined-product settlement rules and fees require independent verification.']}
+
+
+def simulate(model, home, away, simulations=10000, seed=1, event_start=None, contracts=None, scenario=None, postseason=False, parameter_uncertainty=None, representative_games=0, selected_outcomes=None, parameter_player_ids=None, **kwargs):
     if not isinstance(simulations, int) or not 1 <= simulations <= 100000:
         raise ValueError("simulations must be an integer 1..100000")
     if not isinstance(seed, int) or abs(seed) > 2**53:
@@ -352,14 +414,19 @@ def simulate(model, home, away, simulations=10000, seed=1, event_start=None, con
         validate_parameter_config(parameter_uncertainty)
         if len({r['game'] for r in model['rows'] if r['o'] in (home,away)})<8:
             raise ValueError('Parameter uncertainty requires at least8 historical game blocks')
-    if not isinstance(contracts, list) or len(contracts) > 32:
+    if not isinstance(contracts, list) or len(contracts) > 32 or any(not isinstance(c,dict) for c in contracts):
         raise ValueError("At most32 contract definitions")
     ids = [c.get("id") for c in contracts]
     if any(not isinstance(i, str) or not i for i in ids) or len(set(ids)) != len(ids):
         raise ValueError("Contracts need distinct nonempty IDs")
+    selected_outcomes = validate_selected_outcomes(contracts, selected_outcomes)
     evidence = Evidence(model, home, away, scenario)
     if not isinstance(representative_games,int) or not 0<=representative_games<=3:raise ValueError('representativeGames must be0..3')
     known_players = {r[k] for r in evidence.rows for k in ("qb", "receiver", "runner") if r[k]}
+    if parameter_player_ids is not None and (not isinstance(parameter_player_ids,list) or len(parameter_player_ids)>256 or
+            any(not isinstance(value,str) or not value for value in parameter_player_ids) or len(set(parameter_player_ids))!=len(parameter_player_ids)):
+        raise ValueError('Parameter sample players must be at most256 distinct supported player IDs')
+    parameter_players = sorted(known_players if parameter_player_ids is None else known_players.intersection(parameter_player_ids))
     for contract in contracts:
         if contract.get("kind") == "player" and contract.get("playerId") not in known_players:
             raise ValueError("Player contract has no historical evidence in the selected scenario")
@@ -384,6 +451,9 @@ def simulate(model, home, away, simulations=10000, seed=1, event_start=None, con
         total_hist[sum(scores)] += 1
         margin_hist[scores[0] - scores[1]] += 1
         for name, stats in players.items():
+            # Passing touchdowns are never scorer touchdowns. Return/defensive
+            # player TDs are unsupported and explicitly excluded from coverage.
+            stats['touchdowns'] = stats.get('rushingTouchdowns',0)+stats.get('receivingTouchdowns',0)
             for stat, value in stats.items():
                 player_hist[name][stat][value] += 1
         all_totals.update(totals)
@@ -407,6 +477,8 @@ def simulate(model, home, away, simulations=10000, seed=1, event_start=None, con
                               "monteCarloSE": math.sqrt(p * (1 - p) / simulations), "monteCarloInterval95": wilson(count["yes"], simulations),
                               "settlement": contract})
     result={"modelVersion": model['version'],"engineVersion":ENGINE_VERSION, "inputDataVersion": model["sha256"], "provenance": model["source"], "evidenceCutoff": model["asOf"],
+            "distributionEncoding":DISTRIBUTION_ENCODING,
+            "statisticCoverage":{"period":"full_game_including_overtime","touchdowns":"offensive_rushing_receiving_only","playerReturnTouchdowns":False,"playerDefensiveTouchdowns":False},
             "eventStart": event_start, "simulations": simulations, "seed": seed, "scenario": scenario,
             "home": home, "away": away, "homeWinProbability": wins / simulations, "awayWinProbability": (simulations - wins - ties) / simulations,
             "tieProbability": ties / simulations, "monteCarloInterval95": wilson(wins, simulations),
@@ -426,10 +498,14 @@ def simulate(model, home, away, simulations=10000, seed=1, event_start=None, con
                             "Injury scenarios require labeled comparable historical plays; no arbitrary injury multipliers.",
                             "Scoring transitions follow an NFL-style baseline; ties push unless contract explicitly supplies equality semantics.",
                             "Historical source has not been independently verified; no real historical backtest has been run by this service."]}
+    if selected_outcomes:
+        result['combination'] = combination_summary(contracts,joint,selected_outcomes,simulations)
     if parameter_uncertainty:
-        result['uncertainty']['parameterBootstrap']=parameter_bootstrap(model,home,away,seed,contracts,scenario,postseason,parameter_uncertainty)
+        result['uncertainty']['parameterBootstrap']=parameter_bootstrap(model,home,away,seed,contracts,scenario,postseason,parameter_uncertainty,selected_outcomes,parameter_players)
         result['uncertainty']['modelInterval']=result['uncertainty']['parameterBootstrap']['homeWinInterval95']
         result['uncertainty']['model']='Game-block Bayesian bootstrap parameter interval estimated separately from base-run Monte Carlo error; structural and cohort uncertainty remain unestimated.'
+        if selected_outcomes:
+            result['combination']['parameterInterval95'] = result['uncertainty']['parameterBootstrap']['combinationInterval95']
     return result
 
 
@@ -440,23 +516,54 @@ def validate_parameter_config(config):
     return replicates,count
 
 
-def parameter_bootstrap(model,home,away,seed,contracts,scenario,postseason,config):
+def parameter_bootstrap(model,home,away,seed,contracts,scenario,postseason,config,selected_outcomes=None,parameter_players=None):
     replicates,count=validate_parameter_config(config)
     games=sorted({r['game'] for r in model['rows'] if r['o'] in (home,away)})
     if len(games)<8:raise ValueError('Parameter uncertainty requires at least8 historical game blocks')
-    rng=random.Random(seed^0x5a17);home_estimates=[];contract_estimates={c['id']:[] for c in contracts};inner_variances=[]
+    selected_outcomes = validate_selected_outcomes(contracts,selected_outcomes)
+    parameter_players = parameter_players or []
+    expected_bytes = replicates*count*len(parameter_players)*len(STATS)*4
+    collect_samples = bool(parameter_players) and expected_bytes<=MAX_PARAMETER_SAMPLE_BYTES
+    samples = array.array('i')
+    if samples.itemsize!=4:collect_samples=False
+    rng=random.Random(seed^0x5a17);home_estimates=[];contract_estimates={c['id']:{key:[] for key in ('yes','no','push')} for c in contracts};inner_variances=[];combination_estimates=[]
     for index in range(replicates):
         weights={game:max(1e-12,rng.expovariate(1)) for game in games}
-        evidence=Evidence(model,home,away,scenario,weights);stream=random.Random(seed+7919*(index+1));wins=0;hits=Counter()
+        evidence=Evidence(model,home,away,scenario,weights);stream=random.Random(seed+7919*(index+1));wins=0;hits=Counter();joint_hits=0
         for _ in range(count):
             score,players,_,_=simulate_game(evidence,stream,[home,away],postseason);wins+=score[0]>score[1]
-            for c in contracts:hits[c['id']]+=evaluate_contract(c,score,players) is True
+            if collect_samples:
+                for pid in parameter_players:
+                    statistics=players.get(pid,{})
+                    samples.extend(statistics.get('rushingTouchdowns',0)+statistics.get('receivingTouchdowns',0)
+                                   if stat=='touchdowns' else statistics.get(stat,0) for stat in STATS)
+            sampled={}
+            for c in contracts:
+                outcome=evaluate_contract(c,score,players)
+                sampled[c['id']]='push' if outcome is None else 'yes' if outcome else 'no'
+                hits[(c['id'],sampled[c['id']])]+=1
+            if selected_outcomes:
+                joint_hits+=all(sampled[key]==value for key,value in selected_outcomes.items())
         p=wins/count;home_estimates.append(p);inner_variances.append(p*(1-p)/count)
-        for c in contracts:contract_estimates[c['id']].append(hits[c['id']]/count)
+        for c in contracts:
+            for outcome in ('yes','no','push'):contract_estimates[c['id']][outcome].append(hits[(c['id'],outcome)]/count)
+        if selected_outcomes:combination_estimates.append(joint_hits/count)
     def interval(values):
         ordered=sorted(values);return[ordered[max(0,int(.025*len(ordered)))],ordered[min(len(ordered)-1,math.ceil(.975*len(ordered))-1)]]
     mean=sum(home_estimates)/replicates;raw_variance=sum((p-mean)**2 for p in home_estimates)/(replicates-1);inner=sum(inner_variances)/replicates
-    return{'method':'Bayesian bootstrap of whole historical-game weights; all related plays share a block weight. Quantile spread includes finite inner-run numerical noise.','replicates':replicates,'gamesPerReplicate':count,'completeGames':replicates*count,'historicalGameBlocks':len(games),'homeWinInterval95':interval(home_estimates),'homeWinParameterSDNoiseCorrected':math.sqrt(max(0,raw_variance-inner)),'meanInnerMonteCarloSE':math.sqrt(inner),'contracts':{key:{'parameterInterval95':interval(values)} for key,values in contract_estimates.items()},'seed':seed^0x5a17,'limitations':'Not structural uncertainty, future roster/availability uncertainty or proof of calibration; increasing the base simulation count does not narrow this independent bootstrap interval.'}
+    player_samples={'status':'unavailable','reason':'Player parameter samples exceed the bounded storage budget or no eligible player cohort exists.'}
+    if collect_samples:
+        if sys.byteorder!='little':samples.byteswap()
+        raw=samples.tobytes()
+        compressed=gzip.compress(raw,mtime=0)
+        if len(raw)==expected_bytes and len(compressed)<=2_000_000:
+            player_samples={'status':'available','encoding':PARAMETER_SAMPLE_ENCODING,'valueType':'int32le',
+                            'players':parameter_players,'stats':list(STATS),'shape':[replicates,count,len(parameter_players),len(STATS)],
+                            'uncompressedBytes':len(raw),'compressedBytes':len(compressed),
+                            'dataBase64':base64.b64encode(compressed).decode('ascii'),
+                            'zeroSemantics':'An explicitly listed eligible player with no event in a complete simulated game has zero for that statistic. Missing IDs never imply zero.',
+                            'method':'Fixed whole-game Bayesian-bootstrap replicates; related player outcomes share each game. Intervals measure parameter sensitivity plus finite inner-run noise, not validated predictive coverage.'}
+    return{'method':'Bayesian bootstrap of whole historical-game weights; all related plays share a block weight. Quantile spread includes finite inner-run numerical noise.','replicates':replicates,'gamesPerReplicate':count,'completeGames':replicates*count,'historicalGameBlocks':len(games),'homeWinInterval95':interval(home_estimates),'homeWinParameterSDNoiseCorrected':math.sqrt(max(0,raw_variance-inner)),'meanInnerMonteCarloSE':math.sqrt(inner),'contracts':{key:{'parameterInterval95':interval(values['yes']),'noParameterInterval95':interval(values['no']),'pushParameterInterval95':interval(values['push'])} for key,values in contract_estimates.items()},'combinationInterval95':interval(combination_estimates) if selected_outcomes else None,'playerSamples':player_samples,'seed':seed^0x5a17,'limitations':'Not structural uncertainty, future roster/availability uncertainty or proof of calibration; increasing the base simulation count does not narrow this independent bootstrap interval.'}
 
 
 def main():
@@ -468,7 +575,7 @@ def main():
             from fit import fit_csv
         result = fit_csv(request["csv"], request["source"], request["asOf"], request.get("teamMinPlays", 100),request.get('options'))
     else:
-        result = simulate(request["model"], request["home"], request["away"], request.get("simulations", 10000), request.get("seed", 1), request.get("eventStart"), request.get("contracts"), request.get("scenario"), request.get("postseason", False),parameter_uncertainty=request.get('parameterUncertainty'),representative_games=request.get('representativeGames',0))
+        result = simulate(request["model"], request["home"], request["away"], request.get("simulations", 10000), request.get("seed", 1), request.get("eventStart"), request.get("contracts"), request.get("scenario"), request.get("postseason", False),parameter_uncertainty=request.get('parameterUncertainty'),representative_games=request.get('representativeGames',0),selected_outcomes=request.get('selectedOutcomes'))
     json.dump(result, sys.stdout, allow_nan=False)
 
 

@@ -1,18 +1,18 @@
-# GRIDIRON AI 5.0
+# GRIDIRON AI 6.0
 
 GRIDIRON AI is an installable NFL research app with public game analysis and a private personal wallet. The existing application has been upgraded; its previous ledger, research tools and data remain preserved.
 
-The 5.0 release is live at **https://gridiron-ai-gray.vercel.app** and passed 45 production acceptance checks across guest research, desktop/iPhone-sized Chromium and WebKit, and isolated persistent personal records. The current deployment result and exact limitations are recorded in [DELIVERY_V5.md](docs/DELIVERY_V5.md).
+The existing application is hosted at **https://gridiron-ai-gray.vercel.app**. Version 6 adds automatic player-prop research, exact threshold distributions, immutable research snapshots, controlled calibration, private joint simulations and event-contract Wallet records. The release verification and exact limitations are recorded in [DELIVERY_V6.md](docs/DELIVERY_V6.md); previous production evidence remains in [DELIVERY_V5.md](docs/DELIVERY_V5.md).
 
 ## Open the app
 
 1. Open GRIDIRON AI. Published NFL games and shared research are available as a guest.
 2. Tap a game. The app retrieves available statistics, reported injuries and weather, then reuses or queues a 10,000-complete-game analysis.
-3. Use **Analyze Game** to retrieve the latest analysis. Fresh results are reused; the app preserves previous snapshots when meaningful evidence changes.
+3. Tap **Analyze All Player Props** on Home or Props. The server discovers available authorized contracts, maps exact players and thresholds, reuses or runs complete-game simulations, and saves a research snapshot. Fresh results are reused and previous predictions are preserved. Use **Analyze Game** for one matchup.
 4. Sign in to **GRIDIRON AI** when opening Wallet or saving personal research and conversation history. An application account is not a Supabase developer account.
 5. On iPhone, open the app in Safari and choose **Share → Add to Home Screen → Add**.
 
-Primary navigation is **Home | Games | Simulations | AI | Wallet**. Existing contract imports, detailed modeling controls, provider status and administrative tools remain available through optional Advanced Mode. Normal public research does not require a CSV upload, manually entered statistics, API configuration or a database dashboard.
+Primary navigation is **Home | Games | Props | AI | Wallet**. Simulations, existing contract imports, detailed modeling controls, provider status and administrative tools remain available through optional Advanced Mode. Normal public research does not require a CSV upload, manually entered statistics, API configuration or a database dashboard.
 
 ## Evidence and privacy
 
@@ -24,7 +24,7 @@ Automatic research uses published nflverse-compatible records, source timestamps
 
 Live DraftKings Predictions contract access requires an authorized source. Traditional sportsbook odds are not silently substituted for binary contracts with different fees or settlement terms. Verified manual/CSV/OCR imports remain optional advanced fallbacks. Verified public Kalshi winner quotes are separately labeled, without claiming equivalence to DraftKings contracts or calculating fee-dependent value when fees are unknown. No market prices are invented.
 
-Source-based research briefs work without a language-model provider and are identified as evidence briefs. Live OpenAI conversation and Apple sign-in operate only when their server-side providers are configured; both are currently unavailable. Confirmed-account password sign-in passed production tests. New-account email confirmation still needs an operator correction to the provider’s production return-URL allowlist; see [the account audit](docs/AUTH_V5.md).
+Source-based research briefs work without a language-model provider and are identified as evidence briefs. Exact signed-in withdrawal, deposit, balance and realized P/L questions also work through deterministic database reports, labeled as calculated reports rather than AI generation. Live OpenAI conversation and Apple sign-in operate only when their server-side providers are configured; both are currently unavailable. Confirmed-account password sign-in passed production tests. New-account email confirmation still needs an operator correction to the provider’s production return-URL allowlist; see [the account audit](docs/AUTH_V5.md).
 
 The research models remain **research-only**. A separate retained 816-outcome chronological ensemble audit has Brier **0.224483** versus indicative historical market **0.210157**; lower is better. That result does not validate the new automatic play-by-play forecasts, whose out-of-sample calibration remains unverified. Source availability and market timing limits remain documented. More simulations reduce Monte Carlo sampling noise, not underlying model uncertainty, and do not establish market advantage or guaranteed results.
 
@@ -57,8 +57,11 @@ npm run test:e2e
 npm run package
 ```
 
-These are reproducible commands, not a claim that any arbitrary deployment passes. See [5.0 verification](docs/DELIVERY_V5.md) for actual executed checks and provider state. Source archives exclude credentials, financial databases, runtime caches and signing material.
+These are reproducible commands, not a claim that any arbitrary deployment passes. See [6.0 verification](docs/DELIVERY_V6.md) for actual executed checks and provider state. Source archives exclude credentials, financial databases, runtime caches and signing material.
 
+- [Player-prop sources and contract verification](docs/MARKET_DATA_V6.md)
+- [Controlled model development and rollback](docs/PLAYER_PROPS_MODEL_LAB.md)
+- [Operator configuration](docs/ENV_V6.md)
 - [Deploying the existing Vercel services](docs/VERCEL.md)
 - [Supabase storage, security and recovery](docs/SUPABASE.md)
 - [GRIDIRON app authentication](docs/AUTH_V5.md)

@@ -1,6 +1,6 @@
 {
   "projectRef": "qdtdjbapdipopncklsdb",
-  "source": "Supabase list_migrations after all ten successful applications",
+  "source": "Supabase list_migrations after all fourteen successful applications",
   "method": "Aligned source filenames only; SQL bytes and remote history unchanged",
   "migrations": [
     {
@@ -71,6 +71,34 @@
       "authoredVersion": "20261030195805",
       "liveVersion": "20261030195938",
       "sha256": "d893dedb03993f45bd0f3cea13617f1eecf14a9248b70ce481f16fa4bf4a1b98",
+      "sqlUnchanged": true
+    },
+    {
+      "name": "gridiron_event_contract_wallet",
+      "authoredVersion": "20261030211310",
+      "liveVersion": "20261030214623",
+      "sha256": "98ab331bc0c3f35e67ca22f62314d78f5feedb542427a3a8d30f30f8ea5fcdc0",
+      "sqlUnchanged": true
+    },
+    {
+      "name": "gridiron_player_prop_intelligence",
+      "authoredVersion": "20261030211347",
+      "liveVersion": "20261030214648",
+      "sha256": "2fb3e336cfb91606fea7e2099b241699482573bbdf14a71e8f5040eb23607948",
+      "sqlUnchanged": true
+    },
+    {
+      "name": "gridiron_public_research_capacity",
+      "authoredVersion": "20261030212335",
+      "liveVersion": "20261030214710",
+      "sha256": "c5e941a9efae4be503074f32a87a71c27ff56ba7203b482704f5e4bd8521eee4",
+      "sqlUnchanged": true
+    },
+    {
+      "name": "gridiron_release_compute_capacity",
+      "authoredVersion": "20261030222753",
+      "liveVersion": "20261030222753",
+      "sha256": "85032928cae4dbfc5a0499da763e0decd57cf1f8815e3c460b530b19a3c335e8",
       "sqlUnchanged": true
     }
   ]

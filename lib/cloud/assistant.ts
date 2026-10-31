@@ -3,12 +3,14 @@ import {z} from 'zod';
 import {ApiError} from '../auth';
 import {providerStatuses} from '../providers';
 import {additionalResearchTools,executeResearchTool} from '../research-tools';
-import {rpc,type CloudContext,forwardCloudRequest} from './context';
+import {rpc,requireCloudUser,type CloudContext,forwardCloudRequest} from './context';
 import {records,unwrap,preferences} from './store';
 import {cloudContracts,cloudInjuries,cloudConversation,cloudCreateConversation,cloudAppendMessage} from './research';
 import {cloudSettings} from './handler';
 import {verifiedCloudJob} from './attestation';
 import {createAiProviderClient} from '../ai-provider';
+import {accountReportIntent,calculateAccountReport} from './account-reports';
+import {PROP_STATS} from '../player-props/market-types';
 
 const tools:ChatCompletionTool[]=[
  {type:'function',function:{name:'read_ledger',description:'Read actual signed-in user balances, wagers, deposits/withdrawals and P/L. Optional inclusive from/exclusive to ISO timestamps aggregate every matching record. Current balances are not historical opening balances. Money is integer cents.',parameters:{type:'object',properties:{from:{type:'string'},to:{type:'string'}},additionalProperties:false}}},
@@ -17,16 +19,32 @@ const tools:ChatCompletionTool[]=[
  {type:'function',function:{name:'read_injury_evidence',description:'Read sourced injury citations and empirical availability evidence. Manual citations are not independently fetched official reports.',parameters:{type:'object',properties:{},additionalProperties:false}}},
  {type:'function',function:{name:'read_simulations',description:'Read saved complete-game simulation outputs with provenance and uncertainty. No estimates may be invented.',parameters:{type:'object',properties:{},additionalProperties:false}}},
  {type:'function',function:{name:'read_source_status',description:'Read available providers and current user preferences; configured does not mean a live source was successfully queried.',parameters:{type:'object',properties:{},additionalProperties:false}}},
+ {type:'function',function:{name:'read_player_prop_research',description:'Read actual persisted player-contract research. Preserve raw versus calibrated probabilities, conditional availability, unknown fees and source times; never invent a calibrated probability.',parameters:{type:'object',properties:{category:{type:'string',enum:[...PROP_STATS]},gameId:{type:'string'},playerName:{type:'string'},limit:{type:'integer',minimum:1,maximum:20}},additionalProperties:false}}},
+ {type:'function',function:{name:'read_prop_model_performance',description:'Read actual settled player-prop reliability, calibration, drift and candidate-promotion evidence. Insufficient evidence and unavailable calibration remain explicit.',parameters:{type:'object',properties:{},additionalProperties:false}}},
+ {type:'function',function:{name:'explain_player_prop',description:'Retrieve an exact saved player-contract snapshot and its current source checks, model assumptions, distribution and settlement rules.',parameters:{type:'object',properties:{id:{type:'string'}},required:['id'],additionalProperties:false}}},
+ {type:'function',function:{name:'analyze_player_props',description:'Queue or reuse the actual player-prop research worker only when the user explicitly asks to analyze or scan player props. Reading or explaining existing research does not require a new scan.',parameters:{type:'object',properties:{},additionalProperties:false}}},
  ...additionalResearchTools,
 ];
 export function cloudToolRequest(ctx:CloudContext){
  return forwardCloudRequest(ctx);
 }
 export async function cloudAssistant(ctx:CloudContext,input:unknown):Promise<Response>{
- const provider=await createAiProviderClient({timeout:60000});
+ requireCloudUser(ctx);
  const p=z.object({conversationId:z.string().uuid().optional(),messages:z.array(z.object({role:z.enum(['user','assistant']),content:z.string().min(1).max(8000)})).min(1).max(24)}).parse(input);
  if(p.messages.reduce((n,m)=>n+m.content.length,0)>30000)throw new ApiError('Conversation is too long. Start a new one.');
  const last=p.messages.at(-1);if(last?.role!=='user')throw new ApiError('The last message must be a user question.');
+ // Verify an existing conversation before either private reporting or an
+ // external provider can act. Missing credentials never create an empty thread.
+ if(p.conversationId)await cloudConversation(ctx,p.conversationId);
+ const intent=accountReportIntent(last.content);
+ if(intent&&!process.env.OPENAI_API_KEY){
+  const [ledger,settings]=await Promise.all([rpc(ctx,'gridiron_ledger'),cloudSettings(ctx)]),answer=calculateAccountReport(ledger,settings,intent);
+  const conversation=p.conversationId?await cloudConversation(ctx,p.conversationId):await cloudCreateConversation(ctx,last.content.slice(0,100));
+  const previous=await cloudConversation(ctx,conversation.id);if(previous.messages.at(-1)?.role!=='user'||previous.messages.at(-1)?.content!==last.content)await cloudAppendMessage(ctx,conversation.id,last);
+  await cloudAppendMessage(ctx,conversation.id,{role:'assistant',content:answer.text,data:{citations:answer.citations,generatedByAI:false,method:answer.method,values:answer.values,timezone:answer.timezone,period:answer.period}});
+  const encoder=new TextEncoder();return new Response(new ReadableStream({start(controller){controller.enqueue(encoder.encode(`data: ${JSON.stringify({conversationId:conversation.id,generatedByAI:false,method:answer.method})}\n\n`));controller.enqueue(encoder.encode(`data: ${JSON.stringify({text:answer.text})}\n\n`));controller.enqueue(encoder.encode(`data: ${JSON.stringify({citations:answer.citations,generatedByAI:false,method:answer.method})}\n\ndata: [DONE]\n\n`));controller.close();}}),{headers:{'Content-Type':'text/event-stream','Cache-Control':'private, no-store','X-Conversation-Id':conversation.id,'X-Gridiron-Answer-Method':answer.method}});
+ }
+ const provider=await createAiProviderClient({timeout:60000});
  const c=p.conversationId?await cloudConversation(ctx,p.conversationId):await cloudCreateConversation(ctx,last.content.slice(0,100));
  const previous=await cloudConversation(ctx,c.id);if(previous.messages.at(-1)?.role!=='user'||previous.messages.at(-1)?.content!==last.content)await cloudAppendMessage(ctx,c.id,last);
  const stored=(await cloudConversation(ctx,c.id)).messages.slice(-24).map(m=>({role:m.role,content:m.content}));while(stored.length>1&&stored.reduce((n,m)=>n+m.content.length,0)>30000)stored.shift();
@@ -43,6 +61,12 @@ export async function cloudAssistant(ctx:CloudContext,input:unknown):Promise<Res
   for(const call of message.tool_calls){if(call.type!=='function')continue;const name=call.function.name;let args:any;try{args=JSON.parse(call.function.arguments||'{}');}catch{args={};}let data:any;
    if(name==='read_ledger'){
     const ledger=await rpc(ctx,'gridiron_ledger'),range=z.object({from:z.string().datetime({offset:true}).optional(),to:z.string().datetime({offset:true}).optional()}).parse(args),lo=range.from?Date.parse(range.from):-Infinity,hi=range.to?Date.parse(range.to):Infinity;if(lo>=hi)throw new ApiError('Invalid period boundaries.');const inside=(date:string)=>Date.parse(date)>=lo&&Date.parse(date)<hi,transactions=ledger.transactions.filter((r:any)=>inside(r.date)),active=transactions.filter((r:any)=>!r.reversed&&r.type!=='reversal'),settled=ledger.bets.filter((b:any)=>b.result!=='pending'&&b.settledAt&&inside(b.settledAt));data={currentAccounts:ledger.accounts,summary:range.from||range.to?{period:range,totalDepositsCents:active.filter((r:any)=>r.type==='deposit').reduce((n:number,r:any)=>n+r.amountCents,0),totalWithdrawalsCents:active.filter((r:any)=>r.type==='withdrawal').reduce((n:number,r:any)=>n+r.amountCents,0),realizedPlCents:settled.reduce((n:number,b:any)=>n+(b.payoutCents??0)-b.stakeCents,0)}:ledger.summary,transactions:transactions.slice(0,100),bets:settled.slice(0,100),settings:await cloudSettings(ctx),scope:'Aggregate totals cover all returned matching records; detailed lists are limited to 100.'};
+   }else if(name==='read_player_prop_research'){
+    const filter=z.object({category:z.enum(PROP_STATS).optional(),gameId:z.string().max(100).optional(),playerName:z.string().max(120).optional(),limit:z.number().int().min(1).max(20).optional()}).strict().parse(args);const service=await import('../player-props/service');data=await service.propDashboard({category:filter.category,gameId:filter.gameId,search:filter.playerName,limit:filter.limit??10});
+   }else if(name==='read_prop_model_performance'){z.object({}).strict().parse(args);data=await(await import('../player-props/model-lab')).getPropPerformance();}
+   else if(name==='explain_player_prop'){const {id}=z.object({id:z.string().regex(/^[a-f0-9]{64}$/)}).strict().parse(args);data=await(await import('../player-props/service')).propResearchDetail(id);}
+   else if(name==='analyze_player_props'){
+    z.object({}).strict().parse(args);if(!/^(?:please\s+)?(?:(?:can|could|would)\s+you\s+)?(?:analy[sz]e|scan|run|start|research)\b.*\b(?:props?|contracts?)\b/i.test(last.content.trim()))data={status:'not_requested',message:'No scan was started. The user must explicitly request player-prop analysis; use the read tools for an explanation.'};else{const run=await(await import('../player-props/service')).startPropScan('assistant');data={id:run.id,status:run.status,updatedAt:run.updated_at,message:'Actual backend research was queued or reused. Read stored research to inspect completed statistical outputs.'};}
    }else if(name==='read_markets')data=unwrap(await records(ctx,'markets',{limit:80})).map(({samples,...v})=>v);
    else if(name==='read_binary_contracts')data=await cloudContracts(ctx);
    else if(name==='read_injury_evidence')data=await cloudInjuries(ctx);
