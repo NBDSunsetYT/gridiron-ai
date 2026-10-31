@@ -90,6 +90,14 @@ class PropLineClient:
                 return response.status,dict(response.headers),body
         except urllib.error.HTTPError as error:return error.code,dict(error.headers),b''
         except (urllib.error.URLError,TimeoutError,OSError):raise DataProviderError('provider_network_error','PropLine could not be reached.',retryable=True) from None
+    @staticmethod
+    def retry_time(headers,now):
+        h={k.lower():v for k,v in headers.items()}
+        try:
+            retry=float(h.get('retry-after',60));reset=float(h.get('x-daily-reset',now+60))
+            if not math.isfinite(retry) or not math.isfinite(reset):return now+60
+            return max(now+max(1,retry),reset) if h.get('x-daily-remaining')=='0' else now+max(1,retry)
+        except (ValueError,TypeError):return now+60
     def read(self,sport):
         require_render_runtime()
         if sport not in SPORTS:raise DataProviderError('unsupported_sport','Choose NFL or CFB.')
@@ -136,12 +144,30 @@ class PropLineClient:
                                 if mapped and stamp(mapped.get('commence_time'))==stamp(row['kickoff']):row['espnEventId']=str(mapped['espn_event_id'])
                             crosswalk_status='verified' if any(r['espnEventId'] for r in rows) else 'no_exact_ids'
                     except (ValueError,TypeError):pass
-                elif code==429:self.until=now+300
+                elif code==429:self.until=self.retry_time(hs,now)
 
+            injury_status='unavailable';injuries=[]
+            if now>=self.until and self.used<self.daily_limit:
+                self.used+=1
+                code,hs,payload=self.transport('https://api.prop-line.com/v1/sports/'+SPORTS[sport]+'/injuries',key)
+                if code==200 and key.encode() not in payload:
+                    try:
+                        evidence=json.loads(payload)
+                        players=evidence.get('players') if isinstance(evidence,dict) else None
+                        if isinstance(players,list) and len(players)<=5000:
+                            injury_status='available'
+                            for player in players:
+                                if not isinstance(player,dict):continue
+                                pid=player.get('player_id');athlete=player.get('espn_athlete_id')
+                                if not pid and str(athlete or '').isdigit():pid='espn:'+str(athlete)
+                                if not isinstance(pid,str) or not pid.startswith('espn:'):continue
+                                injuries.append({k:player.get(k) for k in ['player_name','team','team_abbr','position','status','status_code','source','source_updated_at','expected_return'] }|{'player_id':pid})
+                    except (ValueError,TypeError):pass
+                elif code==429:self.until=self.retry_time(hs,now)
             value={'provider':'PropLine','sport':sport,'dataFamily':'sportsbook_reference','status':'available' if rows else 'unavailable',
              'providerHttpStatus':200,'checkedAt':utc_now(),'items':rows,'totalResults':len(rows),'marketCounts':{k:sum(r['market']==k for r in rows) for k in MARKETS},'bookCounts':{k:sum(r['book']['key']==k for r in rows) for k in BOOKS},'rejectedRows':rejected,'quota':quota,'cached':False,
              'diagnostic':{'code':'verified_provider_rows' if rows else 'no_verified_current_props','message':'Current provider rows were validated.' if rows else 'No current supported sportsbook props passed identity and freshness checks.'},
-             'fallbackVerified':False,'identityCrosswalkStatus':crosswalk_status}
+             'fallbackVerified':False,'identityCrosswalkStatus':crosswalk_status,'injuryCoverage':injury_status,'injuries':injuries}
             self.cache[sport]=(now,value);return copy.deepcopy(value)
 
 def choose_feed(primary,fallback,sport):

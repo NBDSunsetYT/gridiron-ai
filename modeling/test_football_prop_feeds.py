@@ -20,7 +20,7 @@ class FreePropsTests(unittest.TestCase):
  def test_header_only_credentials_and_cache(self):
   calls=[]
   def transport(url,key):calls.append(url);self.assertNotIn('SYNTHETIC-PRIVATE',url);return 200,{},json.dumps(self.board).encode()
-  c=PropLineClient(transport);self.assertEqual(len(c.read('NFL')['items']),1);self.assertTrue(c.read('NFL')['cached']);self.assertEqual(len(calls),2)
+  c=PropLineClient(transport);self.assertEqual(len(c.read('NFL')['items']),1);self.assertTrue(c.read('NFL')['cached']);self.assertEqual(len(calls),3)
  def test_quota_exhaustion_no_retry_or_paid_upgrade(self):
   calls=[]
   def t(u,k):calls.append(u);return 429,{'X-Daily-Remaining':'0','X-Daily-Reset':str(int(self.now+3600))},b''
@@ -45,3 +45,21 @@ class FreePropsTests(unittest.TestCase):
   c=PropLineClient(lambda u,k:(429,{'X-Daily-Remaining':'900','X-Daily-Reset':str(int(self.now+3600)),'Retry-After':'1'},b''))
   with self.assertRaises(DataProviderError) as error:c.read('NFL')
   self.assertLessEqual(error.exception.retry_after,2)
+ def test_cached_counts_do_not_advertise_expired_book_rows(self):
+  t=[self.now];at=time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime(self.now-250));self.board[0]['bookmakers'][0]['markets'][0]['last_update']=at;self.board[0]['bookmakers'][0]['markets'][0]['outcomes'][0]['last_seen_at']=at
+  c=PropLineClient(lambda u,k:(200,{},json.dumps(self.board).encode()),lambda:t[0]);self.assertEqual(c.read('NFL')['bookCounts']['draftkings'],1);t[0]+=60;value=c.read('NFL');self.assertEqual(value['items'],[]);self.assertEqual(value['bookCounts']['draftkings'],0);self.assertEqual(value['status'],'unavailable')
+ def test_current_injury_reports_preserve_source_and_never_invent_availability_weights(self):
+  def t(url,key):
+   if url.endswith('/injuries'):return 200,{},json.dumps({'players':[{'player_id':'espn:1','player_name':'SYNTHETIC PLAYER','status':'Out','status_code':'out','source':'conference_report','source_updated_at':self.at}]}).encode()
+   if url.endswith('/ids'):return 200,{},b'[]'
+   return 200,{},json.dumps(self.board).encode()
+  value=PropLineClient(t).read('NFL');self.assertEqual(value['injuryCoverage'],'available');self.assertEqual(value['injuries'][0]['status_code'],'out');self.assertEqual(value['injuries'][0]['source_updated_at'],self.at);self.assertNotIn('availabilityProbability',value['injuries'][0])
+ def test_secondary_quota_exhaustion_stops_additional_provider_reads(self):
+  calls=[];clock=[self.now]
+  def t(url,key):
+   calls.append(url)
+   if url.endswith('/ids'):return 429,{'X-Daily-Remaining':'0','X-Daily-Reset':str(int(self.now+3600))},b''
+   return 200,{},json.dumps(self.board).encode()
+  client=PropLineClient(t,lambda:clock[0]);client.read('NFL');self.assertEqual(len(calls),2);clock[0]+=121
+  with self.assertRaises(DataProviderError):client.read('NFL')
+  self.assertEqual(len(calls),2)
