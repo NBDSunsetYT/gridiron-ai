@@ -1,0 +1,17 @@
+{
+  "status": "failed",
+  "startedAt": "2026-10-31T19:15:27.442Z",
+  "baseUrl": "https://gridiron-ai-gray.vercel.app",
+  "mockedResponses": false,
+  "accountsCreated": false,
+  "financialWrites": false,
+  "physicalIphoneInstallationTested": false,
+  "fullAcceptancePassed": false,
+  "timeZone": "America/New_York",
+  "checks": [],
+  "error": "expect(locator).toHaveAttribute(expected) failed\n\nLocator: getByRole('group', { name: 'Football sport', exact: true }).getByRole('button', { name: 'NFL', exact: true })\nExpected: \"true\"\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toHaveAttribute\" getByRole('group', { name: 'Football sport', exact: true }).getByRole('button', { name: 'NFL', exact: true }) with timeout 5000ms\n  - waiting for getByRole('group', { name: 'Football sport', exact: true }).getByRole('button', { name: 'NFL', exact: true })\n",
+  "failureScreenshot": "artifacts/v8-production-browser-failure.png",
+  "finishedAt": "2026-10-31T19:15:32.612Z",
+  "failureClassification": "managed_workspace_proxy_transport_failure",
+  "evidence": "Failure screenshot and follow-up HTTP health request both returned an Envoy cloudflare_https_tunnel upstream connection failure, before application headers. Earlier identical hosted workflow passed all18 browser checks."
+}

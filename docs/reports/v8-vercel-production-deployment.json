@@ -1,17 +1,17 @@
 {
-  "checkedAt": "2026-10-31T18:58:19.469614+00:00",
+  "checkedAt": "2026-10-31T19:15:07.308747+00:00",
   "provider": "Vercel",
   "version": "8.0.0",
   "plan": "hobby",
   "projectId": "prj_ufIV2AZJcQAW7lNtQmH6hcyrWamH",
-  "deploymentId": "dpl_svYLELyqeUjvFbtQLAkctnP9tQHr",
+  "deploymentId": "dpl_Ea7Gp8ywKtp5qQbsKv7XFFrxqbGS",
   "state": "READY",
   "url": "https://gridiron-ai-gray.vercel.app",
-  "uniqueUrl": "https://gridiron-gyuhwg040-gridiron5.vercel.app",
-  "sourceCommit": "29d20fbf9226b671d57a87bdc92769ed3787c374",
-  "sourceManifestSha256": "3ef544392519d1d26100ffc5a62909dc0a3faf5084831965f70c386fd60bebd0",
-  "runtimeFiles": 219,
-  "runtimeBytes": 8526680,
+  "uniqueUrl": "https://gridiron-3sk3mxdda-gridiron5.vercel.app",
+  "sourceCommit": "118e1c8ad481de93ba8e9c2ab8c74deb3ef0b683",
+  "sourceManifestSha256": "a77814c9bcb6f1670ee46e4f923803d9725bcbc1dbb6c7f12226641a54099dae",
+  "runtimeFiles": 220,
+  "runtimeBytes": 8543846,
   "committedRuntimeCorrespondence": "All deployed runtime bytes equal the published source commit.",
   "services": "Preserved Next.js web/API plus privately bound Python/FastAPI quantitative service with NCAA routes and pyarrow26.0.0.",
   "renderOnlyAdapterModulesExcluded": true,
@@ -29,7 +29,7 @@
     "groupsReturned": 0,
     "limitation": "Bounded initial retained-log inspection; not a full-workflow acceptance claim."
   },
-  "productionAcceptance": "incomplete_cross_instance_guest_cache_repair_pending; initial public API14passed with valid hosted10,000-game computation; full acceptance remains false",
+  "productionAcceptance": "partial_external_provider_and_shared_storage_blocks; actual repaired public API15passed; browser acceptance pending",
   "physicalIphoneInstallationTested": false,
   "limitations": [
     "No authenticated BALLDONTLIE or CollegeFootballData endpoint has been verified; account tiers remain unknown.",
@@ -49,16 +49,22 @@
   },
   "productionApi": {
     "report": "v8-production-football.json",
-    "checksPassed": 14,
+    "checksPassed": 15,
     "fullAcceptancePassed": false,
     "hostedCompleteGames": 10000,
-    "executionMs": 15837,
+    "executionMs": 18551,
+    "players": 39,
     "publicGuestResultPersistent": false,
     "productionFinancialWrites": false
   },
   "observedProductionIssue": {
     "code": "guest_result_cross_instance_cache_loss",
     "scope": "Public CFB guest result unavailable from a different server instance; completed quota is retained and no uncharged rerun occurs.",
-    "repair": "Public-only ephemeral server cache in progress; no private caching or database-reserve bypass."
+    "repair": "Repaired and verified by fresh-request same-ID reopen; initial failure retained in v8-production-browser-initial.json."
+  },
+  "publicCacheRepair": {
+    "scope": "Signed bounded ephemeral public CFB results only; no private context or database guard bypass.",
+    "actualFreshRequestSameAnalysisId": true,
+    "additionalSimulationTriggeredOnReopen": false
   }
 }

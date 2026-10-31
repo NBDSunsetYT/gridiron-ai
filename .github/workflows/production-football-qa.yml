@@ -1,0 +1,107 @@
+name: Verify actual public GRIDIRON NFL and college production
+
+# Independent authorized GitHub runner: no workspace proxy, service credential,
+# account, financial write, new research scan or simulation-start script.
+on:
+  push:
+    branches: ['production-qa/v8-*']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gridiron-football-public-production-verification
+  cancel-in-progress: false
+
+jobs:
+  public-football:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      BASE_URL: https://gridiron-ai-gray.vercel.app
+      QA_WORKFLOW_REPORT_PATH: docs/reports/v8-production-football.json
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install committed dependencies
+        id: dependencies
+        run: npm ci
+      - name: Install actual Chromium and WebKit engines
+        id: browsers
+        run: npx playwright install --with-deps chromium webkit
+      - name: Require the exact already completed public college result
+        id: cached
+        continue-on-error: true
+        run: |
+          node --input-type=module <<'JS'
+          import assert from 'node:assert/strict';
+          import {readFileSync,mkdirSync,writeFileSync} from 'node:fs';
+          const evidence=JSON.parse(readFileSync(process.env.QA_WORKFLOW_REPORT_PATH,'utf8'));
+          const report={scope:'Read-only cache preflight; no simulation POST',checkedAt:new Date().toISOString(),status:'running',accountsCreated:false,financialWrites:false,simulationsStarted:0};
+          try {
+            assert.equal(evidence.baseUrl,process.env.BASE_URL);
+            assert.equal(evidence.cfbSimulation?.simulations,10000);
+            assert.ok(evidence.cfbGame?.id?.startsWith('cfb:'));
+            const response=await fetch(new URL('/api/cfb/games/'+encodeURIComponent(evidence.cfbGame.id),process.env.BASE_URL),{cache:'no-store',redirect:'error',signal:AbortSignal.timeout(90000)});
+            report.httpStatus=response.status;assert.equal(response.status,200);
+            const value=await response.json();assert.equal(value.sport,'CFB');assert.equal(value.game?.id,evidence.cfbGame.id);
+            assert.equal(value.analysis?.id,evidence.cfbSimulation.id,'The exact prior public result must be cached; no new run is authorized.');
+            assert.equal(value.analysis?.status,'completed');assert.equal(value.analysis?.stale,false);
+            assert.equal(value.analysis?.simulations,10000);assert.equal(value.analysis?.result?.simulations,10000);
+            assert.equal(value.analysis?.inputVersion,evidence.cfbSimulation.inputVersion);
+            report.status='passed';report.analysisId=value.analysis.id;report.gameId=value.game.id;report.simulations=10000;
+          } catch(error) {report.status='failed';report.error=String(error.message);process.exitCode=1;}
+          finally {mkdirSync('artifacts',{recursive:true});writeFileSync('artifacts/v8-cached-analysis-preflight.json',JSON.stringify(report,null,2)+'\n');}
+          JS
+      - name: Verify actual desktop and iPhone-sized public football flows
+        id: football
+        if: steps.cached.outcome == 'success'
+        continue-on-error: true
+        env:
+          QA_REPORT_PATH: artifacts/v8-public-browser-report.json
+        run: node tests/production-v8-browser.mjs
+      - name: Verify actual HTTPS PWA and safe offline behavior
+        id: pwa
+        if: always() && steps.dependencies.outcome == 'success' && steps.browsers.outcome == 'success'
+        continue-on-error: true
+        env:
+          QA_REPORT_PATH: artifacts/v8-public-pwa-report.json
+        run: node tests/production-v8-pwa.mjs
+      - name: Retain complete sanitized public reports in recoverable job logs
+        if: always()
+        run: |
+          node --input-type=module <<'JS'
+          import {existsSync,readFileSync} from 'node:fs';
+          const sensitive=/^(?:password|authorization|token|access_?token|refresh_?token|api_?key|service_?role_?key|cookie|set-cookie|email|user_?id)$/i;
+          function safe(value){if(Array.isArray(value))return value.map(safe);if(value&&typeof value==='object')return Object.fromEntries(Object.entries(value).map(([key,item])=>[key,sensitive.test(key)?'[REDACTED]':safe(item)]));if(typeof value==='string')return value.replace(/Bearer\s+[^\s"<>]+/gi,'Bearer [REDACTED]').replace(/(?:sb_secret_|sk-(?:proj-)?)[A-Za-z0-9_-]{20,}/g,'[REDACTED]');return value;}
+          for(const file of ['artifacts/v8-cached-analysis-preflight.json','artifacts/v8-public-browser-report.json','artifacts/v8-public-pwa-report.json'])if(existsSync(file))console.log('GRIDIRON_FOOTBALL_PUBLIC_REPORT '+JSON.stringify({file,report:safe(JSON.parse(readFileSync(file,'utf8')))}));
+          JS
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: football-public-production-verification
+          retention-days: 3
+          if-no-files-found: warn
+          path: |
+            artifacts/v8-*.json
+            artifacts/v8-*.png
+            docs/reports/v8-production-football.json
+      - name: Require both public scopes without claiming full platform acceptance
+        if: always()
+        run: |
+          node --input-type=module <<'JS'
+          import assert from 'node:assert/strict';
+          import {readFileSync} from 'node:fs';
+          const read=file=>JSON.parse(readFileSync(file,'utf8'));
+          assert.equal(read('artifacts/v8-cached-analysis-preflight.json').status,'passed');
+          const browser=read('artifacts/v8-public-browser-report.json'),pwa=read('artifacts/v8-public-pwa-report.json');
+          assert.equal(browser.status,'passed_public_browser_scope');assert.equal(browser.checks.length,18);
+          assert.equal(pwa.status,'passed');assert.equal(pwa.checks.length,15);
+          for(const report of[browser,pwa]){assert.equal(report.accountsCreated,false);assert.equal(report.financialWrites,false);assert.equal(report.mockedResponses,false);assert.equal(report.physicalIphoneInstallationTested,false);}
+          console.log('Public browser and PWA scopes passed. This does not establish private-account, provider-entitlement, calibration or full-platform acceptance.');
+          JS
