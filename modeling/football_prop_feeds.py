@@ -56,7 +56,7 @@ def normalize(events,sport,now=None):
                     if not isinstance(outcome,dict):rejected+=1;continue
                     seen=stamp(outcome.get('last_seen_at'));price=outcome.get('price');line=outcome.get('point');name=outcome.get('description');side=outcome.get('name')
                     # Provider observation time is not a sportsbook publication or executable quote guarantee.
-                    if (not ts or ts>now+60 or now-ts>300 or seen!=ts or not finite(price) or int(price)!=price or abs(price)<100 or abs(price)>1000000 or not isinstance(name,str) or not name.strip() or not isinstance(side,str) or not side.strip() or (line is not None and not finite(line))):rejected+=1;continue
+                    if (not ts or ts>now+60 or now-ts>300 or seen!=ts or not finite(price) or int(price)!=price or abs(price)<100 or abs(price)>100000 or not isinstance(name,str) or not name.strip() or not isinstance(side,str) or not side.strip() or (line is not None and not finite(line))):rejected+=1;continue
                     # Preserve null thresholds for touchdown selection markets; don't invent0.5.
                     if line is None and market['key']!='player_anytime_td':rejected+=1;continue
                     identity=json.dumps([sport,str(event['id']),book['key'],market['key'],outcome.get('player_id'),name,side,line,price,updated],separators=(',',':'))
@@ -85,8 +85,8 @@ class PropLineClient:
             def redirect_request(self,*args,**kwargs):return None
         try:
             with urllib.request.build_opener(NoRedirect()).open(req,timeout=20) as response:
-                body=response.read(8000001)
-                if len(body)>8000000:raise DataProviderError('response_bound','Provider response too large.')
+                body=response.read(32000001)
+                if len(body)>32000000:raise DataProviderError('response_bound','Provider response too large.')
                 return response.status,dict(response.headers),body
         except urllib.error.HTTPError as error:return error.code,dict(error.headers),b''
         except (urllib.error.URLError,TimeoutError,OSError):raise DataProviderError('provider_network_error','PropLine could not be reached.',retryable=True) from None
@@ -120,7 +120,7 @@ class PropLineClient:
             except (ValueError,UnicodeError):raise DataProviderError('unsupported_response','PropLine did not return valid JSON.') from None
             rows,rejected=normalize(raw,sport,now)
             value={'provider':'PropLine','sport':sport,'dataFamily':'sportsbook_reference','status':'available' if rows else 'unavailable',
-             'checkedAt':utc_now(),'items':rows,'rejectedRows':rejected,'quota':quota,'cached':False,
+             'providerHttpStatus':200,'checkedAt':utc_now(),'items':rows,'rejectedRows':rejected,'quota':quota,'cached':False,
              'diagnostic':{'code':'verified_provider_rows' if rows else 'no_verified_current_props','message':'Current provider rows were validated.' if rows else 'No current supported sportsbook props passed identity and freshness checks.'},
              'fallbackVerified':False}
             self.cache[sport]=(now,value);return copy.deepcopy(value)

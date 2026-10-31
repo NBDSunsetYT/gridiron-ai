@@ -46,7 +46,7 @@ async def health():
         require_render_runtime(); render = True
     except DataProviderError:
         render = False
-    return {'service': 'GRIDIRON sports-data gateway', 'version': '8.0.0',
+    return {'service': 'GRIDIRON sports-data gateway', 'version': '9.0.0',
             'status': 'ready' if render and len(os.environ.get('GRIDIRON_DATA_BRIDGE_TOKEN', '')) >= 32 else 'unconfigured',
             'providerAccessVerified': False, 'secretLocation': 'Render environment only'}
 
