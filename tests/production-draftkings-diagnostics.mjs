@@ -3,6 +3,8 @@
 import assert from 'node:assert/strict';
 import {writeFile,mkdir} from 'node:fs/promises';
 import {dirname} from 'node:path';
+import {EnvHttpProxyAgent,setGlobalDispatcher} from 'undici';
+if(process.env.HTTPS_PROXY||process.env.HTTP_PROXY||process.env.https_proxy||process.env.http_proxy)setGlobalDispatcher(new EnvHttpProxyAgent());
 
 const base=new URL(process.env.BASE_URL||'https://gridiron-ai-gray.vercel.app');
 assert.equal(base.protocol,'https:','Use the deployed HTTPS application.');
@@ -14,7 +16,7 @@ async function read(path,method='GET'){
 async function check(name,work){await work();report.checks.push({name,status:'passed'});console.log(JSON.stringify({name,status:'passed'}));}
 try{
  await check('The actual published application and persistent research dependencies remain reachable',async()=>{
-  const{response,body}=await read('/api/health?check=dependencies');assert.equal(response.status,200);assert.equal(body.version,'7.0.1');assert.equal(body.backend,'supabase');assert.equal(body.checks.supabase,'reachable');assert.equal(body.checks.simulations,'reachable');report.health={version:body.version,backend:body.backend,checks:body.checks};
+  const{response,body}=await read('/api/health?check=dependencies');assert.equal(response.status,200);assert.equal(body.version,'8.0.0');assert.equal(body.backend,'supabase');assert.equal(body.checks.supabase,'reachable');assert.equal(body.checks.simulations,'reachable');report.health={version:body.version,backend:body.backend,checks:body.checks};
  });
  for(const path of ['/api/nfl/markets','/api/props'])await check(`${path} identifies missing source configuration without claiming an empty NFL inventory or a provider HTTP failure`,async()=>{
   const{response,body}=await read(path);assert.equal(response.status,200);assert.equal(body.status,'unavailable');assert.equal(body.runId,null);assert.equal(body.totalResults,0);

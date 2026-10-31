@@ -1,0 +1,48 @@
+{
+  "checkedAt": "2026-10-31T18:26:25.478532+00:00",
+  "sport": "CFB",
+  "scope": "CFB engine and private HTTP boundaries; clearly labeled synthetic mechanical/source fixtures",
+  "status": "passed",
+  "mechanicalAndPrivateRouteTests": 19,
+  "sourceNormalizationTests": 9,
+  "countsTested": [
+    10000,
+    50000,
+    100000
+  ],
+  "coherentCompleteGames": true,
+  "nflSimulatorChanged": false,
+  "nflFitChanged": false,
+  "syntheticDeployedForecastsRejected": true,
+  "actualDataVerificationReport": "v8-cfb-actual-10000-games.json",
+  "historicalAuditReport": "v8-cfb-historical-audit.json",
+  "officialRules": {
+    "url": "https://ncaaorg.s3.amazonaws.com/championships/sports/football/rules/PRMFB_RulesBook.pdf",
+    "retrievedBytes": 10917166,
+    "sha256": "2a9e63b038b6efc70ad846487f33fdda175993c2229c911c3e06291ec74a9dd5",
+    "periods": 4,
+    "quarterSeconds": 900,
+    "pairedOvertimeStartYards": 25,
+    "mandatoryTwoPointFromOvertime": 2,
+    "alternateTwoPointFromOvertime": 3,
+    "alternateTryYards": 3
+  },
+  "statisticsManual": {
+    "url": "https://fs.ncaa.org.s3.amazonaws.com/Docs/stats/Stats_Manuals/Football.pdf",
+    "sha256": "adbe9bbd4a34538386a5ddb60551899d563b76afb670fc25fd5848b90a7da26d"
+  },
+  "limitations": [
+    "Synthetic tests prove mechanics, not predictive accuracy.",
+    "The actual historical pilot is retrospective and not promoted.",
+    "Current CFB availability, transfers, weather and rare-rule coverage remain incomplete.",
+    "No physical iPhone or hosted backend execution is claimed by this report."
+  ],
+  "totalCfbTests": 28,
+  "finalLog": "/tmp/gridiron-v8-cfb-all-final.log",
+  "fullRunTests": 27,
+  "additionalFocusedParameterRegression": 1,
+  "finalLogs": [
+    "/tmp/gridiron-v8-cfb-all-final.log",
+    "/tmp/gridiron-v8-cfb-parameter-final.log"
+  ]
+}

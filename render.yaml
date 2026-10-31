@@ -1,31 +1,28 @@
-# Existing Supabase is reused. This Blueprint creates no database, paid worker,
-# or paid cron job. The public compute API still requires the shared bearer token.
+# Optional Render-only licensed-data gateway. Existing Next.js and quantitative
+# Python services stay on Vercel; the existing Supabase project is reused.
+# No database, worker, paid plan, disk, trial or scheduled paid resource is created.
+# Current account creation is blocked by Render's payment-information requirement.
 services:
   - type: web
-    name: gridiron-ai-quant
-    runtime: docker
+    name: gridiron-data-gateway
+    runtime: python
     plan: free
     region: virginia
-    dockerfilePath: ./deployment/render/Dockerfile
-    dockerContext: .
+    repo: https://github.com/NBDSunsetYT/gridiron-ai
+    branch: main
+    autoDeployTrigger: 'off'
+    buildCommand: pip install -r modeling/requirements-gateway.txt
+    startCommand: uvicorn modeling.sports_data_gateway:app --host 0.0.0.0 --port $PORT
     healthCheckPath: /health
     numInstances: 1
     envVars:
-      - key: PORT
-        value: '10000'
       - key: PYTHONUNBUFFERED
         value: '1'
-      - key: OMP_NUM_THREADS
-        value: '1'
-      - key: OPENBLAS_NUM_THREADS
-        value: '1'
-      - key: MKL_NUM_THREADS
-        value: '1'
-      - key: NUMEXPR_NUM_THREADS
-        value: '1'
-      - key: SIMULATION_SERVICE_TOKEN
+      - key: GRIDIRON_DATA_BRIDGE_TOKEN
+        generateValue: true
+      - key: BALLDONTLIE_API_KEY
         sync: false
-      - key: SUPABASE_URL
-        value: https://qdtdjbapdipopncklsdb.supabase.co
-      - key: SUPABASE_PUBLISHABLE_KEY
-        sync: false
+# Optional CollegeFootballData: add CFBD_API_KEY in this Render service's
+# Environment only when an authorized account is available. Do not copy provider
+# keys to Vercel. Vercel receives only GRIDIRON_RENDER_DATA_URL and the separate
+# GRIDIRON_DATA_BRIDGE_TOKEN after a real Render service is live and verified.

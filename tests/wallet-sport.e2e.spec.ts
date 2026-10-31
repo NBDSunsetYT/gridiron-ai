@@ -1,0 +1,43 @@
+/** SYNTHETIC local browser transports. No managed DB, real wagers or production users. */
+import {test,expect,type Page} from '@playwright/test';
+async function transport(page:Page){
+ const at='2026-01-01T12:00:00Z',base={sportsbook:'DraftKings',event:'SYNTHETIC event',market:'Moneyline',selection:'SYNTHETIC selection',odds:-110,stake:'42.00',stakeCents:4200,payout:'100.00',payoutCents:10000,placedAt:at,settledAt:'2026-01-02T12:00:00Z',result:'won'},bets:any[]=[{...base,id:'SYNTHETIC-NFL',sport:'NFL'},{...base,id:'SYNTHETIC-CFB',sport:'CFB',sportsbook:'Hard Rock',stakeCents:2000,stake:'20.00',payoutCents:0,payout:'0.00',result:'lost',settledAt:'2026-01-03T12:00:00Z'},{...base,id:'SYNTHETIC-VOID',sport:'CFB',market:'Receiving yards',stakeCents:1000,stake:'10.00',payoutCents:975,payout:'9.75',result:'voided',settledAt:'2026-01-03T12:00:00Z'},{...base,id:'SYNTHETIC-LEGACY',sport:null,event:'SYNTHETIC NFL name without recorded classification',stakeCents:500,stake:'5.00',payoutCents:800,payout:'8.00',result:'cashed_out',settledAt:'2026-01-04T12:00:00Z'},{...base,id:'SYNTHETIC-PENDING',sport:'NFL',stakeCents:700,stake:'7.00',payoutCents:null,payout:null,result:'pending',settledAt:null}];
+ const summary={cashBalanceCents:49075,availableBalanceCents:48375,pendingExposureCents:700,realizedPlCents:4075,totalDepositsCents:10000,totalWithdrawalsCents:15000,netCashContributedCents:45000},posts:any[]=[];let preferences={footballSport:'NFL'};
+ await page.route('**/api/**',route=>{const request=route.request(),url=new URL(request.url()),reply=(body:unknown,status=200)=>route.fulfill({status,contentType:'application/json',body:JSON.stringify(body)});
+  if(url.pathname==='/api/auth')return reply({user:{id:'10000000-0000-4000-8000-000000000088',email:'SYNTHETIC-LOCAL-TRANSPORT@example.test'}});
+  if(url.pathname==='/api/preferences'){if(request.method()==='POST')preferences={...preferences,...request.postDataJSON().preferences};return reply({preferences});}
+  if(url.pathname==='/api/ledger')return reply({accounts:[],transactions:[],summary,chart:[],bets});
+  if(url.pathname==='/api/bets'){const body=request.postDataJSON();posts.push(body);if(body.action==='place')bets.unshift({...body,id:'SYNTHETIC-NEW',stakeCents:100,payout:null,payoutCents:null,result:'pending',placedAt:body.placementTime,settledAt:null});return reply({id:'SYNTHETIC-NEW',result:'pending'},201);}
+  return reply({games:[],results:[],providers:[],notifications:[],preferences:{},jobs:[]});
+ });return{posts};
+}
+test('wager filters isolate NFL, college and unspecified performance without changing account totals',async({page})=>{
+ await transport(page);await page.goto('/#bankroll');await page.getByRole('button',{name:'Bet History',exact:true}).click();
+ const wallet=page.locator('.bankroll-screen'),history=page.getByRole('region',{name:'Recorded wager history'});
+ await expect(wallet).toContainText('$490.75');await expect(history.getByTestId('filtered-wager-profit')).toHaveText('$58.00');
+ await page.getByLabel('Wager sport filter',{exact:true}).selectOption('CFB');await expect(history.getByTestId('filtered-wager-profit')).toHaveText('-$20.25');await expect(history.getByTestId('filtered-wager-roi')).toHaveText('-101.25%');
+ await page.getByLabel('Wager sportsbook filter',{exact:true}).selectOption('Hard Rock');await expect(history.getByTestId('filtered-wager-profit')).toHaveText('-$20.00');await expect(history.locator('tbody tr')).toHaveCount(1);
+ await page.getByRole('button',{name:'Show all recorded wagers',exact:true}).click();await expect(history.getByTestId('filtered-wager-profit')).toHaveText('$40.75');await expect(history.locator('tbody tr')).toHaveCount(5);
+ await page.getByLabel('Wager sport filter',{exact:true}).selectOption('Unspecified');await expect(history.getByTestId('filtered-wager-profit')).toHaveText('$3.00');await expect(history.locator('tbody tr')).toContainText('SYNTHETIC NFL name without recorded classification');
+ await page.getByRole('button',{name:'Show all recorded wagers',exact:true}).click();await page.getByLabel('Wager from date').fill('2026-01-02');await page.getByLabel('Wager through date').fill('2026-01-02');await expect(history.getByTestId('filtered-wager-profit')).toHaveText('$58.00');await expect(history.locator('tbody tr')).toHaveCount(1);
+ await expect(wallet).toContainText('$490.75');await expect(wallet).toContainText('$450.00');await expect(history).toContainText('whole-account totals');expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
+});
+test('recording a college contract includes validated sport and keeps actual prices distinct from odds',async({page})=>{
+ const t=await transport(page);await page.goto('/#bankroll');await page.getByRole('button',{name:'Record wager',exact:true}).click();const dialog=page.getByRole('dialog');
+ await dialog.getByLabel('Wager sport',{exact:true}).selectOption('CFB');await expect(dialog.getByLabel('Record type',{exact:true})).toHaveValue('event_contract');
+ await dialog.getByLabel('Event',{exact:true}).fill('SYNTHETIC college event');await dialog.getByLabel('Market',{exact:true}).fill('SYNTHETIC receiving contract');await dialog.getByLabel('Selection',{exact:true}).fill('SYNTHETIC YES');await dialog.getByLabel('Contract price (cents)',{exact:true}).fill('50');await dialog.getByLabel('Amount spent including fees (USD)',{exact:true}).fill('1.00');await dialog.getByLabel('Contract quantity (optional)',{exact:true}).fill('2');await dialog.getByLabel('Total entry fees (cents)',{exact:true}).fill('0');await dialog.getByRole('button',{name:'Save record',exact:true}).click();
+ await expect(dialog).toHaveCount(0);expect(t.posts).toHaveLength(1);expect(t.posts[0]).toMatchObject({sport:'CFB',marketInstrument:'event_contract',contractPriceCents:'50',contractQuantity:2,entryFeeCents:'0',stake:'1.00'});expect(t.posts[0]).not.toHaveProperty('odds');
+ await page.getByRole('button',{name:'Bet History',exact:true}).click();await expect(page.getByLabel('Wager sport filter',{exact:true})).toHaveValue('CFB');await expect(page.getByRole('region',{name:'Recorded wager history'}).locator('tbody')).toContainText('SYNTHETIC college event');
+});
+test('the shared football selector changes wager context while preserving complete account balances',async({page})=>{
+ const t=await transport(page);await page.goto('/#bankroll');await page.getByRole('button',{name:'Bet History',exact:true}).click();
+ await page.getByRole('group',{name:'Football sport',exact:true}).getByRole('button',{name:/College Football/}).click();
+ await expect(page.getByLabel('Wager sport filter',{exact:true})).toHaveValue('CFB');await expect(page.getByTestId('filtered-wager-profit')).toHaveText('-$20.25');await expect(page.locator('.bankroll-screen')).toContainText('$490.75');
+ await page.getByRole('button',{name:'Record wager',exact:true}).click();await expect(page.getByRole('dialog').getByLabel('Wager sport',{exact:true})).toHaveValue('CFB');expect(t.posts).toEqual([]);
+});
+test('a manually recorded mixed-sport parlay can remain unspecified without inventing a sport',async({page})=>{
+ const t=await transport(page);await page.goto('/#bankroll');await page.getByRole('button',{name:'Record wager',exact:true}).click();const dialog=page.getByRole('dialog');
+ await dialog.getByLabel('Wager sport',{exact:true}).selectOption('');await dialog.getByLabel('Record type',{exact:true}).selectOption('sportsbook');await dialog.getByLabel('Wager type',{exact:true}).selectOption('parlay');await dialog.getByLabel('Legs (2–12, one selection per line)',{exact:true}).fill('SYNTHETIC NFL leg\nSYNTHETIC CFB leg');await dialog.getByLabel('Event',{exact:true}).fill('SYNTHETIC mixed sports');await dialog.getByLabel('Market',{exact:true}).fill('SYNTHETIC mixed parlay');await dialog.getByLabel('Selection',{exact:true}).fill('SYNTHETIC selections');await dialog.getByLabel('American odds',{exact:true}).fill('250');await dialog.getByLabel('Stake (USD)',{exact:true}).fill('1.00');await dialog.getByRole('button',{name:'Save record',exact:true}).click();
+ await expect(dialog).toHaveCount(0);expect(t.posts).toHaveLength(1);expect(t.posts[0]).toMatchObject({marketInstrument:'sportsbook',betType:'parlay',odds:250,legs:[{selection:'SYNTHETIC NFL leg'},{selection:'SYNTHETIC CFB leg'}]});expect(t.posts[0]).not.toHaveProperty('sport');expect(t.posts[0]).not.toHaveProperty('contractPriceCents');
+ await page.getByRole('button',{name:'Bet History',exact:true}).click();await expect(page.getByLabel('Wager sport filter',{exact:true})).toHaveValue('Unspecified');await expect(page.getByRole('region',{name:'Recorded wager history'}).locator('tbody')).toContainText('SYNTHETIC mixed sports');
+});

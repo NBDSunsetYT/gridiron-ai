@@ -1,0 +1,4 @@
+# Lightweight Render-only data gateway. Statistical models remain in the
+# existing private simulation service; no provider credential belongs in Vercel.
+fastapi==0.141.1
+uvicorn==0.52.1

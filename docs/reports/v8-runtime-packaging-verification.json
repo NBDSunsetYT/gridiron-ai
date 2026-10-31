@@ -1,0 +1,58 @@
+{
+  "checkedAt": "2026-10-31T18:49:09.853473+00:00",
+  "status": "passed_predeployment_capture",
+  "runtimeFiles": 219,
+  "runtimeBytes": 8526680,
+  "manifestSha256": "3ef544392519d1d26100ffc5a62909dc0a3faf5084831965f70c386fd60bebd0",
+  "relativeRuntimeImportClosure": "passed",
+  "missingRuntimeDependencies": [],
+  "explicitPublicJsonDependencies": [
+    {
+      "source": "components/AdvancedModels.tsx",
+      "dependency": "docs/reports/v4-model-benchmark.json"
+    },
+    {
+      "source": "components/HistoricalValidation.tsx",
+      "dependency": "docs/reports/baseline-backtest.json"
+    },
+    {
+      "source": "components/SimulationValidation.tsx",
+      "dependency": "docs/reports/simulation-backtest.json"
+    },
+    {
+      "source": "lib/college-football/validation.ts",
+      "dependency": "docs/reports/v8-cfb-historical-audit.json"
+    },
+    {
+      "source": "lib/public-nfl/service.ts",
+      "dependency": "docs/reports/v4-model-benchmark.json"
+    }
+  ],
+  "generatedNextTypeDeclarations": "Next generates .next type references during build; next-env.d.ts is not treated as a source dependency on cached build output.",
+  "renderOnlyGatewayModulesExcluded": true,
+  "collegeQuantImportsRenderProviderModules": false,
+  "pyarrowPinned": "26.0.0",
+  "nflSourcePreservation": [
+    {
+      "file": "modeling/simulator.py",
+      "sha256": "6df037627d3df57726fd7ad576eb8e2330364f03bcaf68454822abcfcc9f49da",
+      "unchangedFrom7_0_1": true
+    },
+    {
+      "file": "modeling/fit.py",
+      "sha256": "fb519643e07d92cfa4b0b20c0e93eaa54cf00a42b45059a93b0e6f107752f3fc",
+      "unchangedFrom7_0_1": true
+    },
+    {
+      "file": "modeling/public_research.py",
+      "sha256": "9de3c7073cae0ac5f4da19c21342429cc4003aba208bb82a0a07831649e464e5",
+      "unchangedFrom7_0_1": true
+    },
+    {
+      "file": "modeling/nflverse_adapter.py",
+      "sha256": "e885381d84d8fe8ffb6698219b3cfc659dc9c49063a6ee0702e66d4e7dd6b5c3",
+      "unchangedFrom7_0_1": true
+    }
+  ],
+  "productionDeployment": "pending root GO; this is a source packaging check, not hosted acceptance"
+}

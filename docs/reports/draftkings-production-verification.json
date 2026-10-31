@@ -1,0 +1,71 @@
+{
+  "startedAt": "2026-10-31T17:39:53.457Z",
+  "baseUrl": "https://gridiron-ai-gray.vercel.app",
+  "status": "passed",
+  "scope": "actual_deployed_missing_source_diagnostics",
+  "mockedResponses": false,
+  "accountsCreated": false,
+  "financialWrites": false,
+  "sourcePricesInvented": false,
+  "liveDraftKingsContractsVerified": 0,
+  "checks": [
+    {
+      "name": "The actual published application and persistent research dependencies remain reachable",
+      "status": "passed"
+    },
+    {
+      "name": "/api/nfl/markets identifies missing source configuration without claiming an empty NFL inventory or a provider HTTP failure",
+      "status": "passed"
+    },
+    {
+      "name": "/api/props identifies missing source configuration without claiming an empty NFL inventory or a provider HTTP failure",
+      "status": "passed"
+    },
+    {
+      "name": "The real one-tap action returns the same diagnosis without queuing replacement prices or simulations",
+      "status": "passed"
+    },
+    {
+      "name": "Public NFL games remain available without a database-provider or app login",
+      "status": "passed"
+    },
+    {
+      "name": "/api/ledger still requires verified app identity",
+      "status": "passed"
+    },
+    {
+      "name": "/api/conversations still requires verified app identity",
+      "status": "passed"
+    }
+  ],
+  "health": {
+    "version": "7.0.1",
+    "backend": "supabase",
+    "checks": {
+      "supabase": "reachable",
+      "simulations": "reachable"
+    }
+  },
+  "diagnostic": {
+    "code": "feed_not_configured",
+    "stage": "configuration",
+    "checkedAt": "2026-10-31T17:39:55.880Z",
+    "retryable": false,
+    "requiresOperator": true,
+    "httpStatus": null,
+    "message": "The app has no authorized DraftKings Predictions NFL contract feed connected.",
+    "action": "An app operator must connect an authorized event-contract data source. You do not need a Supabase dashboard account or sportsbook password.",
+    "missingConfiguration": [
+      "feed",
+      "authorization"
+    ]
+  },
+  "publicGames": 61,
+  "limitations": [
+    "These live checks verify the actual missing-configuration branch, not an authenticated live vendor feed.",
+    "Other source HTTP/mapping/rate-limit branches are tested separately with labeled synthetic transports.",
+    "No private user records, confirmation state, database schema or simulation model are changed.",
+    "Zero verified live DraftKings contracts does not establish that the platform has no NFL markets."
+  ],
+  "finishedAt": "2026-10-31T17:39:57.568Z"
+}

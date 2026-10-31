@@ -81,6 +81,17 @@ describe('Private cloud assistant uses exact account reports and real player-pro
   expect(state.completion.mock.calls[0][0].tool_choice).toBe('required');expect(state.completion.mock.calls.some(([request])=>request.stream)).toBe(false);
   expect([...state.threads.values()].flatMap(row=>row.messages).some(message=>message.role==='assistant')).toBe(false);
  });
+ it('keeps sport-filtered pending exposure and actual settlements separate from whole-account cash',async()=>{
+  state.ledger.bets=[
+   {sport:'NFL',result:'won',stakeCents:1000,payoutCents:2000,placedAt:'2026-10-01T12:00:00Z',settledAt:'2026-10-02T12:00:00Z'},
+   {sport:'CFB',result:'lost',stakeCents:2000,payoutCents:0,placedAt:'2026-10-01T12:00:00Z',settledAt:'2026-10-02T12:00:00Z'},
+   {sport:'CFB',result:'pending',stakeCents:3500,payoutCents:null,placedAt:'2026-10-03T12:00:00Z',settledAt:null},
+  ];
+  providerWithCalls([{name:'read_ledger',args:{sport:'CFB'}}]);
+  const response=await cloudAssistant(ctx,{...question('Explain my recorded college wager results.'),sport:'CFB'});await response.text();
+  const request=state.completion.mock.calls.at(-1)![0] as any,evidence=JSON.parse(request.messages.find((value:any)=>value.role==='tool').content);
+  expect(evidence).toMatchObject({wagerSport:'CFB',sportPerformance:{realizedPlCents:'-2000',settledStakeCents:'2000',pendingExposureCents:'3500',roi:'-1'}});expect(evidence.bets).toHaveLength(2);expect(evidence.currentAccounts).toEqual(state.ledger.accounts);expect(evidence.summaryScope).toContain('across all sports');
+ });
  it('keeps game-market reliability separate from player accuracy and never invents metrics for an unevaluated category',async()=>{
   providerWithCalls([{name:'read_nfl_model_performance',args:{category:'gameWinner'}}]);const response=await cloudAssistant(ctx,question('How accurate is the game-winner model?'));await response.text();expect(state.gamePerformance).toHaveBeenCalledOnce();expect(state.performance).not.toHaveBeenCalled();
   const message=state.completion.mock.calls.at(-1)![0] as any,report=JSON.parse(message.messages.find((value:any)=>value.role==='tool').content);expect(report).toMatchObject({requestedCategory:'gameWinner',status:'pending',updatedAt:null,metrics:null});expect(report).not.toHaveProperty('brier');

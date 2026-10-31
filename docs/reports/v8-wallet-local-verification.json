@@ -1,0 +1,79 @@
+{
+  "checkedAt": "2026-10-31T18:26:13.494061+00:00",
+  "scope": "Local Wallet upgrade verification only. Browser source responses and established cloud test identities are explicitly synthetic; no managed database, production user or real wager was written.",
+  "status": "passed_local_checks",
+  "implemented": [
+    "Optional strictly validated NFL/CFB wager sport; historical missing values remain Unspecified.",
+    "Sport, sportsbook, market and inclusive local-day filters for wager history and exact settlement P/L.",
+    "Whole-account capital, cash, deposits, withdrawals and transfers remain separate from filtered betting performance.",
+    "Explicit unspecified/mixed-sport manual records preserve traditional parlay support.",
+    "CSV export, encrypted snapshot and database-reopen sport metadata preservation without changing original prediction JSON.",
+    "Authenticated cloud GET /api/bets parity; only POST dispatches financial writes; unsupported methods return 405."
+  ],
+  "unitTests": {
+    "passed": 33,
+    "files": [
+      "tests/wager-record.test.ts",
+      "tests/ledger.test.ts",
+      "tests/cloud-wager-route.test.ts"
+    ],
+    "command": "npx vitest run tests/cloud-wager-route.test.ts tests/wager-record.test.ts tests/ledger.test.ts"
+  },
+  "postgresSemantics": {
+    "environment": "Disposable PGlite PostgreSQL; never the managed project.",
+    "validatedPendingWalletPatch": "passed",
+    "preservedWalletRegression": "passed_all_five_groups",
+    "commands": [
+      "node supabase/tests/verify-wallet-sport.mjs",
+      "node supabase/tests/verify-wallet.mjs"
+    ],
+    "coverage": [
+      "All prior wager fields and prediction JSON preserved on additive upgrade.",
+      "Strict invalid-sport rejection with no partial financial writes.",
+      "NFL, CFB and null sport persistence; exact fractional-cent fees and whole-cent account values.",
+      "Owner isolation under authenticated SQL roles.",
+      "Export/restore, invalid-backup rollback and duplicate detection."
+    ],
+    "releaseMigrationGuard": "Passed: populated versioned v8 football migration includes the validated wallet patch exactly once; dedicated wallet PGlite rerun passed."
+  },
+  "browserTests": {
+    "passed": 12,
+    "newSportChecks": 8,
+    "preservedWalletChecks": 4,
+    "profiles": [
+      "desktop-chromium",
+      "iphone13-viewport-chromium"
+    ],
+    "scope": "Actual local React UI with explicitly synthetic API transport; no production/private writes.",
+    "command": "npx playwright test tests/wallet-sport.e2e.spec.ts tests/player-props.e2e.spec.ts --grep 'Wallet|default contract|wager filters|recording a college|shared football|mixed-sport'",
+    "coverage": [
+      "NFL/CFB/Unspecified, sportsbook and settlement-date filters.",
+      "Correct actual P/L and non-void settled-stakes ROI including nonrefunded void fees.",
+      "Global sport switch retains Wallet tab and whole-account balances.",
+      "College contract metadata, unspecified mixed-sport parlays, settlement workflow, safe refresh and fractional-cent fees."
+    ]
+  },
+  "typeScript": {
+    "status": "passed",
+    "command": "npx tsc --noEmit --incremental false"
+  },
+  "financialDefinitions": {
+    "realizedPl": "Actual payout minus actual debited stake for matching settled wagers, including nonrefunded void fees.",
+    "roi": "Realized P/L divided by matching non-void settled stake; unavailable when denominator is zero or amounts are incomplete.",
+    "capital": "Cash movements and transfers are never included as wager P/L. Sport filters never recalculate whole-account cash.",
+    "legacy": "A missing stored sport is Unspecified regardless of event, player or market text."
+  },
+  "notRun": [
+    "Production financial writes or QA account creation for this upgrade.",
+    "Physical iPhone installation.",
+    "Application-wide production deployment verification, owned by the release process."
+  ],
+  "dataIntegrity": {
+    "productionRecordsReadOrChanged": false,
+    "productionAccountsCreated": false,
+    "ledgerPostingArithmeticChanged": false,
+    "historicalPredictionsRewritten": false,
+    "moneyMigrationsChanged": false,
+    "existingMigrationFilesModified": false
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "scope": "Actual existing Supabase project, read-only preservation verification around additive versioned migration",
+  "projectRef": "qdtdjbapdipopncklsdb",
+  "migration": {
+    "name": "gridiron_v8_football",
+    "version": "20261031183047",
+    "source": "supabase/migrations/20261031183047_gridiron_v8_football.sql",
+    "sha256": "bd4cad18223440f876eb76b03906a25f8035e211791a6b392a42e75058510225",
+    "nativeHistoryCount": 20,
+    "sourceBytes": 32935,
+    "walletPatchOccurrences": 1
+  },
+  "checkpoint": {
+    "scope": "49 current private/Auth table families in one MVCC snapshot; large shared public research excluded",
+    "encrypted": true,
+    "decryptionVerified": true,
+    "rowCountsReconciled": true,
+    "cipherBytes": 1499,
+    "cipherSha256": "7e69dfb45d36d5f72e837a5d5e5279435e77fce89a40a6f70f41cbc958fdc704",
+    "keyLocation": "0600 file outside source repository; never included in source archive",
+    "managedPitrOrStorageBackupVerified": false
+  },
+  "preservation": {
+    "originalPrivateFamilies": 49,
+    "allOriginalCountsAndContentDigestsEqual": true,
+    "authUsersBefore": 2,
+    "authUsersAfter": 2,
+    "confirmedUsersBefore": 2,
+    "confirmedUsersAfter": 2,
+    "deletedRows": 0,
+    "originalUserDataUpdates": 0,
+    "financialTestWrites": 0
+  },
+  "nativeSecurity": {
+    "publicTables": 73,
+    "publicTablesWithRls": 73,
+    "publicWrapperSecurityInvoker": true,
+    "newPrivateCfbRowsAtDdl": 0,
+    "newComputeReservationsAtDdl": 0,
+    "advisors": [
+      {
+        "level": "INFO",
+        "name": "rls_enabled_no_policy",
+        "scope": "Existing non-public encrypted recovery table intentionally has no client grants or policies"
+      },
+      {
+        "level": "WARN",
+        "name": "auth_leaked_password_protection",
+        "scope": "Existing Auth protection disabled; requires authorized provider Auth configuration"
+      }
+    ]
+  },
+  "storage": {
+    "bytesBefore": 450696883,
+    "bytesAfter": 451589811,
+    "publicAdmissionThresholdBytes": 450000000,
+    "publicAdmissionAvailable": false,
+    "historyDeleted": false,
+    "paidPlanChange": false,
+    "message": "Shared source, warehouse, quote and cache writes remain paused; private owner records and tiny capability-gated compute reservations remain separate."
+  },
+  "completeGameBudget": {
+    "limitPerUtcDay": 500000,
+    "before": [
+      {
+        "day": "2026-10-31",
+        "games": 410000
+      },
+      {
+        "day": "2026-10-30",
+        "games": 350000
+      }
+    ],
+    "after": [
+      {
+        "day": "2026-10-31",
+        "games": 410000
+      },
+      {
+        "day": "2026-10-30",
+        "games": 350000
+      }
+    ],
+    "preserved": true,
+    "countsReset": false,
+    "newReservationsMetadataOnly": true
+  },
+  "validation": {
+    "postgres": "13/13 dedicated CFB groups passed in disposable local PostgreSQL, wallet migration tests passed independently",
+    "physicalIphoneTest": false,
+    "liveCfbGameSimulationTest": "Not part of database migration verification; recorded separately by deployment acceptance"
+  },
+  "checkedAt": "2026-10-31T18:37:37.487Z"
+}

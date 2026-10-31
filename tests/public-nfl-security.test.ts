@@ -7,6 +7,7 @@ const privateStore=vi.hoisted(()=>({saveRecord:vi.fn(),record:vi.fn()}));
 const privateResearch=vi.hoisted(()=>({cloudCreateConversation:vi.fn(),cloudAppendMessage:vi.fn()}));
 const auth=vi.hoisted(()=>({cloudContext:vi.fn()}));
 vi.mock('../lib/public-nfl/service',()=>service);
+vi.mock('../lib/football-refresh',()=>({refreshAdditionalFootballResearch:vi.fn(async()=>[{sport:'CFB',task:'college_sources',status:'unavailable'}])}));
 vi.mock('next/server',()=>({after:(callback:()=>Promise<void>)=>state.after.push(callback)}));
 vi.mock('../lib/public-nfl/store',()=>store);
 vi.mock('../lib/cloud/store',()=>privateStore);

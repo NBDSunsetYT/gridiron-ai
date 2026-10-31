@@ -12,7 +12,7 @@ On supported Android browsers, use Install app or Add to Home screen. Desktop Ch
 
 ## Save the complete source ZIP to Files
 
-1. Tap the downloadable `gridiron-ai-v7-source.zip` link in the delivery or the project’s GitHub release. Use the archive linked by the current verified release; older release archives retain their original version.
+1. Tap the downloadable `gridiron-ai-v8-source.zip` link in the delivery or the project’s GitHub release. Use the archive linked by the current verified release; older release archives retain their original version.
 2. In Safari, choose Download. If the archive opens in a preview, tap Share and **Save to Files**.
 3. Select iCloud Drive or On My iPhone and choose a folder. Tap Save.
 4. Open Files → Downloads (or your chosen folder). Tap the ZIP once to extract it.

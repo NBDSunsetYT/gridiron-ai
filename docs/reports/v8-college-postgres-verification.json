@@ -1,0 +1,67 @@
+{
+  "scope": "SYNTHETIC disposable local PostgreSQL only",
+  "migration": "20261031183047_gridiron_v8_football.sql",
+  "passed": 13,
+  "failed": 0,
+  "checks": [
+    {
+      "name": "Additive migration keeps the existing 390k shared reservation and enables RLS on all 16 new tables",
+      "status": "passed"
+    },
+    {
+      "name": "Guests may read shared data but cannot write it, read private history, or inspect capability/budget tables",
+      "status": "passed"
+    },
+    {
+      "name": "The public invoker wrapper requires the real scoped capability before any status or write",
+      "status": "passed"
+    },
+    {
+      "name": "All college warehouse families accept properly sourced CFB identifiers and preserve cross-sport foreign keys",
+      "status": "passed"
+    },
+    {
+      "name": "NFL/CFB sportsbook references and percentage event contracts cannot be relabeled across venues or instruments",
+      "status": "passed"
+    },
+    {
+      "name": "Duplicate quote/source identities preserve immutable observed prices and reject changed definitions",
+      "status": "passed"
+    },
+    {
+      "name": "Every shared quote/source/entity/cache boundary rejects credentials and private financial/owner payloads",
+      "status": "passed"
+    },
+    {
+      "name": "Bounded public cache and batches are atomic, CFB-scoped and cannot nest control operations",
+      "status": "passed"
+    },
+    {
+      "name": "450MB reserve denial blocks every source/entity/quote/cache/batch write while saved reads remain available",
+      "status": "passed"
+    },
+    {
+      "name": "Tiny quota metadata shares the preserved 500k UTC budget: 390k\u2192400k\u2192450k, with no free retry or negative counts",
+      "status": "passed"
+    },
+    {
+      "name": "Only exact small reservation fields are allowed; no owner, source, job output or caller-supplied UTC day enters quota metadata",
+      "status": "passed"
+    },
+    {
+      "name": "Fenced completion/failure preserves spent quota and completed/failed cache loss never re-executes uncharged work",
+      "status": "passed"
+    },
+    {
+      "name": "Private CFB simulation/prediction records enforce owner RLS, composite ownership FKs and prospective immutable snapshots",
+      "status": "passed"
+    }
+  ],
+  "checkedAt": "2026-10-31T18:26:13.494422+00:00",
+  "status": "passed",
+  "command": "node supabase/tests/verify-college.mjs",
+  "productionDatabaseWrites": false,
+  "note": "Checks validate PostgreSQL storage, permissions and quota semantics, not model accuracy or physical iPhone use. 100000 is accepted for a private simulation record; a new public 100000 reservation is correctly blocked when 450000/500000 is already spent.",
+  "sourceSha256": "bd4cad18223440f876eb76b03906a25f8035e211791a6b392a42e75058510225",
+  "nativeApplication": "Verified independently in v8-supabase-preservation-verification.json; local checks do not write production"
+}

@@ -1,22 +1,22 @@
-# GRIDIRON AI 7.0.1
+# GRIDIRON AI 8.0.0
 
-GRIDIRON AI is an installable NFL research app with public game analysis and a private personal wallet. The existing application has been upgraded; its previous ledger, research tools and data remain preserved.
+GRIDIRON AI is an installable NFL and College Football research app with public game analysis and a private personal wallet. The existing application has been upgraded; its previous ledger, research tools and data remain preserved.
 
-The existing application is hosted at **https://gridiron-ai-gray.vercel.app**. Version 7 makes DraftKings Predictions the explicit primary event-contract reference and adds an all-NFL market research workflow alongside the existing player-prop scanner. Exact threshold distributions, immutable snapshots, controlled calibration, private joint simulations and event-contract Wallet records are preserved. Executed release checks and remaining limitations are recorded in [DELIVERY_V7.md](docs/DELIVERY_V7.md); earlier evidence remains in [DELIVERY_V6.md](docs/DELIVERY_V6.md) and [DELIVERY_V5.md](docs/DELIVERY_V5.md).
+The existing application is hosted at **https://gridiron-ai-gray.vercel.app**. Version 8 adds a shared NFL / College Football selector, a separate NCAA complete-game historical-baseline simulator, independent player distributions, sport-scoped saved research and Wallet filters. NFL simulation and fitting code, private records and the existing PWA are preserved. Final 8.0 hosted acceptance is pending; [DELIVERY_V8.md](docs/DELIVERY_V8.md) records executed checks and exact limitations. Earlier [7.0 delivery](docs/DELIVERY_V7.md) remains retained.
 
-**Current integration limits:** direct DraftKings Predictions contract access is not configured, and new public research is paused at the database reserve boundary. Saved research and private Wallet remain available. Complete scanner acceptance is blocked pending additional persistent capacity; see [the verified delivery report](docs/DELIVERY_V7.md).
+**Current external limits:** no authorized DraftKings Predictions event-contract feed is configured. New public persisted research is paused at the existing database reserve. The Render-only BALLDONTLIE/CollegeFootballData gateway is implemented and tested, but one explicitly free service creation returned HTTP 402 requiring owner payment-information authorization. No Render service, provider authentication or account subscription tier has been verified. No API key was moved to Vercel and no paid resource or trial was activated. Existing saved history and private Wallet remain available.
 
-The 7.0.1 repair distinguishes missing authorized feed configuration, credential rejection, empty verified feeds, rate limits, outages, unsupported contracts and identity/quote checks. The deployed source has no configured licensed DraftKings feed; zero verified accessible contracts is not evidence that the platform has no NFL markets. See [the precise diagnosis, tested providers and optional manual fallback](docs/DRAFTKINGS_ACCESS.md).
+The DraftKings repair distinguishes missing configuration, credential rejection, empty verified feeds, rate limits, outages and unsupported mapping/rules. Zero verified accessible contracts does not mean the platform has no NFL markets. BALLDONTLIE DraftKings sportsbook reference odds remain separate from DraftKings Predictions percentage contracts. See [DraftKings access](docs/DRAFTKINGS_ACCESS.md) and [8.0 source boundaries](docs/DELIVERY_V8.md).
 
 ## Open the app
 
-1. Open GRIDIRON AI. Published NFL games and shared research are available as a guest.
+1. Open GRIDIRON AI and choose NFL or College Football. Available published games and public research do not require an app or database-provider login.
 2. Tap a game. The app retrieves available statistics, reported injuries and weather, then reuses or queues a 10,000-complete-game analysis.
 3. Tap **Analyze All NFL Markets** for game and player event-contract research, or **Analyze Player Props** for the player-only workflow. The backend validates the selected authorized source, exact identities, thresholds and settlement rules, reuses or queues complete-game simulations, and preserves prior snapshots. If direct DraftKings access is not configured, that workflow reports it as unavailable. An explicitly selected alternative keeps its own provider identity. Use **Analyze Game** for one matchup.
 4. Sign in to **GRIDIRON AI** when opening Wallet or saving personal research and conversation history. An application account is not a Supabase developer account.
 5. On iPhone, open the app in Safari and choose **Share → Add to Home Screen → Add**.
 
-Primary navigation is **Home | NFL | Props | AI | Wallet**. Simulations, existing contract imports, detailed modeling controls, provider status and administrative tools remain available through optional Advanced Mode. Normal public research does not require a CSV upload, manually entered statistics, API configuration or a database dashboard.
+Primary navigation is **Home | NFL / College | Props | AI | Wallet**, with a shared sport selector. Simulations, existing contract imports, detailed modeling controls, provider status and administrative tools remain available through optional Advanced Mode. Normal public research does not require a CSV upload, manually entered statistics, API configuration or a database dashboard.
 
 ## Evidence and privacy
 
@@ -61,12 +61,13 @@ npm run test:e2e
 npm run package
 ```
 
-These are reproducible commands, not a claim that any arbitrary deployment passes. See [7.0 verification](docs/DELIVERY_V7.md) for actual executed checks and provider state. Source archives exclude credentials, financial databases, runtime caches and signing material.
+These are reproducible commands, not a claim that any arbitrary deployment passes. See [8.0 verification](docs/DELIVERY_V8.md) for actual executed checks, pending production acceptance and provider state. Source archives exclude credentials, financial databases, runtime caches and signing material.
 
 - [DraftKings Predictions access and standard fee reference](docs/reports/v7-draftkings-access-audit.json)
 - [Player-prop sources and contract verification](docs/MARKET_DATA_V6.md)
 - [Controlled model development and rollback](docs/PLAYER_PROPS_MODEL_LAB.md)
-- [Operator configuration](docs/ENV_V7.md)
+- [8.0 deployment, provider boundaries and remaining owner actions](docs/DELIVERY_V8.md)
+- [Preserved operator configuration](docs/ENV_V7.md)
 - [Deploying the existing Vercel services](docs/VERCEL.md)
 - [Supabase storage, security and recovery](docs/SUPABASE.md)
 - [GRIDIRON app authentication](docs/AUTH_V5.md)

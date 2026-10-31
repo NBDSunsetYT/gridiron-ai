@@ -1,0 +1,38 @@
+import type {ChatCompletionTool} from 'openai/resources/chat/completions';
+import {z} from 'zod';
+import {ApiError} from '../auth';
+import type {CloudContext} from '../cloud/context';
+import {publicRateLimit} from '../public-nfl/store';
+
+export const footballIntelligenceTools:ChatCompletionTool[]=[
+ {type:'function',function:{name:'read_cfb_games',description:'Retrieve actual college-football schedules, source times and provider coverage. Conference/ranking information may be unavailable; never invent it.',parameters:{type:'object',properties:{date:{type:'string',description:'Optional YYYY-MM-DD date.'},limit:{type:'integer',minimum:1,maximum:40}},additionalProperties:false}}},
+ {type:'function',function:{name:'read_cfb_game',description:'Read one verified CFB game, available statistics, injury coverage and independent NCAA model readiness. An optional exact CFB player ID/stat returns that calculated distribution. An NFL model must never substitute for missing college evidence.',parameters:{type:'object',properties:{gameId:{type:'string'},playerId:{type:'string'},stat:{type:'string'}},required:['gameId'],additionalProperties:false}}},
+ {type:'function',function:{name:'read_cfb_player_props',description:'Retrieve actual available college-football prop research and its access/coverage limitations. Independent projections have no invented market price or threshold. No NFL prices or model estimates may be relabeled as CFB.',parameters:{type:'object',properties:{gameId:{type:'string'},stat:{type:'string'},limit:{type:'integer',minimum:1,maximum:40}},additionalProperties:false}}},
+ {type:'function',function:{name:'read_saved_cfb_research',description:'Read only this authenticated owner’s CFB simulations, saved research and prediction snapshots. Generated results require their stored attestation; missing results remain unavailable.',parameters:{type:'object',properties:{},additionalProperties:false}}},
+ {type:'function',function:{name:'analyze_cfb_game',description:'Request a backend NCAA complete-game simulation only when the user explicitly asks to analyze, simulate or run this college game. Missing real CFB training evidence withholds probabilities. Never run an NFL model as a substitute.',parameters:{type:'object',properties:{gameId:{type:'string'},simulations:{type:'integer',enum:[10000,50000,100000]}},required:['gameId'],additionalProperties:false}}},
+ {type:'function',function:{name:'read_nfl_sportsbook_references',description:'Read BALLDONTLIE NFL sportsbook-reference data and its actual credential/tier status. DraftKings Sportsbook odds are not DraftKings Predictions event contracts. Refreshed vendor odds are not guaranteed executable offers or original quote publication times.',parameters:{type:'object',properties:{},additionalProperties:false}}},
+];
+
+export const isFootballIntelligenceTool=(name:string)=>footballIntelligenceTools.some(tool=>tool.type==='function'&&tool.function.name===name);
+function analysisEvidence(analysis:any,playerId?:string,stat?:string){
+ if(!analysis)return null;const result=analysis.result,catalog=analysis.research?.playerCatalog??[];
+ return{id:analysis.id,gameId:analysis.gameId,sport:analysis.sport,status:analysis.status,stale:analysis.stale,simulations:analysis.simulations,createdAt:analysis.createdAt,updatedAt:analysis.updatedAt,historySaved:analysis.historySaved,sources:analysis.research?.sources??result?.provenance?.sources??[],playerCatalog:catalog,result:result?{sport:result.sport,modelVersion:result.modelVersion,engineVersion:result.engineVersion,rulesVersion:result.rulesVersion,inputDataVersion:result.inputDataVersion,home:result.home,away:result.away,homeWinProbability:result.homeWinProbability,awayWinProbability:result.awayWinProbability,calibratedProbability:result.calibratedProbability,monteCarloInterval95:result.monteCarloInterval95,scoreDistributions:result.scoreDistributions,totalDistribution:result.totalDistribution,marginDistribution:result.marginDistribution,uncertainty:{monteCarlo:result.uncertainty?.monteCarlo,modelInterval:result.uncertainty?.modelInterval,model:result.uncertainty?.model,bootstrapGameBlocks:result.uncertainty?.parameterBootstrap?.historicalGameBlocks},evidence:result.evidence,limitations:result.limitations,...playerId?{selectedPlayer:{id:playerId,stat:stat??null,distribution:stat&&stat!=='targets'?result.players?.[playerId]?.[stat]??null:null,message:stat==='targets'?'Complete target attribution is unavailable; no complete target distribution is supplied.':undefined}}:{}}:null};
+}
+export async function executeFootballIntelligenceTool(ctx:CloudContext,name:string,args:unknown,userMessage:string,sport:'NFL'|'CFB'='NFL'):Promise<unknown>{
+ if(name==='read_nfl_sportsbook_references'){
+  z.object({}).strict().parse(args);return(await import('../sportsbook-reference/service')).sportsbookReferenceDashboard();
+ }
+ const cfb=await import('./service');
+ if(name==='read_cfb_games'){const{limit=12,...input}=z.object({date:z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),limit:z.number().int().min(1).max(40).optional()}).strict().parse(args),value=await cfb.collegeDashboard(input);return{...value,games:value.games.slice(0,limit).map(game=>({...game,analysis:analysisEvidence(game.analysis)})),availableGames:value.games.length,retrievalLimit:limit};}
+ if(name==='read_cfb_game'){const{gameId,playerId,stat}=z.object({gameId:z.string().min(1).max(120),playerId:z.string().regex(/^cfb:espn:\d+$/).optional(),stat:z.string().min(1).max(40).optional()}).strict().parse(args),value=await cfb.collegeGameDetail(gameId);return{...value,analysis:analysisEvidence(value.analysis,playerId,stat)};}
+ if(name==='read_cfb_player_props'){const{gameId,stat,limit=20}=z.object({gameId:z.string().max(120).optional(),stat:z.string().max(40).optional(),limit:z.number().int().min(1).max(40).optional()}).strict().parse(args),value=await cfb.collegePropScanner(ctx),projections=value.independentProjections??[];return{...value,independentProjections:projections.filter(row=>(!gameId||row.gameId===gameId)&&(!stat||row.stat===stat)).slice(0,limit),retrievalLimit:limit};}
+ if(name==='read_saved_cfb_research'){z.object({}).strict().parse(args);const value=await cfb.collegeSavedResearch(ctx);return{...value,jobs:(value.jobs??[]).slice(0,5).map((job:any)=>({...analysisEvidence(job.analysis??job),game:job.game?{id:job.game.id,sport:job.game.sport,startTime:job.game.startTime,home:job.game.home,away:job.game.away,status:job.game.status}:undefined})),saved:(value.saved??[]).slice(0,20).map((row:any)=>({id:row.id,gameId:row.gameId,analysisId:row.analysisId,sport:'CFB',savedAt:row.savedAt})),predictions:(value.predictions??[]).slice(0,20),reports:(value.reports??[]).slice(0,5)};}
+ if(name==='analyze_cfb_game'){
+  const input=z.object({gameId:z.string().min(1).max(120),simulations:z.union([z.literal(10000),z.literal(50000),z.literal(100000)]).default(10000)}).strict().parse(args);
+  const explicit=/^(?:please\s+)?(?:(?:can|could|would)\s+you\s+)?(?:analy[sz]e|simulate|run|start)\b/i.test(userMessage.trim());
+  const collegeMention=/\b(?:CFB|college|NCAA)\b/i.test(userMessage),nflOnly=/\bNFL\b/i.test(userMessage)&&!collegeMention;
+  if(!explicit||nflOnly||sport!=='CFB'&&!collegeMention)return{sport:'CFB',status:'not_requested',message:'No college simulation was started. A new simulation requires an explicit college-football analysis request.'};
+  await publicRateLimit(ctx.request,'cfb-assistant-analysis',6,3600000);const value=await cfb.analyzeCollegeGame(input.gameId,input.simulations,ctx);return{...value,analysis:analysisEvidence(value.analysis)};
+ }
+ throw new ApiError('Unsupported football research tool.',400);
+}

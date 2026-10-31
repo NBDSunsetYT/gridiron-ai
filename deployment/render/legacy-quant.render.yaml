@@ -1,0 +1,31 @@
+# Existing Supabase is reused. This Blueprint creates no database, paid worker,
+# or paid cron job. The public compute API still requires the shared bearer token.
+services:
+  - type: web
+    name: gridiron-ai-quant
+    runtime: docker
+    plan: free
+    region: virginia
+    dockerfilePath: ./deployment/render/Dockerfile
+    dockerContext: .
+    healthCheckPath: /health
+    numInstances: 1
+    envVars:
+      - key: PORT
+        value: '10000'
+      - key: PYTHONUNBUFFERED
+        value: '1'
+      - key: OMP_NUM_THREADS
+        value: '1'
+      - key: OPENBLAS_NUM_THREADS
+        value: '1'
+      - key: MKL_NUM_THREADS
+        value: '1'
+      - key: NUMEXPR_NUM_THREADS
+        value: '1'
+      - key: SIMULATION_SERVICE_TOKEN
+        sync: false
+      - key: SUPABASE_URL
+        value: https://qdtdjbapdipopncklsdb.supabase.co
+      - key: SUPABASE_PUBLISHABLE_KEY
+        sync: false

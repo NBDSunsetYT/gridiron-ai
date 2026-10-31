@@ -1,0 +1,15 @@
+{
+  "checkedAt": "2026-10-31T18:48:23.181007+00:00",
+  "schema": "https://render.com/schema/render.yaml.json",
+  "schemaSha256": "8a3fb8da6b4f55fe686fbefa790e011d3dd7895f013f355953c572a21ab6494a",
+  "validation": "passed_current_public_json_schema",
+  "services": 1,
+  "plan": "free",
+  "runtime": "python",
+  "heavySimulationServiceIncluded": false,
+  "databases": 0,
+  "workers": 0,
+  "paidJobs": 0,
+  "legacyBlueprintBytePreserved": true,
+  "nativeRenderCliValidation": "Not run: no authenticated local Render CLI; actual service creation separately failed402. Schema success does not prove deploy success."
+}

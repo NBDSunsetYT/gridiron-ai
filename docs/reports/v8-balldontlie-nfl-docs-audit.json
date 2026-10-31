@@ -1,0 +1,72 @@
+{
+  "checkedAt": "2026-10-31T18:07:49.598029+00:00",
+  "sourceDocs": "https://nfl.balldontlie.io",
+  "openApi": "https://www.balldontlie.io/openapi/nfl.yml",
+  "sources": [
+    {
+      "url": "https://nfl.balldontlie.io",
+      "sha256": "af27604d7f8b637ca986ed521a988050b25a0a76bc2490f72bf0cdcb19e942a7",
+      "bytes": 957251
+    },
+    {
+      "url": "https://www.balldontlie.io/openapi/nfl.yml",
+      "sha256": "62362abb032bbe32fe6f9171ac7bb8b6e3d99e4d00330a64303c6a88cb872996",
+      "bytes": 274283
+    }
+  ],
+  "authentication": "Authorization: RAW_API_KEY server-side only; no Bearer prefix for BALLDONTLIE",
+  "secretBoundary": "BALLDONTLIE_API_KEY only on Render. Vercel receives only Render URL and separate internal bridge token.",
+  "tiers": {
+    "Free": {
+      "requestsPerMinute": 5,
+      "resources": [
+        "teams",
+        "players",
+        "games"
+      ]
+    },
+    "ALL-STAR": {
+      "requestsPerMinute": 60,
+      "monthlyUsd": "9.99",
+      "resources": [
+        "injuries",
+        "stats",
+        "season stats",
+        "team stats",
+        "snap counts"
+      ]
+    },
+    "GOAT": {
+      "requestsPerMinute": 600,
+      "monthlyUsd": "39.99",
+      "resources": [
+        "odds",
+        "player props",
+        "player designations",
+        "team roster",
+        "play-by-play",
+        "advanced stats"
+      ]
+    },
+    "trial": {
+      "requestsPerMinute": 5,
+      "paymentMethodRequired": true,
+      "activated": false
+    }
+  },
+  "dataLimits": [
+    "NFL odds begin2025week8.",
+    "Current player props are live reference data, not a historical archive; opening props are separate with limited historical coverage.",
+    "Current prop IDs may change on refresh and are not permanent sportsbook offer IDs.",
+    "updated_at is provider refresh time, not quoted/published price-change time.",
+    "No guaranteed exact-offer mapping or current executable availability.",
+    "Vendor draftkings is traditional DraftKings Sportsbook, not DraftKings Predictions.",
+    "Provider NFL integerplayer IDs require exact current-roster name/team mapping before assigning GSIS.",
+    "Null reported statistics remain missing, not zero.",
+    "Missing venue-specific settlement and fees are withheld."
+  ],
+  "liveAuthenticatedProbe": {
+    "performed": false,
+    "reason": "Requires an authorized Render data gateway with the user key configured only there; no key was copied or read in this workspace."
+  }
+}

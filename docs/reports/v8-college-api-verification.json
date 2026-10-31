@@ -1,0 +1,26 @@
+{
+  "scope": "Local CFB source/API orchestration and private-result provenance; synthetic fixtures are explicitly labeled",
+  "checks": {
+    "scheduleNormalization": 5,
+    "backendOrchestration": 12,
+    "ownedResultProvenance": 3,
+    "independentPlayerProjectionDerivation": 3
+  },
+  "passed": 23,
+  "failed": 0,
+  "productionDatabaseWrites": false,
+  "typecheck": "Whole-code TypeScript checked separately",
+  "command": "npx vitest run tests/college-football-store.test.ts tests/college-football-service.test.ts tests/college-football-sources.test.ts tests/cfb-projections.test.ts",
+  "guaranteesTested": [
+    "Canonical CFB identity and no NFL/odds relabeling",
+    "Actual prepare required before readiness",
+    "No live or unverified kickoff forecast",
+    "Changed verified input hash and latest live status mark retained output stale",
+    "Exact tiny quota metadata with fenced completion/failure",
+    "Input-hash mismatch withholds result",
+    "Owner save never mutates shared guest persistence flags",
+    "Distinct owner IDs and full result/game/player/source attestation",
+    "Only current verified schedules can supply independent projections; no contract line or price invented"
+  ],
+  "checkedAt": "2026-10-31T18:41:09.118669+00:00"
+}

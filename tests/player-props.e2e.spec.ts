@@ -27,9 +27,9 @@ async function transport(page:Page,{initiallyUnavailable=false,tamperDefinition=
  return{fixture,posts,queries,allow:()=>{unavailable=false;scanned=true;}};
 }
 
-test('one home tap starts the verified prop scan once and clearly separates raw probability, calibration and costs',async({page})=>{
+test('an explicitly selected Predictions source starts the verified prop scan once and clearly separates raw probability, calibration and costs',async({page})=>{
  const t=await transport(page),errors:string[]=[];page.on('pageerror',error=>errors.push(error.message));await page.goto('/');await page.screenshot({path:`test-results/v6-${test.info().project.name}-home.png`,fullPage:false});
- await page.getByRole('button',{name:'ANALYZE PLAYER PROPS',exact:true}).click();await expect(page.getByRole('heading',{name:'Every threshold has a story.'})).toBeVisible();
+ await page.evaluate(()=>{window.location.hash='props/predictions';});await expect(page.getByRole('heading',{name:'Every threshold has a story.'})).toBeVisible();await page.getByRole('button',{name:'ANALYZE ALL NFL PLAYER PROPS',exact:true}).click();
  await expect(page.getByRole('status')).toContainText('Checking verified sources');await expect(page.getByRole('status')).toContainText('0 of 4 outcomes checked.');await expect(page.getByTestId('prop-research-'+t.fixture.receiverYes.id)).toBeVisible({timeout:20000});
  expect(t.posts).toEqual([{}]);const card=page.getByTestId('prop-research-'+t.fixture.receiverYes.id);
  await expect(card).toContainText('SYNTHETIC Receiver');await expect(card).toContainText('Conditional simulation estimate');await expect(card.locator('.prop-calibrated')).toContainText('Unavailable');await expect(card.locator('.prop-calibrated')).not.toContainText('70.0%');
@@ -41,7 +41,7 @@ test('one home tap starts the verified prop scan once and clearly separates raw 
 });
 
 test('category filtering queries all stored research before pagination and more outcomes remain accessible',async({page})=>{
- const t=await transport(page);t.allow();await page.goto('/#props');await expect(page.getByTestId('prop-research-'+t.fixture.receiverYes.id)).toBeVisible();
+ const t=await transport(page);t.allow();await page.goto('/#props/predictions');await expect(page.getByTestId('prop-research-'+t.fixture.receiverYes.id)).toBeVisible();
  await page.getByRole('button',{name:'Show more researched outcomes'}).click();await expect(page.getByTestId('prop-research-'+t.fixture.passingYes.id)).toBeVisible();expect(t.queries.some(query=>query.get('cursor')==='2')).toBe(true);
  await page.getByLabel('Player prop category').selectOption('passing_yards');await expect(page.getByTestId('prop-research-'+t.fixture.receiverYes.id)).toHaveCount(0);await expect(page.getByTestId('prop-research-'+t.fixture.passingYes.id)).toBeVisible();expect(t.queries.some(query=>query.get('category')==='passingYards')).toBe(true);
  await page.getByLabel('Contract outcome').selectOption('no');await expect.poll(()=>t.queries.at(-1)?.get('side')).toBe('NO');await expect(page.getByTestId('prop-research-'+t.fixture.passingYes.id)).toHaveCount(0);await expect(page.getByTestId('prop-research-'+t.fixture.passingNo.id)).toBeVisible();
@@ -49,18 +49,18 @@ test('category filtering queries all stored research before pagination and more 
 });
 
 test('a changed contract definition cannot be compared with the probability captured for a different threshold',async({page})=>{
- const t=await transport(page,{tamperDefinition:true});t.allow();await page.goto('/#props');const card=page.getByTestId('prop-research-'+t.fixture.receiverYes.id);await expect(card).toBeVisible();
+ const t=await transport(page,{tamperDefinition:true});t.allow();await page.goto('/#props/predictions');const card=page.getByTestId('prop-research-'+t.fixture.receiverYes.id);await expect(card).toBeVisible();
  await expect(card).toContainText('latest contract definition differs');await expect(card).toContainText('Historical simulation estimate');await expect(card.locator('.prop-price-grid')).not.toContainText('88¢');await expect(card.locator('.prop-price-grid')).toContainText('Unavailable');
 });
 
 test('failed prop sources remain a retry state without fabricated outcomes or a developer login',async({page})=>{
- const t=await transport(page,{initiallyUnavailable:true});await page.goto('/#props');await expect(page.getByRole('alert').filter({hasText:'SYNTHETIC source temporarily unavailable'})).toContainText('SYNTHETIC source temporarily unavailable');await expect(page.locator('[data-testid^="prop-research-"]')).toHaveCount(0);await expect(page.getByRole('dialog')).toHaveCount(0);
+ const t=await transport(page,{initiallyUnavailable:true});await page.goto('/#props/predictions');await expect(page.getByRole('alert').filter({hasText:'SYNTHETIC source temporarily unavailable'})).toContainText('SYNTHETIC source temporarily unavailable');await expect(page.locator('[data-testid^="prop-research-"]')).toHaveCount(0);await expect(page.getByRole('dialog')).toHaveCount(0);
  t.allow();await page.getByRole('button',{name:'Retry',exact:true}).click();await expect(page.getByTestId('prop-research-'+t.fixture.receiverYes.id)).toBeVisible();await expect(page.locator('main input[type=file]')).toHaveCount(0);
 });
 
 test('guest outcome combinations request an app identity without placing a wager',async({page})=>{
  const t=await transport(page);t.allow();let financialWrites=0;await page.route('**/api/bets',route=>{financialWrites++;return route.fulfill({status:500,body:'SYNTHETIC unexpected wager write'});});
- await page.goto('/#props');await page.getByTestId('prop-research-'+t.fixture.receiverYes.id).getByRole('checkbox',{name:'Compare together'}).check();await page.getByTestId('prop-research-'+t.fixture.receiverNo.id).getByRole('checkbox',{name:'Compare together'}).check();
+ await page.goto('/#props/predictions');await page.getByTestId('prop-research-'+t.fixture.receiverYes.id).getByRole('checkbox',{name:'Compare together'}).check();await page.getByTestId('prop-research-'+t.fixture.receiverNo.id).getByRole('checkbox',{name:'Compare together'}).check();
  await page.getByRole('button',{name:'Analyze selected outcomes'}).click();await expect(page.getByRole('dialog')).toBeVisible();await expect(page.getByRole('dialog')).toContainText('YOUR GRIDIRON AI ACCOUNT');expect(financialWrites).toBe(0);
 });
 
@@ -81,7 +81,7 @@ test('a signed-in hypothetical combination displays shared-game probability sepa
  const t=await transport(page);t.allow();await page.route('**/api/auth',route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({user:{id:'SYNTHETIC-COMBINATION-OWNER',email:'synthetic-combination@example.test'}})}));
  let submitted:unknown,privatePosts=0;
  await page.route('**/api/props/combinations**',route=>{if(route.request().method()==='POST'){submitted=route.request().postDataJSON();privatePosts++;return route.fulfill({status:202,contentType:'application/json',body:JSON.stringify({id:'60000000-0000-4000-8000-000000000099',kind:'combination',status:'queued'})});}if(new URL(route.request().url()).pathname==='/api/props/combinations')return route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({jobs:submitted?[{id:'60000000-0000-4000-8000-000000000099',kind:'combination',status:'completed',game:t.fixture.nfl.game,updatedAt:new Date().toISOString()}]:[],private:true})});return route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({id:'60000000-0000-4000-8000-000000000099',kind:'combination',status:'completed',result:{conditional:true,combination:{jointProbability:.6,independenceAssumptionProbability:.49,simulations:10000,monteCarloInterval95:[.5904,.6096],parameterInterval95:null,limitations:['SYNTHETIC aligned outcomes only; no execution offer.']},valuation:{netExpectedValueCents:null,reason:'SYNTHETIC no verified combined offer or fees.'}}})});});
- await page.goto('/#props');await page.getByRole('button',{name:'Show more researched outcomes'}).click();await page.getByTestId('prop-research-'+t.fixture.receiverYes.id).getByRole('checkbox',{name:'Compare together'}).check();await page.getByTestId('prop-research-'+t.fixture.passingYes.id).getByRole('checkbox',{name:'Compare together'}).check();await page.getByRole('button',{name:'Analyze selected outcomes'}).click();
+ await page.goto('/#props/predictions');await page.getByRole('button',{name:'Show more researched outcomes'}).click();await page.getByTestId('prop-research-'+t.fixture.receiverYes.id).getByRole('checkbox',{name:'Compare together'}).check();await page.getByTestId('prop-research-'+t.fixture.passingYes.id).getByRole('checkbox',{name:'Compare together'}).check();await page.getByRole('button',{name:'Analyze selected outcomes'}).click();
  await expect(page.locator('.props-combination-result')).toContainText('60.0%',{timeout:15000});await expect(page.locator('.props-combination-result')).toContainText('49.0%');await expect(page.locator('.props-combination-result')).toContainText('No actual wager is recorded');expect(submitted).toEqual({researchIds:[t.fixture.receiverYes.id,t.fixture.passingYes.id]});await page.locator('.props-saved-list').getByRole('button',{name:/Hypothetical combination/}).click();await expect(page.getByRole('region',{name:'Saved private prop research'})).toContainText('60.0%');await page.reload();await expect(page.getByRole('region',{name:'Saved private prop research'})).toContainText('60.0%');expect(privatePosts).toBe(1);
 });
 
@@ -89,7 +89,7 @@ test('a supported availability what-if remains hypothetical and does not overwri
  const t=await transport(page);t.allow();await page.route('**/api/auth',route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({user:{id:'SYNTHETIC-SCENARIO-OWNER',email:'synthetic-scenario@example.test'}})}));
  let submitted:unknown;
  await page.route('**/api/props/what-if**',route=>{if(route.request().method()==='POST'){submitted=route.request().postDataJSON();return route.fulfill({status:202,contentType:'application/json',body:JSON.stringify({id:'SYNTHETIC-PRIVATE-SCENARIO',status:'queued'})});}return route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({id:'SYNTHETIC-PRIVATE-SCENARIO',kind:'what_if',status:'completed',result:{hypothetical:true,currentVerifiedConditionsChanged:false,delta:{homeWinProbability:-.05,contracts:[{researchId:t.fixture.receiverYes.id,baselineProbability:.7,modifiedProbability:.6,delta:-.1}]},limitations:['SYNTHETIC historical cohort comparison only; no causal effect claimed.']}})});});
- await page.goto('/#props');const card=page.getByTestId('prop-research-'+t.fixture.receiverYes.id);await card.getByText('Optional availability what-if',{exact:true}).click();await card.getByLabel('Assumed player availability').selectOption('limited');await card.getByRole('button',{name:'Compare hypothetical availability'}).click();
+ await page.goto('/#props/predictions');const card=page.getByTestId('prop-research-'+t.fixture.receiverYes.id);await card.getByText('Optional availability what-if',{exact:true}).click();await card.getByLabel('Assumed player availability').selectOption('limited');await card.getByRole('button',{name:'Compare hypothetical availability'}).click();
  await expect(card.locator('.prop-scenario-result')).toContainText('60.0%',{timeout:15000});await expect(card.locator('.prop-scenario-result')).toContainText('-10.00 percentage points');await expect(card.locator('.prop-probability-row')).toContainText('70.0%');expect(submitted).toEqual({gameId:t.fixture.receiverYes.contract.gameId,playerId:t.fixture.receiverYes.contract.playerId,status:'limited',researchIds:[t.fixture.receiverYes.id]});
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
 });
@@ -107,14 +107,14 @@ test('private account summaries are visibly sourced reports and can be reopened 
 test('an outdated pagination result cannot mix a different cached result set into the current research list',async({page})=>{
  const t=await transport(page);t.allow();
  await page.route(/\/api\/props(?:\?.*)?$/,route=>{const url=new URL(route.request().url()),later=Boolean(url.searchParams.get('cursor'));return route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({...t.fixture.scan,runId:'SYNTHETIC-SAME-HEADER',resultSetId:later?'SYNTHETIC-DIFFERENT-PHYSICAL-SET':'SYNTHETIC-INITIAL-PHYSICAL-SET',results:later?[t.fixture.passingYes]:[t.fixture.receiverYes,t.fixture.receiverNo],totalResults:4,nextCursor:'2'})});});
- await page.goto('/#props');await expect(page.getByTestId('prop-research-'+t.fixture.receiverYes.id)).toBeVisible();await page.getByRole('button',{name:'Show more researched outcomes'}).click();await expect(page.getByRole('button',{name:'Show more researched outcomes'})).toBeEnabled();await expect(page.getByTestId('prop-research-'+t.fixture.passingYes.id)).toHaveCount(0);await expect(page.getByTestId('prop-research-'+t.fixture.receiverYes.id)).toBeVisible();
+ await page.goto('/#props/predictions');await expect(page.getByTestId('prop-research-'+t.fixture.receiverYes.id)).toBeVisible();await page.getByRole('button',{name:'Show more researched outcomes'}).click();await expect(page.getByRole('button',{name:'Show more researched outcomes'})).toBeEnabled();await expect(page.getByTestId('prop-research-'+t.fixture.passingYes.id)).toHaveCount(0);await expect(page.getByTestId('prop-research-'+t.fixture.receiverYes.id)).toBeVisible();
 });
 
 
 test('a failed HTTP200 scan visibly explains the pause while retaining saved research and offering a real retry',async({page})=>{
  const t=await transport(page);t.allow();const message='SYNTHETIC source verification interrupted; saved predictions retained.';
  await page.route(/\/api\/props(?:\?.*)?$/,route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({...t.fixture.scan,status:'failed',message})}));
- await page.goto('/#props');await expect(page.getByRole('alert').filter({hasText:message})).toBeVisible();await expect(page.getByTestId('prop-research-'+t.fixture.receiverYes.id)).toBeVisible();await expect(page.locator('.props-progress')).toHaveCount(0);await page.getByRole('button',{name:'Retry research',exact:true}).click();await expect.poll(()=>t.posts.length).toBe(1);expect(t.posts[0]).toEqual({});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
+ await page.goto('/#props/predictions');await expect(page.getByRole('alert').filter({hasText:message})).toBeVisible();await expect(page.getByTestId('prop-research-'+t.fixture.receiverYes.id)).toBeVisible();await expect(page.locator('.props-progress')).toHaveCount(0);await page.getByRole('button',{name:'Retry research',exact:true}).click();await expect.poll(()=>t.posts.length).toBe(1);expect(t.posts[0]).toEqual({});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
 });
 
 

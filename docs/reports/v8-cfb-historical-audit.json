@@ -1,0 +1,128 @@
+{
+  "checkedAt": "2026-10-31T18:18:03.217305+00:00",
+  "sport": "CFB",
+  "season": 2026,
+  "status": "completed_retrospective_not_promoted",
+  "modelVersion": "cfb-pbp-empirical-8.0.0",
+  "engineVersion": "cfb-pbp-runtime-8.0.0",
+  "sourceUrl": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/espn_cfb_pbp/play_by_play_2026.parquet",
+  "sourceSha256": "b4547e4ca5a927cf2df46abc48a4d978ca9059ab3238ad2da5f105048bf8a559",
+  "selection": "The latest completed source games by first observed play time, selected before inspecting model errors; insufficient cohorts are retained as failures.",
+  "requestedGames": 4,
+  "evaluatedGames": 4,
+  "predictions": [
+    {
+      "gameId": "cfb:espn:401866451",
+      "home": "Sacramento State",
+      "away": "Kent State",
+      "eventTime": "2026-10-31T02:38:28+00:00",
+      "eventTimeMeaning": "First observed source play; not represented as an official scheduled kickoff.",
+      "trainingThrough": "2026-10-29T02:37:24.000001+00:00",
+      "sourceInputVersion": "1385da3fd460b7f9933c71056f13cf89ec3580c1aa67aaca55d81639dcc15600",
+      "trainingGames": 16,
+      "trainingPlays": 1037,
+      "simulations": 10000,
+      "predictedHomeWinProbability": 0.4864,
+      "actualHomeWin": 1,
+      "actualScore": [
+        31,
+        10
+      ],
+      "predictedScore": [
+        15.6241,
+        13.8057
+      ],
+      "brier": 0.26378496000000007,
+      "logLoss": 0.7207239483301798,
+      "heldOutGameExcluded": true
+    },
+    {
+      "gameId": "cfb:espn:401856844",
+      "home": "UCF",
+      "away": "Baylor",
+      "eventTime": "2026-10-30T23:33:33+00:00",
+      "eventTimeMeaning": "First observed source play; not represented as an official scheduled kickoff.",
+      "trainingThrough": "2026-10-29T02:37:24.000001+00:00",
+      "sourceInputVersion": "23a0d819a8261a71f95791eebdd3bcfb6df7a74fbbf1903a513795df2e9fcd9a",
+      "trainingGames": 14,
+      "trainingPlays": 1034,
+      "simulations": 10000,
+      "predictedHomeWinProbability": 0.6274,
+      "actualHomeWin": 0,
+      "actualScore": [
+        9,
+        41
+      ],
+      "predictedScore": [
+        28.3216,
+        22.9315
+      ],
+      "brier": 0.39363075999999997,
+      "logLoss": 0.9872498208146488,
+      "heldOutGameExcluded": true
+    },
+    {
+      "gameId": "cfb:espn:401862813",
+      "home": "Charlotte",
+      "away": "Tulane",
+      "eventTime": "2026-10-30T23:03:11+00:00",
+      "eventTimeMeaning": "First observed source play; not represented as an official scheduled kickoff.",
+      "trainingThrough": "2026-10-29T02:37:24.000001+00:00",
+      "sourceInputVersion": "debaa7d46b66926937a8c039d55cf2778db7d41b72b78c0094a5e3a422843277",
+      "trainingGames": 14,
+      "trainingPlays": 846,
+      "simulations": 10000,
+      "predictedHomeWinProbability": 0.3269,
+      "actualHomeWin": 0,
+      "actualScore": [
+        31,
+        38
+      ],
+      "predictedScore": [
+        17.9992,
+        25.6552
+      ],
+      "brier": 0.10686361000000001,
+      "logLoss": 0.39586137196546956,
+      "heldOutGameExcluded": true
+    },
+    {
+      "gameId": "cfb:espn:401869963",
+      "home": "James Madison",
+      "away": "Troy",
+      "eventTime": "2026-10-29T23:33:49+00:00",
+      "eventTimeMeaning": "First observed source play; not represented as an official scheduled kickoff.",
+      "trainingThrough": "2026-10-29T02:37:24.000001+00:00",
+      "sourceInputVersion": "f6eed687faf671f310b50a827fcf9cf842986ec36c6c42e1506b71702ca84708",
+      "trainingGames": 15,
+      "trainingPlays": 1037,
+      "simulations": 10000,
+      "predictedHomeWinProbability": 0.895,
+      "actualHomeWin": 0,
+      "actualScore": [
+        21,
+        24
+      ],
+      "predictedScore": [
+        45.4225,
+        22.8367
+      ],
+      "brier": 0.801025,
+      "logLoss": 2.2537949288246137,
+      "heldOutGameExcluded": true
+    }
+  ],
+  "unavailableGames": [],
+  "brierScore": 0.3913260825,
+  "logLoss": 1.0894075174837279,
+  "marketBenchmark": null,
+  "publicationAvailabilityVerified": false,
+  "calibrationApproved": false,
+  "promoted": false,
+  "limitations": [
+    "Retrospectively retrieved/correctable source: event-chronological cutoff does not prove historical publication availability.",
+    "Small pilot sample cannot establish calibration, stable accuracy, economic value or superiority over market prices.",
+    "Current roster, injuries, transfers, weather and independent talent/strength-of-schedule effects are incompletely modeled.",
+    "No historical market-price series was available; no market comparison is invented."
+  ]
+}

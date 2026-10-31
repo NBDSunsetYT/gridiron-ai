@@ -1,0 +1,34 @@
+/** Disposable in-memory PostgreSQL semantics only. No managed DB or user writes. */
+import {PGlite} from '@electric-sql/pglite';
+import {readFileSync,readdirSync} from 'node:fs';
+import assert from 'node:assert/strict';
+const directory=new URL('../migrations/',import.meta.url);
+const bootstrap=`create role anon;create role authenticated;create role service_role bypassrls;create schema auth;create table auth.users(id uuid primary key,email text);create table auth.sessions(id uuid primary key,user_id uuid references auth.users(id));create function auth.uid() returns uuid language sql stable as $$select (nullif(current_setting('request.jwt.claims',true),'')::jsonb->>'sub')::uuid$$;create function auth.jwt() returns jsonb language sql stable as $$select coalesce(nullif(current_setting('request.jwt.claims',true),'')::jsonb,'{}'::jsonb)$$;grant usage on schema auth to authenticated;grant execute on function auth.uid(),auth.jwt() to authenticated;`;
+const sportSql=readFileSync(new URL('../pending/v8-wallet-sport.sql',import.meta.url),'utf8');
+const assembled=readdirSync(directory).find(name=>name.endsWith('_gridiron_v8_football.sql'));
+if(assembled)assert.equal(readFileSync(new URL(assembled,directory),'utf8').split(sportSql).length-1,1,'The versioned v8 migration must include the validated wallet patch exactly once.');
+const owners=['10000000-0000-4000-8000-000000000081','10000000-0000-4000-8000-000000000082'];
+let db;
+async function initialize(){db=new PGlite();await db.exec(bootstrap);for(const name of readdirSync(directory).filter(name=>name.endsWith('.sql')&&name<'20261030200000').sort())await db.exec(readFileSync(new URL(name,directory),'utf8'));for(const suffix of ['_gridiron_event_contract_wallet.sql','_gridiron_fractional_contract_fees.sql']){const name=readdirSync(directory).find(name=>name.endsWith(suffix));assert.ok(name);await db.exec(readFileSync(new URL(name,directory),'utf8'));}}
+const owner=async id=>{await db.exec('reset role');await db.query("select set_config('request.jwt.claims',$1,false)",[JSON.stringify({sub:id})]);await db.exec('set role authenticated');};
+const rpc=async(name,payload)=>(await db.query(payload===undefined?`select public.${name}() value`:`select public.${name}($1::jsonb) value`,payload===undefined?[]:[JSON.stringify(payload)])).rows[0].value;
+const wager={sportsbook:'DraftKings',event:'SYNTHETIC event',market:'Moneyline',selection:'SYNTHETIC selection',stake:'10.00',odds:-110,prediction:{modelVersion:'SYNTHETIC-PRESERVED',probability:0.6},placementTime:'2026-01-01T12:00:00Z'};
+await initialize();for(const id of owners)await db.query('insert into auth.users(id,email)values($1,$2)',[id,'SYNTHETIC-'+id+'@example.test']);
+await owner(owners[0]);await rpc('gridiron_post_transaction',{sportsbook:'DraftKings',type:'starting_balance',amount:'500.00'});const legacy=await rpc('gridiron_place_bet',wager);
+await db.exec('reset role');const prior=(await db.query('select to_jsonb(w) value from public.wagers w where id=$1',[legacy.id])).rows[0].value;
+await db.exec(sportSql);const upgraded=(await db.query('select to_jsonb(w) value from public.wagers w where id=$1',[legacy.id])).rows[0].value;
+for(const[key,value]of Object.entries(prior))assert.deepEqual(upgraded[key],value,'Existing field changed: '+key);assert.equal(upgraded.sport,null);
+await owner(owners[0]);const before=(await rpc('gridiron_ledger')).summary;
+for(const sport of [null,'nfl','NFL ','NBA','',42,{},['NFL']])await assert.rejects(rpc('gridiron_place_bet',{...wager,sport}),/Wager sport/);
+assert.deepEqual((await rpc('gridiron_ledger')).summary,before,'Rejected sports caused partial financial writes');
+const nfl=await rpc('gridiron_place_bet',{...wager,sport:'NFL'});assert.equal(nfl.sport,'NFL');await rpc('gridiron_settle_bet',{id:nfl.id,result:'won',payout:'17.50',settlementTime:'2026-01-02T12:00:00Z'});
+const cfb=await rpc('gridiron_place_bet',{...wager,sport:'CFB',marketInstrument:'event_contract',odds:undefined,stake:'0.01',contractPriceCents:'0.1',contractQuantity:1,entryFeeCents:'0.9'});await rpc('gridiron_settle_bet',{id:cfb.id,result:'voided',payout:'0.00',settlementTime:'2026-01-03T12:00:00Z'});
+let report=await rpc('gridiron_ledger');assert.equal(report.bets.find(row=>row.id===legacy.id).sport,null);assert.equal(report.bets.find(row=>row.id===nfl.id).sport,'NFL');assert.equal(report.bets.find(row=>row.id===cfb.id).sport,'CFB');assert.deepEqual(report.bets.find(row=>row.id===nfl.id).prediction,wager.prediction);assert.equal(report.summary.cashBalanceCents,50749);assert.equal(report.summary.availableBalanceCents,49749);assert.equal(report.summary.realizedPlCents,749);assert.equal(report.summary.pendingExposureCents,1000);
+await owner(owners[1]);assert.equal((await rpc('gridiron_ledger')).summary.cashBalanceCents,0);assert.equal((await db.query('select count(*)::int n from public.wagers')).rows[0].n,0);await assert.rejects(rpc('gridiron_settle_bet',{id:nfl.id,result:'lost'}),/not found|already settled/);
+await owner(owners[0]);const archive=await rpc('gridiron_export_financial');assert.equal(archive.bets.find(row=>row.id===nfl.id).sport,'NFL');assert.equal(archive.bets.find(row=>row.id===cfb.id).entry_fee_cents,'0.9');
+await db.close();await initialize();await db.exec(sportSql);await db.query('insert into auth.users(id,email)values($1,$2)',[owners[1],'SYNTHETIC-RESTORE@example.test']);await owner(owners[1]);
+const payload={version:2,rawLedger:archive,ledger:{summary:report.summary},research:{}};
+const importRpc=async(data,hash)=>(await db.query('select public.gridiron_import_backup($1::jsonb,$2) value',[JSON.stringify(data),hash])).rows[0].value;
+const bad=structuredClone(payload);bad.rawLedger.bets.find(row=>row.id===nfl.id).sport='SYNTHETIC-UNSUPPORTED';await assert.rejects(importRpc(bad,'e'.repeat(64)),/Invalid recorded wager sport/);assert.equal((await rpc('gridiron_ledger')).summary.cashBalanceCents,0,'Rejected backup partially changed the financial workspace');
+assert.equal((await importRpc(payload,'f'.repeat(64))).imported,true);report=await rpc('gridiron_ledger');assert.equal(report.summary.cashBalanceCents,50749);assert.equal(report.summary.realizedPlCents,749);assert.equal(report.bets.find(row=>row.id===nfl.id).sport,'NFL');assert.equal(report.bets.find(row=>row.id===cfb.id).sport,'CFB');assert.equal(report.bets.find(row=>row.id===legacy.id).sport,null);assert.deepEqual(report.bets.find(row=>row.id===nfl.id).prediction,wager.prediction);assert.equal((await importRpc(payload,'f'.repeat(64))).duplicate,true);
+await db.close();console.log('WALLET SPORT POSTGRES PASSED: additive legacy preservation, strict validation, atomic financial writes, NFL/CFB persistence, exact fractional fees, RLS isolation, original prediction preservation, export/restore and duplicate detection.');

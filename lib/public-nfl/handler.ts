@@ -41,6 +41,7 @@ export async function handlePublicNfl(request:Request,parts:string[]=[]):Promise
      });
     }
     catch{status={status:'failed',queuedAt,completedAt:new Date().toISOString(),message:'Automatic refresh is temporarily unavailable. Previously saved research remains available.'};}
+    status.additionalFootball=await(await import('../football-refresh')).refreshAdditionalFootballResearch();
     await putCache('status','background',status,createHash('sha256').update(JSON.stringify(status)).digest('hex'),86400000).catch(()=>{});
    });
    return json({status:'scheduled',queuedAt,message:'Published NFL information will refresh in the background.'},202);

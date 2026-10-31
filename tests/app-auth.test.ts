@@ -40,7 +40,7 @@ describe('GRIDIRON app identity without a developer dashboard',()=>{
   vi.stubEnv('GRIDIRON_CLOUD_ONLY','0');vi.stubEnv('DATA_BACKEND','sqlite');expect(await appAuthProviders(request('/api/auth/providers'))).toMatchObject({emailPassword:true,apple:false});expect(upstream).not.toHaveBeenCalled();
  });
  it('keeps public research and auth capabilities out of private rewrites while retaining private isolation',()=>{
-  for(const path of ['/api/nfl','/api/nfl/games/123','/api/auth/providers','/api/auth/apple'])expect(middleware(new NextRequest(origin+path)).headers.get('x-middleware-rewrite')).toBeNull();
+  for(const path of ['/api/nfl','/api/nfl/games/123','/api/cfb','/api/cfb/games/123','/api/nfl/sportsbook-reference','/api/auth/providers','/api/auth/apple'])expect(middleware(new NextRequest(origin+path)).headers.get('x-middleware-rewrite')).toBeNull();
   for(const path of ['/api/ledger','/api/conversations','/api/auth'])expect(middleware(new NextRequest(origin+path)).headers.get('x-middleware-rewrite')).toBe(origin+'/api/cloud/'+path.slice('/api/'.length));
  });
  it('requires a valid HttpOnly verifier before attempting a callback exchange',async()=>{

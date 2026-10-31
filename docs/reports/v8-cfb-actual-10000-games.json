@@ -1,0 +1,235 @@
+{
+  "checkedAt": "2026-10-31T18:24:41.738678+00:00",
+  "status": "passed",
+  "scope": "Actual verified future ESPN CFB matchup; public historical source, uncalibrated conditional baseline",
+  "game": {
+    "id": "cfb:espn:401856849",
+    "espnGameId": "401856849",
+    "season": 2026,
+    "week": 10,
+    "startTime": "2026-11-07T17:00:00Z",
+    "home": {
+      "id": "cfb:espn:254",
+      "espnId": "254",
+      "name": "Utah Utes"
+    },
+    "away": {
+      "id": "cfb:espn:252",
+      "espnId": "252",
+      "name": "BYU Cougars"
+    }
+  },
+  "simulations": 10000,
+  "seed": 202608,
+  "elapsedSeconds": 8.159,
+  "maximumResidentMB": 250.21,
+  "modelVersion": "cfb-pbp-empirical-8.0.0",
+  "engineVersion": "cfb-pbp-runtime-8.0.0",
+  "inputDataVersion": "38d9eef08c7a27f4de37b4a02f8ab848b2fb6e1f2f77be73d6a07b76f01a34ef",
+  "evidence": {
+    "sport": "CFB",
+    "plays": 943,
+    "games": 14,
+    "teamPlays": {
+      "cfb:espn:254": 472,
+      "cfb:espn:252": 406
+    },
+    "availabilityVerified": false,
+    "synthetic": false,
+    "backoffCounts": {
+      "1": 976349,
+      "2": 374483,
+      "3": 27934
+    },
+    "conversionBackoffCounts": {
+      "cfb_league": 773
+    },
+    "teamResearch": {
+      "cfb:espn:252": {
+        "historicalOffenseEPA": {
+          "value": 0.21311254231135052,
+          "sampleSize": 375
+        },
+        "historicalDefenseEPAAllowed": {
+          "value": null,
+          "sampleSize": 0
+        },
+        "historicalSuccessRate": {
+          "value": 0.5253333333333333,
+          "sampleSize": 375
+        },
+        "games": 7,
+        "offensivePlays": 375,
+        "passPlays": 166,
+        "neutralPassRate": 0.4785992217898833,
+        "sackRate": 0.024096385542168676,
+        "turnoverRate": 0.010666666666666666,
+        "explosivePassRate20Yards": 0.12048192771084337,
+        "redZonePlays": 69,
+        "targetShares": {
+          "cfb:espn:4870876": 0.24203821656050956,
+          "cfb:espn:5221043": 0.1464968152866242,
+          "cfb:espn:5130407": 0.11464968152866242,
+          "cfb:espn:4918126": 0.044585987261146494,
+          "cfb:espn:5160955": 0.11464968152866242,
+          "cfb:espn:5279329": 0.1910828025477707,
+          "cfb:espn:5296269": 0.025477707006369428,
+          "cfb:espn:4918421": 0.006369426751592357,
+          "cfb:espn:5086100": 0.006369426751592357,
+          "cfb:espn:5393160": 0.006369426751592357,
+          "cfb:espn:5092200": 0.07006369426751592,
+          "cfb:espn:5085618": 0.006369426751592357,
+          "cfb:espn:5393157": 0.01910828025477707,
+          "cfb:espn:5141367": 0.006369426751592357
+        },
+        "carryShares": {
+          "cfb:espn:5141367": 0.24401913875598086,
+          "cfb:espn:4918126": 0.18181818181818182,
+          "cfb:espn:5279329": 0.06220095693779904,
+          "cfb:espn:5219689": 0.0861244019138756,
+          "cfb:espn:5092200": 0.17703349282296652,
+          "cfb:espn:5393157": 0.1339712918660287,
+          "cfb:espn:5282663": 0.07177033492822966,
+          "cfb:espn:5245511": 0.004784688995215311,
+          "cfb:espn:5296275": 0.019138755980861243,
+          "cfb:espn:5237159": 0.009569377990430622,
+          "cfb:espn:5160955": 0.004784688995215311,
+          "cfb:espn:5296273": 0.004784688995215311
+        },
+        "routeParticipation": null,
+        "snapShares": null,
+        "pressureRate": null,
+        "coverage": "Normalized historical supported plays; penalties and unsupported events excluded. These are descriptive source features, not independent matchup-adjusted projections."
+      },
+      "cfb:espn:254": {
+        "historicalOffenseEPA": {
+          "value": 0.23454610132750184,
+          "sampleSize": 439
+        },
+        "historicalDefenseEPAAllowed": {
+          "value": null,
+          "sampleSize": 0
+        },
+        "historicalSuccessRate": {
+          "value": 0.5193621867881549,
+          "sampleSize": 439
+        },
+        "games": 7,
+        "offensivePlays": 439,
+        "passPlays": 207,
+        "neutralPassRate": 0.4703196347031963,
+        "sackRate": 0.033816425120772944,
+        "turnoverRate": 0.015945330296127564,
+        "explosivePassRate20Yards": 0.11594202898550725,
+        "redZonePlays": 73,
+        "targetShares": {
+          "cfb:espn:5132652": 0.125,
+          "cfb:espn:5173431": 0.11458333333333333,
+          "cfb:espn:4871040": 0.15625,
+          "cfb:espn:4869422": 0.2604166666666667,
+          "cfb:espn:5148821": 0.026041666666666668,
+          "cfb:espn:4685704": 0.046875,
+          "cfb:espn:5294259": 0.020833333333333332,
+          "cfb:espn:4900351": 0.11458333333333333,
+          "cfb:espn:5294263": 0.03125,
+          "cfb:espn:5203476": 0.0625,
+          "cfb:espn:5220596": 0.015625,
+          "cfb:espn:5296612": 0.010416666666666666,
+          "cfb:espn:5103514": 0.005208333333333333,
+          "cfb:espn:5114312": 0.005208333333333333,
+          "cfb:espn:5221211": 0.005208333333333333
+        },
+        "carryShares": {
+          "cfb:espn:5173431": 0.41379310344827586,
+          "cfb:espn:5294263": 0.09482758620689655,
+          "cfb:espn:5203476": 0.09482758620689655,
+          "cfb:espn:5105849": 0.25,
+          "cfb:espn:5148821": 0.021551724137931036,
+          "cfb:espn:5296612": 0.05172413793103448,
+          "cfb:espn:5294267": 0.021551724137931036,
+          "cfb:espn:5264742": 0.03017241379310345,
+          "cfb:espn:4804885": 0.008620689655172414,
+          "cfb:espn:5166220": 0.004310344827586207,
+          "cfb:espn:5221211": 0.004310344827586207,
+          "cfb:espn:4869422": 0.004310344827586207
+        },
+        "routeParticipation": null,
+        "snapShares": null,
+        "pressureRate": null,
+        "coverage": "Normalized historical supported plays; penalties and unsupported events excluded. These are descriptive source features, not independent matchup-adjusted projections."
+      }
+    }
+  },
+  "homeWinProbability": 0.5293,
+  "awayWinProbability": 0.4707,
+  "expectedScores": {
+    "cfb:espn:254": 26.4243,
+    "cfb:espn:252": 25.2116
+  },
+  "players": 41,
+  "sources": [
+    {
+      "id": "cfb-public-pbp",
+      "name": "SportsDataverse ESPN-derived CFB play-by-play",
+      "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/espn_cfb_pbp/play_by_play_2026.parquet",
+      "collectedAt": "2026-10-31T18:24:34.705596+00:00",
+      "availableAt": null,
+      "version": "b4547e4ca5a927cf2df46abc48a4d978ca9059ab3238ad2da5f105048bf8a559",
+      "status": "partial",
+      "note": "Public publisher source; current roster/availability and retrospective publication coverage are not complete."
+    },
+    {
+      "id": "cfb-source-license",
+      "name": "Publisher repository licence",
+      "url": "https://github.com/sportsdataverse/sportsdataverse-data/blob/main/LICENSE",
+      "status": "available",
+      "collectedAt": "2026-10-31T18:24:34.705596+00:00"
+    }
+  ],
+  "counts": {
+    "source_rush": 501,
+    "accepted_plays": 878,
+    "accepted_rush": 456,
+    "source_pass_attempt": 388,
+    "accepted_pass_attempt": 362,
+    "source_fg_attempt": 14,
+    "accepted_fg_attempt": 11,
+    "source_punt": 40,
+    "accepted_punt": 38,
+    "penalty_coverage_excluded": 83,
+    "unsupported_play_type": 134,
+    "unsupported_event_or_participant_coverage": 88,
+    "source_sack": 12,
+    "accepted_sack": 11,
+    "source_int": 10,
+    "accepted_int": 10,
+    "source_pos_fumble_lost": 2,
+    "accepted_pos_fumble_lost": 1,
+    "missing_event_clock": 2,
+    "historical_overtime_excluded_from_regulation_pools": 9
+  },
+  "latestTeamEvidenceAt": {
+    "254": "2026-10-25T05:52:15+00:00",
+    "252": "2026-10-24T22:59:48+00:00"
+  },
+  "scoreAndEveryPlayerHistogramCountEqualsN": true,
+  "sharedPassingAndReceivingYardsReconcile": true,
+  "calibrationVerified": false,
+  "currentInjuryAvailabilityFullyAdjusted": false,
+  "productionHostedExecution": false,
+  "privateDatabaseWrite": false,
+  "physicalIphoneTested": false,
+  "parameterBootstrap": {
+    "method": "Bayesian bootstrap of CFB historical game blocks, including source games contributing league two-point fallback evidence; finite inner-game sampling noise remains.",
+    "historicalGameBlocks": 182,
+    "selectedTeamHistoricalGameBlocks": 14,
+    "replicates": 10,
+    "gamesPerReplicate": 100,
+    "completeGames": 1000,
+    "homeWinInterval95": [
+      0.27,
+      0.77
+    ],
+    "limitations": "Increasing the primary simulation count does not narrow this separately sampled sensitivity interval."
+  }
+}

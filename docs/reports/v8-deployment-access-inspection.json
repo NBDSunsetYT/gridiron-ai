@@ -1,0 +1,85 @@
+{
+  "checkedAt": "2026-10-31T17:42:43.082777+00:00",
+  "scope": "Read-only deployment and credential-name readiness audit for the requested 8.0 integration. No credential values printed, copied, or moved.",
+  "currentApplicationUrl": "https://gridiron-ai-gray.vercel.app",
+  "currentDeploymentId": "dpl_CgSpSyN2ASvFc43onjLPetsw3CQp",
+  "currentVersion": "7.0.1",
+  "credentialPolicy": "BALLDONTLIE_API_KEY must remain only on the Render backend. Its value is never placed on Vercel or in client/source files.",
+  "credentialNamesChecked": [
+    "BALLDONTLIE_API_KEY",
+    "CFBD_API_KEY",
+    "COLLEGE_FOOTBALL_DATA_API_KEY"
+  ],
+  "availableProcessEnvironment": {
+    "presentNames": [],
+    "nonemptyNames": []
+  },
+  "existingLocalEnvironmentFile": {
+    "presentNames": [],
+    "nonemptyNames": [],
+    "valuesDisclosed": false
+  },
+  "vercelMetadata": {
+    "method": "Authorized project filter_project_envs with decrypt:false; names and targets only",
+    "listedVariables": 19,
+    "hiddenProductionVariables": 0,
+    "checkedCredentialNamesPresent": [],
+    "changes": "none"
+  },
+  "render": {
+    "accessibleWorkspaces": 1,
+    "services": 0,
+    "serviceDiscovery": "Authorized explicit-workspace list_services(includePreviews:true) returned null/no services.",
+    "perServiceCredentialAvailability": "No service exists to hold an active service environment.",
+    "unlinkedEnvironmentGroups": "Unverified: current Render MCP has no environment-group list/read tool; no local Render API credential or authenticated CLI exists.",
+    "newServiceCreated": false,
+    "billingChanges": "none",
+    "historicalCreationResult": "Earlier explicit free creation also returned HTTP402; the single current attempt independently confirmed the same mandatory billing gate.",
+    "singleCurrentFreeCreationAttempt": {
+      "checkedAt": "2026-10-31T18:11:57.691402+00:00",
+      "plan": "free",
+      "region": "virginia",
+      "autoDeploy": "no",
+      "buildCommand": "pip install -r modeling/requirements-gateway.txt",
+      "startCommand": "uvicorn modeling.sports_data_gateway:app --host 0.0.0.0 --port $PORT",
+      "httpStatus": 402,
+      "message": "Payment information is required to complete this request. To add a card, visit https://dashboard.render.com/billing",
+      "serviceCreated": false,
+      "followUpServiceCount": 0,
+      "credentialsConfigured": false,
+      "retryPerformed": false,
+      "paidPlanSelected": false
+    }
+  },
+  "verifiedFreeWebServiceReference": {
+    "sources": [
+      "https://render.com/docs/compute-plans.md",
+      "https://render.com/docs/free.md",
+      "https://render.com/docs/configure-environment-variables.md"
+    ],
+    "plan": "free",
+    "cpu": "0.1 CPU",
+    "memory": "512 MB",
+    "workspaceMonthlyFreeHours": 750,
+    "idleSpinDown": "15 minutes",
+    "documentedColdStart": "about one minute",
+    "persistentDiskSupported": false,
+    "toolAcceptsExplicitFreePlan": true,
+    "limitation": "Free services are documented for hobby/testing use; allowance/billing authorization and any supplementary usage require owner review. No paid plan or resource was selected."
+  },
+  "deploymentReadiness": "Tested isolated Render gateway source is published. Current explicit free creation is blocked by mandatory Render payment-information authorization; no service or URL exists and no backend secrets were configured. Existing Vercel app remains live.",
+  "dataChanges": "none",
+  "userRecordsAccessed": false,
+  "lastUpdatedAt": "2026-10-31T18:11:57.691395+00:00",
+  "gatewaySource": {
+    "branch": "deploy/v8-data-gateway",
+    "commit": "cf4daccb9ba3fcf6d7cd76e175dc9a6e48f1ecde",
+    "parentCommit": "8c0a021c5e787c5b321be0c41725f7132af6098b",
+    "url": "https://github.com/NBDSunsetYT/gridiron-ai/tree/deploy/v8-data-gateway",
+    "frozenFilesVerified": 6,
+    "focusedPythonTests": 22,
+    "pythonCompile": "passed",
+    "configuredCredentialScan": "passed",
+    "mainCheckoutOrIndexChanged": false
+  }
+}

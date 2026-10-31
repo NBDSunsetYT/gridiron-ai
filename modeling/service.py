@@ -259,3 +259,8 @@ async def trace(request:Request,authorization:str|None=Header(default=None)):
         result=simulate(model,data['home'],data['away'],count,data.get('seed',1),data['eventStart'],scenario=data.get('scenario'),postseason=data.get('postseason',False),representative_games=count)
         return {'games':result['representativeGames'],'modelVersion':result['modelVersion'],'engineVersion':result['engineVersion'],'inputDataVersion':result['inputDataVersion'],'evidenceCutoff':result['evidenceCutoff'],'seed':result['seed'],'purpose':'Representative generated football games for inspection, not probability estimates.'}
     return await asyncio.to_thread(guarded,work)
+
+
+# NCAA models and transitions remain separate from every existing NFL endpoint.
+from .cfb_routes import make_cfb_router
+app.include_router(make_cfb_router(authorize,body,guarded,signature,verify_artifact))

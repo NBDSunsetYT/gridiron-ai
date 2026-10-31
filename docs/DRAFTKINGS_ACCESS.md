@@ -37,6 +37,7 @@ The `providers[]` response retains its existing fields and optionally includes `
 - A complete valid feed with no contracts can report no NFL markets supplied by that feed. An unreachable source cannot.
 - Unsupported feed formats, incomplete pagination, incompatible definitions, failed identity mapping, unavailable quotes and stale prices are distinguished from empty inventory.
 - A quote being readable does not establish model support, verified execution, after-fee value or calibration.
+- **Refresh source status** reloads the latest source observation. It does not force an immediate upstream request; backend refreshes retain their cache, rate, capacity and scheduling guards. The actual source-check timestamp is preserved.
 
 ## Connecting an entitled source
 
