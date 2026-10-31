@@ -20,7 +20,7 @@ class FreePropsTests(unittest.TestCase):
  def test_header_only_credentials_and_cache(self):
   calls=[]
   def transport(url,key):calls.append(url);self.assertNotIn('SYNTHETIC-PRIVATE',url);return 200,{},json.dumps(self.board).encode()
-  c=PropLineClient(transport);self.assertEqual(len(c.read('NFL')['items']),1);self.assertTrue(c.read('NFL')['cached']);self.assertEqual(len(calls),1)
+  c=PropLineClient(transport);self.assertEqual(len(c.read('NFL')['items']),1);self.assertTrue(c.read('NFL')['cached']);self.assertEqual(len(calls),2)
  def test_quota_exhaustion_no_retry_or_paid_upgrade(self):
   calls=[]
   def t(u,k):calls.append(u);return 429,{'X-Daily-Remaining':'0','X-Daily-Reset':str(int(self.now+3600))},b''

@@ -119,10 +119,27 @@ class PropLineClient:
             try:raw=json.loads(body)
             except (ValueError,UnicodeError):raise DataProviderError('unsupported_response','PropLine did not return valid JSON.') from None
             rows,rejected=normalize(raw,sport,now)
+            # Documented free bulk ID crosswalk; never match different games by fuzzy names.
+            crosswalk_status='unavailable'
+            if rows and self.used<999 and now>=self.until:
+                self.used+=1
+                code,hs,payload=self.transport('https://api.prop-line.com/v1/sports/'+SPORTS[sport]+'/ids',key)
+                if code==200 and key.encode() not in payload:
+                    try:
+                        ids=json.loads(payload)
+                        if isinstance(ids,list):
+                            mapping={str(e['id']):e for e in ids if isinstance(e,dict) and e.get('id') and str(e.get('espn_event_id','')).isdigit()}
+                            for row in rows:
+                                mapped=mapping.get(row['eventId'])
+                                if mapped and stamp(mapped.get('commence_time'))==stamp(row['kickoff']):row['espnEventId']=str(mapped['espn_event_id'])
+                            crosswalk_status='verified' if any(r['espnEventId'] for r in rows) else 'no_exact_ids'
+                    except (ValueError,TypeError):pass
+                elif code==429:self.until=now+300
+
             value={'provider':'PropLine','sport':sport,'dataFamily':'sportsbook_reference','status':'available' if rows else 'unavailable',
              'providerHttpStatus':200,'checkedAt':utc_now(),'items':rows,'rejectedRows':rejected,'quota':quota,'cached':False,
              'diagnostic':{'code':'verified_provider_rows' if rows else 'no_verified_current_props','message':'Current provider rows were validated.' if rows else 'No current supported sportsbook props passed identity and freshness checks.'},
-             'fallbackVerified':False}
+             'fallbackVerified':False,'identityCrosswalkStatus':crosswalk_status}
             self.cache[sport]=(now,value);return copy.deepcopy(value)
 
 def choose_feed(primary,fallback,sport):
