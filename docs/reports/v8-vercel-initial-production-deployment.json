@@ -1,0 +1,64 @@
+{
+  "checkedAt": "2026-10-31T18:58:19.469614+00:00",
+  "provider": "Vercel",
+  "version": "8.0.0",
+  "plan": "hobby",
+  "projectId": "prj_ufIV2AZJcQAW7lNtQmH6hcyrWamH",
+  "deploymentId": "dpl_svYLELyqeUjvFbtQLAkctnP9tQHr",
+  "state": "READY",
+  "url": "https://gridiron-ai-gray.vercel.app",
+  "uniqueUrl": "https://gridiron-gyuhwg040-gridiron5.vercel.app",
+  "sourceCommit": "29d20fbf9226b671d57a87bdc92769ed3787c374",
+  "sourceManifestSha256": "3ef544392519d1d26100ffc5a62909dc0a3faf5084831965f70c386fd60bebd0",
+  "runtimeFiles": 219,
+  "runtimeBytes": 8526680,
+  "committedRuntimeCorrespondence": "All deployed runtime bytes equal the published source commit.",
+  "services": "Preserved Next.js web/API plus privately bound Python/FastAPI quantitative service with NCAA routes and pyarrow26.0.0.",
+  "renderOnlyAdapterModulesExcluded": true,
+  "sourceUpload": "Authorized native SHA1 upload; existing project, production environment and service bindings preserved.",
+  "environmentChanges": "none",
+  "providerCredentialsCopiedToVercel": false,
+  "renderServices": 0,
+  "renderCreation": "Single explicit free attempt rejected402 requiring payment-information authorization; no paid resource or retry.",
+  "initialRuntimeErrorLogScan": {
+    "lookback": "5m",
+    "levels": [
+      "error",
+      "fatal"
+    ],
+    "groupsReturned": 0,
+    "limitation": "Bounded initial retained-log inspection; not a full-workflow acceptance claim."
+  },
+  "productionAcceptance": "incomplete_cross_instance_guest_cache_repair_pending; initial public API14passed with valid hosted10,000-game computation; full acceptance remains false",
+  "physicalIphoneInstallationTested": false,
+  "limitations": [
+    "No authenticated BALLDONTLIE or CollegeFootballData endpoint has been verified; account tiers remain unknown.",
+    "No authorized direct DraftKings Predictions event-contract feed is configured.",
+    "Current database reserve blocks additional public persisted research; existing personal data is preserved.",
+    "Guest college output is temporary unless an owned authenticated save succeeds."
+  ],
+  "deepHealth": {
+    "httpStatus": 200,
+    "appVersion": "8.0.0",
+    "backend": "supabase",
+    "cloudOnly": true,
+    "database": "reachable",
+    "privateQuantitativeService": "reachable",
+    "assistantStatus": "missing_credentials",
+    "assistantGenerationVerified": false
+  },
+  "productionApi": {
+    "report": "v8-production-football.json",
+    "checksPassed": 14,
+    "fullAcceptancePassed": false,
+    "hostedCompleteGames": 10000,
+    "executionMs": 15837,
+    "publicGuestResultPersistent": false,
+    "productionFinancialWrites": false
+  },
+  "observedProductionIssue": {
+    "code": "guest_result_cross_instance_cache_loss",
+    "scope": "Public CFB guest result unavailable from a different server instance; completed quota is retained and no uncharged rerun occurs.",
+    "repair": "Public-only ephemeral server cache in progress; no private caching or database-reserve bypass."
+  }
+}

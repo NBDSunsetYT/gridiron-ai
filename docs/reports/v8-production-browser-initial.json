@@ -1,0 +1,29 @@
+{
+  "status": "failed",
+  "startedAt": "2026-10-31T19:00:39.823Z",
+  "baseUrl": "https://gridiron-ai-gray.vercel.app",
+  "mockedResponses": false,
+  "accountsCreated": false,
+  "financialWrites": false,
+  "physicalIphoneInstallationTested": false,
+  "fullAcceptancePassed": false,
+  "checks": [
+    {
+      "profile": "desktop-chromium",
+      "name": "The real guest opens NFL games and the NFL/CFB switch without a provider login",
+      "status": "passed"
+    },
+    {
+      "profile": "desktop-chromium",
+      "name": "The NFL player-props action invokes the distinct sportsbook-reference workflow and preserves its real access limitation",
+      "status": "passed"
+    },
+    {
+      "profile": "desktop-chromium",
+      "name": "Switching to College Football loads actual separate college games and survives a page restart",
+      "status": "passed"
+    }
+  ],
+  "error": "expect(locator).toBeVisible() failed\n\nLocator: locator('.public-result').getByRole('heading', { name: 'College football game simulation', exact: true })\nExpected: visible\nTimeout: 180000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" locator('.public-result').getByRole('heading', { name: 'College football game simulation', exact: true }) with timeout 180000ms\n  - waiting for locator('.public-result').getByRole('heading', { name: 'College football game simulation', exact: true })\n",
+  "finishedAt": "2026-10-31T19:03:45.091Z"
+}

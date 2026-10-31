@@ -1,6 +1,6 @@
 # GRIDIRON AI 8.0 delivery
 
-Release status: implementation and local checks complete; final hosted 8.0 acceptance is pending. The existing app remains at https://gridiron-ai-gray.vercel.app. This report will distinguish the final deployed checks from local evidence when production verification finishes. Earlier [7.0 delivery](DELIVERY_V7.md) and [DraftKings diagnosis](DRAFTKINGS_ACCESS.md) remain retained.
+Release status: 8.0 is deployed at https://gridiron-ai-gray.vercel.app. All 14 actual public API checks passed, including a real hosted 10,000-game college simulation. Full acceptance remains partial because licensed providers and shared research capacity are unavailable. Production browser acceptance is incomplete: the first deployed result was held only in one server instance and was unavailable on a later request. The public-only server cache repair passed 602 unit tests and the production build; deployment and actual cross-instance browser acceptance are pending, as is final release-source CI. Earlier [7.0 delivery](DELIVERY_V7.md) and [DraftKings diagnosis](DRAFTKINGS_ACCESS.md) remain retained.
 
 ## Implemented
 
@@ -18,7 +18,7 @@ The AI desk retrieves sport-scoped real records and source-based briefs. Without
 
 | Source or service | Verified state |
 | --- | --- |
-| Existing Vercel web/API and private Python service | Preserved; final 8.0 production acceptance pending |
+| Existing Vercel web/API and private Python service | READY; actual calculation passed; cross-instance public guest-cache repair and browser acceptance pending |
 | Existing Supabase `qdtdjbapdipopncklsdb` | 20 additive migrations aligned; existing records retained |
 | NFL public research | Published nflverse-compatible records, ESPN metadata and available weather references; missing inputs remain explicit |
 | College public research | Actual published ESPN schedules and SportsDataverse play-by-play, with publisher/source provenance |
@@ -35,18 +35,20 @@ The default [Render Blueprint](../render.yaml) describes only this explicit-free
 
 ## Statistical evidence and limits
 
-The retained actual 10,000-game college run used BYU at Utah with 943 historical supported plays across 14 selected-team games. It completed locally in 8.159 seconds with 250.21 MB maximum resident memory, plus separately reported bootstrap sensitivity. Every score/player histogram contained 10,000 outcomes and shared passing/receiving totals reconciled. This was a real historical-data calculation, not a hosted execution claim. See [the executed run](reports/v8-cfb-actual-10000-games.json).
+The retained local actual 10,000-game college run used BYU at Utah with 943 historical supported plays across 14 selected-team games. It completed locally in 8.159 seconds with 250.21 MB maximum resident memory, plus separately reported bootstrap sensitivity. Every score/player histogram contained 10,000 outcomes and shared passing/receiving totals reconciled. This was a real historical-data calculation, not a hosted execution claim. See [the executed run](reports/v8-cfb-actual-10000-games.json).
+
+The actual hosted worker separately completed 10,000 BYU-at-Utah games in 15.837 seconds from the same verified historical input version, with 41 player distributions. The home win estimate was 0.5298, with Monte Carlo 95% interval [0.5200,0.5396] and a separate underlying-model sensitivity interval [0.23,0.78]. These are uncalibrated conditional-baseline outputs, not a claim of forecast accuracy. Score/player counts and shared passing/receiving means reconciled. The guest result was explicitly temporary and not saved to private history. See [actual production evidence](reports/v8-production-football.json).
 
 The four-game retrospective pilot has Brier 0.3913260825 and log loss 1.0894075175. It performed poorly and was **not promoted**. Retrospective source retrieval does not prove historical publication availability; this small pilot cannot establish calibration, market advantage or stable accuracy. Injury availability, current roster changes, weather, independent opponent/talent adjustments and some penalty/special-teams coverage remain incomplete. Increasing simulations does not remove those limitations. See [the retained audit](reports/v8-cfb-historical-audit.json).
 
 ## Executed checks
 
-- Local full TypeScript suite: 596 unit tests across 75 files passed; nonincremental typecheck and the final production build passed.
+- Local full TypeScript suite: 602 unit tests across 77 files passed; nonincremental typecheck and the final production build passed.
 - Python suite: 153 tests passed, including existing NFL tests, 28 college engine/preparation/service tests, 16 BALLDONTLIE tests and 6 CollegeFootballData tests.
 - All five disposable PostgreSQL verification scripts passed, including college storage/quota/RLS and Wallet sport metadata, backup/restore and ownership checks.
 - 110 distinct desktop/iPhone-sized browser checks passed across 44 new checks and 66 preserved regressions. The 12 financial checks are included in those 66 regressions. Local browser checks used synthetic transport, with no production financial writes or new users.
-- Native migration preservation verified 73 public tables with RLS, 2 real users retained and 49 pre-existing private/Auth rows unchanged by content hash. Existing shared compute accounting was preserved; no reset occurred.
-- Final production 8.0 API/browser, live 10,000-game hosted execution, deployment logs and release-source CI are pending; they must not be inferred from local passes. Physical iPhone installation has not been tested.
+- Native migration preservation verified 73 public tables with RLS, 2 real users retained and 49 pre-existing private/Auth table families with unchanged counts and content hashes. Existing shared compute accounting was preserved; no reset occurred.
+- Actual production public API: 14/14 checks passed, including the hosted 10,000-game run, real NFL/CFB schedules, source diagnostics, source-cited nongenerative explanations and private-route authentication protection. Full acceptance remains false because external access/capacity requirements are unresolved. Production browser checks exposed cross-instance guest-cache loss. A public-only cache repair and exact final release-source CI remain pending. No production private financial writes or physical iPhone installation were performed.
 
 See [database preservation](reports/v8-supabase-preservation-verification.json), [college API checks](reports/v8-college-api-verification.json), [college SQL checks](reports/v8-college-postgres-verification.json), [Wallet checks](reports/v8-wallet-local-verification.json), [gateway access audit](reports/v8-deployment-access-inspection.json) and [provider documentation audit](reports/v8-balldontlie-nfl-docs-audit.json).
 

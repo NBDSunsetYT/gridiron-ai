@@ -1,0 +1,125 @@
+{
+  "status": "failed",
+  "startedAt": "2026-10-31T19:04:49.922Z",
+  "baseUrl": "https://gridiron-ai-gray.vercel.app",
+  "scope": "Actual deployed PWA assets, isolated guest Chromium iPhone viewport and read-only NFL regressions.",
+  "mockedResponses": false,
+  "physicalIphoneInstallationTested": false,
+  "standalonePhysicalLaunchTested": false,
+  "accountsCreated": false,
+  "financialWrites": false,
+  "simulationsStarted": 0,
+  "checks": [
+    {
+      "name": "The real HTTPS frontend serves the app with security headers and no developer-dashboard redirect",
+      "status": "passed"
+    },
+    {
+      "name": "The deployed manifest has standalone launch, same-origin scope and 192/512 PNG definitions",
+      "status": "passed"
+    },
+    {
+      "name": "/icon-192.png is an actual correctly sized PNG on the deployed origin",
+      "status": "passed"
+    },
+    {
+      "name": "/icon-512.png is an actual correctly sized PNG on the deployed origin",
+      "status": "passed"
+    },
+    {
+      "name": "/apple-touch-icon.png is an actual correctly sized PNG on the deployed origin",
+      "status": "passed"
+    },
+    {
+      "name": "The actual v8 service worker matches the reviewed source and excludes APIs, mutations, foreign origins and authenticated HTML",
+      "status": "passed"
+    },
+    {
+      "name": "Production health verifies the preserved Supabase database and private Python service without starting work",
+      "status": "passed"
+    }
+  ],
+  "securityHeaders": {
+    "transport": "HTTPS",
+    "hsts": "max-age=63072000; includeSubDomains; preload",
+    "xContentTypeOptions": "nosniff",
+    "xFrameOptions": "DENY",
+    "referrerPolicy": "strict-origin-when-cross-origin",
+    "permissionsPolicy": "camera=(), microphone=(), geolocation=()"
+  },
+  "manifest": {
+    "name": "GRIDIRON AI \u2014 NFL Market Intelligence",
+    "display": "standalone",
+    "startUrl": "/",
+    "scope": "/",
+    "id": "/",
+    "icons": [
+      {
+        "src": "/icon-192.png",
+        "sizes": "192x192",
+        "type": "image/png",
+        "purpose": "any maskable"
+      },
+      {
+        "src": "/icon-512.png",
+        "sizes": "512x512",
+        "type": "image/png",
+        "purpose": "any maskable"
+      },
+      {
+        "src": "/icon.svg",
+        "sizes": "any",
+        "type": "image/svg+xml",
+        "purpose": "any"
+      }
+    ]
+  },
+  "icons": [
+    {
+      "path": "/icon-192.png",
+      "width": 192,
+      "height": 192,
+      "bytes": 2603,
+      "sha256": "ede9d606a570913ce2a07ccf2ed4beba11c42bf4903c5b18c14b05a8bef2850b"
+    },
+    {
+      "path": "/icon-512.png",
+      "width": 512,
+      "height": 512,
+      "bytes": 7283,
+      "sha256": "c65c98af9ccdf11eb1bf1b7fa82402fe1999c1682d197aa5a3ae0fb7b49293b3"
+    },
+    {
+      "path": "/apple-touch-icon.png",
+      "width": 180,
+      "height": 180,
+      "bytes": 2473,
+      "sha256": "266a8923861e45607e8cce269392882c16f0f60ec1d4460ebe2c03ad47a8f5db"
+    }
+  ],
+  "serviceWorker": {
+    "path": "/sw.js",
+    "sha256": "e12dd4b6d4bea96564f449f9a33ab558b18333dbbe4c95b9e39a8cf54235bc69",
+    "matchesReviewedSource": true,
+    "cacheControl": "no-cache",
+    "scopeAllowed": "/",
+    "cacheVersion": "gridiron-interface-v8"
+  },
+  "health": {
+    "version": "8.0.0",
+    "backend": "supabase",
+    "checks": {
+      "supabase": "reachable",
+      "simulations": "reachable"
+    },
+    "assistantStatus": {
+      "provider": "openai",
+      "credentialConfigured": false,
+      "generationVerified": false,
+      "status": "missing_credentials"
+    }
+  },
+  "error": "The input did not match the regular expression /no-store/. Input:\n\n'public, max-age=0'\n",
+  "finishedAt": "2026-10-31T19:04:52.901Z",
+  "failureClassification": "Test expectation was too broad: the NFL schedule is public sports data and correctly returns public,max-age=0. Private APIs must remain no-store; the service worker excludes every API independently."
+}

@@ -1,0 +1,240 @@
+{
+  "status": "partial",
+  "fullAcceptancePassed": false,
+  "startedAt": "2026-10-31T19:00:13.140Z",
+  "baseUrl": "https://gridiron-ai-gray.vercel.app",
+  "version": "8.0.0",
+  "accountsCreated": false,
+  "financialWrites": false,
+  "mockedResponses": false,
+  "physicalIphoneInstallationTested": false,
+  "checks": [
+    {
+      "name": "The existing production application, Supabase and private Python worker remain reachable",
+      "status": "passed"
+    },
+    {
+      "name": "Guest NFL schedules remain available",
+      "status": "passed"
+    },
+    {
+      "name": "BALLDONTLIE references keep their actual access status and are not mislabeled as Predictions contracts",
+      "status": "passed"
+    },
+    {
+      "name": "DraftKings Predictions remains a separate exact-contract integration",
+      "status": "passed"
+    },
+    {
+      "name": "College games use real separate identities, verified kickoff times and cited sources",
+      "status": "passed"
+    },
+    {
+      "name": "A college matchup reports model readiness and missing availability evidence explicitly",
+      "status": "passed"
+    },
+    {
+      "name": "The actual hosted NCAA worker completes 10,000 correlated full games from real historical inputs",
+      "status": "passed"
+    },
+    {
+      "name": "College player outcomes keep independent projections separate from missing market contracts",
+      "status": "passed"
+    },
+    {
+      "name": "The college assistant explains actual sourced evidence without pretending to generate missing AI output",
+      "status": "passed"
+    },
+    {
+      "name": "/api/ledger preserves app-identity protection",
+      "status": "passed"
+    },
+    {
+      "name": "/api/bets preserves app-identity protection",
+      "status": "passed"
+    },
+    {
+      "name": "/api/conversations preserves app-identity protection",
+      "status": "passed"
+    },
+    {
+      "name": "/api/cfb/history preserves app-identity protection",
+      "status": "passed"
+    },
+    {
+      "name": "/api/cfb/saved preserves app-identity protection",
+      "status": "passed"
+    }
+  ],
+  "limitations": [
+    "No authenticated BALLDONTLIE NFL event/prop response is verified. The actual bridge/key/tier diagnostic is retained; documentation entitlements are not an observed account subscription.",
+    "An authorized DraftKings Predictions contract feed is not configured; sportsbook references are not substituted.",
+    "Shared public research persistence is paused at the storage reserve. Guest results are temporary; authenticated private saves have a separate owner-scoped path.",
+    "No production private financial write or physical iPhone installation was performed by this public workflow.",
+    "More Monte Carlo games do not validate calibration; the retained CFB pilot remains weak, retrospective and unpromoted."
+  ],
+  "health": {
+    "version": "8.0.0",
+    "checks": {
+      "supabase": "reachable",
+      "simulations": "reachable"
+    }
+  },
+  "nflGames": 61,
+  "balldontlie": {
+    "status": "unavailable",
+    "diagnostic": {
+      "code": "render_backend_required",
+      "message": "The Render data gateway is not connected. No BALLDONTLIE request has been made.",
+      "checkedAt": "2026-10-31T19:00:14.818Z",
+      "httpStatus": null,
+      "retryable": false,
+      "requiresOperator": true
+    },
+    "verifiedReferences": 0,
+    "liveAuthenticationVerified": false,
+    "subscriptionTierVerified": false
+  },
+  "draftKingsPredictions": {
+    "status": "unavailable",
+    "contracts": 0,
+    "diagnostic": {
+      "code": "feed_not_configured",
+      "stage": "configuration",
+      "checkedAt": "2026-10-31T19:00:15.182Z",
+      "retryable": false,
+      "requiresOperator": true,
+      "httpStatus": null,
+      "message": "The app has no authorized DraftKings Predictions NFL contract feed connected.",
+      "action": "An app operator must connect an authorized event-contract data source. You do not need a Supabase dashboard account or sportsbook password.",
+      "missingConfiguration": [
+        "feed",
+        "authorization"
+      ]
+    }
+  },
+  "cfbGame": {
+    "id": "cfb:espn:401856849",
+    "home": {
+      "id": "cfb:espn:254",
+      "providerId": "254",
+      "espnId": "254",
+      "name": "Utah Utes",
+      "abbreviation": "UTAH",
+      "score": null,
+      "ranking": 6,
+      "conference": {
+        "id": "cfb:espn-conference:4",
+        "name": null
+      },
+      "classification": "unknown",
+      "record": "7-0"
+    },
+    "away": {
+      "id": "cfb:espn:252",
+      "providerId": "252",
+      "espnId": "252",
+      "name": "BYU Cougars",
+      "abbreviation": "BYU",
+      "score": null,
+      "ranking": 8,
+      "conference": {
+        "id": "cfb:espn-conference:4",
+        "name": null
+      },
+      "classification": "unknown",
+      "record": "6-1"
+    },
+    "startTime": "2026-11-07T17:00:00.000Z",
+    "sources": [
+      {
+        "id": "espn-cfb-schedule",
+        "name": "ESPN published college-football schedule",
+        "url": "https://site.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?groups=80&limit=200&dates=20261107",
+        "collectedAt": "2026-10-31T19:00:15.521Z",
+        "publishedAt": null,
+        "availableAt": "2026-10-31T19:00:15.521Z",
+        "version": "07b937b98353d3bd18e37cecfa25d1535c3216791cc313e3a4b3069dd4d7cdca",
+        "status": "available",
+        "note": "Published scoreboard identities, schedules and scores only. ESPN probabilities and sportsbook odds are not used as independent forecasts. Logo licensing is not assumed."
+      }
+    ]
+  },
+  "cfbStorage": {
+    "persistent": false,
+    "admissionAvailable": false,
+    "message": "New shared research persistence is paused to protect personal records. Published schedules can still be viewed; private saves require app sign-in."
+  },
+  "modelPerformance": {
+    "status": "insufficient_evidence",
+    "historicalPredictions": 0,
+    "brierScore": null,
+    "logLoss": null,
+    "calibrated": false,
+    "message": "Insufficient prospectively settled college-football model evidence.",
+    "retrospectivePilot": {
+      "sport": "CFB",
+      "status": "retrospective_not_promoted",
+      "sampleSize": 4,
+      "brierScore": 0.3913260825,
+      "logLoss": 1.0894075174837279,
+      "modelVersion": "cfb-pbp-empirical-8.0.0",
+      "engineVersion": "cfb-pbp-runtime-8.0.0",
+      "checkedAt": "2026-10-31T18:18:03.217305+00:00",
+      "sourceUrl": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/espn_cfb_pbp/play_by_play_2026.parquet",
+      "sourceSha256": "b4547e4ca5a927cf2df46abc48a4d978ca9059ab3238ad2da5f105048bf8a559",
+      "publicationAvailabilityVerified": false,
+      "calibrated": false,
+      "promoted": false,
+      "marketBenchmark": null,
+      "selection": "The latest completed source games by first observed play time, selected before inspecting model errors; insufficient cohorts are retained as failures.",
+      "limitations": [
+        "Retrospectively retrieved/correctable source: event-chronological cutoff does not prove historical publication availability.",
+        "Small pilot sample cannot establish calibration, stable accuracy, economic value or superiority over market prices.",
+        "Current roster, injuries, transfers, weather and independent talent/strength-of-schedule effects are incompletely modeled.",
+        "No historical market-price series was available; no market comparison is invented."
+      ],
+      "message": "Small retrospective pilot with weak results; not promoted. This does not establish prospective calibration, reliable accuracy or market advantage."
+    }
+  },
+  "cfbReadiness": {
+    "ready": true,
+    "reason": "Actual identified college-football historical plays support a conditional baseline. Current injuries, transfers and depth-chart coverage remain incomplete; calibration is not established.",
+    "inputHash": "38d9eef08c7a27f4de37b4a02f8ab848b2fb6e1f2f77be73d6a07b76f01a34ef"
+  },
+  "cfbExecutionMs": 15837,
+  "cfbSimulation": {
+    "id": "469daea7-d5e4-4dd9-84ee-8c96aa7e2347",
+    "simulations": 10000,
+    "modelVersion": "cfb-pbp-empirical-8.0.0",
+    "engineVersion": "cfb-pbp-runtime-8.0.0",
+    "rulesVersion": "ncaa-2026-di-v1",
+    "inputVersion": "38d9eef08c7a27f4de37b4a02f8ab848b2fb6e1f2f77be73d6a07b76f01a34ef",
+    "homeWinProbability": 0.5298,
+    "awayWinProbability": 0.47019999999999995,
+    "monteCarloInterval95": [
+      0.5200080293729129,
+      0.5395690843241948
+    ],
+    "modelSensitivityInterval": [
+      0.23,
+      0.78
+    ],
+    "players": 41,
+    "passingReceivingMeanReconciled": true,
+    "historySaved": false,
+    "persistent": false
+  },
+  "cfbProjections": {
+    "marketStatus": "unavailable",
+    "contracts": 0,
+    "independentProjections": 120
+  },
+  "cfbAssistant": {
+    "method": "evidence_brief",
+    "citations": 3,
+    "generatedByAI": false
+  },
+  "publicWorkflowChecksPassed": true,
+  "finishedAt": "2026-10-31T19:00:34.761Z"
+}

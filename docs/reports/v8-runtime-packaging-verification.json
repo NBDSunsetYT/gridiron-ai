@@ -1,9 +1,9 @@
 {
-  "checkedAt": "2026-10-31T18:49:09.853473+00:00",
+  "checkedAt": "2026-10-31T19:09:56.770685+00:00",
   "status": "passed_predeployment_capture",
-  "runtimeFiles": 219,
-  "runtimeBytes": 8526680,
-  "manifestSha256": "3ef544392519d1d26100ffc5a62909dc0a3faf5084831965f70c386fd60bebd0",
+  "runtimeFiles": 220,
+  "runtimeBytes": 8543846,
+  "manifestSha256": "a77814c9bcb6f1670ee46e4f923803d9725bcbc1dbb6c7f12226641a54099dae",
   "relativeRuntimeImportClosure": "passed",
   "missingRuntimeDependencies": [],
   "explicitPublicJsonDependencies": [
@@ -54,5 +54,6 @@
       "unchangedFrom7_0_1": true
     }
   ],
-  "productionDeployment": "pending root GO; this is a source packaging check, not hosted acceptance"
+  "productionDeployment": "pending root GO; this is a source packaging check, not hosted acceptance",
+  "publicCacheRepair": "Signed public-only bounded runtime cache; cross-instance production acceptance pending."
 }
