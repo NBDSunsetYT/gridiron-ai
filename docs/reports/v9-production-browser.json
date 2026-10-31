@@ -66,5 +66,8 @@
       "name": "CFB quotes load separately and private history requires GRIDIRON identity",
       "status": "passed"
     }
-  ]
+  ],
+  "verifiedDeployment": "dpl_4xRW8AsdfhTcdSixH56TeDCEh34f",
+  "verifiedSourceCommit": "0ab33d3f15114ab7ca557c24fb7d9f698a0bd525",
+  "verificationRecordedAt": "2026-10-31T22:43:32.301868+00:00"
 }

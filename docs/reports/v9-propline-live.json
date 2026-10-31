@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-31T22:15:17.565399+00:00",
+  "checkedAt": "2026-10-31T22:43:14.870329+00:00",
   "status": "production_ready_scoped",
   "provider": "PropLine",
   "renderServiceId": "srv-dbj680s9v7es7397nv2g",
@@ -72,49 +72,51 @@
     }
   ],
   "productionUrl": "https://gridiron-ai-gray.vercel.app",
-  "vercelDeployment": "dpl_GbNac3RttxQMZBQuRefqGp2ScBfL",
+  "vercelDeployment": "dpl_4xRW8AsdfhTcdSixH56TeDCEh34f",
   "latestInventory": [
     {
       "sport": "NFL",
-      "total": 14155,
+      "total": 14157,
       "books": {
         "draftkings": 1483,
         "fanduel": 1210,
         "betmgm": 1142,
-        "hardrock": 10320
+        "hardrock": 10322
       },
       "markets": {
-        "player_pass_yds": 1562,
+        "player_pass_yds": 1564,
         "player_pass_tds": 350,
         "player_pass_attempts": 100,
         "player_pass_completions": 96,
-        "player_pass_interceptions": 172,
-        "player_rush_yds": 2718,
+        "player_pass_interceptions": 174,
+        "player_rush_yds": 2720,
         "player_rush_attempts": 138,
         "player_rush_tds": 0,
-        "player_reception_yds": 5508,
-        "player_receptions": 1866,
+        "player_reception_yds": 5506,
+        "player_receptions": 1864,
         "player_reception_tds": 0,
         "player_anytime_td": 1645
       },
       "quota": {
         "x-daily-limit": "5000",
-        "x-daily-used": "16",
-        "x-daily-remaining": "4984",
+        "x-daily-used": "26",
+        "x-daily-remaining": "4974",
         "x-daily-reset": "1793491200"
-      }
+      },
+      "injuryCoverage": "available",
+      "injuryReports": 197
     },
     {
       "sport": "CFB",
-      "total": 1313,
+      "total": 1263,
       "books": {
-        "draftkings": 341,
-        "fanduel": 597,
-        "betmgm": 116,
+        "draftkings": 316,
+        "fanduel": 587,
+        "betmgm": 101,
         "hardrock": 259
       },
       "markets": {
-        "player_pass_yds": 66,
+        "player_pass_yds": 64,
         "player_pass_tds": 52,
         "player_pass_attempts": 20,
         "player_pass_completions": 20,
@@ -122,17 +124,19 @@
         "player_rush_yds": 118,
         "player_rush_attempts": 0,
         "player_rush_tds": 0,
-        "player_reception_yds": 212,
-        "player_receptions": 108,
+        "player_reception_yds": 210,
+        "player_receptions": 112,
         "player_reception_tds": 0,
-        "player_anytime_td": 717
+        "player_anytime_td": 667
       },
       "quota": {
         "x-daily-limit": "5000",
-        "x-daily-used": "18",
-        "x-daily-remaining": "4982",
+        "x-daily-used": "29",
+        "x-daily-remaining": "4971",
         "x-daily-reset": "1793491200"
-      }
+      },
+      "injuryCoverage": "available",
+      "injuryReports": 1348
     }
   ],
   "tests": {
@@ -170,5 +174,28 @@
     }
   },
   "renderDeployment": "dep-dbj6rbnb9u1s73d6u9cg",
-  "renderSourceCommit": "abc2153546b473cb2339bbd3229e5480d6182b86"
+  "renderSourceCommit": "abc2153546b473cb2339bbd3229e5480d6182b86",
+  "frontendRuntimeSourceCommit": "0ab33d3f15114ab7ca557c24fb7d9f698a0bd525",
+  "frontendManifestSha256": "55bdf6b25af4c713dfe1ef11de59210b58ac8f716e3776dfeb05eb123589de75",
+  "productionChecks": {
+    "api": 8,
+    "browser": 12,
+    "pwa": 15
+  },
+  "productionAnalysis": {
+    "scope": "One verified matchup per bounded request; remaining rows have no invented model estimate.",
+    "checks": [
+      {
+        "eventId": "401858280",
+        "ready": true,
+        "reason": "Actual identified college-football historical plays support a conditional baseline. Current injuries, transfers and depth-chart coverage remain incomplete; calibration is not established.",
+        "simulationId": "7c5957b6-e04c-446f-b984-6da80faee6f4"
+      }
+    ],
+    "rows": 500,
+    "modeledRows": 69,
+    "simulationIds": [
+      "7c5957b6-e04c-446f-b984-6da80faee6f4"
+    ]
+  }
 }

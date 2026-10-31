@@ -1,6 +1,6 @@
 {
   "version": "9.0.0",
-  "startedAt": "2026-10-31T22:22:14.691Z",
+  "startedAt": "2026-10-31T22:42:27.433Z",
   "baseUrl": "https://gridiron-ai-gray.vercel.app",
   "mockedResponses": false,
   "physicalIphone": false,
@@ -42,33 +42,33 @@
   "sources": [
     {
       "sport": "NFL",
-      "totalResults": 14149,
+      "totalResults": 14157,
       "page": 500,
       "currentDraftKingsRows": 500,
       "bookCounts": {
-        "draftkings": 1481,
+        "draftkings": 1483,
         "fanduel": 1210,
         "betmgm": 1142,
-        "hardrock": 10318
+        "hardrock": 10322
       },
       "marketCounts": {
-        "player_pass_yds": 1562,
+        "player_pass_yds": 1564,
         "player_pass_tds": 350,
         "player_pass_attempts": 100,
         "player_pass_completions": 96,
-        "player_pass_interceptions": 172,
-        "player_rush_yds": 2718,
+        "player_pass_interceptions": 174,
+        "player_rush_yds": 2720,
         "player_rush_attempts": 138,
         "player_rush_tds": 0,
-        "player_reception_yds": 5504,
-        "player_receptions": 1866,
+        "player_reception_yds": 5506,
+        "player_receptions": 1864,
         "player_reception_tds": 0,
         "player_anytime_td": 1645
       },
       "quota": {
         "x-daily-limit": "5000",
-        "x-daily-used": "12",
-        "x-daily-remaining": "4988",
+        "x-daily-used": "26",
+        "x-daily-remaining": "4974",
         "x-daily-reset": "1793491200"
       },
       "persistence": {
@@ -76,37 +76,39 @@
         "status": "paused_capacity",
         "count": 0,
         "message": "New shared research persistence is paused to protect personal records. Published schedules can still be viewed; private saves require app sign-in."
-      }
+      },
+      "injuryCoverage": "available",
+      "injuryReports": 197
     },
     {
       "sport": "CFB",
-      "totalResults": 375,
-      "page": 375,
-      "currentDraftKingsRows": 0,
+      "totalResults": 1263,
+      "page": 500,
+      "currentDraftKingsRows": 316,
       "bookCounts": {
-        "draftkings": 0,
-        "fanduel": 23,
-        "betmgm": 116,
+        "draftkings": 316,
+        "fanduel": 587,
+        "betmgm": 101,
         "hardrock": 259
       },
       "marketCounts": {
-        "player_pass_yds": 24,
-        "player_pass_tds": 14,
+        "player_pass_yds": 64,
+        "player_pass_tds": 52,
         "player_pass_attempts": 20,
         "player_pass_completions": 20,
         "player_pass_interceptions": 0,
-        "player_rush_yds": 44,
+        "player_rush_yds": 118,
         "player_rush_attempts": 0,
         "player_rush_tds": 0,
-        "player_reception_yds": 80,
-        "player_receptions": 18,
+        "player_reception_yds": 210,
+        "player_receptions": 112,
         "player_reception_tds": 0,
-        "player_anytime_td": 178
+        "player_anytime_td": 667
       },
       "quota": {
         "x-daily-limit": "5000",
-        "x-daily-used": "14",
-        "x-daily-remaining": "4986",
+        "x-daily-used": "29",
+        "x-daily-remaining": "4971",
         "x-daily-reset": "1793491200"
       },
       "persistence": {
@@ -114,7 +116,9 @@
         "status": "paused_capacity",
         "count": 0,
         "message": "New shared research persistence is paused to protect personal records. Published schedules can still be viewed; private saves require app sign-in."
-      }
+      },
+      "injuryCoverage": "available",
+      "injuryReports": 1348
     }
   ],
   "fullAcceptancePassed": false,
@@ -124,30 +128,15 @@
       {
         "eventId": "401858280",
         "ready": true,
-        "reason": "A complete college-football simulation was calculated from actual identified historical plays. Guest output is temporary; sign in and save for durable personal history.",
+        "reason": "Actual identified college-football historical plays support a conditional baseline. Current injuries, transfers and depth-chart coverage remain incomplete; calibration is not established.",
         "simulationId": "7c5957b6-e04c-446f-b984-6da80faee6f4"
       }
     ],
-    "rows": 375,
-    "modeledRows": 44,
+    "rows": 500,
+    "modeledRows": 69,
     "simulationIds": [
       "7c5957b6-e04c-446f-b984-6da80faee6f4"
-    ],
-    "completeGameVerification": {
-      "simulations": 10000,
-      "modelVersion": "cfb-pbp-empirical-8.0.0",
-      "playerDistributions": 37,
-      "allHistogramsReconciled": true,
-      "passingReceivingReconciled": true,
-      "monteCarloInterval95": [
-        0.8182414895658418,
-        0.8331082970958253
-      ],
-      "modelInterval": [
-        0.65,
-        0.92
-      ]
-    }
+    ]
   },
   "status": "passed_scoped",
   "limitations": [
@@ -155,5 +144,8 @@
     "No private production account save/restart or physical iPhone install was tested.",
     "Whole-slate automatic simulation, calibration and complete current injury/weather adjustments are not established."
   ],
-  "finishedAt": "2026-10-31T22:22:39.878Z"
+  "finishedAt": "2026-10-31T22:42:49.300Z",
+  "verifiedDeployment": "dpl_4xRW8AsdfhTcdSixH56TeDCEh34f",
+  "verifiedSourceCommit": "0ab33d3f15114ab7ca557c24fb7d9f698a0bd525",
+  "verificationRecordedAt": "2026-10-31T22:43:32.301584+00:00"
 }

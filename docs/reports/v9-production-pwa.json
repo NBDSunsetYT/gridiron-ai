@@ -1,6 +1,6 @@
 {
   "status": "passed",
-  "startedAt": "2026-10-31T22:26:48.719Z",
+  "startedAt": "2026-10-31T22:42:35.150Z",
   "baseUrl": "https://gridiron-ai-gray.vercel.app",
   "scope": "Actual deployed PWA assets, isolated guest Chromium iPhone viewport and read-only NFL regressions.",
   "mockedResponses": false,
@@ -80,7 +80,7 @@
     "permissionsPolicy": "camera=(), microphone=(), geolocation=()"
   },
   "manifest": {
-    "name": "GRIDIRON AI — NFL Market Intelligence",
+    "name": "GRIDIRON AI \u2014 NFL Market Intelligence",
     "linkedFromProductionHtml": true,
     "display": "standalone",
     "startUrl": "/",
@@ -155,7 +155,7 @@
   "nfl": {
     "games": 61,
     "sampleGameId": "2026_08_CAR_GB",
-    "checkedAt": "2026-10-31T22:26:51.732Z",
+    "checkedAt": "2026-10-31T22:42:36.519Z",
     "cacheControl": "public, max-age=0",
     "newSimulationsRequested": false
   },
@@ -198,5 +198,8 @@
     "Optional user-approved encrypted device history was not created or decrypted.",
     "Missing authorized DraftKings feed and general language-model credentials remain actual integration limitations."
   ],
-  "finishedAt": "2026-10-31T22:26:53.798Z"
+  "finishedAt": "2026-10-31T22:42:38.878Z",
+  "verifiedDeployment": "dpl_4xRW8AsdfhTcdSixH56TeDCEh34f",
+  "verifiedSourceCommit": "0ab33d3f15114ab7ca557c24fb7d9f698a0bd525",
+  "verificationRecordedAt": "2026-10-31T22:43:32.302212+00:00"
 }
