@@ -1,0 +1,242 @@
+{
+  "status": "partial",
+  "fullScannerAcceptancePassed": false,
+  "scope": "saved_partial_public_research",
+  "startedAt": "2026-10-31T06:11:52.029Z",
+  "baseUrl": "https://gridiron-ai-gray.vercel.app",
+  "version": "7.0.0",
+  "guest": true,
+  "accountsCreated": false,
+  "financialWrites": false,
+  "csvUploads": false,
+  "syntheticProductionData": false,
+  "physicalIphoneInstallationTested": false,
+  "checks": [
+    {
+      "name": "The actual v7 guest opens published NFL games with persistent data and backend complete-game compute, without a provider dashboard",
+      "status": "passed"
+    },
+    {
+      "name": "The primary Analyze All NFL Markets action uses DraftKings Predictions and honestly withholds unavailable contracts without a silent alternative",
+      "status": "passed"
+    },
+    {
+      "name": "The preserved player-prop API also defaults to DraftKings Predictions instead of silently reading alternative-platform snapshots",
+      "status": "passed"
+    },
+    {
+      "name": "Traditional sportsbook substitutions, unsupported definitions, setup payloads and cross-origin mutations are rejected",
+      "status": "passed"
+    },
+    {
+      "name": "The separately named alternative is analyzed only after an explicit platform opt-in, with no uploaded data or manual simulation configuration",
+      "status": "passed"
+    },
+    {
+      "name": "Actual saved partial game/player research remains inspectable; full-slate scanner acceptance is explicitly blocked",
+      "status": "passed"
+    },
+    {
+      "name": "A saved game contract reconciles its immutable threshold frequencies; the unavailable current-input game audit is explicitly identified",
+      "status": "passed"
+    },
+    {
+      "name": "The preserved player-prop engine maps an exact NFL player and counts the exact contract threshold from coherent full-game samples",
+      "status": "passed"
+    },
+    {
+      "name": "Game/category/outcome filters and completed snapshot pagination retain exact mappings without duplicate IDs",
+      "status": "passed"
+    },
+    {
+      "name": "Each ranking includes only actual supported metrics; absent calibration, injury effects or verified price changes remain insufficient evidence",
+      "status": "passed"
+    },
+    {
+      "name": "Independent HTTPS reads reopen immutable game research and the public assistant explains actual source-cited evidence without creating private history",
+      "status": "passed"
+    },
+    {
+      "name": "Historical metrics stay evidence-based and personal saving, conversations, combinations and finances remain authenticated",
+      "status": "passed"
+    }
+  ],
+  "primary": {
+    "provider": "DraftKings Predictions",
+    "status": "unavailable",
+    "message": "An authorized DraftKings Predictions NFL event-contract feed is not connected. No alternative market prices or alternative simulations are substituted. You can browse verified NFL games or explicitly select a separately labelled exchange.",
+    "totalResults": 0,
+    "responseMs": 467,
+    "actualDraftKingsContractComparisonVerified": false,
+    "limitation": "No authorized DraftKings Predictions feed is connected. The primary button reports this directly and queues no substitute platform research."
+  },
+  "alternativeScanInitiation": "Read-only resumption of the exact previously journaled explicit Kalshi alternative scan",
+  "runId": "43d3efb2-599e-4d19-92a8-bc66fb528e78",
+  "lastProgress": {
+    "phase": "Research paused; saved snapshots remain available"
+  },
+  "lastStatus": "failed",
+  "blockedReason": "New public research is paused to preserve personal-record storage. Saved research and Wallet remain available; storage capacity needs an operator review.",
+  "alternative": {
+    "provider": "Kalshi",
+    "status": "failed",
+    "totalResults": 5400,
+    "progress": {
+      "phase": "Research paused; saved snapshots remain available"
+    },
+    "providers": []
+  },
+  "gameContract": {
+    "id": "2237c74455e312b8227a4785c50f4b00413b2c773399def8cfbc4ec3328b1c18",
+    "category": "teamTotal",
+    "threshold": 42.5,
+    "operator": "gt",
+    "side": "NO",
+    "rawProbability": 1,
+    "settlementEstimate": null,
+    "completeGameAudit": {
+      "status": "unavailable_for_current_inputs",
+      "savedSnapshotFrequencyCheck": "passed",
+      "simulationId": "e44099d7-b7d2-4c17-8325-3c88b2d2fc3e",
+      "reason": "Capacity-paused partial mode verifies the immutable saved threshold frequencies without claiming a newly current full-game analysis."
+    }
+  },
+  "researchId": "007d4145fc68289b75fa2f9fa693843e5c28f18ed5941dac1f867ba98b193ff3",
+  "analysisId": "edc7aedb-83b3-49b4-a864-9e85c16f82c9",
+  "game": {
+    "id": "2026_08_BAL_BUF",
+    "home": "BUF",
+    "away": "BAL",
+    "startTime": "2026-11-01T18:00:00.000Z"
+  },
+  "sample": {
+    "researchId": "007d4145fc68289b75fa2f9fa693843e5c28f18ed5941dac1f867ba98b193ff3",
+    "gameId": "2026_08_BAL_BUF",
+    "simulationId": "edc7aedb-83b3-49b4-a864-9e85c16f82c9",
+    "playerId": "00-0035689",
+    "playerName": "Dawson Knox",
+    "category": "receivingYards",
+    "threshold": 50,
+    "operator": "gte",
+    "side": "YES",
+    "rawProbability": 0,
+    "calibratedProbability": null
+  },
+  "pagination": {
+    "first": 60,
+    "second": 60,
+    "pinned": "43d3efb2-599e-4d19-92a8-bc66fb528e78"
+  },
+  "explanation": {
+    "method": "evidence_brief",
+    "generatedByAI": false,
+    "citations": 15
+  },
+  "performance": {
+    "asOf": "2026-10-31T06:00:07.216Z",
+    "drift": {},
+    "scope": "Prospective archived player-contract research whose kickoff preceded this evaluation by at least six hours; separate from upcoming predictions, the historical home-win benchmark and personal wagering performance.",
+    "byDate": {},
+    "status": "insufficient_evidence",
+    "message": "Insufficient prospective settled player-contract evidence. Upcoming forecasts are not historical observations. Calibration, Brier scores and market superiority are not invented.",
+    "overall": {
+      "n": 0,
+      "raw": null,
+      "games": 0,
+      "market": null,
+      "contracts": 0,
+      "calibrated": null,
+      "marketComparison": {
+        "rawOnCommon": null,
+        "marketOnCommon": null,
+        "commonSampleSize": 0,
+        "calibratedOnCommon": null
+      }
+    },
+    "windows": {
+      "days7": {
+        "n": 0,
+        "raw": null,
+        "games": 0,
+        "market": null,
+        "contracts": 0,
+        "calibrated": null,
+        "marketComparison": {
+          "rawOnCommon": null,
+          "marketOnCommon": null,
+          "commonSampleSize": 0,
+          "calibratedOnCommon": null
+        }
+      },
+      "days30": {
+        "n": 0,
+        "raw": null,
+        "games": 0,
+        "market": null,
+        "contracts": 0,
+        "calibrated": null,
+        "marketComparison": {
+          "rawOnCommon": null,
+          "marketOnCommon": null,
+          "commonSampleSize": 0,
+          "calibratedOnCommon": null
+        }
+      },
+      "allTime": {
+        "n": 0,
+        "raw": null,
+        "games": 0,
+        "market": null,
+        "contracts": 0,
+        "calibrated": null,
+        "marketComparison": {
+          "rawOnCommon": null,
+          "marketOnCommon": null,
+          "commonSampleSize": 0,
+          "calibratedOnCommon": null
+        }
+      }
+    },
+    "coverage": {
+      "games": 0,
+      "policy": "Every latest eligible forecast older than six hours needs a verified binary or void outcome. Unresolved cases block calibration; six hours is a maturation grace period, not proof a game finished.",
+      "promotionBlocked": false,
+      "unresolvedPredictions": 0,
+      "selectedMaturePredictions": 0,
+      "verifiedCompletePredictions": 0
+    },
+    "minimums": {
+      "trainingGames": 40,
+      "validationGames": 20,
+      "trainingEachOutcome": 30,
+      "trainingPredictions": 200,
+      "validationEachOutcome": 20,
+      "validationPredictions": 100
+    },
+    "protocol": "prop-prospective-game-block-6.0.0",
+    "selection": "Latest eligible snapshot per exact contract and model version; canonical YES target; no outcome-dependent selection.",
+    "updatedAt": "2026-10-31T06:00:07.216Z",
+    "byCategory": {},
+    "sampleSize": 0,
+    "limitations": [
+      "Game-block intervals account for within-game dependence, not source errors, model misspecification or every selection bias.",
+      "Only verified prospective binary outcomes enter accuracy/calibration metrics. Voids and retrospective imports remain separately counted.",
+      "Market comparisons use the same eligible contracts; unavailable prices are not inferred."
+    ],
+    "byModelVersion": {},
+    "excludedCounts": {},
+    "totalSnapshots": 0,
+    "maturationHours": 6,
+    "eligibleResolved": 0,
+    "snapshotCountScope": "mature_events_only",
+    "calibratedSampleSize": 0
+  },
+  "partialResearchChecksPassed": true,
+  "finishedAt": "2026-10-31T06:12:16.002Z",
+  "limitations": [
+    "Direct DraftKings contract retrieval is verified only if an authorized provider actually returned its contracts; an unavailable feed is not replaced.",
+    "The explicitly opted-in Kalshi run tests a separate platform, not equivalent DraftKings prices or settlement rules.",
+    "Raw simulations and model sensitivity are not validated calibration; unsupported costs or settlement cases withhold unconditional value.",
+    "Physical iPhone Safari installation, authenticated account workflows and real generative assistant testing are separate checks."
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "checkedAt": "2026-10-31T05:46:35.137068+00:00",
+  "provider": "Vercel",
+  "plan": "hobby",
+  "projectId": "prj_ufIV2AZJcQAW7lNtQmH6hcyrWamH",
+  "deploymentId": "dpl_6sQ8x6M3UTffgCxswH9pWzh8LpTN",
+  "state": "READY",
+  "version": "7.0.0",
+  "url": "https://gridiron-ai-gray.vercel.app",
+  "uniqueUrl": "https://gridiron-7dt5j9zse-gridiron5.vercel.app",
+  "sourceCommit": "929a9f3eb88828d20197e00c8e3ce3663e188d6f",
+  "sourceManifestSha256": "a3c7c7fd64b7492a79d0c86785ed423825845f410c0d440cc833ce46f9f01769",
+  "runtimeFiles": 189,
+  "runtimeBytes": 8248094,
+  "committedRuntimeCorrespondence": "Every deployed runtime file equals the published source commit byte-for-byte.",
+  "sourceUpload": "Authorized native SHA1 upload to the existing project; no Git App reconnection, environment replacement or paid-tier changes.",
+  "previousReadyDeploymentId": "dpl_HfYac77rrJtYri1a6bAoB1NC5jye",
+  "build": {
+    "status": "passed",
+    "reportedDuration": "2m",
+    "python": "3.12",
+    "services": "Next.js web/API and privately bound Python/FastAPI compute"
+  },
+  "deepHealth": {
+    "status": 200,
+    "database": "reachable",
+    "simulations": "reachable",
+    "assistantProvider": "openai",
+    "assistantGenerationVerified": false,
+    "assistantStatus": "missing_credentials"
+  },
+  "initialErrorFatalLogGroups": 0,
+  "pwa": {
+    "home": 200,
+    "manifest": 200,
+    "serviceWorker": 200,
+    "standalone": true,
+    "icons": [
+      192,
+      512
+    ],
+    "appleTouchIconLinked": true,
+    "safeAreaViewport": true,
+    "privateApisExcludedFromCaching": true,
+    "authenticatedHtmlNotCached": true,
+    "physicalIphoneInstallationTested": false
+  },
+  "render": {
+    "accessibleWorkspaces": 1,
+    "existingServices": 0,
+    "serviceCreated": false,
+    "billingStatusRetested": false
+  },
+  "limitations": [
+    "Direct DraftKings Predictions live contracts are unavailable without authorized data access.",
+    "No live general LLM generation was verified; deterministic evidence and account reports are separate.",
+    "Production acceptance beyond these metadata/health checks is recorded separately."
+  ],
+  "mandatoryHotfix": "The preserved default player-prop GET also selects DraftKings Predictions; missing credentials never silently return an alternative.",
+  "defaultPlayerPropPolicyVerified": {
+    "status": 200,
+    "primaryProvider": "DraftKings Predictions",
+    "availability": "unavailable",
+    "results": 0,
+    "runId": null
+  }
+}

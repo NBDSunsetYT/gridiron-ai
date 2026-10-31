@@ -1,0 +1,30 @@
+{
+  "status": "passed",
+  "startedAt": "2026-10-31T06:18:50.335Z",
+  "baseUrl": "https://gridiron-ai-gray.vercel.app",
+  "scope": "Exactly two pre-provisioned, server-marked disposable V6 QA identities",
+  "credentialsIncluded": false,
+  "realUserDataChanged": false,
+  "checks": [
+    {
+      "name": "Both exact UUIDs and reserved test emails match the server-controlled QA marker before any deletion",
+      "status": "passed"
+    },
+    {
+      "name": "Only the two authenticated QA owners are deleted through the session-revoking Edge Function",
+      "status": "passed"
+    },
+    {
+      "name": "Old sessions and passwords cannot reopen either removed test identity",
+      "status": "passed"
+    },
+    {
+      "name": "Shared real NFL research remains available after isolated QA cleanup",
+      "status": "passed"
+    }
+  ],
+  "finishedAt": "2026-10-31T06:18:55.884Z",
+  "limitations": [
+    "Aggregate SQL verification of the unchanged non-QA identity and removal of all QA-owned rows is recorded separately by the operator."
+  ]
+}

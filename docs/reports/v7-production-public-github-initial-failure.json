@@ -1,0 +1,63 @@
+{
+  "status": "failed",
+  "startedAt": "2026-10-31T05:43:02.305Z",
+  "baseUrl": "https://gridiron-ai-gray.vercel.app",
+  "version": "7.0.0",
+  "guest": true,
+  "accountsCreated": false,
+  "financialWrites": false,
+  "csvUploads": false,
+  "syntheticProductionData": false,
+  "physicalIphoneInstallationTested": false,
+  "checks": [
+    {
+      "name": "The actual v7 guest opens published NFL games with persistent data and backend complete-game compute, without a provider dashboard",
+      "status": "passed"
+    },
+    {
+      "name": "The primary Analyze All NFL Markets action uses DraftKings Predictions and honestly withholds unavailable contracts without a silent alternative",
+      "status": "passed"
+    },
+    {
+      "name": "The preserved player-prop API also defaults to DraftKings Predictions instead of silently reading alternative-platform snapshots",
+      "status": "passed"
+    },
+    {
+      "name": "Traditional sportsbook substitutions, unsupported definitions, setup payloads and cross-origin mutations are rejected",
+      "status": "passed"
+    },
+    {
+      "name": "The separately named alternative is analyzed only after an explicit platform opt-in, with no uploaded data or manual simulation configuration",
+      "status": "passed"
+    }
+  ],
+  "primary": {
+    "provider": "DraftKings Predictions",
+    "status": "unavailable",
+    "message": "An authorized DraftKings Predictions NFL event-contract feed is not connected. No alternative market prices or alternative simulations are substituted. You can browse verified NFL games or explicitly select a separately labelled exchange.",
+    "totalResults": 0,
+    "responseMs": 487,
+    "actualDraftKingsContractComparisonVerified": false,
+    "limitation": "No authorized DraftKings Predictions feed is connected. The primary button reports this directly and queues no substitute platform research."
+  },
+  "alternativeScanInitiation": "Read-only resumption of the exact previously journaled explicit Kalshi alternative scan",
+  "runId": "43d3efb2-599e-4d19-92a8-bc66fb528e78",
+  "lastProgress": {
+    "phase": "Simulating LV at NYJ: 10,000 complete games",
+    "total": 10434,
+    "completed": 4206,
+    "gamesTotal": 14,
+    "gamesComplete": 5
+  },
+  "lastStatus": "failed",
+  "finishedAt": "2026-10-31T05:43:45.890Z",
+  "error": "Saved research storage is temporarily unavailable. Existing contracts and snapshots are preserved; an empty response is not evidence that no markets exist.",
+  "execution": {
+    "provider": "GitHub Actions hosted runner",
+    "runId": 41173607786,
+    "jobId": 124456504063,
+    "url": "https://github.com/NBDSunsetYT/gridiron-ai/actions/runs/41173607786",
+    "applicationSourceCommit": "929a9f3eb88828d20197e00c8e3ce3663e188d6f",
+    "mockedResponses": false
+  }
+}

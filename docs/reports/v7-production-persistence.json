@@ -1,0 +1,42 @@
+{
+  "status": "passed",
+  "startedAt": "2026-10-31T06:15:32.493Z",
+  "baseUrl": "https://gridiron-ai-gray.vercel.app",
+  "scope": "Only two exact server-marked disposable QA identities",
+  "applicationDataWrites": false,
+  "authenticationSessionsCreated": true,
+  "credentialsIncluded": false,
+  "realUserDataChanged": false,
+  "physicalIphoneInstallationTested": false,
+  "checks": [
+    {
+      "name": "The actual production v7 deployment reaches the same persistent Supabase project and private complete-game backend",
+      "status": "passed"
+    },
+    {
+      "name": "Fresh post-deployment app sessions restore the exact prior cash, exposure, deposits, withdrawals and realized P/L without cross-owner access",
+      "status": "passed"
+    },
+    {
+      "name": "Contract percentage pricing, fees, quantity and actual settlement remain unchanged across the software deployment",
+      "status": "passed"
+    },
+    {
+      "name": "Saved simulations and predictions persist while the actual Supabase Data API independently enforces private row ownership",
+      "status": "passed"
+    },
+    {
+      "name": "Private research and calculated account-report conversation history survives the upgrade with its original provenance",
+      "status": "passed"
+    },
+    {
+      "name": "A further independent session reopens the same exact personal records",
+      "status": "passed"
+    }
+  ],
+  "finishedAt": "2026-10-31T06:15:41.881Z",
+  "limitations": [
+    "Application data reads and genuine confirmed QA authentication are tested; no real personal identity or finances are changed.",
+    "Browser reopening, physical iPhone installation, email delivery and live generative AI are separate checks."
+  ]
+}

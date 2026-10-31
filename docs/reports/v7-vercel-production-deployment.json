@@ -1,0 +1,93 @@
+{
+  "checkedAt": "2026-10-31T06:24:26.826142+00:00",
+  "provider": "Vercel",
+  "plan": "hobby",
+  "projectId": "prj_ufIV2AZJcQAW7lNtQmH6hcyrWamH",
+  "deploymentId": "dpl_C1pqKr9AceYSeq19LL2XkNWZBp4f",
+  "state": "READY",
+  "version": "7.0.0",
+  "url": "https://gridiron-ai-gray.vercel.app",
+  "uniqueUrl": "https://gridiron-8rxbduwc5-gridiron5.vercel.app",
+  "sourceCommit": "09b4aec7d2747f67cd7f8263ef0dac1c9c459d23",
+  "sourceManifestSha256": "48d823550236e603242a5e6cc3ef4f659c68ff66f7a55c7ff24ef82f47ecd56c",
+  "runtimeFiles": 189,
+  "runtimeBytes": 8247874,
+  "committedRuntimeCorrespondence": "Every deployed runtime file equals the published source commit byte-for-byte.",
+  "sourceUpload": "Authorized native SHA1 upload to the existing project; no Git App reconnection, environment replacement or paid-tier changes.",
+  "previousReadyDeploymentId": "dpl_6sQ8x6M3UTffgCxswH9pWzh8LpTN",
+  "build": {
+    "status": "passed",
+    "reportedDuration": "2m",
+    "python": "3.12",
+    "services": "Next.js web/API and privately bound Python/FastAPI compute"
+  },
+  "deepHealth": {
+    "status": 200,
+    "database": "reachable",
+    "simulations": "reachable",
+    "assistantProvider": "openai",
+    "assistantGenerationVerified": false,
+    "assistantStatus": "missing_credentials"
+  },
+  "pwa": {
+    "home": 200,
+    "manifest": 200,
+    "serviceWorker": 200,
+    "standalone": true,
+    "icons": [
+      192,
+      512
+    ],
+    "appleTouchIconLinked": true,
+    "safeAreaViewport": true,
+    "privateApisExcludedFromCaching": true,
+    "authenticatedHtmlNotCached": true,
+    "physicalIphoneInstallationTested": false
+  },
+  "render": {
+    "accessibleWorkspaces": 1,
+    "existingServices": 0,
+    "serviceCreated": false,
+    "billingStatusRetested": false
+  },
+  "limitations": [
+    "Direct DraftKings Predictions live contracts are unavailable without authorized data access.",
+    "No live general LLM generation was verified; deterministic evidence and account reports are separate.",
+    "Production acceptance beyond these metadata/health checks is recorded separately."
+  ],
+  "mandatoryHotfix": "The preserved default player-prop GET also selects DraftKings Predictions; missing credentials never silently return an alternative.",
+  "defaultPlayerPropPolicyVerified": {
+    "status": 200,
+    "primaryProvider": "DraftKings Predictions",
+    "availability": "unavailable",
+    "results": 0,
+    "runId": null
+  },
+  "acceptanceStatus": "deployed_partial_external_capacity_block",
+  "requiredRecoveryFixes": [
+    "Only verified current input-hash model jobs are fetched, without unfiltered historical-model decompression.",
+    "Storage-capacity failures do not automatically create another research run.",
+    "A newer failed empty run retains access to the saved prior result set."
+  ],
+  "publicResearch": {
+    "fullScannerAcceptancePassed": false,
+    "blockedBy": "Public storage reserve within existing free database",
+    "savedRunId": "43d3efb2-599e-4d19-92a8-bc66fb528e78",
+    "savedOutcomeRows": 5400,
+    "latestEmptyFailedRunId": "f4dc67bc-20dc-4346-a5dd-5d976ef60595",
+    "historicalPredictionsDeleted": false,
+    "guardWaived": false,
+    "paidChangeInitiated": false
+  },
+  "productionChecks": {
+    "publicScopedApi": 12,
+    "publicChromium": 14,
+    "publicWebkit": 14,
+    "privateChromium": 6,
+    "privateWebkit": 6,
+    "ordinaryPrivatePersistence": 6,
+    "qaCleanup": 4,
+    "physicalIphoneInstallationTested": false
+  },
+  "runtimeErrorAssessment": "Earlier57014 timeout addressed by bounded current-hash reads; expected54000 public-capacity rejection remains documented. Empty initial error logs do not establish a passed full scan."
+}

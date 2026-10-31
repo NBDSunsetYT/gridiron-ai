@@ -1,0 +1,99 @@
+{
+  "status": "passed",
+  "baseUrl": "https://gridiron-ai-gray.vercel.app",
+  "version": "7.0.0",
+  "transport": "Actual HTTPS from existing Supabase pg_net using official Supabase Auth password-grant JWTs as normal application cookies and genuine Data API Authorization; not browser emulation",
+  "scope": "Only two exact server-marked disposable QA identities; no original user records read",
+  "credentialsIncluded": false,
+  "applicationDataWrites": false,
+  "authenticationSessionsCreated": true,
+  "checks": [
+    {
+      "name": "Official Supabase authentication verifies exact QA identities and server-controlled marker",
+      "status": "passed"
+    },
+    {
+      "name": "Post-upgrade app ledger retains original 50800 cash, 5800 realized P/L and no pending exposure before the separate fractional test",
+      "status": "passed"
+    },
+    {
+      "name": "Legacy price40c quantity100 fee200c actualstake4200c payout10000c preserved without sportsbook odds conversion",
+      "status": "passed"
+    },
+    {
+      "name": "aProp",
+      "status": "passed",
+      "httpStatus": 200,
+      "transportError": false
+    },
+    {
+      "name": "aRest",
+      "status": "passed",
+      "httpStatus": 200,
+      "transportError": false
+    },
+    {
+      "name": "bLedger",
+      "status": "passed",
+      "httpStatus": 200,
+      "transportError": false
+    },
+    {
+      "name": "aSimulation",
+      "status": "passed",
+      "httpStatus": 200,
+      "transportError": false
+    },
+    {
+      "name": "bDeniedProp",
+      "status": "passed",
+      "httpStatus": 404,
+      "transportError": false
+    },
+    {
+      "name": "bRestDenied",
+      "status": "passed",
+      "httpStatus": 200,
+      "transportError": false
+    },
+    {
+      "name": "guestRestDenied",
+      "status": "passed",
+      "httpStatus": 401,
+      "transportError": false
+    },
+    {
+      "name": "bDeniedConversation",
+      "status": "passed",
+      "httpStatus": 404,
+      "transportError": false
+    },
+    {
+      "name": "aResearchConversation",
+      "status": "passed",
+      "httpStatus": 200,
+      "transportError": false
+    },
+    {
+      "name": "aFinancialConversation",
+      "status": "passed",
+      "httpStatus": 200,
+      "transportError": false
+    }
+  ],
+  "originalFixture": {
+    "cashBalanceCents": 50800,
+    "realizedPlCents": 5800,
+    "totalDepositsCents": 10000,
+    "totalWithdrawalsCents": 15000,
+    "netCashContributedCents": 45000,
+    "pendingExposureCents": 0
+  },
+  "limitations": [
+    "Normal app sign-in response could not be received through pg_net because of an HTTP2 framing failure; official password-grant fallback was used without resetting identities or fabricating tokens.",
+    "This is backend HTTPS authentication, persistence and RLS verification; it is not a production browser or physical iPhone test.",
+    "The separately journaled one-cent fractional test is not included in this read-only acceptance report."
+  ],
+  "verifiedAt": "2026-10-31T05:52:55Z",
+  "verificationWindow": "Actual post-upgrade HTTPS checks, with the initial personal balance verified before the separate one-cent fractional test"
+}

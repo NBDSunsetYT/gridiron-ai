@@ -1,0 +1,93 @@
+{
+  "status": "passed",
+  "startedAt": "2026-10-31T06:20:03.337Z",
+  "baseUrl": "https://gridiron-ai-gray.vercel.app",
+  "engine": "webkit",
+  "scope": "saved_partial_public_research",
+  "fullScannerAcceptancePassed": false,
+  "mockedResponses": false,
+  "guest": true,
+  "accountsCreated": false,
+  "financialWrites": false,
+  "alternativeScanRequests": 0,
+  "physicalIphoneInstallationTested": false,
+  "checks": [
+    {
+      "profile": "desktop-webkit",
+      "name": "The actual v7 guest Home shows NFL games, both one-tap research actions and Home | NFL | Props | AI | Wallet without technical setup",
+      "status": "passed"
+    },
+    {
+      "profile": "desktop-webkit",
+      "name": "A single Home tap calls the real DraftKings Predictions backend and shows its unavailable authorized feed without substitute quotes or a fake research job",
+      "status": "passed"
+    },
+    {
+      "profile": "desktop-webkit",
+      "name": "Only explicit alternative selection opens separately named real Kalshi research; the primary platform stays distinct",
+      "status": "passed"
+    },
+    {
+      "profile": "desktop-webkit",
+      "name": "Exact player/game/side filters show actual probabilities, coherent distributions, source rules, separate uncertainty and honest uncalibrated evidence",
+      "status": "passed"
+    },
+    {
+      "profile": "desktop-webkit",
+      "name": "A real cited explanation remains attached to the user-selected immutable contract while automatic updates continue",
+      "status": "passed"
+    },
+    {
+      "profile": "desktop-webkit",
+      "name": "Private Wallet and conversations require GRIDIRON app identity while public research creates no personal records or wagers",
+      "status": "passed"
+    },
+    {
+      "profile": "desktop-webkit",
+      "name": "The actual offline PWA shell works without caching private APIs or authenticated HTML; the mobile interface fits its safe viewport",
+      "status": "passed"
+    },
+    {
+      "profile": "iphone-webkit",
+      "name": "The actual v7 guest Home shows NFL games, both one-tap research actions and Home | NFL | Props | AI | Wallet without technical setup",
+      "status": "passed"
+    },
+    {
+      "profile": "iphone-webkit",
+      "name": "A single Home tap calls the real DraftKings Predictions backend and shows its unavailable authorized feed without substitute quotes or a fake research job",
+      "status": "passed"
+    },
+    {
+      "profile": "iphone-webkit",
+      "name": "Only explicit alternative selection opens separately named real Kalshi research; the primary platform stays distinct",
+      "status": "passed"
+    },
+    {
+      "profile": "iphone-webkit",
+      "name": "Exact player/game/side filters show actual probabilities, coherent distributions, source rules, separate uncertainty and honest uncalibrated evidence",
+      "status": "passed"
+    },
+    {
+      "profile": "iphone-webkit",
+      "name": "A real cited explanation remains attached to the user-selected immutable contract while automatic updates continue",
+      "status": "passed"
+    },
+    {
+      "profile": "iphone-webkit",
+      "name": "Private Wallet and conversations require GRIDIRON app identity while public research creates no personal records or wagers",
+      "status": "passed"
+    },
+    {
+      "profile": "iphone-webkit",
+      "name": "The actual offline PWA shell works without caching private APIs or authenticated HTML; the mobile interface fits its safe viewport",
+      "status": "passed"
+    }
+  ],
+  "apiFailures": [],
+  "finishedAt": "2026-10-31T06:20:25.305Z",
+  "limitations": [
+    "Actual desktop and iPhone-sized browser engines are tested, not a physical iPhone Safari/Home Screen installation.",
+    "Unavailable authorized DraftKings access is explicitly tested as unavailable; real alternative contracts do not establish DraftKings availability.",
+    "Authenticated writes and live LLM generation are tested separately."
+  ]
+}

@@ -57,3 +57,7 @@ The pre-upgrade checkpoint includes a verified Git bundle and an encrypted, cons
 ## Current combination scope
 
 The preserved authenticated joint-outcome lab supports eligible player outcomes from the same coherent simulated game. Unsupported game-contract combinations are withheld. A joint simulation probability does not establish that DraftKings will accept a combined purchase or pay a traditional sportsbook parlay. Actual combination payouts remain unavailable without verified platform combination and settlement terms.
+
+## Current capacity block
+
+The free database currently occupies about 450.22MB and its 450MB public-research reserve guard has activated. New public simulations/research writes are paused; saved research and Wallet remain available. Live immutable predictions and quote history account for most usage, and the safe ordinary maintenance reclaimed only about 196KB. Do not delete history or waive the financial reserve to make an acceptance test green. Completing the full slate needs additional persistent capacity or an approved durable archive architecture. Current official Supabase Pro pricing starts at $25/month with 8GB database capacity under its published terms; billing/account-owner authorization is required. No paid plan was enabled.

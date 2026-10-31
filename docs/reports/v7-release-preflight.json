@@ -1,8 +1,8 @@
 {
-  "checkedAt": "2026-10-31T05:11:54.943715+00:00",
+  "checkedAt": "2026-10-31T06:24:26.826379+00:00",
   "application": "https://gridiron-ai-gray.vercel.app",
   "targetVersion": "7.0.0",
-  "status": "source_prepared_not_deployed",
+  "status": "deployed_partial_external_capacity_block",
   "existingVercelProject": {
     "projectId": "prj_ufIV2AZJcQAW7lNtQmH6hcyrWamH",
     "teamId": "team_GWp3QPUQgohJPqe7ppe9pYmS",
@@ -25,12 +25,26 @@
     "v6RecoveryBranch": "recovery/v6.0.0",
     "v6RecoveryCommit": "d858b6896be1b108751d916cac39aa0edb2ecbd1",
     "v6Ci": "success",
-    "v7MainPublished": false
+    "v7MainPublished": true,
+    "v7Commit": "09b4aec7d2747f67cd7f8263ef0dac1c9c459d23"
   },
   "pwa": {
     "version": "7",
     "localAssetPrivacyAndHealthChecks": 14,
     "physicalIphoneInstallationTested": false
   },
-  "secretValuesIncluded": false
+  "secretValuesIncluded": false,
+  "fullScannerAcceptancePassed": false,
+  "storage": {
+    "plan": "free",
+    "includedDatabaseMb": 500,
+    "publicReserveBoundaryMb": 450,
+    "observedDatabaseMb": 450.22,
+    "savedResearchOutcomeRows": 5400,
+    "newResearchPaused": true,
+    "privateWalletVerified": true,
+    "historyDeleted": false,
+    "paidChangeInitiated": false
+  },
+  "productionBrowserChecks": 40
 }

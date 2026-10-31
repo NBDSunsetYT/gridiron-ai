@@ -1,0 +1,44 @@
+{
+  "status": "passed",
+  "startedAt": "2026-10-31T06:13:27.223Z",
+  "baseUrl": "https://gridiron-ai-gray.vercel.app",
+  "profile": "iPhone13 webkit emulation",
+  "engine": "webkit",
+  "accountsCreated": false,
+  "financialWrites": "Explicit SYNTHETIC QA void/refund workflow only",
+  "researchWrites": "Private account-report conversation only",
+  "credentialsIncluded": false,
+  "physicalIphoneInstallationTested": false,
+  "checks": [
+    {
+      "name": "GRIDIRON sign-in opens the real private Wallet with secure cookies",
+      "status": "passed"
+    },
+    {
+      "name": "Wallet Record Wager → Enter Result → Updated P/L records an exact contract fill and actual void refund without sportsbook odds conversion",
+      "status": "passed"
+    },
+    {
+      "name": "The private AI screen transparently calculates recorded withdrawals and P/L, streams the real report and exposes its source",
+      "status": "passed"
+    },
+    {
+      "name": "Saved private game questions and explanations open in the consumer interface",
+      "status": "passed"
+    },
+    {
+      "name": "A fresh browser session reopens the exact same persistent Wallet",
+      "status": "passed"
+    },
+    {
+      "name": "Another fresh sign-in retains the same private conversation and messages",
+      "status": "passed"
+    }
+  ],
+  "version": "7.0.0",
+  "finishedAt": "2026-10-31T06:13:48.380Z",
+  "limitations": [
+    "Uses only the explicitly provisioned disposable QA identity; all financial fixtures are clearly synthetic and no wager is placed externally.",
+    "Tests real iPhone-sized webkit UI and HTTPS app sessions, not a physical Safari device."
+  ]
+}

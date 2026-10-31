@@ -1,0 +1,39 @@
+{
+  "status": "passed",
+  "verifiedAt": "2026-10-31T06:22:18Z",
+  "projectId": "qdtdjbapdipopncklsdb",
+  "scope": "Exactly two pre-provisioned server-marked disposable QA identities, removed through authenticated application deletion and the existing session-revoking Edge Function",
+  "originalUserDataChanged": false,
+  "credentialsIncluded": false,
+  "checks": [
+    {
+      "name": "Original non-QA identity remains; total Auth users returns to one",
+      "status": "passed"
+    },
+    {
+      "name": "Both exact disposable QA Auth identities are absent",
+      "status": "passed"
+    },
+    {
+      "name": "All matching QA-owned rows across59 discovered public/Auth table-family ownership columns are absent",
+      "status": "passed"
+    },
+    {
+      "name": "The explicit public research run retains all5400 saved outcomes",
+      "status": "passed"
+    },
+    {
+      "name": "Only owned transient native HTTP responses were cleared; tokens and QA credentials removed from private tool memory",
+      "status": "passed"
+    }
+  ],
+  "verifiedCounts": {
+    "allAuthUsers": 1,
+    "publicRunRows": 5400,
+    "exactQaAuthUsers": 0,
+    "nonemptyQaFamilies": [],
+    "originalNonQaUsers": 1,
+    "remainingQaOwnedRows": 0,
+    "checkedOwnedTableFamilies": 59
+  }
+}

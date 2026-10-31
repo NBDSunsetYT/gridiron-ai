@@ -1,0 +1,59 @@
+{
+  "checkedAt": "2026-10-31T05:29:42.438112+00:00",
+  "provider": "Vercel",
+  "plan": "hobby",
+  "projectId": "prj_ufIV2AZJcQAW7lNtQmH6hcyrWamH",
+  "deploymentId": "dpl_HfYac77rrJtYri1a6bAoB1NC5jye",
+  "state": "READY",
+  "version": "7.0.0",
+  "url": "https://gridiron-ai-gray.vercel.app",
+  "uniqueUrl": "https://gridiron-9urcvpbaw-gridiron5.vercel.app",
+  "sourceCommit": "ac90da1733be9f3de288f65e1f6d9a006aa7e0e4",
+  "sourceManifestSha256": "74733031fbdce2ccb803b4e85b624e71b93f89f85d534864b3fb5fea60203cc4",
+  "runtimeFiles": 189,
+  "runtimeBytes": 8248036,
+  "committedRuntimeCorrespondence": "Every deployed runtime file equals the published source commit byte-for-byte.",
+  "sourceUpload": "Authorized native SHA1 upload to the existing project; no Git App reconnection, environment replacement or paid-tier changes.",
+  "previousReadyDeploymentId": "dpl_7QgmzLRyZ4LPqJYnXEnSqyn5v1qU",
+  "build": {
+    "status": "passed",
+    "reportedDuration": "2m",
+    "python": "3.12",
+    "services": "Next.js web/API and privately bound Python/FastAPI compute"
+  },
+  "deepHealth": {
+    "status": 200,
+    "database": "reachable",
+    "simulations": "reachable",
+    "assistantProvider": "openai",
+    "assistantGenerationVerified": false,
+    "assistantStatus": "missing_credentials"
+  },
+  "initialErrorFatalLogGroups": 0,
+  "pwa": {
+    "home": 200,
+    "manifest": 200,
+    "serviceWorker": 200,
+    "standalone": true,
+    "icons": [
+      192,
+      512
+    ],
+    "appleTouchIconLinked": true,
+    "safeAreaViewport": true,
+    "privateApisExcludedFromCaching": true,
+    "authenticatedHtmlNotCached": true,
+    "physicalIphoneInstallationTested": false
+  },
+  "render": {
+    "accessibleWorkspaces": 1,
+    "existingServices": 0,
+    "serviceCreated": false,
+    "billingStatusRetested": false
+  },
+  "limitations": [
+    "Direct DraftKings Predictions live contracts are unavailable without authorized data access.",
+    "No live general LLM generation was verified; deterministic evidence and account reports are separate.",
+    "Production acceptance beyond these metadata/health checks is recorded separately."
+  ]
+}

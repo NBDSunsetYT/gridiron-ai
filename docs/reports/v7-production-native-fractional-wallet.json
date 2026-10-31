@@ -1,0 +1,65 @@
+{
+  "status": "partial",
+  "backendRoundTripStatus": "passed",
+  "applicationHttpPlacementStatus": "passed",
+  "applicationHttpSettlementStatus": "unverified_transport_failure",
+  "verifiedAt": "2026-10-31T05:56:54Z",
+  "baseUrl": "https://gridiron-ai-gray.vercel.app",
+  "version": "7.0.0",
+  "transport": "Actual app HTTPS from existing Supabase pg_net with genuine QA JWT cookies; ordinary authenticated Supabase REST RPC for the single existing refund reconciliation",
+  "scope": "Exactly one server-marked disposable QA owner; no original account data accessed",
+  "credentialsIncluded": false,
+  "identityReset": false,
+  "externalBookOrder": false,
+  "purchases": 1,
+  "applicationRefundTransportAttempts": 2,
+  "authenticatedDatabaseRefundReconciliations": 1,
+  "checks": [
+    {
+      "name": "Actual app placement HTTP201 retained price0.1 cent, quantity1, fee0.9 cent and exact one-cent debit with no American odds",
+      "status": "passed"
+    },
+    {
+      "name": "Actual app pending ledger HTTP200 retained cash50800/available50799/pending1/P&L5800",
+      "status": "passed"
+    },
+    {
+      "name": "Two app refund transport failures were not blindly repeated; independent app+SQL reads proved the same QA row remained pending",
+      "status": "passed"
+    },
+    {
+      "name": "Normal real QA JWT authenticated Supabase financial RPC returned HTTP200 for one-cent void/refund, profit0; no admin or fabricated claims",
+      "status": "passed"
+    },
+    {
+      "name": "A new official QA sign-in and actual app ledger HTTP200 reopened exact price/fee/refund and restored cash50800/available50800/pending0/P&L5800",
+      "status": "passed"
+    },
+    {
+      "name": "Actual app CSV HTTP200 preserved fractional contract metadata, blank odds and voided result",
+      "status": "passed"
+    },
+    {
+      "name": "Deposits10000, withdrawals15000, net contributions45000, settled stake and ROI were unchanged",
+      "status": "passed"
+    },
+    {
+      "name": "Application HTTP settlement response could not be verified through the transport",
+      "status": "unverified"
+    }
+  ],
+  "fixture": {
+    "clearlySynthetic": true,
+    "priceCents": "0.1",
+    "feeCents": "0.9",
+    "quantity": 1,
+    "actualDebitCents": 1,
+    "actualRefundCents": 1,
+    "realizedPlChangeCents": 0
+  },
+  "limitations": [
+    "The workspace outbound proxy failed across unrelated hosts. Native HTTP was used without resetting credentials or disabling authentication/RLS.",
+    "The two application refund requests failed in the native client's HTTP2 framing layer before mutation; direct authenticated database RPC reconciliation succeeded. This is not a claim that the app HTTP settlement route was tested successfully in production v7.",
+    "Actual pre-upgrade v6 iPhone-sized Chromium/WebKit financial flows passed separately. Production v7 private browser interaction and physical iPhone installation remain separate unverified checks."
+  ]
+}
