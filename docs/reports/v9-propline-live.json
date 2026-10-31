@@ -1,0 +1,74 @@
+{
+  "checkedAt": "2026-10-31T22:15:17.565399+00:00",
+  "status": "live_provider_access_verified_frontend_deployment_pending",
+  "provider": "PropLine",
+  "renderServiceId": "srv-dbj680s9v7es7397nv2g",
+  "renderUrl": "https://gridiron-propline-gateway.onrender.com",
+  "providerKeyLocation": "Render environment only",
+  "quotaObserved": {
+    "dailyLimit": 5000,
+    "plan": "Hobby"
+  },
+  "databaseMigration": "20261031220149_propline_provider",
+  "sharedPersistence": "paused_capacity_guard_preserved",
+  "privateSnapshotProductionTested": false,
+  "physicalIphoneTested": false,
+  "sources": [
+    {
+      "sport": "NFL",
+      "http": 200,
+      "status": "available",
+      "validatedOutcomes": 14140,
+      "marketCounts": {
+        "player_pass_yds": 1562,
+        "player_pass_tds": 350,
+        "player_pass_attempts": 100,
+        "player_pass_completions": 98,
+        "player_pass_interceptions": 172,
+        "player_rush_yds": 2716,
+        "player_rush_attempts": 136,
+        "player_rush_tds": 0,
+        "player_reception_yds": 5502,
+        "player_receptions": 1860,
+        "player_reception_tds": 0,
+        "player_anytime_td": 1644
+      },
+      "bookCounts": {
+        "draftkings": 1477,
+        "fanduel": 1210,
+        "betmgm": 1137,
+        "hardrock": 10316
+      },
+      "identityCrosswalkStatus": "verified",
+      "checkedAt": "2026-10-31T22:03:25.313971Z"
+    },
+    {
+      "sport": "CFB",
+      "http": 200,
+      "status": "available",
+      "validatedOutcomes": 1063,
+      "marketCounts": {
+        "player_pass_yds": 44,
+        "player_pass_tds": 34,
+        "player_pass_attempts": 18,
+        "player_pass_completions": 18,
+        "player_pass_interceptions": 0,
+        "player_rush_yds": 84,
+        "player_rush_attempts": 0,
+        "player_rush_tds": 0,
+        "player_reception_yds": 152,
+        "player_receptions": 82,
+        "player_reception_tds": 0,
+        "player_anytime_td": 631
+      },
+      "bookCounts": {
+        "draftkings": 341,
+        "fanduel": 373,
+        "betmgm": 94,
+        "hardrock": 255
+      },
+      "identityCrosswalkStatus": "verified",
+      "checkedAt": "2026-10-31T22:03:31.667209Z"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 {
   "name": "gridiron-ai",
-  "version": "8.0.0",
+  "version": "9.0.0",
   "description": "Evidence-driven NFL research and private auditable bankroll terminal",
   "main": "index.js",
   "scripts": {

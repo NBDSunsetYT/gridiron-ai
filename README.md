@@ -1,12 +1,14 @@
-# GRIDIRON AI 8.0.0
+# GRIDIRON AI 9.0.0
 
 GRIDIRON AI is an installable NFL and College Football research app with public game analysis and a private personal wallet. The existing application has been upgraded; its previous ledger, research tools and data remain preserved.
+
+Version9.0 connects the PropLine Hobby NFL/CFB sportsbook feed through a Render-only secret gateway. See [PropLine9.0 verification and limits](docs/PROPLINE_V9.md). Earlier8.0 evidence below remains historical.
 
 The app is hosted at **https://gridiron-ai-gray.vercel.app**. Version 8 adds a shared NFL / College Football selector, a separate NCAA complete-game historical-baseline simulator, independent player distributions, sport-scoped saved research and Wallet filters. Existing NFL simulation code, private records and the PWA are preserved.
 
 The deployed public workflow passed 48 scoped checks: 15 API, 18 real desktop/iPhone-sized Chromium/WebKit browser checks and 15 PWA checks. A real hosted 10,000-game college result reopened on fresh requests and reloads. Full acceptance remains partial. [DELIVERY_V8.md](docs/DELIVERY_V8.md) records actual evidence and remaining limits; [7.0 delivery](docs/DELIVERY_V7.md) remains retained. Tagged source releases require successful verification on their exact commit.
 
-**Current external limits:** no authorized DraftKings Predictions event-contract feed is configured. New public persisted research is paused at the existing database reserve. The Render-only BALLDONTLIE/CollegeFootballData gateway is implemented and tested, but one explicitly free service creation returned HTTP 402 requiring owner payment-information authorization. No Render service, provider authentication or account subscription tier has been verified. No API key was moved to Vercel and no paid resource or trial was activated. Existing saved history and private Wallet remain available.
+**8.0 historical external limits (superseded for PropLine/Render by9.0):** no authorized DraftKings Predictions event-contract feed is configured. New public persisted research is paused at the existing database reserve. The Render-only BALLDONTLIE/CollegeFootballData gateway is implemented and tested, but one explicitly free service creation returned HTTP 402 requiring owner payment-information authorization. No Render service, provider authentication or account subscription tier has been verified. No API key was moved to Vercel and no paid resource or trial was activated. Existing saved history and private Wallet remain available.
 
 The DraftKings repair distinguishes missing configuration, credential rejection, empty verified feeds, rate limits, outages and unsupported mapping/rules. Zero verified accessible contracts does not mean the platform has no NFL markets. BALLDONTLIE DraftKings sportsbook reference odds remain separate from DraftKings Predictions percentage contracts. See [DraftKings access](docs/DRAFTKINGS_ACCESS.md) and [8.0 source boundaries](docs/DELIVERY_V8.md).
 

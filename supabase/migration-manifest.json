@@ -1,6 +1,6 @@
 {
   "projectRef": "qdtdjbapdipopncklsdb",
-  "source": "Supabase list_migrations after all twenty successful applications",
+  "source": "Supabase list_migrations after twenty-one successful applications",
   "method": "Aligned source filenames only; SQL bytes and remote history unchanged",
   "migrations": [
     {
@@ -141,6 +141,13 @@
       "authoredVersion": "20261031180706",
       "liveVersion": "20261031183047",
       "sha256": "bd4cad18223440f876eb76b03906a25f8035e211791a6b392a42e75058510225",
+      "sqlUnchanged": true
+    },
+    {
+      "name": "propline_provider",
+      "authoredVersion": "20261031220121",
+      "liveVersion": "20261031220149",
+      "sha256": "ab8bc8771c282f593bf4ff68ce4a561acef3cb675abea6a4acfd64de07d8cd60",
       "sqlUnchanged": true
     }
   ]

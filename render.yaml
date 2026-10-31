@@ -1,15 +1,16 @@
 # Optional Render-only licensed-data gateway. Existing Next.js and quantitative
 # Python services stay on Vercel; the existing Supabase project is reused.
 # No database, worker, paid plan, disk, trial or scheduled paid resource is created.
-# Current account creation is blocked by Render's payment-information requirement.
+# Existing service created through the authorized Render integration; this file
+# is a recovery reference. No Blueprint sync was applied during the9.0 upgrade.
 services:
   - type: web
-    name: gridiron-data-gateway
+    name: gridiron-propline-gateway
     runtime: python
     plan: free
     region: virginia
     repo: https://github.com/NBDSunsetYT/gridiron-ai
-    branch: main
+    branch: upgrade/propline-free-props
     autoDeployTrigger: 'off'
     buildCommand: pip install -r modeling/requirements-gateway.txt
     startCommand: uvicorn modeling.sports_data_gateway:app --host 0.0.0.0 --port $PORT
@@ -20,7 +21,7 @@ services:
         value: '1'
       - key: GRIDIRON_DATA_BRIDGE_TOKEN
         generateValue: true
-      - key: BALLDONTLIE_API_KEY
+      - key: PROPLINE_API_KEY
         sync: false
 # Optional CollegeFootballData: add CFBD_API_KEY in this Render service's
 # Environment only when an authorized account is available. Do not copy provider

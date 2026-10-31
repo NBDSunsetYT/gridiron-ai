@@ -77,7 +77,7 @@ def normalize(events,sport,now=None):
 
 class PropLineClient:
     def __init__(self,transport=None,clock=time.time):
-        self.transport=transport or self._http;self.clock=clock;self.lock=threading.Lock();self.cache={};self.until=0;self.used=0;self.day=None
+        self.transport=transport or self._http;self.clock=clock;self.lock=threading.Lock();self.cache={};self.until=0;self.used=0;self.day=None;self.daily_limit=1000
     def _http(self,url,key):
         req=urllib.request.Request(url,headers={'X-API-Key':key,'Accept':'application/json'})
         # No redirects may forward a provider credential to another host.
@@ -97,15 +97,17 @@ class PropLineClient:
         if not key:raise DataProviderError('credentials_missing','Configure PROPLINE_API_KEY on Render.',requires_operator=True)
         with self.lock:
             now=self.clock();old=self.cache.get(sport)
-            if old and now-old[0]<300:
-                result=copy.deepcopy(old[1]);result['cached']=True;return result
+            if old and now-old[0]<120:
+                result=copy.deepcopy(old[1]);result['items']=[r for r in result['items'] if -60<=now-stamp(r['sourceUpdatedAt'])<=300];result['totalResults']=len(result['items']);result['cached']=True;return result
             if now<self.until:raise DataProviderError('provider_quota_paused','PropLine requests are paused until its retry/reset time.',retryable=True,retry_after=math.ceil(self.until-now))
             day=datetime.fromtimestamp(now,timezone.utc).date()
             if day!=self.day:self.day=day;self.used=0
-            if self.used>=1000:raise DataProviderError('local_daily_limit','The conservative1,000request daily budget is exhausted.',retryable=True)
+            if self.used>=self.daily_limit:raise DataProviderError('local_daily_limit','The conservative1,000request daily budget is exhausted.',retryable=True)
             self.used+=1
             url='https://api.prop-line.com/v1/sports/'+SPORTS[sport]+'/odds?'+urllib.parse.urlencode({'markets':','.join(MARKETS),'bookmakers':','.join(BOOKS),'includeBookIds':'true'})
             status,headers,body=self.transport(url,key);headers={k.lower():v for k,v in headers.items()}
+            try:self.daily_limit=min(5000,max(1,int(headers.get('x-daily-limit','1000'))))
+            except ValueError:pass
             quota={k:headers[k] for k in ['x-daily-limit','x-daily-used','x-daily-remaining','x-daily-reset','retry-after'] if k in headers}
             def number(name,default):
                 try:return float(headers.get(name,default))

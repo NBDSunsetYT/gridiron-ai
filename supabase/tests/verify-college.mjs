@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 const db=new PGlite(),directory=new URL('../migrations/',import.meta.url),checks=[];
 const files=readdirSync(directory).filter(name=>name.endsWith('.sql')).sort(),upgrade=files.find(name=>name.endsWith('_gridiron_v8_football.sql'));assert.ok(upgrade,'A versioned football migration is required.');
 await db.exec(`create role anon;create role authenticated;create role service_role bypassrls;create schema auth;create table auth.users(id uuid primary key,email text);create table auth.sessions(id uuid primary key,user_id uuid references auth.users(id));create function auth.uid() returns uuid language sql stable as $$select (nullif(current_setting('request.jwt.claims',true),'')::jsonb->>'sub')::uuid$$;create function auth.jwt() returns jsonb language sql stable as $$select coalesce(nullif(current_setting('request.jwt.claims',true),'')::jsonb,'{}'::jsonb)$$;grant usage on schema auth to authenticated;grant execute on function auth.uid(),auth.jwt() to authenticated;`);
-for(const file of files.filter(name=>name!==upgrade))await db.exec(readFileSync(new URL(file,directory),'utf8'));
+for(const file of files.filter(name=>name<upgrade))await db.exec(readFileSync(new URL(file,directory),'utf8'));
 const capability='SYNTHETIC-FOOTBALL-CAPABILITY-LOCAL-TEST-ONLY-2026',A='10000000-0000-4000-8000-000000000081',B='10000000-0000-4000-8000-000000000082',at=new Date().toISOString(),future=new Date(Date.now()+86400000).toISOString(),hash='a'.repeat(64),lease='60000000-0000-4000-8000-000000000081',otherLease='60000000-0000-4000-8000-000000000082',thirdLease='60000000-0000-4000-8000-000000000083';
 await db.query("insert into gridiron_shared_private.capabilities(name,token_sha256)values('public_nfl_ingestion',encode(sha256(convert_to($1,'UTF8')),'hex'))",[capability]);
 for(const id of[A,B])await db.query('insert into auth.users(id,email)values($1,$2)',[id,'SYNTHETIC-'+id+'@example.test']);
@@ -15,7 +15,7 @@ await db.query("insert into gridiron_shared_private.compute_budget(day,games)val
 const owner=async id=>{await db.exec('reset role');await db.query("select set_config('request.jwt.claims',$1,false)",[JSON.stringify({sub:id})]);await db.exec('set role authenticated');};
 const personal=async(name,payload)=>(await db.query(payload===undefined?`select public.${name}() value`:`select public.${name}($1::jsonb) value`,payload===undefined?[]:[JSON.stringify(payload)])).rows[0].value;
 await owner(A);await personal('gridiron_post_transaction',{type:'starting_balance',sportsbook:'DraftKings',amount:'500.00'});const financialBefore=(await personal('gridiron_ledger')).summary;await db.exec('reset role');
-await db.exec(readFileSync(new URL(upgrade,directory),'utf8'));await db.exec('set role anon');
+await db.exec(readFileSync(new URL(upgrade,directory),'utf8'));for(const file of files.filter(name=>name>upgrade))await db.exec(readFileSync(new URL(file,directory),'utf8'));await db.exec('set role anon');
 const rpc=async(payload,token=capability)=>(await db.query('select public.gridiron_football_data_write($1,$2::jsonb) value',[token,JSON.stringify(payload)])).rows[0].value;
 async function admin(operation){const role=(await db.query('select current_user role')).rows[0].role;await db.exec('reset role');try{return await operation();}finally{if(['anon','authenticated'].includes(role))await db.exec('set role '+role);}}
 const budget=async()=>Number((await admin(()=>db.query("select games from gridiron_shared_private.compute_budget where day=(now() at time zone 'UTC')::date"))).rows[0].games);
@@ -52,6 +52,10 @@ await group('NFL/CFB sportsbook references and percentage event contracts cannot
  for(const provider of['DraftKings Predictions','Kalshi'])await rpc({action:'provider_quote_put',quote:{...quote,id:'SYNTHETIC-'+provider,provider,marketFamily:'event_contract',americanOdds:null,bidCents:'49',askCents:'51'}});
  const invalid=[{sport:'CFB'},{marketFamily:'event_contract',americanOdds:null},{provider:'CollegeFootballData'},{provider:'DraftKings Predictions'},{provider:'Kalshi'},{americanOdds:-99},{marketFamily:'event_contract',provider:'DraftKings Predictions',americanOdds:null,askCents:'101'},{quotedAt:new Date(Date.parse(at)+120000).toISOString()},{sourceUrl:'https://example.invalid/feed?api_key=SYNTHETIC'},{sourceUrl:'https://SYNTHETIC@provider.example.invalid/feed'}];
  for(let i=0;i<invalid.length;i++)await assert.rejects(rpc({action:'provider_quote_put',quote:{...quote,...invalid[i],id:'SYNTHETIC-INVALID-QUOTE-'+i}}),/check constraint|secret|source|provider/i);
+});
+await group('PropLine NFL/CFB quote writes retain immutable sportsbook family and enforce provider identity',async()=>{
+ for(const sport of ['NFL','CFB']){const q={...quote,id:'SYNTHETIC-PROPLINE-'+sport,sport,provider:'PropLine'};assert.equal((await rpc({action:'provider_quote_put',quote:q})).provider,'PropLine');await assert.rejects(rpc({action:'provider_quote_put',quote:{...q,americanOdds:100}}),{code:'22023'});}
+ await assert.rejects(rpc({action:'provider_quote_put',quote:{...quote,id:'SYNTHETIC-NOT-A-DK-CONTRACT',provider:'PropLine',marketFamily:'event_contract',americanOdds:null,bidCents:'50'}}),/check constraint/);
 });
 await group('Duplicate quote/source identities preserve immutable observed prices and reject changed definitions',async()=>{
  const first=await rpc({action:'provider_quote_put',quote}),duplicate=await rpc({action:'provider_quote_put',quote:{...quote,observedAt:new Date(Date.parse(at)+30000).toISOString()}});assert.equal(Date.parse(duplicate.observed_at),Date.parse(first.observed_at));

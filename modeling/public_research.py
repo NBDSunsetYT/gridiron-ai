@@ -588,7 +588,7 @@ def analyze_public(data, fetcher=fetch_dataset, now=None):
         actual_names = [player.get('full_name'),player.get('football_name'),player.get('display_name'),
                         ' '.join(str(player.get(key) or '') for key in ('first_name','last_name')).strip()]
         actual_names = list(dict.fromkeys(value.strip() for value in actual_names if isinstance(value,str) and value.strip()))
-        catalog.append({'id':pid,'name':player.get('full_name') or names.get(pid) or None,
+        catalog.append({'id':pid,'espnId':str(player.get('espn_id')) if player.get('espn_id') else None,'name':player.get('full_name') or names.get(pid) or None,
                         'team':player.get('team'),'position':player.get('position'),
                         'jersey':player.get('jersey_number') or None,'aliases':actual_names,
                         'rosterStatus':player.get('status'),'rosterWeek':_integer(player.get('week')) or None,

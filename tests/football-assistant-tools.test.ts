@@ -1,13 +1,13 @@
 import {beforeEach,describe,it,expect,vi} from 'vitest';
 const cfb=vi.hoisted(()=>({collegeDashboard:vi.fn(),collegeGameDetail:vi.fn(),collegePropScanner:vi.fn(),collegeSavedResearch:vi.fn(),analyzeCollegeGame:vi.fn()}));
-const providers=vi.hoisted(()=>({sportsbookReferenceDashboard:vi.fn()}));
+const providers=vi.hoisted(()=>({freeProps:vi.fn()}));
 const quota=vi.hoisted(()=>({publicRateLimit:vi.fn()}));
 vi.mock('../lib/college-football/service',()=>cfb);
-vi.mock('../lib/sportsbook-reference/service',()=>providers);
+vi.mock('../lib/free-props-service',()=>providers);
 vi.mock('../lib/public-nfl/store',()=>quota);
 import {isFootballIntelligenceTool,executeFootballIntelligenceTool} from '../lib/college-football/assistant-tools';
 const ctx:any={request:new Request('https://gridiron.example.test/api/assistant'),user:{id:'SYNTHETIC-CFB-OWNER'}};
-beforeEach(()=>{vi.clearAllMocks();cfb.collegeDashboard.mockResolvedValue({sport:'CFB',games:[],coverage:'SYNTHETIC test transport'});cfb.collegeSavedResearch.mockResolvedValue({sport:'CFB',saved:[]});cfb.analyzeCollegeGame.mockResolvedValue({sport:'CFB',status:'insufficient_evidence',probability:null});providers.sportsbookReferenceDashboard.mockResolvedValue({dataFamily:'sportsbook_reference',source:'BALLDONTLIE',status:'render_backend_required',offers:[]});});
+beforeEach(()=>{vi.clearAllMocks();cfb.collegeDashboard.mockResolvedValue({sport:'CFB',games:[],coverage:'SYNTHETIC test transport'});cfb.collegeSavedResearch.mockResolvedValue({sport:'CFB',saved:[]});cfb.analyzeCollegeGame.mockResolvedValue({sport:'CFB',status:'insufficient_evidence',probability:null});providers.freeProps.mockResolvedValue({dataFamily:'sportsbook_reference',source:'PropLine',status:'render_backend_required',items:[]});});
 describe('Evidence-scoped NFL/CFB research tools',()=>{
  it('reads college source evidence without starting compute or modifying personal records',async()=>{
   expect(isFootballIntelligenceTool('read_cfb_games')).toBe(true);expect(isFootballIntelligenceTool('arbitrary_sql')).toBe(false);
@@ -25,7 +25,7 @@ describe('Evidence-scoped NFL/CFB research tools',()=>{
   await executeFootballIntelligenceTool(ctx,'read_saved_cfb_research',{},'Show my college research.','CFB');expect(cfb.collegeSavedResearch).toHaveBeenCalledWith(ctx);
   await expect(executeFootballIntelligenceTool(ctx,'read_saved_cfb_research',{userId:'OTHER'},'Show saved research.','CFB')).rejects.toThrow();
  });
- it('keeps BALLDONTLIE sportsbook references distinct from exact DraftKings Predictions contracts',async()=>{
-  const result:any=await executeFootballIntelligenceTool(ctx,'read_nfl_sportsbook_references',{},'Read NFL sportsbook references.');expect(result).toMatchObject({dataFamily:'sportsbook_reference',status:'render_backend_required',offers:[]});expect(result).not.toHaveProperty('draftKingsEquivalent');expect(result).not.toHaveProperty('contractProbability');
+ it('keeps PropLine sportsbook references distinct from exact DraftKings Predictions contracts',async()=>{
+  const result:any=await executeFootballIntelligenceTool(ctx,'read_nfl_sportsbook_references',{},'Read NFL sportsbook references.');expect(result).toMatchObject({dataFamily:'sportsbook_reference',status:'render_backend_required',items:[]});expect(result).not.toHaveProperty('draftKingsEquivalent');expect(result).not.toHaveProperty('contractProbability');
  });
 });
