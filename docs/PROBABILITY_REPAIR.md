@@ -42,3 +42,19 @@ For Nick Poulos over 192.5 passing yards, the actual recovered histogram counted
 The new capacity function migration is additive and read-only. Rollback can remove that function only after reverting its caller. Keep the new probability object/reference readers for results saved after this repair; never purge those objects or reset accounting data to roll back code.
 
 See the production verification report for exact passing tests, deployment identity, current provider limitations and mobile scope. A simulated viewport is not a physical iPhone installation test.
+
+A further actual-source joint run exposed a storage classification defect: a
+statistical contract's `settlement` definition was mistaken for a private
+financial settlement. The guard now accepts only a tightly validated statistical
+definition attached to an identified probability row. Financial amounts, account
+records and other settlement payloads remain rejected. An actual two-leg CFB
+run yielded 2,342 joint successes from 10,000 shared games; it was recovered with
+the same verified source fingerprint and explicit engineering-worker provenance.
+
+A source outage after the first trace also expired current PropLine prices.
+Verified boards now retain compact private object references for at most 24-hour
+definition recovery. An unavailable live feed can expose those previously
+verified definitions for independent threshold research. Their original quote
+timestamps remain unchanged, prices are marked historical, and current
+break-even/value fields remain unavailable. No never-observed NFL market is
+created as a fallback. This does not claim a still-listed executable contract.
