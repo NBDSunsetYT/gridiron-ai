@@ -1,5 +1,5 @@
 'use client';
-import {createContext,useContext,useEffect,useRef,useState,useCallback,type ReactNode} from 'react';
+import {createContext,useContext,useEffect,useLayoutEffect,useRef,useState,useCallback,memo,type ReactNode} from 'react';
 import {blankWorkspace,workspaceDataSchema,type WorkspaceData,type WorkspaceSave} from '@/lib/workspaces/schema';
 import {selectionKey,toggleLeg,type ParlayLeg} from '@/lib/workspaces/parlay';
 import {recoverDeviceDraft,saveDeviceDraft} from '@/lib/workspaces/device-drafts';
@@ -7,7 +7,12 @@ type Row={id:string;revision:number;sport:string;kind:string;data:WorkspaceData;
 type Store={data:WorkspaceData;id:string;revision:number;rows:Row[];status:string;error:string;ready:boolean;busy:boolean;has:(l:ParlayLeg)=>boolean;toggle:(l:ParlayLeg)=>void;edit:(v:Partial<WorkspaceData>)=>void;remove:(id:string)=>void;undo:()=>void;canUndo:boolean;save:()=>Promise<boolean>;reload:()=>Promise<void>;open:(r:Row)=>Promise<void>;copy:()=>Promise<void>;fresh:()=>Promise<boolean>;signIn:()=>void;sport:'NFL'|'CFB';user:{id:string}|null};
 const Context=createContext<Store|null>(null);
 export const useParlay=()=>useContext(Context);
-export default function ParlayProvider({sport,user,onSignIn,children}:{sport:'NFL'|'CFB';user:{id:string}|null;onSignIn:()=>void;children:ReactNode}){
+type ProviderProps={sport:'NFL'|'CFB';user:{id:string}|null;onSignIn:()=>void};
+type PublishedStore={key:string;value:Store};
+const StateHost=memo(ParlayState);
+export default function ParlayProvider({children,...props}:ProviderProps&{children:ReactNode}){const [published,publish]=useState<PublishedStore|null>(null),key=(props.user?.id??'guest')+':'+props.sport;return <Context.Provider value={published?.key===key?published.value:null}><StateHost key={key} {...props} onStore={publish}/>{children}<ParlaySlip/></Context.Provider>;}
+// Only the research state is keyed by sport. Wallet/navigation children retain their identity.
+function ParlayState({sport,user,onSignIn,onStore}:ProviderProps&{onStore:(value:PublishedStore)=>void}){
  const [data,setData]=useState<WorkspaceData>(blankWorkspace),[id,setId]=useState(''),[revision,setRevision]=useState(0),[rows,setRows]=useState<Row[]>([]),[ready,setReady]=useState(false),[status,setStatus]=useState('Loading draft'),[error,setError]=useState(''),[busy,setBusy]=useState(false),[undoValue,setUndo]=useState<WorkspaceData|null>(null),[conflict,setConflict]=useState(false);
  const current=useRef(data),identity=useRef(id),rev=useRef(0),confirmed=useRef(''),pending=useRef<WorkspaceSave|null>(null),saving=useRef<Promise<boolean>|null>(null),locked=useRef(false),alive=useRef(true);current.current=data;identity.current=id;
  const reload=useCallback(async()=>{if(!user)return;const r=await fetch('/api/nfl/workspaces',{cache:'no-store'});if(!r.ok)throw Error('Your cloud parlays could not be loaded. Existing drafts remain unchanged.');const body=await r.json();if(alive.current)setRows(body.records.filter((r:Row)=>r.kind==='combination'&&r.sport===sport));},[user,sport]);
@@ -43,7 +48,8 @@ export default function ParlayProvider({sport,user,onSignIn,children}:{sport:'NF
  const flush=async()=>{for(let i=0;i<4;i++){if(!await save())return false;if(JSON.stringify(current.current)===confirmed.current&&!pending.current||!user)return true;}setError('Finish syncing before switching drafts.');return false;};
  const create=async(copy:boolean)=>{if(!conflict&&!await flush())return false;const next=copy?{...current.current,name:(current.current.name+' copy').slice(0,120),archived:false}:blankWorkspace();pending.current=null;confirmed.current='';rev.current=0;setRevision(0);identity.current=crypto.randomUUID();setId(identity.current);current.current=next;setData(next);setConflict(false);setUndo(null);setError('');return true;};
  const value:Store={data,id,revision,rows,status,error,ready,busy,has:l=>data.legs.some(v=>selectionKey(v)===selectionKey(l)),toggle,edit,remove:id=>mutate(current.current.legs.filter(l=>l.id!==id)),undo:()=>{if(undoValue){const previous=current.current;setStatus(user?'Sync pending':'Guest draft · sign in to sync');setData(undoValue);setUndo(previous);}},canUndo:!!undoValue,save:flush,reload,open:async row=>{if(await flush())install(row);},copy:async()=>{await create(true);},fresh:()=>create(false),sport,user,signIn:onSignIn};
- return <Context.Provider value={value}>{children}<ParlaySlip/></Context.Provider>;
+ useLayoutEffect(()=>{onStore({key:(user?.id??'guest')+':'+sport,value});});
+ return null;
 }
 export function AddToParlay({leg,disabled=false}:{leg:ParlayLeg;disabled?:boolean}){const store=useParlay();if(!store)return null;const added=store.has(leg);return <button className={'btn parlay-toggle '+(added?'is-added':'')} disabled={disabled||!store.ready} aria-pressed={added} onClick={()=>store.toggle(leg)}>{added?'✓ Added':'+ Add to Parlay'}</button>;}
 function ParlaySlip(){const s=useParlay();if(!s?.data.legs.length)return null;return <aside className="floating-parlay" aria-label="Active parlay slip"><a href={s.sport==='CFB'?'#cfb/combos':'#combos'}><b className="parlay-count" key={s.data.legs.length}>{s.data.legs.length}</b><span>My parlay <small>{s.status}</small></span><span>Open slip →</span></a>{s.canUndo&&<button onClick={s.undo}>Undo</button>}</aside>;}

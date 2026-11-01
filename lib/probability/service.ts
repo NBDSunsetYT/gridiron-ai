@@ -19,13 +19,13 @@ async function single(target:Exclude<ProbabilityTarget,{type:'combination'}>,n:n
  }
  if(target.type==='contract'){
   const{propResearchDetail}=await import('../player-props/service'),r:any=await propResearchDetail(target.snapshotId);
-  if(r.stale||!r.modelInputsCurrent||!r.distribution?.histogram||r.simulations!==n||typeof r.probability?.raw!=='number')return unavailable(target,'This exact contract snapshot does not have current, retrievable complete-game evidence at the requested count. Refresh its research.');
+  if(r.stale||!r.modelInputsCurrent||!r.distribution?.histogram||r.simulations!==n||typeof r.probability?.raw!=='number'||Math.abs(r.probability.raw*n-Math.round(r.probability.raw*n))>1e-6)return unavailable(target,'This exact contract snapshot does not have current, retrievable complete-game evidence at the requested count. Refresh its research.');
   // Operator and settlement handling belong to the existing contract engine. Do not reinterpret equality or exceptional payouts here.
   return{...unavailable(target,''),status:'ready',rawProbability:r.probability.raw,hits:Math.round(r.probability.raw*n),simulations:n,monteCarloSE:r.probability.samplingError,monteCarloInterval95:r.probability.interval95,modelInterval95:r.probability.modelInterval95,calibratedProbability:r.probability.calibrated??null,modelVersion:r.modelVersion,inputVersion:r.inputVersion,gameId:r.game.id,analysisId:r.simulationId,calculatedAt:r.capturedAt,kickoff:r.contract.eventStart,distribution:r.distribution.histogram,sources:r.sources,market:{family:r.contract.dataFamily??r.contract.provider,breakEven:r.currentValuation?.breakEven??null,fees:r.contract.fees??null},reason:'Exact immutable contract research; settlement exceptions remain governed by its verified definition.'};
  }
  const d=await gameResult(target.sport,target.gameId,n,ctx),g=d.game;
  if(g.status!=='scheduled'||Date.parse(g.startTime)<=Date.now())return unavailable(target,'The pregame estimate is historical. A fitted in-game model with fresh clock, possession, player statistics and availability is not available.',{mode:'live_unavailable',kickoff:g.startTime,sources:d.sources});
- const r=d.result;if(!r||r.simulations!==n||typeof r.probability?.raw!=='number')return unavailable(target,d.reason??'The full-game simulation is pending or unavailable.',{status:'pending',kickoff:g.startTime});
+ const r=d.result;if(!r||r.simulations!==n)return unavailable(target,d.reason??'The full-game simulation is pending or unavailable.',{status:'pending',kickoff:g.startTime});
  const threshold=target.market==='winner'?0:target.threshold;if(!Number.isFinite(threshold))return unavailable(target,'An exact spread or total threshold is required.');
  const direction=target.market==='winner'?(target.side==='away'?'under':'over'):target.side==='under'||target.side==='away'?'under':'over';
  const bins=(target.market==='total'?r.totalDistribution:r.marginDistribution)?.histogram;if(!bins)return unavailable(target,'A reconciled score distribution is unavailable.');const math=thresholdProbability(bins,n,threshold!,direction);

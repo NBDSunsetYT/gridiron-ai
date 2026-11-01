@@ -138,8 +138,13 @@ export async function analyzePublicGame(id:string,simulations=10000):Promise<Pub
  const game=await trustedGame(id);if(game.status==='final'||Date.parse(game.startTime)<=Date.now())throw new ApiError('This game has started or finished. Saved pregame research remains historical; unsupported live probabilities are not invented.',409);
  const context=await currentContext(game);if(!recentVerifiedContext(context))throw new ApiError('Latest statistical and injury source verification is temporarily unavailable. No new simulation was queued; saved research remains historical until fresh inputs can be checked.',503);const inputHash=evidenceHash(game,context,simulations);
  const job:SharedJob=await sharedWrite({action:'job_enqueue',gameId:id,inputHash,data:{game,context,simulations,automatic:true,modelVersion:PUBLIC_PIPELINE_VERSION,sourceUpdatedAt:context.updatedAt}});
- if(job.status!=='completed')scheduleJob(job.id);
- return publicGameDetail(id,simulations);
+ const retryEligible=job.status==='failed'&&Date.now()-Date.parse(job.updated_at)>=2*60000;
+ if(job.status!=='completed'&&(job.status!=='failed'||retryEligible))scheduleJob(job.id);
+ const detail=await publicGameDetail(id,simulations);
+ // A genuine retry was scheduled above. Do not return the previous attempt's
+ // failure as though the user had made no new request; snapshots stay unchanged.
+ if(retryEligible&&detail.analysis?.id===job.id&&detail.analysis.status==='failed')return{...detail,status:'queued',analysis:{...detail.analysis,status:'queued',error:null},game:{...detail.game,analysis:detail.game.analysis?{...detail.game.analysis,status:'queued',error:null}:null},message:'A new backend attempt is queued. The earlier result and saved history are preserved.'};
+ return detail;
 }
 export async function publicAssistant(gameId:string,message?:string):Promise<{summary:PublicSummary;analysisId:string|null;status:string}>{
  const detail=await publicGameDetail(gameId),context={...(await gameContext(detail.game)),markets:detail.markets,sources:detail.sources},fallback=detail.summary??evidenceBrief(detail.game,context,detail.analysis?.result,detail.analysis?.research);
