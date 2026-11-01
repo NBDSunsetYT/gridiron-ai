@@ -622,5 +622,6 @@ def analyze_public(data, fetcher=fetch_dataset, now=None):
     # check is not itself a new statistical input. Consumers must still audit
     # pipeline/engine versions, simulation count, seed and current availability.
     result['inputFeatureVersion']=input_version
+    result['baseFeatureVersion']=automatic_feature_version(evidence_version,scenario,reports,roster,[],what_if,None)
     return {'result':result,'research':research,'summary':summary,'inputVersion':input_version,'modelVersion':fit['model']['version'],
             'calculatedAt':stamp(),'asOf':fit['model']['asOf'],'elapsedSeconds':time.monotonic()-started,'source':'automatic_public_nflverse','requiresDatasetUpload':False}
