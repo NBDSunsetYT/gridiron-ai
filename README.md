@@ -1,3 +1,7 @@
+# Probability engine repair — 11.0.1
+
+See [the observed cause, repair and verification scope](docs/PROBABILITY_REPAIR.md). Probability requests now follow backend jobs, preserve specific failures and reopen compact simulations from durable references. Existing data and infrastructure are preserved.
+
 # GRIDIRON AI 11.0 — compact cloud storage
 
 The existing application is preserved. See [storage architecture, retention, recovery and provider activation](docs/GRIDIRON_V11.md). Supabase remains the private account and ledger authority. MongoDB/R2 integrations are opt-in and are not reported as connected until actual authorized checks pass.

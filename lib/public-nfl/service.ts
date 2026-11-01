@@ -174,7 +174,7 @@ export async function refreshPublicResearch(){
   if(!recentVerifiedContext(context)){results.push({gameId:game.id,status:'sources_unavailable'});continue;}
   if(old?.input_hash&&old.input_hash!==hash){await sharedWrite({action:'invalidate_game',gameId:game.id,reason:'Published injury, weather or statistical evidence changed.'});await putCache('detail',game.id,context,hash,CONTEXT_TTL).catch(()=>{});}
   const latest=await safeRead(()=>latestJob(game.id,hash),null);
-  if(!latest||latest.input_hash!==hash||latest.status==='queued'||latest.status==='failed'&&Date.now()-Date.parse(latest.updated_at)>2*60000){const next=await analyzePublicGame(game.id);results.push({gameId:game.id,status:next.status});break;}
+  if(!latest||latest.input_hash!==hash||latest.status==='queued'||latest.status==='failed'&&Date.now()-Date.parse(latest.updated_at)>2*60000){const capacity=await(await import('../probability/capacity')).probabilityCapacity();if(capacity.used+10000>capacity.backgroundLimit){results.push({gameId:game.id,status:'background_capacity_reserved_for_on_demand',resetsAt:capacity.resetsAt});break;}const next=await analyzePublicGame(game.id);results.push({gameId:game.id,status:next.status});break;}
   results.push({gameId:game.id,status:latest.status});
  }
  return{status:'refreshed',games:schedule.games.length,scheduled:results,updatedAt:schedule.updatedAt};

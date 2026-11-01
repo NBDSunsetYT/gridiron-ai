@@ -1,3 +1,5 @@
+import {vi as storageVi} from 'vitest';
+storageVi.mock('../lib/probability/simulation-storage',()=>({readProbabilitySimulation:storageVi.fn(async()=>null),saveProbabilitySimulation:storageVi.fn(async()=>({}))}));
 import {describe,it,expect,vi,beforeEach,afterEach} from 'vitest';
 const mocks=vi.hoisted(()=>({game:vi.fn(),schedule:vi.fn(),storage:vi.fn(),write:vi.fn(),save:vi.fn(),savedAnalyses:vi.fn(),fetch:vi.fn()}));
 vi.mock('../lib/college-football/sources',async()=>{const actual=await vi.importActual<any>('../lib/college-football/sources');return{...actual,fetchCollegeGame:mocks.game,fetchCollegeSchedule:mocks.schedule};});

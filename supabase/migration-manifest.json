@@ -1,6 +1,6 @@
 {
   "projectRef": "qdtdjbapdipopncklsdb",
-  "source": "Supabase list_migrations after v11 additive storage coordination",
+  "source": "Supabase list_migrations after probability capacity reporting",
   "method": "Source filenames aligned with live versions; existing SQL/history preserved; new v11 metadata migration is additive",
   "migrations": [
     {
@@ -183,6 +183,13 @@
       "authoredVersion": "20261101101000",
       "liveVersion": "20261101101833",
       "sha256": "852307efb618688bd796e12a06b8eeb29b902a53f899def24fc5f368e58a619f",
+      "sqlUnchanged": true
+    },
+    {
+      "name": "probability_capacity_reporting",
+      "authoredVersion": "20261101190714",
+      "liveVersion": "20261101191026",
+      "sha256": "8df4b7c765d5008a08670f02d3b1678e0b0f2a323fbe43ae14d4ef08c81ff90a",
       "sqlUnchanged": true
     }
   ]

@@ -1,3 +1,4 @@
+import {readProbabilitySimulation,saveProbabilitySimulation} from '../probability/simulation-storage';
 import {randomUUID} from 'node:crypto';
 import {ApiError} from '../auth';
 import type {CloudContext} from '../cloud/context';
@@ -22,14 +23,14 @@ export async function collegeDashboard(options:{date?:string}={}):Promise<Colleg
  await hydratePublishedAnalyses(schedule?.games??[]);
  return{sport:'CFB',status:schedule?'partial':'unavailable',games:(schedule?.games??[]).map(game=>({...game,analysis:gameAnalysis(game)})),conferences:schedule?.conferences??[],sources:schedule?.sources??[],updatedAt:schedule?.updatedAt??new Date().toISOString(),providers,storage,modelPerformance:{status:'insufficient_evidence',historicalPredictions:0,brierScore:null,logLoss:null,calibrated:false,message:'Insufficient prospectively settled college-football model evidence.',retrospectivePilot:collegeHistoricalPilot()},limitations,message:schedule?'Published college-football games are available. Model and provider coverage are checked independently.':'College-football schedules are temporarily unavailable. No games or research were fabricated.'};
 }
-function rememberPublicAnalysis(game:CollegeGame,analysis:CollegeAnalysis){
+function rememberPublicAnalysis(game:CollegeGame,analysis:CollegeAnalysis,durable=false){
  const bytes=Buffer.byteLength(JSON.stringify(analysis),'utf8');if(bytes>20000000)return;
  let used=Array.from(analyses.values()).reduce((sum,row)=>sum+Buffer.byteLength(JSON.stringify(row.analysis),'utf8'),0);while(analyses.size&&(analyses.size>=10||used+bytes>20000000)){const oldest=analyses.keys().next().value!;used-=Buffer.byteLength(JSON.stringify(analyses.get(oldest)!.analysis),'utf8');analyses.delete(oldest);}
- analyses.set(game.id,{expires:Math.min(Date.now()+3600000,Date.parse(analysis.createdAt)+3600000,Date.parse(game.startTime)),game,analysis:{...analysis,persistent:false,historySaved:false}});
+ analyses.set(game.id,{expires:Math.min(Date.now()+(durable?10*60000:3600000),durable?Infinity:Date.parse(analysis.createdAt)+3600000,Date.parse(game.startTime)),game,analysis:{...analysis,persistent:false,historySaved:false}});
 }
 async function hydratePublicAnalysis(game:CollegeGame,count:number,inputHash:string){
  const old=currentAnalysis(game.id,inputHash);if(old&&!old.stale&&old.simulations===count)return old;
- const cached=await readPublicCollegeAnalysis(game,count,inputHash);if(cached)rememberPublicAnalysis(game,cached);return cached;
+ const durable=await readProbabilitySimulation('CFB',game.id,count,inputHash);if(durable?.analysis){const cached={...durable.analysis,result:durable.result,research:durable.research};validateCollegeGameResult(cached.result,game,count);if(cached.gameId!==game.id||cached.inputVersion!==inputHash)throw new ApiError('Saved college input identity did not match.',502);rememberPublicAnalysis(game,cached,true);return cached;}const cached=await readPublicCollegeAnalysis(game,count,inputHash);if(cached)rememberPublicAnalysis(game,cached);return cached;
 }
 async function hydratePublishedAnalyses(games:CollegeGame[]){
  const published=new Map(games.map(game=>[game.id,game]));const refs=(await readPublicCollegeCacheIndex()).filter(ref=>published.has(ref.gameId)).slice(0,3);
@@ -65,7 +66,7 @@ export async function analyzeCollegeGame(id:string,count=10000,ctx?:CloudContext
    if(payload?.sport!=='CFB')throw new ApiError('The backend returned a different sport; its probabilities were withheld.',502);const computed=validateCollegeGameResult(payload.result,detail.game,count);
    const now=new Date().toISOString(),safe={...computed};for(const field of ['model','csv','signature','token','accessToken','refreshToken'])delete safe[field];const research:Record<string,any>={};for(const field of ['sources','playerCatalog','rejectedCounts','latestTeamEvidenceAt','historicalGameIds','injuryImpact','dataAvailabilityVerified','calibrationStatus','version'])if(payload.research?.[field]!==undefined)research[field]=payload.research[field];
    const stale=Date.parse(detail.game.startTime)<=Date.now(),analysis:CollegeAnalysis={id:randomUUID(),gameId:id,sport:'CFB',status:stale?'stale':'completed',simulations:count,modelVersion:typeof safe.modelVersion==='string'?safe.modelVersion:null,inputVersion:payload.inputHash??prep.inputHash,result:safe,research,createdAt:now,updatedAt:now,stale,persistent:false,historySaved:false};
-   rememberPublicAnalysis(detail.game,analysis);await cachePublicCollegeAnalysis(detail.game,analysis);await footballWrite({action:'complete_compute',id:reservation.id,lease}).catch(()=>{});
+   await saveProbabilitySimulation('CFB',id,count,prep.inputHash,{analysis:{...analysis,result:undefined,research:undefined},result:analysis.result,research:analysis.research});rememberPublicAnalysis(detail.game,analysis);await cachePublicCollegeAnalysis(detail.game,analysis);await footballWrite({action:'complete_compute',id:reservation.id,lease}).catch(()=>{});
    return{...detail,status:stale?'stale' as const:'ready' as const,analysis,historySaved:false,message:stale?'The game started during computation. This is a historical pregame baseline, not a live win probability.':'A complete college-football simulation was calculated from actual identified historical plays. Guest output is temporary; sign in and save for durable personal history.'};
   }catch(error){await footballWrite({action:'fail_compute',id:reservation.id,lease}).catch(()=>{});throw error;}
  })();running.set(key,task);try{const result=await task;if(ctx?.user&&result.analysis?.result){await saveCollegeAnalysis(ctx,result.analysis,result.game);return{...result,analysis:{...result.analysis,persistent:true,historySaved:true},historySaved:true};}return result;}finally{running.delete(key);}

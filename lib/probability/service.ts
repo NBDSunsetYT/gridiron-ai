@@ -1,3 +1,5 @@
+import {samePropSelection} from './market-identity';
+import{evidenceFailure}from'./failures';
 import{createHash}from'node:crypto';import{ApiError}from'../auth';import{freeProps}from'../free-props-service';import{thresholdProbability,approvedCalibration,evidenceIdentity}from'./math';import type{ProbabilityTarget}from'./schema';import type{CloudContext}from'../cloud/context';import{attestCloudResult,verifyCloudResult}from'../cloud/attestation';import{records}from'../cloud/store';import{alignedJoint}from'./joint';
 export const digest=(x:unknown)=>createHash('sha256').update(JSON.stringify(x)).digest('hex');
 const canonicalTarget=(target:ProbabilityTarget):unknown=>target.type==='prop'?((({cursor,...rest})=>rest)(target)):target.type==='combination'?{...target,legs:target.legs.map(canonicalTarget)}:target;
@@ -7,13 +9,14 @@ async function gameResult(sport:'NFL'|'CFB',id:string,n:number,ctx?:CloudContext
  if(sport==='CFB'){const source=await import('../college-football/service');let d=await source.collegeGameDetail(id);if(d.canAnalyze&&(!d.analysis||d.analysis.simulations!==n))d=await source.analyzeCollegeGame(id,n,ctx);return{game:d.game,result:d.analysis?.stale?null:d.analysis?.result,analysisId:d.analysis?.id,inputVersion:d.analysis?.inputVersion,reason:d.message,sources:d.sources,injuries:d.injuries,weather:d.weather};}
  const source=await import('../public-nfl/service');let d=await source.publicGameDetail(id,n);if((!d.analysis||d.analysis.simulations!==n||d.analysis.stale)&&d.game.status==='scheduled'&&Date.parse(d.game.startTime)>Date.now()){const b=await(await import('./nfl-baseline')).nflProbabilityBaseline(id,n);return{game:d.game,result:b.result,analysisId:b.id,inputVersion:b.inputVersion,reason:'Conditional complete-game NFL baseline; permanent personal history requires app sign-in.',sources:d.sources,injuries:d.injuries,weather:d.weather};}return{game:d.game,result:d.analysis?.stale?null:d.analysis?.result,analysisId:d.analysis?.id,inputVersion:d.currentInputHash,reason:d.message,sources:d.sources,injuries:d.injuries,weather:d.weather};
 }
-async function single(target:Exclude<ProbabilityTarget,{type:'combination'}>,n:number,ctx?:CloudContext):Promise<any>{
+async function single(target:Exclude<ProbabilityTarget,{type:'combination'}>,n:number,ctx?:CloudContext,progress?:(state:string)=>Promise<void>):Promise<any>{
  if(target.type==='prop'){
-  const board=await freeProps(target.sport,target.cursor,false),ref=target.reference;
-  const matches=(board.items??[]).filter((r:any)=>r.eventId===ref.eventId&&r.player.id===ref.playerId&&r.player.name===ref.playerName&&r.market===ref.market&&r.side===ref.side&&r.book.key===ref.book&&sameLine(r.threshold,ref.threshold));
+  if(!target.reference.playerId)return unavailable(target,'The selected provider row has no stable player ID. A name-only match cannot support a probability.',{state:'source_unavailable',reasonCode:'player_identity_unavailable',retryable:false});
+  let board=await freeProps(target.sport,target.cursor,false);const ref=target.reference;if(board.status==='unavailable'&&!board.items?.length)return unavailable(target,board.diagnostic?.message??'The authorized market provider supplied no verified current rows.',{state:'source_unavailable',reasonCode:'market_source_unavailable',retryable:true,sourceChecks:board.sourceChecks});
+  const matches=(board.items??[]).filter((r:any)=>samePropSelection(r,ref));
   if(matches.length!==1)return unavailable(target,'The exact current market could not be verified on this page. Refresh the source card; no substitute threshold or price was used.',{mode:'stale'});
-  const current=matches[0],evidence=await freeProps(target.sport,target.cursor,true,ctx,{quoteId:current.id,simulations:n}),row=evidence.items.find((r:any)=>r.id===current.id);
-  if(!row||row.modelProbability===null||row.simulations!==n||!row.probabilityDistribution)return unavailable(target,row?.reason??'A current full-game distribution is not available.',{kickoff:current.kickoff,injuryStatus:row?.injuryStatus,market:{family:'sportsbook_reference',americanOdds:current.americanOdds,breakEven:row?.marketImpliedProbability??null,fees:null,sourceUpdatedAt:current.sourceUpdatedAt},analysisChecks:evidence.analysisChecks});
+  const current=matches[0],evidence=await freeProps(target.sport,target.cursor,true,ctx,{quoteId:current.id,simulations:n,...progress?{onProgress:progress,reference:ref}:{}}),row=evidence.items.find((r:any)=>samePropSelection(r,ref));
+  if(!row||row.modelProbability===null||row.simulations!==n||!row.probabilityDistribution)return unavailable(target,row?.reason??'A current full-game distribution is not available.',{kickoff:current.kickoff,injuryStatus:row?.injuryStatus,market:{family:'sportsbook_reference',americanOdds:current.americanOdds,breakEven:row?.marketImpliedProbability??null,fees:null,sourceUpdatedAt:current.sourceUpdatedAt},analysisChecks:evidence.analysisChecks,state:row?.state??'source_unavailable',reasonCode:row?.reasonCode??'distribution_unavailable',retryable:row?.retryable??true,retryAt:row?.retryAt});
   const math=thresholdProbability(row.probabilityDistribution,n,Number(row.threshold),row.side==='Over'?'over':'under');
   return{...unavailable(target,''),...math,status:'ready',outcome:row.player.name+' · '+row.side+' '+row.threshold+' '+row.market.replaceAll('_',' '),gameId:row.modelGameId,kickoff:row.kickoff,modelVersion:row.modelVersion,inputVersion:row.inputVersion,modelDataVersion:row.modelDataVersion,modelFeatureVersion:row.modelFeatureVersion,evidenceCutoff:row.evidenceCutoff,analysisId:row.simulationId,calculatedAt:row.simulationCreatedAt,definition:{kind:'player',playerId:row.modelPlayerId,stat:row.statistic,threshold:Number(row.threshold),direction:row.side==='Over'?'over':'under',equality:'push',period:'full_game_including_overtime'},distribution:row.probabilityDistribution,sources:row.researchSources,assumptions:{availability:row.injuryStatus??'Not verified',availabilitySourceTime:row.injurySourceUpdatedAt??null,modelAdjustments:'Current roster, teammate injuries and weather adjustments are incomplete.'},market:{family:'sportsbook_reference',americanOdds:row.americanOdds,breakEven:row.marketImpliedProbability,fees:null,sourceUpdatedAt:row.sourceUpdatedAt},reason:row.reason};
  }
@@ -25,24 +28,24 @@ async function single(target:Exclude<ProbabilityTarget,{type:'combination'}>,n:n
  }
  const d=await gameResult(target.sport,target.gameId,n,ctx),g=d.game;
  if(g.status!=='scheduled'||Date.parse(g.startTime)<=Date.now())return unavailable(target,'The pregame estimate is historical. A fitted in-game model with fresh clock, possession, player statistics and availability is not available.',{mode:'live_unavailable',kickoff:g.startTime,sources:d.sources});
- const r=d.result;if(!r||r.simulations!==n)return unavailable(target,d.reason??'The full-game simulation is pending or unavailable.',{status:'pending',kickoff:g.startTime});
+ const r=d.result;if(!r||r.simulations!==n)return unavailable(target,d.reason??'The full-game simulation is pending or unavailable.',{status:'pending',state:'simulation_running',reasonCode:'simulation_pending',retryable:true,kickoff:g.startTime});
  const threshold=target.market==='winner'?0:target.threshold;if(!Number.isFinite(threshold))return unavailable(target,'An exact spread or total threshold is required.');
  const direction=target.market==='winner'?(target.side==='away'?'under':'over'):target.side==='under'||target.side==='away'?'under':'over';
  const bins=(target.market==='total'?r.totalDistribution:r.marginDistribution)?.histogram;if(!bins)return unavailable(target,'A reconciled score distribution is unavailable.');const math=thresholdProbability(bins,n,threshold!,direction);
  return{...unavailable(target,''),...math,status:'ready',outcome:`${g.away.name} at ${g.home.name} · ${target.market} · ${target.side}${target.threshold===undefined?'':' '+target.threshold}`,gameId:g.id,kickoff:g.startTime,modelVersion:r.modelVersion,inputVersion:d.inputVersion,modelDataVersion:r.inputDataVersion,modelFeatureVersion:r.baseFeatureVersion??r.inputFeatureVersion,evidenceCutoff:r.evidenceCutoff,analysisId:d.analysisId,calculatedAt:r.createdAt,sources:d.sources,definition:{kind:target.market==='total'?'total':'spread',threshold:threshold!,direction,equality:'push',period:'full_game_including_overtime'},distribution:bins,assumptions:{injuries:d.injuries?.message??'Incomplete availability evidence',weather:d.weather?.message??'Incomplete fitted weather impact'},market:{family:'independent_statistical_target',breakEven:null,fees:null},reason:'Full-game score threshold, including overtime. An entered spread threshold represents home score minus away score; this is not an executable market quote.'};
 }
 const pending=new Map<string,Promise<any>>();
-export async function calculateProbability(target:ProbabilityTarget,n=10000,ctx?:CloudContext):Promise<any>{
+export async function calculateProbability(target:ProbabilityTarget,n=10000,ctx?:CloudContext,options:{onProgress?:(state:string)=>Promise<void>}={}):Promise<any>{
  const key=digest([target,n,ctx?.user?.id??'guest']);if(pending.has(key))return pending.get(key);const work=(async()=>{try{let result:any;
  if(target.type==='combination'){
-  const legs=[];for(const leg of target.legs)legs.push(await single(leg,n,ctx));
+  const legs=[];for(const leg of target.legs)legs.push(await single(leg,n,ctx,options.onProgress));
   // Aligned marginal histograms are not joint outcomes. Never multiply to fill this gap.
-  try{result={...unavailable(target,''),...await alignedJoint(target.sport,legs,n),legs};}catch(e){result=unavailable(target,e instanceof Error?e.message:'Aligned joint evidence is unavailable.',{legs,reasonCode:'aligned_joint_evidence_required'});}
- }else result=await single(target,n,ctx);
+  try{result={...unavailable(target,''),...await alignedJoint(target.sport,legs,n),legs};}catch(e){result=unavailable(target,e instanceof Error?e.message:'Aligned joint evidence is unavailable.',{legs,reasonCode:'aligned_joint_evidence_required',state:'source_unavailable',retryable:false});}
+ }else result=await single(target,n,ctx,options.onProgress);
  result.targetKey=digest(canonicalTarget(target));result.evidenceKey=digest(evidenceIdentity({sport:target.sport,gameId:result.gameId??'',inputVersion:result.inputVersion??'',modelVersion:result.modelVersion??'',simulations:result.simulations??n,assumptions:result.assumptions??result.reason}));
- if(result.status==='ready'&&ctx?.user){const artifacts=await records(ctx,'probability_calibrators',{limit:20});for(const a of artifacts){try{verifyCloudResult(ctx,a.id,a.data);const value=approvedCalibration(result.rawProbability,a.data.result,{sport:target.sport,market:target.type==='game'?target.market:target.type==='prop'?target.reference.market:'combination',modelVersion:result.modelVersion,kickoff:result.kickoff});if(value!==null){result.calibratedProbability=value;result.calibrationArtifactId=a.id;result.modelReliability=a.data.result.validation;break;}}catch{/* Unsigned/unsupported calibrators never change an estimate. */}}}
+ await applyProbabilityCalibration(result,target,ctx);
  return result;
- }catch(e){return unavailable(target,e instanceof ApiError?e.message:'Current source evidence or simulation capacity could not be verified. No probability was substituted.');}finally{pending.delete(key);}})();pending.set(key,work);return work;
+ }catch(e){const failure=evidenceFailure(e);return unavailable(target,failure.reason,failure);}finally{pending.delete(key);}})();pending.set(key,work);return work;
 }
 export async function saveProbability(ctx:CloudContext,value:any){
  if(!ctx.user)return{saved:false,reason:'Sign in to keep probability history across devices.'};
@@ -52,4 +55,9 @@ export async function saveProbability(ctx:CloudContext,value:any){
 export async function probabilityHistory(ctx:CloudContext,key:string){
  if(!ctx.user)throw new ApiError('Sign in to open private probability history.',401);const{data,error}=await ctx.client.from('probability_history').select('*').eq('user_id',ctx.user.id).eq('target_key',key).order('created_at',{ascending:false}).limit(100);if(error)throw new ApiError('Probability history unavailable.',503);
  return(data??[]).map((row:any)=>{verifyCloudResult(ctx,row.id,{result:row.data,resultProof:row.proof});return{id:row.id,...row.data,storedAt:row.created_at};});
+}
+
+export async function applyProbabilityCalibration(result:any,target:ProbabilityTarget,ctx?:CloudContext){
+ if(result.status==='ready'&&ctx?.user){let artifacts;try{artifacts=await records(ctx,'probability_calibrators',{limit:20});}catch{result.calibrationReason='Calibration records are temporarily unavailable. The raw simulation frequency is preserved and is not labeled calibrated.';return result;}for(const a of artifacts){try{verifyCloudResult(ctx,a.id,a.data);const value=approvedCalibration(result.rawProbability,a.data.result,{sport:target.sport,market:target.type==='game'?target.market:target.type==='prop'?target.reference.market:'combination',modelVersion:result.modelVersion,kickoff:result.kickoff});if(value!==null){result.calibratedProbability=value;result.calibrationReason='An approved sport, market and model-specific chronological calibrator was applied.';result.calibrationArtifactId=a.id;result.modelReliability=a.data.result.validation;break;}}catch{/* Unsigned/unsupported calibrators never change an estimate. */}}}
+ return result;
 }

@@ -1,3 +1,5 @@
+import {vi as storageVi} from 'vitest';
+storageVi.mock('../lib/probability/simulation-storage',()=>({readProbabilitySimulation:storageVi.fn(async()=>null),saveProbabilitySimulation:storageVi.fn(async()=>({}))}));
 import {beforeEach,afterEach,describe,it,expect,vi} from 'vitest';
 const mocks=vi.hoisted(()=>({rows:new Map<string,any>(),get:vi.fn(),set:vi.fn(),factory:vi.fn(),game:vi.fn(),schedule:vi.fn(),write:vi.fn(),save:vi.fn(),fetch:vi.fn()}));
 vi.mock('@vercel/functions',()=>({getCache:mocks.factory}));
