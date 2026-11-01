@@ -1,0 +1,478 @@
+{
+  "version": "11.0.1",
+  "status": "deployed_verified_with_documented_limits",
+  "productionUrl": "https://gridiron-ai-gray.vercel.app",
+  "sourceCommit": "917f4b5356846c949b2e4b4dea415fb200e25a73",
+  "deployment": {
+    "id": "dpl_CibbDbaP3J7mLwSCxfo7F1CM6x8d",
+    "sourceManifestSha256": "be89730d4bf6c538bf2271bd2cc630276e9551c867206e5e9a340cba05c0db84",
+    "runtimeFiles": 268,
+    "status": "READY",
+    "uniqueUrl": "https://gridiron-5i8i0ebls-gridiron5.vercel.app"
+  },
+  "observedRootCauses": [
+    "The actual CFB analyze route returned HTTP 429 because the shared UTC daily 500,000-game application limit was exhausted. The prop adapter masked it as unavailable evidence.",
+    "Completed reservations outlived temporary CFB/NFL fallback/joint output caches.",
+    "Quote row IDs change with prices and timestamps; exact selection identity did not survive a refresh.",
+    "The storage privacy guard rejected narrowly defined statistical settlement definitions as if they were financial records."
+  ],
+  "checks": [
+    {
+      "name": "TypeScript unit/integration suite",
+      "status": "passed",
+      "tests": 690,
+      "files": 93
+    },
+    {
+      "name": "Relevant Python probability/game/player research suite",
+      "status": "passed",
+      "tests": 19
+    },
+    {
+      "name": "Existing PostgreSQL RLS, ledger, research and recovery suites",
+      "status": "passed",
+      "suites": 9
+    },
+    {
+      "name": "Additional read-only capacity RPC PostgreSQL suite",
+      "status": "passed",
+      "suites": 1
+    },
+    {
+      "name": "Desktop and iPhone-sized Chromium NFL/CFB/Wallet/combination/probability regression",
+      "status": "passed",
+      "tests": 66
+    },
+    {
+      "name": "Final focused desktop/iPhone-sized probability and combination UI regression",
+      "status": "passed",
+      "tests": 14
+    },
+    {
+      "name": "Final storage/privacy/market fallback guards",
+      "status": "passed",
+      "tests": 18
+    },
+    {
+      "name": "Next.js production build",
+      "status": "passed"
+    },
+    {
+      "name": "Actual-source CFB complete-game simulation and durable recovery",
+      "status": "passed",
+      "simulations": 10000,
+      "players": 42,
+      "inputVersion": "eb62eec8056601596c28c6582ce2f3754c8cf2eb875747709ab78bba03363739",
+      "executionLocation": "Authorized engineering cloud workspace; independently matched production preparation fingerprint. Not a hosted run outside its reservation guard."
+    },
+    {
+      "name": "Actual-source aligned CFB complete-game combination and durable recovery",
+      "status": "passed",
+      "simulations": 10000,
+      "hits": 2342,
+      "jointProbability": 0.2342,
+      "independenceComparison": 0.23633268,
+      "executionLocation": "Authorized engineering cloud workspace."
+    },
+    {
+      "name": "Existing actual production NFL outcome arithmetic audit",
+      "status": "passed_historical_arithmetic_only",
+      "checks": 7,
+      "report": "probability-repair-nfl-historical.json",
+      "newSimulation": false,
+      "liveMarketPrices": false,
+      "calibrationEvidence": false
+    },
+    {
+      "name": "Production capacity RPC",
+      "status": "passed",
+      "usageUnchanged": 500000,
+      "limitUnchanged": 500000,
+      "backgroundAdmissionLimit": 300000,
+      "resetAt": "2026-11-02T00:00:00Z"
+    },
+    {
+      "name": "Financial preservation",
+      "status": "passed_scoped",
+      "financialWrites": 0,
+      "ledgerDigestUnchanged": true,
+      "postingsDigestUnchanged": true,
+      "scope": "Read-only comparison. Private accounting values and fingerprints are excluded from the public source report."
+    },
+    {
+      "name": "Actual deployed probability, retrieval, source identity, private-route and mobile UI workflow",
+      "status": "passed_scoped",
+      "checks": 13,
+      "report": "probability-repair-production.json"
+    },
+    {
+      "name": "Actual deployed HTTPS/PWA/assets/mobile metadata/offline/privacy",
+      "status": "passed",
+      "checks": 15,
+      "report": "probability-repair-pwa.json"
+    },
+    {
+      "name": "Latest deployment scoped runtime error/fatal logs",
+      "status": "no_matching_logs",
+      "window": "Five minutes ending 2026-11-01T19:29:20Z",
+      "note": "No matching log entries is not a claim that all possible execution paths were tested."
+    }
+  ],
+  "actualCfbThresholds": [
+    {
+      "player": "Brayden Roggow",
+      "providerPlayerId": "espn:5146903",
+      "modelPlayerId": "cfb:espn:5146903",
+      "stat": "passingTouchdowns",
+      "threshold": "1.5",
+      "side": "Under",
+      "hits": 6188,
+      "simulations": 10000,
+      "rawProbability": 0.6188
+    },
+    {
+      "player": "Nick Poulos",
+      "providerPlayerId": "espn:5228762",
+      "modelPlayerId": "cfb:espn:5228762",
+      "stat": "passingTouchdowns",
+      "threshold": "1.5",
+      "side": "Under",
+      "hits": 6665,
+      "simulations": 10000,
+      "rawProbability": 0.6665
+    },
+    {
+      "player": "Nick Poulos",
+      "providerPlayerId": "espn:5228762",
+      "modelPlayerId": "cfb:espn:5228762",
+      "stat": "passingYards",
+      "threshold": "192.5",
+      "side": "Over",
+      "hits": 3292,
+      "simulations": 10000,
+      "rawProbability": 0.3292
+    },
+    {
+      "player": "Brayden Roggow",
+      "providerPlayerId": "espn:5146903",
+      "modelPlayerId": "cfb:espn:5146903",
+      "stat": "passingYards",
+      "threshold": "189.5",
+      "side": "Over",
+      "hits": 6548,
+      "simulations": 10000,
+      "rawProbability": 0.6548
+    },
+    {
+      "player": "Miles Burris",
+      "providerPlayerId": "espn:5193102",
+      "modelPlayerId": "cfb:espn:5193102",
+      "stat": "receivingYards",
+      "threshold": "22.5",
+      "side": "Over",
+      "hits": 7179,
+      "simulations": 10000,
+      "rawProbability": 0.7179
+    },
+    {
+      "player": "Victor Rosa",
+      "providerPlayerId": "espn:4873234",
+      "modelPlayerId": "cfb:espn:4873234",
+      "stat": "rushingYards",
+      "threshold": "56.5",
+      "side": "Under",
+      "hits": 3405,
+      "simulations": 10000,
+      "rawProbability": 0.3405
+    },
+    {
+      "player": "Kyan Mason",
+      "providerPlayerId": "espn:5110019",
+      "modelPlayerId": "cfb:espn:5110019",
+      "stat": "receivingYards",
+      "threshold": "30.5",
+      "side": "Over",
+      "hits": 7542,
+      "simulations": 10000,
+      "rawProbability": 0.7542
+    },
+    {
+      "player": "Miles Burris",
+      "providerPlayerId": "espn:5193102",
+      "modelPlayerId": "cfb:espn:5193102",
+      "stat": "receivingYards",
+      "threshold": "22.5",
+      "side": "Under",
+      "hits": 2821,
+      "simulations": 10000,
+      "rawProbability": 0.2821
+    },
+    {
+      "player": "Nick Poulos",
+      "providerPlayerId": "espn:5228762",
+      "modelPlayerId": "cfb:espn:5228762",
+      "stat": "rushingYards",
+      "threshold": "24.5",
+      "side": "Over",
+      "hits": 8208,
+      "simulations": 10000,
+      "rawProbability": 0.8208
+    },
+    {
+      "player": "Riley Neer",
+      "providerPlayerId": "espn:5228764",
+      "modelPlayerId": "cfb:espn:5228764",
+      "stat": "receivingYards",
+      "threshold": "59.5",
+      "side": "Under",
+      "hits": 2554,
+      "simulations": 10000,
+      "rawProbability": 0.2554
+    },
+    {
+      "player": "Dom Dorwart",
+      "providerPlayerId": "espn:5193110",
+      "modelPlayerId": "cfb:espn:5193110",
+      "stat": "receivingYards",
+      "threshold": "30.5",
+      "side": "Over",
+      "hits": 7199,
+      "simulations": 10000,
+      "rawProbability": 0.7199
+    },
+    {
+      "player": "Jordan Gant",
+      "providerPlayerId": "espn:5084582",
+      "modelPlayerId": "cfb:espn:5084582",
+      "stat": "rushingYards",
+      "threshold": "82.5",
+      "side": "Under",
+      "hits": 3527,
+      "simulations": 10000,
+      "rawProbability": 0.3527
+    },
+    {
+      "player": "Nick Poulos",
+      "providerPlayerId": "espn:5228762",
+      "modelPlayerId": "cfb:espn:5228762",
+      "stat": "passingTouchdowns",
+      "threshold": "1.5",
+      "side": "Over",
+      "hits": 3335,
+      "simulations": 10000,
+      "rawProbability": 0.3335
+    },
+    {
+      "player": "Nick Poulos",
+      "providerPlayerId": "espn:5228762",
+      "modelPlayerId": "cfb:espn:5228762",
+      "stat": "rushingYards",
+      "threshold": "24.5",
+      "side": "Under",
+      "hits": 1792,
+      "simulations": 10000,
+      "rawProbability": 0.1792
+    },
+    {
+      "player": "Jordan Gant",
+      "providerPlayerId": "espn:5084582",
+      "modelPlayerId": "cfb:espn:5084582",
+      "stat": "rushingYards",
+      "threshold": "82.5",
+      "side": "Over",
+      "hits": 6473,
+      "simulations": 10000,
+      "rawProbability": 0.6473
+    },
+    {
+      "player": "Dom Dorwart",
+      "providerPlayerId": "espn:5193110",
+      "modelPlayerId": "cfb:espn:5193110",
+      "stat": "receivingYards",
+      "threshold": "30.5",
+      "side": "Under",
+      "hits": 2801,
+      "simulations": 10000,
+      "rawProbability": 0.2801
+    },
+    {
+      "player": "Brayden Roggow",
+      "providerPlayerId": "espn:5146903",
+      "modelPlayerId": "cfb:espn:5146903",
+      "stat": "passingYards",
+      "threshold": "189.5",
+      "side": "Under",
+      "hits": 3452,
+      "simulations": 10000,
+      "rawProbability": 0.3452
+    },
+    {
+      "player": "Duncan Brune",
+      "providerPlayerId": "espn:5167252",
+      "modelPlayerId": "cfb:espn:5167252",
+      "stat": "rushingYards",
+      "threshold": "70.5",
+      "side": "Under",
+      "hits": 6191,
+      "simulations": 10000,
+      "rawProbability": 0.6191
+    },
+    {
+      "player": "Preston Bowman",
+      "providerPlayerId": "espn:5211691",
+      "modelPlayerId": "cfb:espn:5211691",
+      "stat": "receivingYards",
+      "threshold": "23.5",
+      "side": "Over",
+      "hits": 7303,
+      "simulations": 10000,
+      "rawProbability": 0.7303
+    },
+    {
+      "player": "Preston Bowman",
+      "providerPlayerId": "espn:5211691",
+      "modelPlayerId": "cfb:espn:5211691",
+      "stat": "receivingYards",
+      "threshold": "23.5",
+      "side": "Under",
+      "hits": 2697,
+      "simulations": 10000,
+      "rawProbability": 0.2697
+    },
+    {
+      "player": "Duncan Brune",
+      "providerPlayerId": "espn:5167252",
+      "modelPlayerId": "cfb:espn:5167252",
+      "stat": "rushingYards",
+      "threshold": "70.5",
+      "side": "Over",
+      "hits": 3809,
+      "simulations": 10000,
+      "rawProbability": 0.3809
+    },
+    {
+      "player": "Nick Poulos",
+      "providerPlayerId": "espn:5228762",
+      "modelPlayerId": "cfb:espn:5228762",
+      "stat": "passingYards",
+      "threshold": "192.5",
+      "side": "Under",
+      "hits": 6708,
+      "simulations": 10000,
+      "rawProbability": 0.6708
+    },
+    {
+      "player": "Victor Rosa",
+      "providerPlayerId": "espn:4873234",
+      "modelPlayerId": "cfb:espn:4873234",
+      "stat": "rushingYards",
+      "threshold": "56.5",
+      "side": "Over",
+      "hits": 6595,
+      "simulations": 10000,
+      "rawProbability": 0.6595
+    },
+    {
+      "player": "Kyan Mason",
+      "providerPlayerId": "espn:5110019",
+      "modelPlayerId": "cfb:espn:5110019",
+      "stat": "receivingYards",
+      "threshold": "30.5",
+      "side": "Under",
+      "hits": 2458,
+      "simulations": 10000,
+      "rawProbability": 0.2458
+    },
+    {
+      "player": "Riley Neer",
+      "providerPlayerId": "espn:5228764",
+      "modelPlayerId": "cfb:espn:5228764",
+      "stat": "receivingYards",
+      "threshold": "59.5",
+      "side": "Over",
+      "hits": 7446,
+      "simulations": 10000,
+      "rawProbability": 0.7446
+    },
+    {
+      "player": "Brayden Roggow",
+      "providerPlayerId": "espn:5146903",
+      "modelPlayerId": "cfb:espn:5146903",
+      "stat": "passingTouchdowns",
+      "threshold": "1.5",
+      "side": "Over",
+      "hits": 3812,
+      "simulations": 10000,
+      "rawProbability": 0.3812
+    }
+  ],
+  "privateData": {
+    "project": "qdtdjbapdipopncklsdb",
+    "existingTablesReset": false,
+    "existingUserRecordsDeleted": false,
+    "financialDataMoved": false,
+    "privateRlsDisabled": false,
+    "newTableCreated": false,
+    "migration": "20261101191026_probability_capacity_reporting",
+    "migrationType": "Read-only capability-protected function addition"
+  },
+  "marketFreshness": {
+    "observedInitialCfbRows": 44,
+    "source": "PropLine sportsbook references",
+    "draftKingsPredictionsPricesVerified": false,
+    "historicalDefinitionsRecovered": 44,
+    "historicalPriceRevalidatedAsCurrent": false,
+    "expiredPricesUsedForBreakEvenOrValue": false
+  },
+  "remainingLimits": [
+    "No approved sport/market-specific prospective calibrator is established; raw probabilities are not relabeled calibrated.",
+    "Current roster, complete injuries, calibrated availability mixtures and fitted weather effects remain incomplete.",
+    "Today\u2019s already-exhausted hosted simulation budget was not increased/reset. New uncomputed requests may be delayed until UTC reset; matching persisted results remain usable.",
+    "No physical iPhone installation or authenticated private cross-device test was performed.",
+    "Atlas and R2 activation blockers from v11 remain unchanged. No paid resource was created."
+  ],
+  "importantScope": "Actual recovered outputs come from coherent complete games and public historical sources. They are conditional research baselines, not model-accuracy validation or market profit guarantees.",
+  "productionMarketStatus": {
+    "cfb": {
+      "rows": 44,
+      "liveMarketAvailable": false,
+      "diagnostic": {
+        "code": "historical_definitions_only",
+        "message": "Live prices are delayed or unavailable. These are previously verified definitions and historical quoted prices. Independent threshold research can continue; current break-even and after-fee value are unavailable."
+      },
+      "marketCounts": {
+        "player_pass_yds": 4,
+        "player_pass_tds": 4,
+        "player_pass_attempts": 0,
+        "player_pass_completions": 0,
+        "player_pass_interceptions": 0,
+        "player_rush_yds": 8,
+        "player_rush_attempts": 0,
+        "player_rush_tds": 0,
+        "player_reception_yds": 12,
+        "player_receptions": 0,
+        "player_reception_tds": 0,
+        "player_anytime_td": 16
+      }
+    },
+    "nfl": {
+      "status": "unavailable",
+      "rows": 0,
+      "diagnostic": {
+        "code": "no_verified_provider",
+        "message": "No authorized provider supplied verified current football props. No sportsbook or exchange prices were invented."
+      },
+      "sourceChecks": [
+        {
+          "provider": "PropLine",
+          "code": "no_verified_current_props"
+        },
+        {
+          "provider": "ParlayAPI",
+          "code": "documentation_and_access_unverified"
+        }
+      ]
+    }
+  },
+  "finishedAt": "2026-11-01T19:28:53.073Z"
+}

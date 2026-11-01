@@ -1,0 +1,359 @@
+{
+  "version": "11.0.1",
+  "startedAt": "2026-11-01T19:28:06.891Z",
+  "baseUrl": "https://gridiron-ai-gray.vercel.app",
+  "status": "passed_scoped",
+  "mockedResponses": false,
+  "financialWrites": 0,
+  "accountsCreated": 0,
+  "physicalIphoneTested": false,
+  "checks": [
+    {
+      "name": "Production health verifies the repaired version and existing Supabase/Python dependencies",
+      "status": "passed"
+    },
+    {
+      "name": "Actual CFB source definitions retain provider IDs, exact thresholds and honest price freshness",
+      "status": "passed"
+    },
+    {
+      "name": "Actual passingYards threshold resolves to complete-game counts and binomial sampling uncertainty",
+      "status": "passed"
+    },
+    {
+      "name": "Actual receivingYards threshold resolves to complete-game counts and binomial sampling uncertainty",
+      "status": "passed"
+    },
+    {
+      "name": "Actual rushingYards threshold resolves to complete-game counts and binomial sampling uncertainty",
+      "status": "passed"
+    },
+    {
+      "name": "Actual passingTouchdowns threshold resolves to complete-game counts and binomial sampling uncertainty",
+      "status": "passed"
+    },
+    {
+      "name": "A separate actual request reopens the same persisted probability without starting another game run",
+      "status": "passed"
+    },
+    {
+      "name": "Actual game-winner threshold uses the same verified complete-game score distribution",
+      "status": "passed"
+    },
+    {
+      "name": "An explicitly hypothetical total threshold is evaluated without inventing a market quote",
+      "status": "passed"
+    },
+    {
+      "name": "A selected same-game combination retrieves actual shared-game joint counts, never an independence product",
+      "status": "passed"
+    },
+    {
+      "name": "The NFL feed reports actual coverage separately without substituting CFB or exchange prices",
+      "status": "passed"
+    },
+    {
+      "name": "Private financial and prediction history remain unavailable to an unauthenticated guest",
+      "status": "passed"
+    },
+    {
+      "name": "Actual iPhone-sized UI follows the backend result and displays calculated counts with price limitations",
+      "status": "passed"
+    }
+  ],
+  "probabilities": [
+    {
+      "target": {
+        "type": "prop",
+        "sport": "CFB",
+        "cursor": 0,
+        "reference": {
+          "eventId": "542189",
+          "playerId": "espn:5228762",
+          "playerName": "Nick Poulos",
+          "market": "player_pass_yds",
+          "side": "Over",
+          "threshold": "192.5",
+          "book": "fanduel"
+        }
+      },
+      "status": "ready",
+      "hits": 3292,
+      "simulations": 10000,
+      "rawProbability": 0.3292,
+      "monteCarloSE": 0.004699227170503678,
+      "monteCarloInterval95": [
+        0.3200568058902661,
+        0.3384743679531569
+      ],
+      "calibratedProbability": null,
+      "modelVersion": "cfb-pbp-empirical-8.0.0",
+      "inputVersion": "eb62eec8056601596c28c6582ce2f3754c8cf2eb875747709ab78bba03363739",
+      "jobId": "600f21afdd48b30c934617a18f3483fc90bbafefaa446f168eacba6def3fdfa4",
+      "observedStates": [
+        "resolving_player",
+        "ready"
+      ],
+      "currentMarketVerified": false
+    },
+    {
+      "target": {
+        "type": "prop",
+        "sport": "CFB",
+        "cursor": 0,
+        "reference": {
+          "eventId": "542189",
+          "playerId": "espn:5193102",
+          "playerName": "Miles Burris",
+          "market": "player_reception_yds",
+          "side": "Over",
+          "threshold": "22.5",
+          "book": "fanduel"
+        }
+      },
+      "status": "ready",
+      "hits": 7179,
+      "simulations": 10000,
+      "rawProbability": 0.7179,
+      "monteCarloSE": 0.004500217661402612,
+      "monteCarloInterval95": [
+        0.7089973589128151,
+        0.7266352945972439
+      ],
+      "calibratedProbability": null,
+      "modelVersion": "cfb-pbp-empirical-8.0.0",
+      "inputVersion": "eb62eec8056601596c28c6582ce2f3754c8cf2eb875747709ab78bba03363739",
+      "jobId": "27e1cea141f0e8f2b7ca78a7be9b5198efcb22e9450c2daa62e2c4ce2631546f",
+      "observedStates": [
+        "resolving_player",
+        "ready"
+      ],
+      "currentMarketVerified": false
+    },
+    {
+      "target": {
+        "type": "prop",
+        "sport": "CFB",
+        "cursor": 0,
+        "reference": {
+          "eventId": "542189",
+          "playerId": "espn:4873234",
+          "playerName": "Victor Rosa",
+          "market": "player_rush_yds",
+          "side": "Under",
+          "threshold": "56.5",
+          "book": "fanduel"
+        }
+      },
+      "status": "ready",
+      "hits": 3405,
+      "simulations": 10000,
+      "rawProbability": 0.3405,
+      "monteCarloSE": 0.004738773575515083,
+      "monteCarloInterval95": [
+        0.33127500364440754,
+        0.3498474918358383
+      ],
+      "calibratedProbability": null,
+      "modelVersion": "cfb-pbp-empirical-8.0.0",
+      "inputVersion": "eb62eec8056601596c28c6582ce2f3754c8cf2eb875747709ab78bba03363739",
+      "jobId": "043c3da161872d87b8cff3dc928d8c14befd61f9e252b7ccc347ba20cd88e117",
+      "observedStates": [
+        "resolving_player",
+        "ready"
+      ],
+      "currentMarketVerified": false
+    },
+    {
+      "target": {
+        "type": "prop",
+        "sport": "CFB",
+        "cursor": 0,
+        "reference": {
+          "eventId": "542189",
+          "playerId": "espn:5146903",
+          "playerName": "Brayden Roggow",
+          "market": "player_pass_tds",
+          "side": "Under",
+          "threshold": "1.5",
+          "book": "fanduel"
+        }
+      },
+      "status": "ready",
+      "hits": 6188,
+      "simulations": 10000,
+      "rawProbability": 0.6188,
+      "monteCarloSE": 0.0048568154175344155,
+      "monteCarloInterval95": [
+        0.6092369162156802,
+        0.628271845771447
+      ],
+      "calibratedProbability": null,
+      "modelVersion": "cfb-pbp-empirical-8.0.0",
+      "inputVersion": "eb62eec8056601596c28c6582ce2f3754c8cf2eb875747709ab78bba03363739",
+      "jobId": "7dcc69b416c1a8040891957ee130a7e7f31227bddbc988a43f6fbc2d5bc1ed87",
+      "observedStates": [
+        "resolving_player",
+        "ready"
+      ],
+      "currentMarketVerified": false
+    },
+    {
+      "target": {
+        "type": "game",
+        "sport": "CFB",
+        "gameId": "cfb:espn:401866453",
+        "market": "winner",
+        "side": "home"
+      },
+      "status": "ready",
+      "hits": 2311,
+      "simulations": 10000,
+      "rawProbability": 0.2311,
+      "monteCarloSE": 0.004215362262012602,
+      "monteCarloInterval95": [
+        0.22294224004033028,
+        0.23946427428341951
+      ],
+      "calibratedProbability": null,
+      "modelVersion": "cfb-pbp-empirical-8.0.0",
+      "inputVersion": "eb62eec8056601596c28c6582ce2f3754c8cf2eb875747709ab78bba03363739",
+      "jobId": "835568b9cda88d5e5b2a0b8e6b13eb78a058b84729000849b14d58c78a2b523a",
+      "observedStates": [
+        "resolving_player",
+        "ready"
+      ],
+      "currentMarketVerified": null
+    },
+    {
+      "target": {
+        "type": "game",
+        "sport": "CFB",
+        "gameId": "cfb:espn:401866453",
+        "market": "total",
+        "side": "over",
+        "threshold": 45.5
+      },
+      "status": "ready",
+      "hits": 9017,
+      "simulations": 10000,
+      "rawProbability": 0.9017,
+      "monteCarloSE": 0.0029771985153832126,
+      "monteCarloInterval95": [
+        0.8957096276067771,
+        0.9073818681022212
+      ],
+      "calibratedProbability": null,
+      "modelVersion": "cfb-pbp-empirical-8.0.0",
+      "inputVersion": "eb62eec8056601596c28c6582ce2f3754c8cf2eb875747709ab78bba03363739",
+      "jobId": "5104b1313be2564ac8dc82ed6a314f626d9985b3aee2bc10264eb21e9bc911e8",
+      "observedStates": [
+        "resolving_player",
+        "ready"
+      ],
+      "currentMarketVerified": null
+    },
+    {
+      "target": {
+        "type": "combination",
+        "sport": "CFB",
+        "legs": [
+          {
+            "type": "prop",
+            "sport": "CFB",
+            "cursor": 0,
+            "reference": {
+              "eventId": "542189",
+              "playerId": "espn:5228762",
+              "playerName": "Nick Poulos",
+              "market": "player_pass_yds",
+              "side": "Over",
+              "threshold": "192.5",
+              "book": "fanduel"
+            }
+          },
+          {
+            "type": "prop",
+            "sport": "CFB",
+            "cursor": 0,
+            "reference": {
+              "eventId": "542189",
+              "playerId": "espn:5193102",
+              "playerName": "Miles Burris",
+              "market": "player_reception_yds",
+              "side": "Over",
+              "threshold": "22.5",
+              "book": "fanduel"
+            }
+          }
+        ]
+      },
+      "status": "ready",
+      "hits": 2342,
+      "simulations": 10000,
+      "rawProbability": 0.2342,
+      "monteCarloSE": 0.004234977685891627,
+      "monteCarloInterval95": [
+        0.22600262921699701,
+        0.2426015043168546
+      ],
+      "calibratedProbability": null,
+      "modelVersion": "cfb-pbp-empirical-8.0.0",
+      "inputVersion": "eb62eec8056601596c28c6582ce2f3754c8cf2eb875747709ab78bba03363739",
+      "jobId": "d842f2b15f9569a619e336cb40e5442e1c8ffd1ca74af02a845875dc276efa62",
+      "observedStates": [
+        "resolving_player",
+        "calculating_probability",
+        "ready"
+      ],
+      "currentMarketVerified": null
+    }
+  ],
+  "provider": {
+    "rows": 44,
+    "liveMarketAvailable": false,
+    "diagnostic": {
+      "code": "historical_definitions_only",
+      "message": "Live prices are delayed or unavailable. These are previously verified definitions and historical quoted prices. Independent threshold research can continue; current break-even and after-fee value are unavailable."
+    },
+    "marketCounts": {
+      "player_pass_yds": 4,
+      "player_pass_tds": 4,
+      "player_pass_attempts": 0,
+      "player_pass_completions": 0,
+      "player_pass_interceptions": 0,
+      "player_rush_yds": 8,
+      "player_rush_attempts": 0,
+      "player_rush_tds": 0,
+      "player_reception_yds": 12,
+      "player_receptions": 0,
+      "player_reception_tds": 0,
+      "player_anytime_td": 16
+    }
+  },
+  "nflProvider": {
+    "status": "unavailable",
+    "rows": 0,
+    "diagnostic": {
+      "code": "no_verified_provider",
+      "message": "No authorized provider supplied verified current football props. No sportsbook or exchange prices were invented."
+    },
+    "sourceChecks": [
+      {
+        "provider": "PropLine",
+        "code": "no_verified_current_props"
+      },
+      {
+        "provider": "ParlayAPI",
+        "code": "documentation_and_access_unverified"
+      }
+    ]
+  },
+  "finishedAt": "2026-11-01T19:28:53.073Z",
+  "limitations": [
+    "The two actual 10,000-game CFB runs were generated in the authorized engineering cloud worker and recovered with fingerprints matching production preparation; the already-exhausted hosted budget was not reset or raised.",
+    "Current roster, complete injury/weather effects, prospective calibration and sportsbook settlement coverage remain incomplete.",
+    "Historical definitions do not verify current executable prices.",
+    "No physical iPhone installation or authenticated private cross-device workflow was performed."
+  ]
+}

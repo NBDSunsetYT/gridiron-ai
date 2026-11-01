@@ -58,3 +58,35 @@ verified definitions for independent threshold research. Their original quote
 timestamps remain unchanged, prices are marked historical, and current
 break-even/value fields remain unavailable. No never-observed NFL market is
 created as a fallback. This does not claim a still-listed executable contract.
+
+## Production delivery
+
+The unchanged app URL is https://gridiron-ai-gray.vercel.app. Deployment
+`dpl_CibbDbaP3J7mLwSCxfo7F1CM6x8d` is READY with runtime source commit
+`917f4b5356846c949b2e4b4dea415fb200e25a73`. No Render service was replaced,
+credentials were not moved, and no paid resource was provisioned.
+
+Passed: 690 TypeScript tests, 19 relevant Python tests, nine existing PostgreSQL
+suites plus the new capacity suite, 66 desktop/mobile regressions and 14 final
+focused browser regressions. On this actual deployment, 13 end-to-end source/API/
+recovery/mobile checks and 15 PWA/privacy/offline checks passed.
+
+The real iPhone-sized Chromium UI displayed 3,292 / 10,000 for the verified
+Nick Poulos passing-yard threshold. The four CFB player categories, independent
+game-winner and hypothetical-total thresholds, same-game joint probability,
+subsequent result retrieval and guest denial of private records were exercised.
+The live provider had no verified fresh NFL rows at test time; seven checks of
+actual historical NFL outcome distributions were recorded separately and are not
+labeled current market or accuracy evidence. Current CFB prices were delayed, so
+the deployed tests exercised explicitly historical verified definitions and
+independent model research without a current break-even value.
+
+Physical iPhone installation, an authenticated private cross-device session and
+prospective calibration were not established by these checks. New uncomputed
+hosted runs can remain delayed until the unchanged daily limit resets at
+2026-11-02 00:00 UTC. Existing matching persistent results remain available.
+
+Reports: [full verification](reports/probability-repair-verification.json),
+[production workflow](reports/probability-repair-production.json),
+[PWA](reports/probability-repair-pwa.json), and
+[NFL historical arithmetic](reports/probability-repair-nfl-historical.json).
