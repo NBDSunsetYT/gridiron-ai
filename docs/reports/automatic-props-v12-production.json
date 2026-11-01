@@ -1,0 +1,225 @@
+{
+  "version": "12.0.0",
+  "startedAt": "2026-11-01T21:10:49.626Z",
+  "baseUrl": "https://gridiron-ai-gray.vercel.app",
+  "mockedResponses": false,
+  "physicalIphoneTested": false,
+  "financialWrites": 0,
+  "checks": [
+    {
+      "name": "Actual production reports version 12 and working Supabase/private model dependencies",
+      "status": "passed"
+    },
+    {
+      "name": "NFL props automatically resolve stored source-derived probabilities without an analysis POST",
+      "status": "passed"
+    },
+    {
+      "name": "CFB props automatically resolve stored source-derived probabilities without an analysis POST",
+      "status": "passed"
+    },
+    {
+      "name": "Actual iPhone-sized app shows computed percentages on open and opens already calculated details",
+      "status": "passed"
+    },
+    {
+      "name": "Private financial routes still deny unauthenticated access and never cache private responses",
+      "status": "passed"
+    }
+  ],
+  "markets": {
+    "NFL": {
+      "loaded": 500,
+      "ready": 199,
+      "methods": [
+        "empirical_history"
+      ],
+      "examples": [
+        {
+          "player": "Patrick Mahomes",
+          "playerId": "espn:3139477",
+          "eventId": "53172",
+          "gameId": "2026_08_KC_DEN",
+          "market": "player_pass_completions",
+          "threshold": "20.5",
+          "side": "Under",
+          "method": "empirical_history",
+          "probability": 0.6666666666666666,
+          "hits": 4,
+          "sampleSize": 6,
+          "inputVersion": "49d96b951991ab0f96fe74b02db0779a2906ea49bf99a3c02092853403fc3de8",
+          "calculatedAt": "2026-11-01T21:10:59.830119+00:00"
+        },
+        {
+          "player": "Patrick Mahomes",
+          "playerId": "espn:3139477",
+          "eventId": "53172",
+          "gameId": "2026_08_KC_DEN",
+          "market": "player_pass_yds",
+          "threshold": "221.5",
+          "side": "Under",
+          "method": "empirical_history",
+          "probability": 0.3333333333333333,
+          "hits": 2,
+          "sampleSize": 6,
+          "inputVersion": "49d96b951991ab0f96fe74b02db0779a2906ea49bf99a3c02092853403fc3de8",
+          "calculatedAt": "2026-11-01T21:10:59.830119+00:00"
+        },
+        {
+          "player": "Kyle Williams",
+          "playerId": "espn:4613202",
+          "eventId": "534128",
+          "gameId": "2026_08_NE_MIA",
+          "market": "player_receptions",
+          "threshold": "1.5",
+          "side": "Over",
+          "method": "empirical_history",
+          "probability": 0.14285714285714285,
+          "hits": 1,
+          "sampleSize": 7,
+          "inputVersion": "8547db1b92790c249767bfc5b11906d5e9fd02b1371662c2b2baed228b78e063",
+          "calculatedAt": "2026-11-01T21:11:01.984434+00:00"
+        },
+        {
+          "player": "Demario Douglas",
+          "playerId": "espn:4427095",
+          "eventId": "534128",
+          "gameId": "2026_08_NE_MIA",
+          "market": "player_receptions",
+          "threshold": "3.5",
+          "side": "Over",
+          "method": "empirical_history",
+          "probability": 0.42857142857142855,
+          "hits": 3,
+          "sampleSize": 7,
+          "inputVersion": "8547db1b92790c249767bfc5b11906d5e9fd02b1371662c2b2baed228b78e063",
+          "calculatedAt": "2026-11-01T21:11:01.984434+00:00"
+        },
+        {
+          "player": "Hunter Henry",
+          "playerId": "espn:3046439",
+          "eventId": "534128",
+          "gameId": "2026_08_NE_MIA",
+          "market": "player_reception_yds",
+          "threshold": "44.5",
+          "side": "Over",
+          "method": "empirical_history",
+          "probability": 0.42857142857142855,
+          "hits": 3,
+          "sampleSize": 7,
+          "inputVersion": "8547db1b92790c249767bfc5b11906d5e9fd02b1371662c2b2baed228b78e063",
+          "calculatedAt": "2026-11-01T21:11:01.984434+00:00"
+        }
+      ]
+    },
+    "CFB": {
+      "loaded": 46,
+      "ready": 28,
+      "methods": [
+        "full_game_simulation"
+      ],
+      "examples": [
+        {
+          "player": "Kyan Mason",
+          "playerId": "espn:5110019",
+          "eventId": "542189",
+          "gameId": "cfb:espn:401866453",
+          "market": "player_reception_yds",
+          "threshold": "30.5",
+          "side": "Under",
+          "method": "full_game_simulation",
+          "probability": 0.2458,
+          "hits": 2458,
+          "sampleSize": 10000,
+          "inputVersion": "eb62eec8056601596c28c6582ce2f3754c8cf2eb875747709ab78bba03363739",
+          "calculatedAt": "2026-11-01T19:07:26.378492+00:00"
+        },
+        {
+          "player": "Brayden Roggow",
+          "playerId": "espn:5146903",
+          "eventId": "542189",
+          "gameId": "cfb:espn:401866453",
+          "market": "player_pass_tds",
+          "threshold": "1.5",
+          "side": "Under",
+          "method": "full_game_simulation",
+          "probability": 0.6188,
+          "hits": 6188,
+          "sampleSize": 10000,
+          "inputVersion": "eb62eec8056601596c28c6582ce2f3754c8cf2eb875747709ab78bba03363739",
+          "calculatedAt": "2026-11-01T19:07:26.378492+00:00"
+        },
+        {
+          "player": "Nick Poulos",
+          "playerId": "espn:5228762",
+          "eventId": "542189",
+          "gameId": "cfb:espn:401866453",
+          "market": "player_pass_tds",
+          "threshold": "1.5",
+          "side": "Under",
+          "method": "full_game_simulation",
+          "probability": 0.6665,
+          "hits": 6665,
+          "sampleSize": 10000,
+          "inputVersion": "eb62eec8056601596c28c6582ce2f3754c8cf2eb875747709ab78bba03363739",
+          "calculatedAt": "2026-11-01T19:07:26.378492+00:00"
+        },
+        {
+          "player": "Dom Dorwart",
+          "playerId": "espn:5193110",
+          "eventId": "542189",
+          "gameId": "cfb:espn:401866453",
+          "market": "player_reception_yds",
+          "threshold": "30.5",
+          "side": "Over",
+          "method": "full_game_simulation",
+          "probability": 0.7199,
+          "hits": 7199,
+          "sampleSize": 10000,
+          "inputVersion": "eb62eec8056601596c28c6582ce2f3754c8cf2eb875747709ab78bba03363739",
+          "calculatedAt": "2026-11-01T19:07:26.378492+00:00"
+        },
+        {
+          "player": "Nick Poulos",
+          "playerId": "espn:5228762",
+          "eventId": "542189",
+          "gameId": "cfb:espn:401866453",
+          "market": "player_pass_tds",
+          "threshold": "1.5",
+          "side": "Over",
+          "method": "full_game_simulation",
+          "probability": 0.3335,
+          "hits": 3335,
+          "sampleSize": 10000,
+          "inputVersion": "eb62eec8056601596c28c6582ce2f3754c8cf2eb875747709ab78bba03363739",
+          "calculatedAt": "2026-11-01T19:07:26.378492+00:00"
+        }
+      ]
+    }
+  },
+  "health": {
+    "application": "GRIDIRON AI",
+    "version": "12.0.0",
+    "backend": "supabase",
+    "cloudOnly": true,
+    "configuration": {
+      "supabase": true,
+      "simulations": true,
+      "assistant": false
+    },
+    "assistantStatus": {
+      "provider": "openai",
+      "credentialConfigured": false,
+      "generationVerified": false,
+      "status": "missing_credentials"
+    },
+    "status": "ready",
+    "checks": {
+      "supabase": "reachable",
+      "simulations": "reachable"
+    },
+    "limitations": "Reachability and provider credential presence do not establish model calibration, a completed simulation, email delivery, AI credit entitlement or a live AI response."
+  },
+  "status": "passed",
+  "finishedAt": "2026-11-01T21:11:25.452Z"
+}

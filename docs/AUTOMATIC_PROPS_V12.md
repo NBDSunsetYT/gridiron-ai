@@ -63,3 +63,42 @@ General OpenAI chat needs a server-side credential; deterministic evidence and
 account reports remain separate. No physical iPhone install is claimed.
 
 See `docs/reports/automatic-props-v12*.json` for actual verification results.
+
+## Production delivery and acceptance
+
+Live app: https://gridiron-ai-gray.vercel.app/#props
+
+Deployment `dpl_5awcdu21hw5DWgn8Tq5fGGQcWJcg` is READY from runtime source
+commit `ebdc0fd51b3b8e5f172d1409ad2d64770ccf5700`. All 284 runtime source
+files matched the reviewed Git commit. Render's existing private PropLine
+bridge and all existing secrets were preserved. The Python quantitative service
+continues running as its existing private Vercel service; it was not relocated.
+
+Actual deployed GET-only tests found 199 supported NFL empirical estimates on
+one 500-row page and 28 CFB full-game estimates on a 46-row page. These are
+point-in-time coverage counts, not accuracy. Unsupported players, insufficient
+cohorts, uncertain availability and already-started games remain explicit.
+A real iPhone-sized browser opened Props, saw computed percentages without any
+analysis POST, opened existing evidence, reloaded and retrieved it again.
+The actual database retained five public distribution versions and seven exact
+selection snapshots during verification. No financial record was created.
+
+Passed: 701 TypeScript tests, 180 full Python tests plus four newly added tests
+(184 distinct across runs), 11 PostgreSQL suites, automatic desktop/mobile tests,
+14 final legacy browser regressions, and actual deployed 5 workflow + 15 PWA
+checks. Separate PWA regressions also passed. No physical iPhone test occurred.
+Initial test-only issues (a hardcoded old release assertion and a Strict Mode
+fixture timing assumption) were corrected and rerun. An isolated production
+build resolved a concurrent dev/build output collision; the cloud build passed.
+
+Open the link in iPhone Safari, then Share → Add to Home Screen → Add.
+Private API responses remain excluded from service-worker caching. Source ZIPs
+are source only; the hosted backend and persistent database execute remotely.
+
+Remaining limitations: no approved prospective calibrator/player-distribution
+artifact; current statistical estimates do not fully quantify injury, weather,
+matchup or structural uncertainty. Daily complete-game capacity was exhausted
+during verification, so hosted runs were reused and empirical fallbacks were
+verified rather than bypassing the guard. Exact DraftKings Predictions access,
+Atlas policy approval, R2 configuration and a general OpenAI credential are
+still unavailable. Separate sportsbook prices are never relabeled.
