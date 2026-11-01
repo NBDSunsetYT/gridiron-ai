@@ -1,0 +1,125 @@
+{
+  "version": "10.2.0",
+  "status": "passed_scoped",
+  "checkedAt": "2026-11-01T00:46:11.599637+00:00",
+  "productionUrl": "https://gridiron-ai-gray.vercel.app",
+  "productionDeployment": "dpl_23nX3hriTtR9Vphgg4gEYK6Dfsay",
+  "runtimeSourceCommit": "bb18d82ae756ca68f80b50a17a40ffff190940cf",
+  "runtimeSourceManifest": "ead383fb44ee285a40bbd66432f2eaef874a3f152e65415cbc75043f5f64a8d3",
+  "tests": [
+    {
+      "name": "TypeScript unit tests",
+      "status": "passed",
+      "tests": 653,
+      "files": 85,
+      "evidence": {
+        "sha256": "4eaa773cf088e0a23006d1935ef8b2d547c3af0efb0a81b9867f961b97153365",
+        "bytes": 6055
+      }
+    },
+    {
+      "name": "Python modeling tests",
+      "status": "passed",
+      "tests": 170,
+      "scope": "NFL/NCAA mechanics and calculation checks; passing tests do not establish calibrated predictive accuracy.",
+      "evidence": {
+        "sha256": "ade40b775e661a90a3259be17b02873705a0f051505bf7bc027a71913b79815a",
+        "bytes": 665
+      }
+    },
+    {
+      "name": "Targeted Python public research/target checks after metadata update",
+      "status": "passed",
+      "tests": 18,
+      "evidence": {
+        "sha256": "997782f081c2237b307329e4ac2bb3eeb6ceb44a02cc512973b714b74a3dcb3a",
+        "bytes": 413
+      }
+    },
+    {
+      "name": "Isolated PostgreSQL migration, ledger, RLS, ownership and storage reserve suites",
+      "status": "passed",
+      "scripts": 8,
+      "scope": "PGlite PostgreSQL; includes two-owner isolation, denied spoofed ownership, append-only versions, idempotent mutations and preserved records.",
+      "evidence": {
+        "sha256": "42d0441cc659e51a8da4a1b9570f058fee245c91cc9e5f0cc25910b33fc9ff51",
+        "bytes": 6611
+      }
+    },
+    {
+      "name": "TypeScript typecheck",
+      "status": "passed",
+      "evidence": {
+        "sha256": "4d450c3f1f030116645d8b0119368e4ef5dc5b2e330f90841e2ad43829b0bb14",
+        "bytes": 48
+      }
+    },
+    {
+      "name": "Final Playwright regression",
+      "status": "passed",
+      "tests": 174,
+      "projects": [
+        "desktop-chromium",
+        "iphone-chromium"
+      ],
+      "scope": "Local application with isolated synthetic accounts and explicitly mocked external evidence in browser fixtures. Includes outage retries, encrypted draft recovery, version conflict handling, Wallet arithmetic and PWA checks.",
+      "evidence": {
+        "sha256": "c2eaf6dcfc58d18b19a86b69bc6f34024875030ddb22bc3d7a71cb98d5c24257",
+        "bytes": 30298
+      }
+    },
+    {
+      "name": "Repeated delayed-authentication offline-history regression",
+      "status": "passed",
+      "tests": 6,
+      "projects": [
+        "desktop-chromium",
+        "iphone-chromium"
+      ],
+      "evidence": {
+        "sha256": "1bab346c2c2a176a135b72d9601c2e2c74101758a0d1e4e92f350b7d7bff550c",
+        "bytes": 2430
+      }
+    },
+    {
+      "name": "Actual production browser checks",
+      "status": "passed_scoped",
+      "tests": 18,
+      "scope": "Earlier storage deployment, real unmocked public feeds, desktop/iPhone Chromium/WebKit emulation. Final live-browser replay prevented by workspace-wide outbound proxy failure.",
+      "report": "v10-2-production-browser.json"
+    },
+    {
+      "name": "Actual production PWA checks",
+      "status": "passed_scoped",
+      "tests": 15,
+      "scope": "Earlier storage deployment, unmocked HTTPS assets and mobile Chromium; static PWA sources unchanged. No physical iPhone installation.",
+      "report": "v10-2-production-pwa.json"
+    },
+    {
+      "name": "Actual production shared-storage acceptance",
+      "status": "passed_scoped",
+      "scope": "Private object plus existing operational database metadata write/read/update/retrieval, original object preserved; final deployment reopened the canary and actual 10,000-game result. No private-user or financial writes.",
+      "report": "v10-2-production-storage.json"
+    }
+  ],
+  "notPerformed": [
+    "Authenticated production private-account write and cross-device test: no isolated verified QA identity was available.",
+    "Physical iPhone Safari installation and standalone launch.",
+    "Final deployed live-browser replay after the environment-wide outbound HTTP tunnel failure."
+  ],
+  "integrationLimits": [
+    "DraftKings Predictions exact live contracts are not authorized; PropLine sportsbook references remain separate.",
+    "OpenAI generation credentials are absent.",
+    "No approved prospective calibration artifact; raw probabilities remain uncalibrated."
+  ],
+  "dataProtection": {
+    "existingTablesReused": true,
+    "userDataReset": false,
+    "historicalPredictionsRewritten": false,
+    "financialProductionWrites": false,
+    "privateBucket": true,
+    "boundedOperationalMetadataReserveMB": 470,
+    "bulkMarketGuardMB": 450,
+    "newPaidResources": false
+  }
+}

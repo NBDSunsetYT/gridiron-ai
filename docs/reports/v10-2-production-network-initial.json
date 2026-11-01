@@ -1,0 +1,12 @@
+{
+  "version": "10.2.0",
+  "baseUrl": "https://gridiron-ai-gray.vercel.app",
+  "checkedAt": "2026-11-01T00:14:08.291Z",
+  "mockedResponses": false,
+  "privateUserWrites": false,
+  "financialWrites": false,
+  "checks": [],
+  "limitations": [],
+  "status": "failed",
+  "error": "Unexpected token 'u', \"upstream c\"... is not valid JSON"
+}
