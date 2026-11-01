@@ -15,7 +15,13 @@ async function previous(sport:'NFL'|'CFB',cursor:number,current:any){
  return{...v,status:'partial',items,totalResults:items.length,nextCursor:null,liveMarketAvailable:false,currentSourceChecks:current?.sourceChecks??[],currentSourceDiagnostic:current?.diagnostic??null,diagnostic:{code:'historical_definitions_only',message:'Live prices are delayed or unavailable. These are previously verified definitions and historical quoted prices. Independent threshold research can continue; current break-even and after-fee value are unavailable.'}};
  }catch{return null;}
 }
+const boardCache=new Map<string,{until:number;promise:Promise<any>}>();
 export async function loadPropBoard(sport:'NFL'|'CFB',cursor:number){
+ if(process.env.NODE_ENV==='test')return fetchPropBoard(sport,cursor);
+ const key=sport+':'+cursor,old=boardCache.get(key);if(old&&old.until>Date.now())return structuredClone(await old.promise);
+ const promise=fetchPropBoard(sport,cursor);if(boardCache.size>=12)boardCache.delete(boardCache.keys().next().value!);boardCache.set(key,{until:Date.now()+20000,promise});try{return structuredClone(await promise);}catch(e){boardCache.delete(key);throw e;}
+}
+async function fetchPropBoard(sport:'NFL'|'CFB',cursor:number){
  let value:any;
  try{
   const response=await fetch(new URL('/data/props/'+sport+'?cursor='+cursor+'&limit=500',process.env.GRIDIRON_RENDER_DATA_URL!),{headers:{Authorization:'Bearer '+process.env.GRIDIRON_DATA_BRIDGE_TOKEN},cache:'no-store',redirect:'error',signal:AbortSignal.timeout(55000)});

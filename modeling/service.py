@@ -148,6 +148,16 @@ async def public_analysis(request: Request, authorization: str | None = Header(d
     return await asyncio.to_thread(guarded, work)
 
 
+@app.post('/public/prop-history')
+async def public_prop_history(request: Request, authorization: str | None = Header(default=None)):
+    authorize(authorization)
+    data = await body(request)
+    def work():
+        from .prop_history import nfl_history
+        return nfl_history(data)
+    return await asyncio.to_thread(guarded, work)
+
+
 def simulate_data(data):
     if set(data)-{'model','home','away','simulations','seed','eventStart','contracts','scenario','postseason','parameterUncertainty','representativeGames','selectedOutcomes'}:
         raise HTTPException(422,'Unsupported simulation assumptions. Weather, snap shares and arbitrary player multipliers are not silently applied.')

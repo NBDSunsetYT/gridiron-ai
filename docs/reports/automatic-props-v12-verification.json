@@ -1,0 +1,59 @@
+{
+  "version": "12.0.0",
+  "checkedAt": "2026-11-01T21:07:57.938243+00:00",
+  "status": "predeployment_verified",
+  "tests": {
+    "typescript": {
+      "passed": 701,
+      "files": 95
+    },
+    "python": {
+      "fullSuitePassed": 180,
+      "additionalCandidateAndHistoryTestsPassed": 10,
+      "note": "Overlapping fallback tests are not additive; candidate and CFB tests were added after initial full discovery."
+    },
+    "postgres": {
+      "suitesPassed": 11
+    },
+    "browser": {
+      "automaticDesktopAndIphoneViewportPassed": 2,
+      "legacyRegressionStatus": "running",
+      "physicalIphoneTested": false
+    },
+    "build": {
+      "status": "passed",
+      "directory": ".next-v12-prod",
+      "note": "A prior concurrent dev/build output collision failed; the isolated production build passed."
+    }
+  },
+  "sources": {
+    "nflEmpirical": {
+      "verifiedGame": "2026_08_PHI_WAS",
+      "supportedPlayers": 41,
+      "sampleSizes": [
+        5,
+        6,
+        7
+      ],
+      "method": "published_nflverse_weekly_totals"
+    },
+    "cfbEmpirical": {
+      "verifiedGame": "cfb:espn:401866453",
+      "supportedPlayers": 15,
+      "method": "published_completed_game_stat_events",
+      "limitedCohortsExcluded": true
+    }
+  },
+  "database": {
+    "additiveMigrationApplied": true,
+    "productionIsolatedReadWriteUpdateRetrieveRolledBack": true,
+    "privateQueueAccessDenied": true,
+    "userTablesAltered": false
+  },
+  "limitations": [
+    "No approved prospectively validated distribution candidate or calibrator is configured.",
+    "Empirical estimates are conditional historical research, not calibrated next-game forecasts.",
+    "Hosted daily complete-game usage remains 500000 of 500000; no limit was raised.",
+    "Authorized DraftKings Predictions, Atlas policy approval, R2 and general OpenAI credentials remain unavailable."
+  ]
+}

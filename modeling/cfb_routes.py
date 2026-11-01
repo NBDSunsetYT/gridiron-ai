@@ -90,4 +90,11 @@ def make_cfb_router(authorize, read_body, guarded, signature, verify_artifact):
         except CFBSourceUnavailable:
             raise HTTPException(503,{'code':'source_unavailable','sport':'CFB','message':'The public CFB play source is temporarily unavailable. No empty inventory or replacement forecast is inferred.'},headers={'Retry-After':'60'}) from None
 
+    @router.post('/public/prop-history')
+    async def public_history(request: Request, authorization: str | None = Header(default=None)):
+        authorize(authorization)
+        data=await read_body(request)
+        from .prop_history import cfb_history
+        return await asyncio.to_thread(guarded,lambda:cfb_history(data))
+
     return router

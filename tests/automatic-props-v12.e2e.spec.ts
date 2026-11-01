@@ -1,0 +1,12 @@
+/** Synthetic transport tests only, never statistical-validation results. */
+import {test,expect} from '@playwright/test';
+test('prop probabilities calculate on open, update without clicks, and details do not start another job',async({page})=>{
+ let gets=0,posts=0,manualJobs=0,ready=false;
+ await page.route('**/api/**',async route=>{const url=new URL(route.request().url()),reply=(body:any)=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(body)});
+  if(url.pathname==='/api/auth')return reply({user:null});if(url.pathname==='/api/auth/methods')return reply({apple:{available:false}});if(url.pathname==='/api/preferences')return reply({preferences:{footballSport:'NFL'}});
+  if(url.pathname==='/api/nfl/probability'){manualJobs++;return reply({});}
+  if(url.pathname==='/api/nfl/free-props'){if(route.request().method()==='POST')posts++;gets++;return reply({automatic:true,sport:'NFL',status:'available',provider:'PropLine',totalResults:1,nextCursor:null,items:[{id:'SYNTHETIC',sport:'NFL',provider:'PropLine',eventId:'123',player:{id:'espn:456',name:'SYNTHETIC AUTO PLAYER'},home:'SYNTHETIC HOME',away:'SYNTHETIC AWAY',book:{key:'draftkings',name:'DraftKings Sportsbook'},market:'player_reception_yds',side:'Over',threshold:'25.5',americanOdds:-110,sourceUpdatedAt:new Date().toISOString(),kickoff:'2099-01-01',state:ready?'ready':'calculating_probability',estimateProbability:ready?.6:null,empiricalProbability:ready?.6:null,method:ready?'empirical_history':null,historicalHits:3,historicalSampleSize:5,historicalInterval95:[.23,.88],methodLabel:'Historical participation-conditioned estimate',calculatedAt:new Date().toISOString(),researchPersistence:{saved:true},reason:'SYNTHETIC mechanics fixture, not production evidence.'}]});}
+  return reply({games:[],records:[],providers:[],sources:[],results:[]});
+ });
+ await page.goto('/#props');const estimate=page.getByRole('button',{name:'GRIDIRON AI probability details for SYNTHETIC AUTO PLAYER'});await expect(estimate).toContainText('Calculating');ready=true;await expect(estimate).toContainText('60.0%',{timeout:20000});expect(posts).toBe(0);expect(manualJobs).toBe(0);await estimate.click();const dialog=page.getByRole('dialog');await expect(dialog).toContainText('3 / 5 published player games');await expect(dialog).toContainText('Not used for this empirical estimate');expect(manualJobs).toBe(0);await page.keyboard.press('Escape');await expect(dialog).toHaveCount(0);expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
+});

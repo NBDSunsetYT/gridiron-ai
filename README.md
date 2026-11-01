@@ -1,3 +1,5 @@
+Version 12 automatic prop research: [operation, limitations and recovery](docs/AUTOMATIC_PROPS_V12.md).
+
 # Probability engine repair — 11.0.1
 
 See [the observed cause, repair and verification scope](docs/PROBABILITY_REPAIR.md). Probability requests now follow backend jobs, preserve specific failures and reopen compact simulations from durable references. Existing data and infrastructure are preserved.
