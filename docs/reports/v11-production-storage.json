@@ -1,0 +1,69 @@
+{
+  "version": "11.0.0",
+  "baseUrl": "https://gridiron-ai-gray.vercel.app",
+  "startedAt": "2026-11-01T11:00:52.047Z",
+  "status": "passed_scoped",
+  "mockedResponses": false,
+  "financialWrites": 0,
+  "privateUserRecordsTouched": false,
+  "checks": [
+    {
+      "name": "The deployed frontend verifies Supabase and the private complete-game Python service",
+      "status": "passed"
+    },
+    {
+      "name": "An isolated actual Supabase object/metadata canary verifies write, read, update, retrieval and immutable previous history",
+      "status": "passed"
+    },
+    {
+      "name": "A separate request reopens the stored Supabase canary",
+      "status": "passed"
+    },
+    {
+      "name": "The new storage and archive administration endpoints reject anonymous access",
+      "status": "passed"
+    },
+    {
+      "name": "Private financial data and saved research remain authenticated",
+      "status": "passed"
+    },
+    {
+      "name": "Existing NFL and CFB public routes preserve separate sport identities",
+      "status": "passed"
+    }
+  ],
+  "health": {
+    "version": "11.0.0",
+    "checks": {
+      "supabase": "reachable",
+      "simulations": "reachable"
+    }
+  },
+  "canary": {
+    "status": "passed",
+    "checks": [
+      "private_object_write",
+      "private_object_read",
+      "database_metadata_write",
+      "database_metadata_read",
+      "database_metadata_update",
+      "updated_object_retrieval",
+      "original_object_preserved"
+    ],
+    "privateUserRecordsTouched": false,
+    "financialWrites": false,
+    "tableReset": false,
+    "checkedAt": "2026-11-01T11:00:56.443Z"
+  },
+  "publicResearch": {
+    "nflGames": 60,
+    "cfbGames": 119,
+    "cfbAvailability": "partial"
+  },
+  "limitations": [
+    "Atlas organization AI-client access is disabled; no Atlas cloud read/write was tested.",
+    "R2 credentials/account tools are unavailable; no actual R2 cloud upload/download was tested.",
+    "No authenticated private-account or physical iPhone test was performed."
+  ],
+  "finishedAt": "2026-11-01T11:00:59.011Z"
+}

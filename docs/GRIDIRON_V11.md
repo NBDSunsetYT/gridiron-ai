@@ -97,3 +97,33 @@ Optional monitoring values are `MONGODB_STORAGE_LIMIT_BYTES`, `R2_STORAGE_WARNIN
 See the release's machine-readable verification report. Local MongoDB tests use a real isolated MongoDB engine with synthetic documents; they do not establish Atlas account access. R2 transport/privacy/integrity tests exercise controlled responses, not the user's cloud bucket. Production Supabase coordinator operations were tested using a rolled-back isolated record, with no financial write or false claim of MongoDB delivery. All 93 pre-upgrade NFL snapshots retained their exact checksum after migration.
 
 The existing source, app routes and PWA installation instructions remain available. See [iPhone installation](IPHONE.md) and [the prior storage recovery notes](GRIDIRON_V10_2.md).
+
+## Deployed verification
+
+Production URL: https://gridiron-ai-gray.vercel.app
+
+Deployment `dpl_2dhz8jAJDSsMKdK5DzCFJrQdQEq1` is READY with runtime source
+commit `55d50f9fd7025ee4289d4d806f8f52401063a738`. The existing Render gateway was
+retained; no service relocation or paid resources were introduced.
+
+Passed: 670 TypeScript tests, 174 Python tests, nine isolated PostgreSQL suites,
+the baseline 178 browser regressions and 72 targeted final desktop/iPhone-sized
+Chromium regressions. Actual deployed tests passed 15 PWA/privacy/offline checks
+and six API/storage checks, including isolated Supabase object and metadata
+write/read/update/retrieval and reopening. No real financial record was written.
+
+The full production guest browser run passed six desktop checks. Its mobile
+profile encountered executor Envoy egress-tunnel 503 responses for public
+JavaScript/CSS assets and is not claimed as passed. The separate hosted mobile
+PWA checks passed. WebKit could not run because this host lacks required libraries.
+No physical iPhone installation or full authenticated cross-device workflow was
+tested in this release. Independent Vercel checks confirm the deployment and
+Supabase/private Python dependency health. See the exact scopes and failures in
+[the verification report](reports/v11-verification.json),
+[PWA results](reports/v11-production-pwa.json),
+[storage results](reports/v11-production-storage.json) and
+[browser results](reports/v11-production-browser.json).
+
+Supabase reported 452.5 MB against the configured 500 MB database limit during
+this audit. This is a capacity warning, not permission to delete history. Atlas
+and R2 remain inactive for the authorization/configuration reasons above.
