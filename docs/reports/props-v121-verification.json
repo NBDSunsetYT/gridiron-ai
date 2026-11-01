@@ -1,7 +1,7 @@
 {
   "version": "12.1.0",
-  "checkedAt": "2026-11-01T23:16:52.366044+00:00",
-  "status": "predeployment_verified",
+  "checkedAt": "2026-11-01T23:33:51.463840+00:00",
+  "status": "production_verified",
   "modelStudies": {
     "NFL": {
       "gameId": "2026_08_PHI_WAS",
@@ -3354,7 +3354,10 @@
     "physicalIphoneTested": false,
     "typescriptFull": 714,
     "focusedPython": 14,
-    "productionBuild": "passed"
+    "productionBuild": "passed",
+    "productionWorkflowChecks": 6,
+    "productionPwaChecks": 15,
+    "productionFinancialWrites": 0
   },
   "database": {
     "project": "qdtdjbapdipopncklsdb",
@@ -3368,9 +3371,99 @@
     "userTablesReset": false
   },
   "remainingLimitations": [
-    "No real-data recalibrator passed the publication gate.",
-    "Stat validation is retrospective, conditional, and distinct from prospective market calibration.",
-    "No independently validated current weather/coaching effect model is connected.",
-    "Authorized DraftKings Predictions feed, general OpenAI credential, Atlas approval and R2 configuration remain unavailable."
-  ]
+    "No tested real-data recalibrator passed the publication gate. Raw simulation, conditional partial-pooling estimates and empirical historical rates are separately labeled.",
+    "Player-stat validation is retrospective and conditional; it is not prospective contract calibration, verified historical executable-price testing or evidence of beating the market.",
+    "NFL complete-game compute budget had reached its existing daily guard; it was not increased or reset. This release reuses supported simulation distributions and uses separately labeled historical/statistical evidence where full-game coverage is missing.",
+    "Current weather/coaching/opponent effect coefficients are not invented when independent validation is absent. Missing verified availability can withhold research; structural model uncertainty is not fully quantified.",
+    "PropLine provides sportsbook references, including DraftKings Sportsbook; an authorized exact DraftKings Predictions feed remains unavailable. After-fee value requires verified fees and settlement terms.",
+    "Quote freshness and available players change continuously. Stale prices are withheld from current market comparisons.",
+    "General OpenAI chat credential and previously unconfigured Atlas/R2 services were not changed or newly verified in this release.",
+    "Physical iPhone installation was not tested. Chromium with an iPhone viewport, HTTPS metadata, actual service-worker registration and offline behavior were tested."
+  ],
+  "deployment": {
+    "id": "dpl_7qhyEsAcXSXmYBBESrZnzG2FGDhQ",
+    "state": "READY",
+    "productionUrl": "https://gridiron-ai-gray.vercel.app",
+    "runtimeSourceCommit": "4d7135e292e26c9a25e018c8f2e59b0100dcbc81",
+    "runtimeManifestSha256": "bf2ab9c0f336d122a665160f85cd965885b213d97e149b8b5b9edba5df5881d9",
+    "runtimeFileCount": 293,
+    "errorLogScan": "No error/fatal runtime logs returned for final deployment during verification."
+  },
+  "firstProductionWorkflow": {
+    "deployment": "dpl_6HNt5A88QadNNeW2rjLLQ6vmJvHV",
+    "checksPassed": 6,
+    "pwaChecksPassed": 15,
+    "coverage": {
+      "NFL": {
+        "loaded": 500,
+        "ready": 372,
+        "methods": [
+          "empirical_history",
+          "hierarchical_distribution"
+        ],
+        "freshPriceComparisons": 372,
+        "limitedSample": 7
+      },
+      "CFB": {
+        "loaded": 91,
+        "ready": 56,
+        "methods": [
+          "full_game_simulation",
+          "empirical_history",
+          "hierarchical_distribution"
+        ],
+        "freshPriceComparisons": 0,
+        "limitedSample": 14
+      }
+    },
+    "note": "Point-in-time source coverage, not model accuracy. The initial browser attempt was corrected to wait for current rather than stale cached results."
+  },
+  "finalMobilePatch": {
+    "runtimeSourceCommit": "4d7135e292e26c9a25e018c8f2e59b0100dcbc81",
+    "deployment": "dpl_7qhyEsAcXSXmYBBESrZnzG2FGDhQ",
+    "state": "READY",
+    "runtimeManifestSha256": "bf2ab9c0f336d122a665160f85cd965885b213d97e149b8b5b9edba5df5881d9",
+    "checks": "typecheck, 10 desktop/mobile browser tests, 6 live workflow checks and 15 live PWA checks passed"
+  },
+  "productionWorkflow": {
+    "checkedAt": "2026-11-01T23:33:25.721Z",
+    "status": "passed",
+    "report": "props-v121-production.json",
+    "pwaReport": "props-v121-pwa.json",
+    "coverage": {
+      "NFL": {
+        "loaded": 500,
+        "ready": 347,
+        "methods": [
+          "empirical_history",
+          "hierarchical_distribution"
+        ],
+        "freshPriceComparisons": 347,
+        "limitedSample": 8
+      },
+      "CFB": {
+        "loaded": 91,
+        "ready": 56,
+        "methods": [
+          "full_game_simulation",
+          "empirical_history",
+          "hierarchical_distribution"
+        ],
+        "freshPriceComparisons": 56,
+        "limitedSample": 14
+      }
+    },
+    "immutableHistory": {
+      "sport": "CFB",
+      "points": 4,
+      "immutable": true
+    },
+    "coverageMeaning": "Point-in-time feed and evidence availability, not accuracy, guaranteed future prices or a supported estimate for every player."
+  },
+  "preservedInfrastructure": {
+    "supabaseProject": "qdtdjbapdipopncklsdb",
+    "render": "Existing PropLine gateway retained without service, tier or credential changes.",
+    "quantitativeService": "Existing private Python service on Vercel retained.",
+    "privateData": "No financial writes, resets or user-data migration. Personal RLS remains enabled."
+  }
 }

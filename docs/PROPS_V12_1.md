@@ -106,3 +106,33 @@ Reports in `docs/reports/props-v121-*` record actual tests and deployment status
 The source ZIP does not execute a backend on an iPhone. Open the hosted HTTPS URL
 in Safari and choose Share → Add to Home Screen. Physical device installation is
 reported separately from browser viewport testing.
+
+## Verified production delivery
+
+Production: https://gridiron-ai-gray.vercel.app/#props. The final runtime deployment
+`dpl_7qhyEsAcXSXmYBBESrZnzG2FGDhQ` is READY, with runtime source commit
+`4d7135e292e26c9a25e018c8f2e59b0100dcbc81`. The existing Render provider gateway
+and private Vercel Python quantitative service were preserved; this release did
+not move the quantitative engine onto Render or change any service tier.
+
+The final live acceptance run passed six workflow checks and 15 PWA checks. It
+loaded 500 NFL source rows with 347 supported ready estimates, and 91 CFB rows
+with 56 ready estimates. Current prices were verified for those supported rows at
+check time. This is a coverage observation, not an accuracy measurement or a
+guarantee that quotes remain current. Actual CFB full-game results contained
+10,000 games. NFL rows also used explicitly labeled historical/partial-pooling
+evidence; the existing daily complete-game compute guard was not raised or reset.
+
+Local verification passed 714 TypeScript tests, 188 Python tests, 11 PostgreSQL
+suites, 10 new desktop/mobile browser checks and 18 existing browser/PWA regression
+checks. The production build and final mobile typecheck passed. Actual Supabase
+owned preference read/write/update and cross-user denial were tested in a rolled
+back isolated transaction; existing immutable research history was read through
+the live API. These checks did not modify user financial records or sign into a
+personal account. No physical iPhone installation was performed.
+
+Reopen the existing Home Screen app or refresh Safari to receive this release.
+New installation: open the production URL in Safari, tap Share, then Add to Home
+Screen. The project ZIP contains source code; it does not run cloud services on
+the phone. The detailed limitations and point-in-time source provenance are in
+`docs/reports/props-v121-verification.json`.

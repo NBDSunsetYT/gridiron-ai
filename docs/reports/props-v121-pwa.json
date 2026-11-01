@@ -1,0 +1,202 @@
+{
+  "status": "passed",
+  "startedAt": "2026-11-01T23:33:13.726Z",
+  "baseUrl": "https://gridiron-ai-gray.vercel.app",
+  "scope": "Actual deployed PWA assets, isolated guest Chromium iPhone viewport and read-only NFL regressions.",
+  "mockedResponses": false,
+  "physicalIphoneInstallationTested": false,
+  "standalonePhysicalLaunchTested": false,
+  "accountsCreated": false,
+  "financialWrites": false,
+  "simulationsStarted": 0,
+  "checks": [
+    {
+      "name": "The real HTTPS frontend serves the app with security headers and no developer-dashboard redirect",
+      "status": "passed"
+    },
+    {
+      "name": "The deployed manifest has standalone launch, same-origin scope and 192/512 PNG definitions",
+      "status": "passed"
+    },
+    {
+      "name": "/icon-192.png is an actual correctly sized PNG on the deployed origin",
+      "status": "passed"
+    },
+    {
+      "name": "/icon-512.png is an actual correctly sized PNG on the deployed origin",
+      "status": "passed"
+    },
+    {
+      "name": "/apple-touch-icon.png is an actual correctly sized PNG on the deployed origin",
+      "status": "passed"
+    },
+    {
+      "name": "The actual v8 service worker matches the reviewed source and excludes APIs, mutations, foreign origins and authenticated HTML",
+      "status": "passed"
+    },
+    {
+      "name": "Production health verifies the preserved Supabase database and private Python service without starting work",
+      "status": "passed"
+    },
+    {
+      "name": "Existing real NFL games still load for a guest and retain the NFL identity namespace",
+      "status": "passed"
+    },
+    {
+      "name": "Original DraftKings Predictions API retains a truthful missing-feed diagnostic without queueing an alternative",
+      "status": "passed"
+    },
+    {
+      "name": "/api/ledger denies the guest and instructs browsers not to cache its response",
+      "status": "passed"
+    },
+    {
+      "name": "/api/bets denies the guest and instructs browsers not to cache its response",
+      "status": "passed"
+    },
+    {
+      "name": "The actual iPhone-sized settings page exposes Apple install metadata, safe-area viewport and correct Safari instructions",
+      "status": "passed"
+    },
+    {
+      "name": "The real browser installs the worker and caches only public assets, including the offline shell",
+      "status": "passed"
+    },
+    {
+      "name": "A real denied Wallet request never enters service-worker CacheStorage",
+      "status": "passed"
+    },
+    {
+      "name": "Actual offline navigation opens the public cached shell rather than any authenticated account page",
+      "status": "passed"
+    }
+  ],
+  "securityHeaders": {
+    "transport": "HTTPS",
+    "hsts": "max-age=63072000; includeSubDomains; preload",
+    "xContentTypeOptions": "nosniff",
+    "xFrameOptions": "DENY",
+    "referrerPolicy": "strict-origin-when-cross-origin",
+    "permissionsPolicy": "camera=(), microphone=(), geolocation=()"
+  },
+  "manifest": {
+    "name": "GRIDIRON AI — NFL Market Intelligence",
+    "linkedFromProductionHtml": true,
+    "display": "standalone",
+    "startUrl": "/",
+    "scope": "/",
+    "id": "/",
+    "icons": [
+      {
+        "src": "/icon-192.png",
+        "sizes": "192x192",
+        "type": "image/png",
+        "purpose": "any maskable"
+      },
+      {
+        "src": "/icon-512.png",
+        "sizes": "512x512",
+        "type": "image/png",
+        "purpose": "any maskable"
+      },
+      {
+        "src": "/icon.svg",
+        "sizes": "any",
+        "type": "image/svg+xml",
+        "purpose": "any"
+      }
+    ]
+  },
+  "icons": [
+    {
+      "path": "/icon-192.png",
+      "width": 192,
+      "height": 192,
+      "bytes": 2603,
+      "sha256": "ede9d606a570913ce2a07ccf2ed4beba11c42bf4903c5b18c14b05a8bef2850b"
+    },
+    {
+      "path": "/icon-512.png",
+      "width": 512,
+      "height": 512,
+      "bytes": 7283,
+      "sha256": "c65c98af9ccdf11eb1bf1b7fa82402fe1999c1682d197aa5a3ae0fb7b49293b3"
+    },
+    {
+      "path": "/apple-touch-icon.png",
+      "width": 180,
+      "height": 180,
+      "bytes": 2473,
+      "sha256": "266a8923861e45607e8cce269392882c16f0f60ec1d4460ebe2c03ad47a8f5db"
+    }
+  ],
+  "serviceWorker": {
+    "path": "/sw.js",
+    "sha256": "e12dd4b6d4bea96564f449f9a33ab558b18333dbbe4c95b9e39a8cf54235bc69",
+    "matchesReviewedSource": true,
+    "cacheControl": "no-cache",
+    "scopeAllowed": "/",
+    "cacheVersion": "gridiron-interface-v8"
+  },
+  "health": {
+    "version": "12.1.0",
+    "backend": "supabase",
+    "checks": {
+      "supabase": "reachable",
+      "simulations": "reachable"
+    },
+    "assistantStatus": {
+      "provider": "openai",
+      "credentialConfigured": false,
+      "generationVerified": false,
+      "status": "missing_credentials"
+    }
+  },
+  "nfl": {
+    "games": 64,
+    "sampleGameId": "2026_08_BAL_BUF",
+    "checkedAt": "2026-11-01T23:33:16.919Z",
+    "cacheControl": "public, max-age=0",
+    "newSimulationsRequested": false
+  },
+  "draftKings": {
+    "status": "unavailable",
+    "diagnosticCode": "feed_not_configured",
+    "sourceHttpAttempted": false,
+    "contractsVerified": 0
+  },
+  "browser": {
+    "engine": "Chromium",
+    "profile": "iPhone 13 viewport",
+    "width": 390,
+    "height": 664,
+    "physicalDevice": false
+  },
+  "cacheStorage": {
+    "cacheNames": [
+      "gridiron-interface-v8"
+    ],
+    "assetCount": 7,
+    "paths": [
+      "/offline-reader.js",
+      "/offline.html",
+      "/icon.svg",
+      "/icon-192.png",
+      "/icon-512.png",
+      "/apple-touch-icon.png",
+      "/manifest.webmanifest"
+    ]
+  },
+  "offline": {
+    "actualBrowserNetworkDisabled": true,
+    "publicFallbackServed": true,
+    "privateSnapshotPresent": false
+  },
+  "limitations": [
+    "Physical iPhone Safari Add to Home Screen and standalone launch were not performed.",
+    "No sign-in, private user record read/write, new account, new model run or market refresh POST was performed.",
+    "Optional user-approved encrypted device history was not created or decrypted.",
+    "Missing authorized DraftKings feed and general language-model credentials remain actual integration limitations."
+  ],
+  "finishedAt": "2026-11-01T23:33:18.908Z"
+}
