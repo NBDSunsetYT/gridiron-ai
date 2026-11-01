@@ -6,7 +6,7 @@ import { createHash } from 'node:crypto';
 const root = process.cwd();
 const {version}=JSON.parse(await readFile(resolve(root,'package.json'),'utf8'));
 if(!/^\d+\.\d+\.\d+/.test(version))throw new Error('A valid project version is required.');
-const archiveName=`gridiron-ai-v${version.split('.')[0]}-source.zip`;
+const archiveName=`gridiron-ai-v${version}-source.zip`;
 const output = resolve(root, 'artifacts',archiveName);
 await mkdir(resolve(root, 'artifacts'), { recursive: true });
 await rm(output,{force:true});

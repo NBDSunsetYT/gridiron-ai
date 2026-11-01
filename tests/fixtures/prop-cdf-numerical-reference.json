@@ -1,0 +1,725 @@
+{
+  "scope": "Synthetic numerical CDF references from SciPy; not NFL model predictions or accuracy.",
+  "cases": [
+    {
+      "base": {
+        "family": "student_t",
+        "df": 4.2,
+        "location": 52.0,
+        "scale": 25.0
+      },
+      "threshold": -0.5,
+      "side": "Over",
+      "expected": 0.949825186852814
+    },
+    {
+      "base": {
+        "family": "student_t",
+        "df": 4.2,
+        "location": 52.0,
+        "scale": 25.0
+      },
+      "threshold": -0.5,
+      "side": "Under",
+      "expected": 0.05017481314718593
+    },
+    {
+      "base": {
+        "family": "student_t",
+        "df": 4.2,
+        "location": 52.0,
+        "scale": 25.0
+      },
+      "threshold": 0.0,
+      "side": "Over",
+      "expected": 0.9474381824052196
+    },
+    {
+      "base": {
+        "family": "student_t",
+        "df": 4.2,
+        "location": 52.0,
+        "scale": 25.0
+      },
+      "threshold": 0.0,
+      "side": "Under",
+      "expected": 0.05017481314718593
+    },
+    {
+      "base": {
+        "family": "student_t",
+        "df": 4.2,
+        "location": 52.0,
+        "scale": 25.0
+      },
+      "threshold": 5.5,
+      "side": "Over",
+      "expected": 0.9335060637709003
+    },
+    {
+      "base": {
+        "family": "student_t",
+        "df": 4.2,
+        "location": 52.0,
+        "scale": 25.0
+      },
+      "threshold": 5.5,
+      "side": "Under",
+      "expected": 0.06649393622909967
+    },
+    {
+      "base": {
+        "family": "student_t",
+        "df": 4.2,
+        "location": 52.0,
+        "scale": 25.0
+      },
+      "threshold": 29.5,
+      "side": "Over",
+      "expected": 0.7916316688144365
+    },
+    {
+      "base": {
+        "family": "student_t",
+        "df": 4.2,
+        "location": 52.0,
+        "scale": 25.0
+      },
+      "threshold": 29.5,
+      "side": "Under",
+      "expected": 0.20836833118556358
+    },
+    {
+      "base": {
+        "family": "student_t",
+        "df": 4.2,
+        "location": 52.0,
+        "scale": 25.0
+      },
+      "threshold": 64.0,
+      "side": "Over",
+      "expected": 0.32107141839847836
+    },
+    {
+      "base": {
+        "family": "student_t",
+        "df": 4.2,
+        "location": 52.0,
+        "scale": 25.0
+      },
+      "threshold": 64.0,
+      "side": "Under",
+      "expected": 0.665836029598077
+    },
+    {
+      "base": {
+        "family": "student_t",
+        "df": 4.2,
+        "location": 52.0,
+        "scale": 25.0
+      },
+      "threshold": 64.1,
+      "side": "Over",
+      "expected": 0.32107141839847836
+    },
+    {
+      "base": {
+        "family": "student_t",
+        "df": 4.2,
+        "location": 52.0,
+        "scale": 25.0
+      },
+      "threshold": 64.1,
+      "side": "Under",
+      "expected": 0.6789285816015216
+    },
+    {
+      "base": {
+        "family": "student_t",
+        "df": 4.2,
+        "location": 52.0,
+        "scale": 25.0
+      },
+      "threshold": 64.5,
+      "side": "Over",
+      "expected": 0.32107141839847836
+    },
+    {
+      "base": {
+        "family": "student_t",
+        "df": 4.2,
+        "location": 52.0,
+        "scale": 25.0
+      },
+      "threshold": 64.5,
+      "side": "Under",
+      "expected": 0.6789285816015216
+    },
+    {
+      "base": {
+        "family": "student_t",
+        "df": 4.2,
+        "location": 52.0,
+        "scale": 25.0
+      },
+      "threshold": 75.5,
+      "side": "Over",
+      "expected": 0.19903469109073918
+    },
+    {
+      "base": {
+        "family": "student_t",
+        "df": 4.2,
+        "location": 52.0,
+        "scale": 25.0
+      },
+      "threshold": 75.5,
+      "side": "Under",
+      "expected": 0.8009653089092608
+    },
+    {
+      "base": {
+        "family": "student_t",
+        "df": 4.2,
+        "location": 52.0,
+        "scale": 25.0
+      },
+      "threshold": 150.5,
+      "side": "Over",
+      "expected": 0.007715579227201661
+    },
+    {
+      "base": {
+        "family": "student_t",
+        "df": 4.2,
+        "location": 52.0,
+        "scale": 25.0
+      },
+      "threshold": 150.5,
+      "side": "Under",
+      "expected": 0.9922844207727983
+    },
+    {
+      "base": {
+        "family": "negative_binomial",
+        "size": 2.75,
+        "probability": 0.4
+      },
+      "threshold": -0.5,
+      "side": "Over",
+      "expected": 1.0
+    },
+    {
+      "base": {
+        "family": "negative_binomial",
+        "size": 2.75,
+        "probability": 0.4
+      },
+      "threshold": -0.5,
+      "side": "Under",
+      "expected": 0.0
+    },
+    {
+      "base": {
+        "family": "negative_binomial",
+        "size": 2.75,
+        "probability": 0.4
+      },
+      "threshold": 0.0,
+      "side": "Over",
+      "expected": 0.9195242605002921
+    },
+    {
+      "base": {
+        "family": "negative_binomial",
+        "size": 2.75,
+        "probability": 0.4
+      },
+      "threshold": 0.0,
+      "side": "Under",
+      "expected": 0.0
+    },
+    {
+      "base": {
+        "family": "negative_binomial",
+        "size": 2.75,
+        "probability": 0.4
+      },
+      "threshold": 5.5,
+      "side": "Over",
+      "expected": 0.27389686730297674
+    },
+    {
+      "base": {
+        "family": "negative_binomial",
+        "size": 2.75,
+        "probability": 0.4
+      },
+      "threshold": 5.5,
+      "side": "Under",
+      "expected": 0.7261031326970233
+    },
+    {
+      "base": {
+        "family": "negative_binomial",
+        "size": 2.75,
+        "probability": 0.4
+      },
+      "threshold": 29.5,
+      "side": "Over",
+      "expected": 1.2508137581236345e-05
+    },
+    {
+      "base": {
+        "family": "negative_binomial",
+        "size": 2.75,
+        "probability": 0.4
+      },
+      "threshold": 29.5,
+      "side": "Under",
+      "expected": 0.9999874918624188
+    },
+    {
+      "base": {
+        "family": "negative_binomial",
+        "size": 2.75,
+        "probability": 0.4
+      },
+      "threshold": 64.0,
+      "side": "Over",
+      "expected": 7.634173669007589e-13
+    },
+    {
+      "base": {
+        "family": "negative_binomial",
+        "size": 2.75,
+        "probability": 0.4
+      },
+      "threshold": 64.0,
+      "side": "Under",
+      "expected": 0.9999999999987602
+    },
+    {
+      "base": {
+        "family": "negative_binomial",
+        "size": 2.75,
+        "probability": 0.4
+      },
+      "threshold": 64.1,
+      "side": "Over",
+      "expected": 7.634173669007589e-13
+    },
+    {
+      "base": {
+        "family": "negative_binomial",
+        "size": 2.75,
+        "probability": 0.4
+      },
+      "threshold": 64.1,
+      "side": "Under",
+      "expected": 0.9999999999992366
+    },
+    {
+      "base": {
+        "family": "negative_binomial",
+        "size": 2.75,
+        "probability": 0.4
+      },
+      "threshold": 64.5,
+      "side": "Over",
+      "expected": 7.634173669007589e-13
+    },
+    {
+      "base": {
+        "family": "negative_binomial",
+        "size": 2.75,
+        "probability": 0.4
+      },
+      "threshold": 64.5,
+      "side": "Under",
+      "expected": 0.9999999999992366
+    },
+    {
+      "base": {
+        "family": "negative_binomial",
+        "size": 2.75,
+        "probability": 0.4
+      },
+      "threshold": 75.5,
+      "side": "Over",
+      "expected": 3.601814729338778e-15
+    },
+    {
+      "base": {
+        "family": "negative_binomial",
+        "size": 2.75,
+        "probability": 0.4
+      },
+      "threshold": 75.5,
+      "side": "Under",
+      "expected": 0.9999999999999964
+    },
+    {
+      "base": {
+        "family": "negative_binomial",
+        "size": 2.75,
+        "probability": 0.4
+      },
+      "threshold": 150.5,
+      "side": "Over",
+      "expected": 2.66469239561712e-31
+    },
+    {
+      "base": {
+        "family": "negative_binomial",
+        "size": 2.75,
+        "probability": 0.4
+      },
+      "threshold": 150.5,
+      "side": "Under",
+      "expected": 1.0
+    },
+    {
+      "base": {
+        "family": "poisson",
+        "mean": 29.4
+      },
+      "threshold": -0.5,
+      "side": "Over",
+      "expected": 1.0
+    },
+    {
+      "base": {
+        "family": "poisson",
+        "mean": 29.4
+      },
+      "threshold": -0.5,
+      "side": "Under",
+      "expected": 0.0
+    },
+    {
+      "base": {
+        "family": "poisson",
+        "mean": 29.4
+      },
+      "threshold": 0.0,
+      "side": "Over",
+      "expected": 0.9999999999998295
+    },
+    {
+      "base": {
+        "family": "poisson",
+        "mean": 29.4
+      },
+      "threshold": 0.0,
+      "side": "Under",
+      "expected": 0.0
+    },
+    {
+      "base": {
+        "family": "poisson",
+        "mean": 29.4
+      },
+      "threshold": 5.5,
+      "side": "Over",
+      "expected": 0.9999999626808191
+    },
+    {
+      "base": {
+        "family": "poisson",
+        "mean": 29.4
+      },
+      "threshold": 5.5,
+      "side": "Under",
+      "expected": 3.731918086237734e-08
+    },
+    {
+      "base": {
+        "family": "poisson",
+        "mean": 29.4
+      },
+      "threshold": 29.5,
+      "side": "Over",
+      "expected": 0.4803498152847555
+    },
+    {
+      "base": {
+        "family": "poisson",
+        "mean": 29.4
+      },
+      "threshold": 29.5,
+      "side": "Under",
+      "expected": 0.5196501847152444
+    },
+    {
+      "base": {
+        "family": "poisson",
+        "mean": 29.4
+      },
+      "threshold": 64.0,
+      "side": "Over",
+      "expected": 1.0236085217542005e-08
+    },
+    {
+      "base": {
+        "family": "poisson",
+        "mean": 29.4
+      },
+      "threshold": 64.0,
+      "side": "Under",
+      "expected": 0.9999999771003936
+    },
+    {
+      "base": {
+        "family": "poisson",
+        "mean": 29.4
+      },
+      "threshold": 64.1,
+      "side": "Over",
+      "expected": 1.0236085217542005e-08
+    },
+    {
+      "base": {
+        "family": "poisson",
+        "mean": 29.4
+      },
+      "threshold": 64.1,
+      "side": "Under",
+      "expected": 0.9999999897639148
+    },
+    {
+      "base": {
+        "family": "poisson",
+        "mean": 29.4
+      },
+      "threshold": 64.5,
+      "side": "Over",
+      "expected": 1.0236085217542005e-08
+    },
+    {
+      "base": {
+        "family": "poisson",
+        "mean": 29.4
+      },
+      "threshold": 64.5,
+      "side": "Under",
+      "expected": 0.9999999897639148
+    },
+    {
+      "base": {
+        "family": "poisson",
+        "mean": 29.4
+      },
+      "threshold": 75.5,
+      "side": "Over",
+      "expected": 5.722152974426339e-13
+    },
+    {
+      "base": {
+        "family": "poisson",
+        "mean": 29.4
+      },
+      "threshold": 75.5,
+      "side": "Under",
+      "expected": 0.9999999999994278
+    },
+    {
+      "base": {
+        "family": "poisson",
+        "mean": 29.4
+      },
+      "threshold": 150.5,
+      "side": "Over",
+      "expected": 1.2867963080517325e-56
+    },
+    {
+      "base": {
+        "family": "poisson",
+        "mean": 29.4
+      },
+      "threshold": 150.5,
+      "side": "Under",
+      "expected": 1.0
+    },
+    {
+      "base": {
+        "family": "normal",
+        "location": 75.0,
+        "scale": 30.0
+      },
+      "threshold": -0.5,
+      "side": "Over",
+      "expected": 0.994076457349174
+    },
+    {
+      "base": {
+        "family": "normal",
+        "location": 75.0,
+        "scale": 30.0
+      },
+      "threshold": -0.5,
+      "side": "Under",
+      "expected": 0.005923542650825947
+    },
+    {
+      "base": {
+        "family": "normal",
+        "location": 75.0,
+        "scale": 30.0
+      },
+      "threshold": 0.0,
+      "side": "Over",
+      "expected": 0.9934920386526473
+    },
+    {
+      "base": {
+        "family": "normal",
+        "location": 75.0,
+        "scale": 30.0
+      },
+      "threshold": 0.0,
+      "side": "Under",
+      "expected": 0.005923542650825947
+    },
+    {
+      "base": {
+        "family": "normal",
+        "location": 75.0,
+        "scale": 30.0
+      },
+      "threshold": 5.5,
+      "side": "Over",
+      "expected": 0.9897390516470375
+    },
+    {
+      "base": {
+        "family": "normal",
+        "location": 75.0,
+        "scale": 30.0
+      },
+      "threshold": 5.5,
+      "side": "Under",
+      "expected": 0.010260948352962505
+    },
+    {
+      "base": {
+        "family": "normal",
+        "location": 75.0,
+        "scale": 30.0
+      },
+      "threshold": 29.5,
+      "side": "Over",
+      "expected": 0.9353245678745825
+    },
+    {
+      "base": {
+        "family": "normal",
+        "location": 75.0,
+        "scale": 30.0
+      },
+      "threshold": 29.5,
+      "side": "Under",
+      "expected": 0.06467543212541746
+    },
+    {
+      "base": {
+        "family": "normal",
+        "location": 75.0,
+        "scale": 30.0
+      },
+      "threshold": 64.0,
+      "side": "Over",
+      "expected": 0.6368306511756191
+    },
+    {
+      "base": {
+        "family": "normal",
+        "location": 75.0,
+        "scale": 30.0
+      },
+      "threshold": 64.0,
+      "side": "Under",
+      "expected": 0.35073631348321876
+    },
+    {
+      "base": {
+        "family": "normal",
+        "location": 75.0,
+        "scale": 30.0
+      },
+      "threshold": 64.1,
+      "side": "Over",
+      "expected": 0.6368306511756191
+    },
+    {
+      "base": {
+        "family": "normal",
+        "location": 75.0,
+        "scale": 30.0
+      },
+      "threshold": 64.1,
+      "side": "Under",
+      "expected": 0.3631693488243809
+    },
+    {
+      "base": {
+        "family": "normal",
+        "location": 75.0,
+        "scale": 30.0
+      },
+      "threshold": 64.5,
+      "side": "Over",
+      "expected": 0.6368306511756191
+    },
+    {
+      "base": {
+        "family": "normal",
+        "location": 75.0,
+        "scale": 30.0
+      },
+      "threshold": 64.5,
+      "side": "Under",
+      "expected": 0.3631693488243809
+    },
+    {
+      "base": {
+        "family": "normal",
+        "location": 75.0,
+        "scale": 30.0
+      },
+      "threshold": 75.5,
+      "side": "Over",
+      "expected": 0.49335126980631744
+    },
+    {
+      "base": {
+        "family": "normal",
+        "location": 75.0,
+        "scale": 30.0
+      },
+      "threshold": 75.5,
+      "side": "Under",
+      "expected": 0.5066487301936825
+    },
+    {
+      "base": {
+        "family": "normal",
+        "location": 75.0,
+        "scale": 30.0
+      },
+      "threshold": 150.5,
+      "side": "Over",
+      "expected": 0.005923542650825947
+    },
+    {
+      "base": {
+        "family": "normal",
+        "location": 75.0,
+        "scale": 30.0
+      },
+      "threshold": 150.5,
+      "side": "Under",
+      "expected": 0.994076457349174
+    }
+  ]
+}

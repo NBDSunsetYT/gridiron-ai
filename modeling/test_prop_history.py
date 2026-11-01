@@ -23,15 +23,15 @@ class PropHistoryTests(unittest.TestCase):
         data,values=self.inputs();before=self.run_history(data,values)['inputVersion'];values['player_stats'].values.extend([{'player_id':'SYNTHETIC-PLAYER','team':'BAL','season_type':'REG','week':'9','receiving_yards':'999'},{'player_id':'SYNTHETIC-PLAYER','team':'KC','season_type':'REG','week':'8','receiving_yards':'999'}]);self.assertEqual(before,self.run_history(data,values)['inputVersion'])
     def test_uncertain_player_not_assumed_active(self):
         data,values=self.inputs();values['injuries']=Dataset([{'team':'BAL','week':'9','gsis_id':'SYNTHETIC-PLAYER','report_status':'Questionable'}]);r=self.run_history(data,values);self.assertNotIn('SYNTHETIC-PLAYER',r['players']);self.assertIn('SYNTHETIC-PLAYER',r['withheldPlayers'])
-    def test_insufficient_or_stale_roster_not_filled(self):
-        data,values=self.inputs();values['player_stats'].values=values['player_stats'].values[-4:];self.assertEqual(self.run_history(data,values)['players'],{})
+    def test_small_samples_are_supported_but_stale_rosters_are_not(self):
+        data,values=self.inputs();values['player_stats'].values=values['player_stats'].values[-1:];self.assertEqual(self.run_history(data,values)['players']['SYNTHETIC-PLAYER']['receivingYards']['sampleSize'],1)
         values['rosters'].values[1]['week']='1'
         with self.assertRaisesRegex(ValueError,'roster'):self.run_history(data,values)
     def test_conflicting_source_duplicates_rejected(self):
         data,values=self.inputs();values['player_stats'].values.append({**values['player_stats'].values[0],'receiving_yards':'999'})
         with self.assertRaisesRegex(ValueError,'Conflicting'):self.run_history(data,values)
-    def test_histograms_capped_at_twelve_and_no_unknown_zeros(self):
-        logs=[{'id':str(i),'values':{'receivingYards':i}} for i in range(20)];d=summarize(logs);self.assertEqual(d['receivingYards']['sampleSize'],12);self.assertNotIn('passingYards',d)
+    def test_histograms_keep_two_seasons_window_and_no_unknown_zeros(self):
+        logs=[{'id':str(i),'values':{'receivingYards':i}} for i in range(20)];d=summarize(logs);self.assertEqual(d['receivingYards']['sampleSize'],20);self.assertNotIn('passingYards',d)
 
 if __name__=='__main__':unittest.main()
 

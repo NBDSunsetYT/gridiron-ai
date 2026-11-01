@@ -1,3 +1,5 @@
+Version 12.1: [automatic probabilities, sorting, market comparison and limitations](docs/PROPS_V12_1.md).
+
 Version 12 automatic prop research: [operation, limitations and recovery](docs/AUTOMATIC_PROPS_V12.md).
 
 # Probability engine repair — 11.0.1

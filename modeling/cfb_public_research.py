@@ -31,6 +31,7 @@ MAX_SOURCE_BYTES=80_000_000
 SOURCE_CACHE_SECONDS=6*3600
 _cache_lock=threading.Lock()
 _source_cache=None
+_season_sources={}
 _prepared_cache=None
 
 
@@ -70,10 +71,10 @@ def source_file(season):
     global _source_cache
     now=time.monotonic()
     with _cache_lock:
-        if _source_cache and _source_cache['season']==season and now<_source_cache['until'] and Path(_source_cache['path']).is_file():
-            return dict(_source_cache)
+        cached=_season_sources.get(season)
+        if cached and now<cached['until'] and Path(cached['path']).is_file():return dict(cached)
         url=f'https://github.com/sportsdataverse/sportsdataverse-data/releases/download/espn_cfb_pbp/play_by_play_{season}.parquet'
-        path=Path(tempfile.gettempdir())/'gridiron-cfb-public-pbp.parquet'
+        path=Path(tempfile.gettempdir())/f'gridiron-cfb-public-pbp-{season}.parquet'
         partial=path.with_suffix('.partial')
         digest=hashlib.sha256();size=0
         try:
@@ -93,6 +94,7 @@ def source_file(season):
         _source_cache={'season':season,'path':str(path),'sha256':digest.hexdigest(),'bytes':size,
                        'url':url,'collectedAt':datetime.now(timezone.utc).isoformat(),
                        'availableAt':None,'until':now+SOURCE_CACHE_SECONDS}
+        _season_sources[season]=dict(_source_cache)
         return dict(_source_cache)
 
 

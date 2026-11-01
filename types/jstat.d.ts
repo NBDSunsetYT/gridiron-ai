@@ -1,0 +1,1 @@
+declare module 'jstat' {export const jStat:{normal:{cdf(x:number,mean:number,sd:number):number};studentt:{cdf(x:number,df:number):number};poisson:{cdf(k:number,mean:number):number};ibeta(x:number,a:number,b:number):number;beta:{inv(p:number,a:number,b:number):number}};}
