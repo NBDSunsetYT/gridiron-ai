@@ -173,3 +173,10 @@ export async function refreshPublicResearch(){
  }
  return{status:'refreshed',games:schedule.games.length,scheduled:results,updatedAt:schedule.updatedAt};
 }
+
+/** Internal source context for aligned threshold research; client inputs never choose raw statistics. */
+export async function verifiedProbabilityInputs(id:string,count:number){
+ const game=await trustedGame(id),context=await currentContext(game);
+ if(game.status!=='scheduled'||Date.parse(game.startTime)<=Date.now()||!recentVerifiedContext(context))throw new ApiError('Fresh verified pregame inputs are required.',422);
+ return{game:{id:game.id,home:game.home.id,away:game.away.id,startTime:game.startTime,season:game.season,week:game.week},inputContext:{injuries:context.injuries,weather:context.weather,markets:context.markets},inputHash:evidenceHash(game,context,count)};
+}

@@ -163,6 +163,20 @@
       "liveVersion": "20261031230130",
       "sha256": "2b9e5c05ff82e032ad0c5d96b88d4d97e12575c4703529389c2dee737a709947",
       "sqlUnchanged": true
+    },
+    {
+      "name": "v10_2_probability_history",
+      "authoredVersion": "20261031234100",
+      "liveVersion": "20261031234911",
+      "sha256": "1d9364b4beae803daf85c2076107717901a92e3e6aec0b6e39f985c4171fbd07",
+      "sqlUnchanged": true
+    },
+    {
+      "name": "shared_research_object_storage",
+      "authoredVersion": "20261101000200",
+      "liveVersion": "20261031235628",
+      "sha256": "87e0dc4ffc8729c6719381190d3f97095a114b1500c5c77cff9b2440e498c9ad",
+      "sqlUnchanged": true
     }
   ]
 }

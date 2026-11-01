@@ -73,7 +73,7 @@ export function sessionCookie(token:string, request:Request) {
   return `${SESSION_COOKIE}=${token}; HttpOnly; Path=/; SameSite=Lax; Max-Age=${token ? 2592000 : 0}${secure ? '; Secure' : ''}`;
 }
 export function errorResponse(error:unknown) {
-  if (error instanceof ApiError) return Response.json({error:error.message},{status:error.status});
+  if (error instanceof ApiError) {const detail=error as ApiError&{code?:string;retryable?:boolean};return Response.json({error:error.message,...detail.code?{code:detail.code,retryable:detail.retryable}:{}},{status:error.status});}
   if (error instanceof SyntaxError) return Response.json({error:'Invalid JSON request.'},{status:400});
   if (error instanceof Error && error.message.includes('UNIQUE constraint')) return Response.json({error:'A record with this reference already exists.'},{status:409});
   console.error('API operation failed.',{name:error instanceof Error ? error.name : 'UnknownError'});

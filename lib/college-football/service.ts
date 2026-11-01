@@ -40,8 +40,8 @@ function gameAnalysis(game:CollegeGame,inputHash?:string){const retained=current
 type CollegePreparation={ready:boolean;reason:string;inputHash?:string;research?:Record<string,any>;training?:Record<string,any>};
 const preparations=new Map<string,{expires:number;value:CollegePreparation}>(),preparing=new Map<string,Promise<CollegePreparation>>(),running=new Map<string,Promise<CollegeGameDetail>>();
 function workerUrl(path:string){const endpoint=process.env.SIMULATION_SERVICE_URL,token=process.env.SIMULATION_SERVICE_TOKEN;if(!endpoint||!token||token.length<32)return null;const base=new URL(endpoint.endsWith('/')?endpoint:endpoint+'/');if(!['https:','http:'].includes(base.protocol))return null;return{url:new URL(path,base),token};}
-function gamePayload(game:CollegeGame){return{id:game.id,espnGameId:game.espnId,season:game.season,week:game.week,startTime:game.startTime,status:game.status,home:{id:game.home.id,espnId:game.home.espnId,name:game.home.name},away:{id:game.away.id,espnId:game.away.espnId,name:game.away.name}};}
-async function prepareCollegeGame(game:CollegeGame,count=10000):Promise<CollegePreparation>{
+export function gamePayload(game:CollegeGame){return{id:game.id,espnGameId:game.espnId,season:game.season,week:game.week,startTime:game.startTime,status:game.status,home:{id:game.home.id,espnId:game.home.espnId,name:game.home.name},away:{id:game.away.id,espnId:game.away.espnId,name:game.away.name}};}
+export async function prepareCollegeGame(game:CollegeGame,count=10000):Promise<CollegePreparation>{
  if(!game.kickoffVerified)return{ready:false,reason:'The published kickoff time is not confirmed. A placeholder time cannot support a pregame forecast.'};
  if(game.status!=='scheduled'||Date.parse(game.startTime)<=Date.now()||/postpon|cancel/i.test(game.statusMessage))return{ready:false,reason:'This is a pregame engine. Live, completed or cancelled games cannot receive a current pregame probability.'};
  const key=game.id+':'+count,old=preparations.get(key);if(old&&old.expires>Date.now())return old.value;const pending=preparing.get(key);if(pending)return pending;

@@ -310,3 +310,20 @@ def analyze_cfb_public(data):
     return {'status':'completed','sport':'CFB','game':game,'simulations':count,'modelVersion':MODEL_VERSION,
             'engineVersion':ENGINE_VERSION,'inputHash':model['sha256'],'result':result,
             'research':_research(prepared)}
+
+
+def analyze_cfb_targets(data):
+    """Exact statistical thresholds evaluated on shared complete NCAA games."""
+    if not isinstance(data, dict) or set(data)-{'game','simulations','seed','contracts'}:
+        raise ValueError('Trusted matchup and exact statistical targets required')
+    definitions=data.get('contracts')
+    if not isinstance(definitions,list) or not 2<=len(definitions)<=12:
+        raise ValueError('Choose 2..12 distinct statistical targets')
+    if any(not isinstance(d,dict) or d.get('kind') not in ('player','spread','total') for d in definitions):
+        raise ValueError('Unsupported statistical target')
+    base={k:v for k,v in data.items() if k!='contracts'}
+    prepared=_prepare_cfb_public(base)
+    model,game=prepared['model'],prepared['game']
+    result=simulate_cfb(model,'cfb:espn:'+prepared['home'],'cfb:espn:'+prepared['away'],
+        data.get('simulations',10000),data.get('seed',2026),game['startTime'],contracts=definitions)
+    return {'sport':'CFB','inputHash':model['sha256'],'result':result,'research':_research(prepared)}

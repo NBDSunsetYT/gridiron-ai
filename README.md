@@ -1,3 +1,7 @@
+# GRIDIRON AI 10.2
+
+Existing-app upgrade and shared research storage repair: [architecture, operational scope and recovery](docs/GRIDIRON_V10_2.md). Production remains **https://gridiron-ai-gray.vercel.app**. The previous10.0 report below is retained as historical evidence.
+
 # GRIDIRON AI10.0
 
 Existing-app upgrade: [operational scope, recovery and remaining requirements](docs/GRIDIRON_V10.md).
@@ -20,7 +24,7 @@ The DraftKings repair distinguishes missing configuration, credential rejection,
 
 1. Open GRIDIRON AI and choose NFL or College Football. Available published games and public research do not require an app or database-provider login.
 2. Tap a game. The app retrieves available statistics, reported injuries and weather, then reuses or queues a 10,000-complete-game analysis.
-3. For NFL player props, choose **Sportsbook references (BALLDONTLIE)** or **DraftKings Predictions contracts** explicitly. **ANALYZE ALL NFL PLAYER PROPS** checks authorized sportsbook reference access for the selected verified matchup; it does not claim full-slate coverage or convert those odds into percentage-priced contracts. The separate **Analyze All NFL Markets** event-contract workflow validates exact identities, thresholds, quotes and settlement rules and reports missing licensed access honestly. In College Football, **Analyze Game** produces a separate complete-game historical baseline; independent player distributions remain separate from missing market contracts.
+3. For NFL player props, choose **Sportsbook references (PropLine)** or **DraftKings Predictions contracts** explicitly. **ANALYZE ALL NFL PLAYER PROPS** checks authorized sportsbook reference access for the selected verified matchup; it does not claim full-slate coverage or convert those odds into percentage-priced contracts. The separate **Analyze All NFL Markets** event-contract workflow validates exact identities, thresholds, quotes and settlement rules and reports missing licensed access honestly. In College Football, **Analyze Game** produces a separate complete-game historical baseline; independent player distributions remain separate from missing market contracts.
 4. Sign in to **GRIDIRON AI** when opening Wallet or saving personal research and conversation history. An application account is not a Supabase developer account.
 5. On iPhone, open the app in Safari and choose **Share → Add to Home Screen → Add**.
 
