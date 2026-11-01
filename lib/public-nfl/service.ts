@@ -127,8 +127,9 @@ export async function executePublicJob(id:string){
   const engine=sanitizeEnginePayload(await response.json());if(engine.result.simulations!==claimed.data.simulations||engine.result.home!==game.home.id||engine.result.away!==game.away.id)throw new ApiError('The engine returned a different matchup or game count; the result was withheld.',502);
   for(const team of [game.home.id,game.away.id])if(engine.result.scoreDistributions[team]?.histogram?.reduce((n:number,row:any)=>n+row.count,0)!==claimed.data.simulations)throw new ApiError('The engine score distribution did not reconcile every complete game.',502);
   const summary=evidenceBrief(game,context,engine.result,engine.research),result={...engine,summary};
-  const completed=await sharedWrite({action:'job_complete',id,lease,result});
+  const completed=await sharedWrite({action:'job_complete',id,lease,gameId:game.id,result});
   await putCache('analysis',game.id,{jobId:id,inputHash:claimed.input_hash,summary:analysisSummary(completed)},claimed.input_hash,ANALYSIS_TTL).catch(()=>{});
+  if(process.env.GRIDIRON_MONGODB_RESEARCH==='1')await(await import('../storage/outbox')).deliverResearchQueue(1).catch(()=>{});
   if(process.env.OPENAI_API_KEY)await publicAssistant(game.id).catch(()=>{});
  }catch(error){const message=error instanceof ApiError?error.message:'Automatic research could not finish. Existing results and source records remain saved; please retry shortly.';await sharedWrite({action:'job_fail',id,lease,error:message}).catch(()=>{});}
 }

@@ -1,7 +1,7 @@
 {
   "projectRef": "qdtdjbapdipopncklsdb",
-  "source": "Supabase list_migrations after twenty-one successful applications",
-  "method": "Aligned source filenames only; SQL bytes and remote history unchanged",
+  "source": "Supabase list_migrations after v11 additive storage coordination",
+  "method": "Source filenames aligned with live versions; existing SQL/history preserved; new v11 metadata migration is additive",
   "migrations": [
     {
       "name": "gridiron_v4",
@@ -176,6 +176,13 @@
       "authoredVersion": "20261101000200",
       "liveVersion": "20261031235628",
       "sha256": "87e0dc4ffc8729c6719381190d3f97095a114b1500c5c77cff9b2440e498c9ad",
+      "sqlUnchanged": true
+    },
+    {
+      "name": "gridiron_storage_coordination",
+      "authoredVersion": "20261101101000",
+      "liveVersion": "20261101101833",
+      "sha256": "852307efb618688bd796e12a06b8eeb29b902a53f899def24fc5f368e58a619f",
       "sqlUnchanged": true
     }
   ]

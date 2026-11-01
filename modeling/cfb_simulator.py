@@ -396,11 +396,14 @@ def simulate_cfb(model, home, away, simulations=10000, seed=1, event_start=None,
     player_hist = defaultdict(lambda:defaultdict(Counter))
     outcomes = {key:Counter() for key in ids}
     wins, convergence, representative = 0, [], []
+    from .storage_summary import CorrelationSummary, run_manifest
+    correlations=CorrelationSummary(evidence.rows)
     checkpoints = {max(1, simulations//10), max(1, simulations//2), simulations}
     for index in range(simulations):
         score, players, totals, trace = simulate_cfb_game(evidence, rng, [home, away], index < representative_games)
         if score[0] == score[1]:
             raise ValueError('A complete NCAA game cannot be published as tied')
+        correlations.add(score, players)
         wins += score[0] > score[1]
         if index < representative_games:
             representative.append({'index':index,'score':score,'players':dict(players),'environment':dict(totals),'plays':trace})
@@ -460,6 +463,8 @@ def simulate_cfb(model, home, away, simulations=10000, seed=1, event_start=None,
         bootstrap = cfb_parameter_bootstrap(model, home, away, seed, contracts, scenario, parameter_uncertainty)
         result['uncertainty'].update(parameterBootstrap=bootstrap,modelInterval=bootstrap['homeWinInterval95'],
                                      model='Separate CFB game-block bootstrap sensitivity; not validated predictive coverage or structural/availability uncertainty.')
+    result['correlations']=correlations.summary()
+    result['runManifest']=run_manifest(model,home,away,simulations,seed,event_start,contracts,scenario,representative_games,parameter_uncertainty,selected_outcomes,'CFB')
     return result
 
 

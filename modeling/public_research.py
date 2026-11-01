@@ -621,6 +621,9 @@ def analyze_public(data, fetcher=fetch_dataset, now=None):
     # provenance) and expose a separate feature fingerprint. A fresh source
     # check is not itself a new statistical input. Consumers must still audit
     # pipeline/engine versions, simulation count, seed and current availability.
+    result['runManifest']['sourceContext']={'gameId':game['id'],'injuryEvidencePath':'research.injuries','weatherEvidencePath':'research.weather','scenario':scenario,'inputFeatureVersion':input_version}
+    from .artifact_archive import archive_replay_input
+    result=archive_replay_input(result,fit['model'],'NFL')
     result['inputFeatureVersion']=input_version
     result['baseFeatureVersion']=automatic_feature_version(evidence_version,scenario,reports,roster,[],what_if,None)
     return {'result':result,'research':research,'summary':summary,'inputVersion':input_version,'modelVersion':fit['model']['version'],

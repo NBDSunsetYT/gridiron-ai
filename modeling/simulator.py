@@ -448,10 +448,13 @@ def simulate(model, home, away, simulations=10000, seed=1, event_start=None, con
     all_totals, wins, ties = Counter(), 0, 0
     convergence = []
     representatives=[]
+    from .storage_summary import CorrelationSummary, run_manifest
+    correlations=CorrelationSummary(evidence.rows)
     checkpoints = {max(1, simulations // 10), max(1, simulations // 2), simulations}
     for index in range(simulations):
         scores, players, totals, trace = simulate_game(evidence, rng, [home, away], postseason,index<representative_games)
         if index<representative_games:representatives.append({'index':index,'score':scores,'players':dict(players),'environment':dict(totals),'plays':trace})
+        correlations.add(scores, players)
         wins += scores[0] > scores[1]
         ties += scores[0] == scores[1]
         for side in (0, 1):
@@ -514,6 +517,8 @@ def simulate(model, home, away, simulations=10000, seed=1, event_start=None, con
         result['uncertainty']['model']='Game-block Bayesian bootstrap parameter interval estimated separately from base-run Monte Carlo error; structural and cohort uncertainty remain unestimated.'
         if selected_outcomes:
             result['combination']['parameterInterval95'] = result['uncertainty']['parameterBootstrap']['combinationInterval95']
+    result['correlations']=correlations.summary()
+    result['runManifest']=run_manifest(model,home,away,simulations,seed,event_start,contracts,scenario,representative_games,parameter_uncertainty,selected_outcomes,'NFL',postseason,parameter_player_ids)
     return result
 
 

@@ -304,6 +304,8 @@ def analyze_cfb_public(data):
     result=simulate_cfb(model,'cfb:espn:'+home,'cfb:espn:'+away,count,data.get('seed',1),game['startTime'],
                         parameter_uncertainty={'replicates':10,'gamesPerReplicate':100} if len(corpus['historicalGameIds'])>=8 else None,
                         representative_games=1)
+    from .artifact_archive import archive_replay_input
+    result=archive_replay_input(result,model,'CFB')
     result['limitations'].extend(['This automatically fitted baseline is conditional on historical player participation; current injury, depth-chart, transfer and snap-limit coverage is incomplete.',
                                   'Historical publication availability is unknown. Source retrieval today does not establish historical point-in-time availability or calibration.',
                                   'Penalties and unsupported source plays are excluded from the empirical corpus; see actual rejection counts.'])

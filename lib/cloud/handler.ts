@@ -18,6 +18,7 @@ import {cloudJson} from './transport';
 import {probeAiProvider} from '../ai-provider';
 import {registerCloudAccount} from './app-auth';
 import {wagerMetadata} from '../wager-record';
+import {decodeCloudData} from './codec';
 
 const json=cloudJson;
 const publicLimits=new Map<string,{count:number;until:number}>();
@@ -60,7 +61,7 @@ async function exportCloud(ctx:CloudContext,password:string){
  const exported=await exportOwnedTables(ctx,['gridiron_records','conversations','conversation_messages',...OWNED_TYPED_EXPORT_TABLES]);
  const research:Record<string,any>={typedTables:Object.fromEntries(OWNED_TYPED_EXPORT_TABLES.map(table=>[table,exported[table]]))};
  let expandedBytes=Buffer.byteLength(JSON.stringify(research),'utf8');
- for(const stored of exported.gridiron_records){const {kind,value}=portableCloudRecord(stored);expandedBytes+=Buffer.byteLength(JSON.stringify(value),'utf8');if(expandedBytes>BACKUP_EXPANDED_LIMIT)throw new ApiError('The complete expanded account export exceeds the interactive 160 MB recovery bound. No partial backup was returned; use a consistent project backup.',413);(research[kind]??=[]).push(value);}
+ for(const original of exported.gridiron_records){let stored=original;if(original.kind==='cfb_simulation_jobs'){const decoded=decodeCloudData(original.data);if(decoded?.researchReference){const {verifyCollegeEvidence}=await import('../college-football/store');stored={...original,data:await verifyCollegeEvidence(ctx,original.id,decoded)};}}const {kind,value}=portableCloudRecord(stored);expandedBytes+=Buffer.byteLength(JSON.stringify(value),'utf8');if(expandedBytes>BACKUP_EXPANDED_LIMIT)throw new ApiError('The complete expanded account export exceeds the interactive 160 MB recovery bound. No partial backup was returned; use a consistent project backup.',413);(research[kind]??=[]).push(value);}
  research.conversations=exported.conversations;research.conversation_messages=exported.conversation_messages;
  const backup={version:2,backend:'supabase',createdAt:new Date().toISOString(),email:user.email,ledger,rawLedger,settings,preferences:prefs,research,limitations:['Raw financial data is reconciled and all owned typed tables are included. Typed warehouse/model restoration is archived in the imported source payload until a dedicated typed restore operation is implemented. Consistent full PostgreSQL recovery still requires project backups. Authentication secrets are excluded.']};
  if(Buffer.byteLength(JSON.stringify(backup),'utf8')>BACKUP_EXPANDED_LIMIT)throw new ApiError('The complete expanded account export exceeds the interactive 160 MB recovery bound. No partial backup was returned; use a consistent project backup.',413);

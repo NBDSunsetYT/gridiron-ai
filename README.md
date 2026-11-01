@@ -1,3 +1,7 @@
+# GRIDIRON AI 11.0 — compact cloud storage
+
+The existing application is preserved. See [storage architecture, retention, recovery and provider activation](docs/GRIDIRON_V11.md). Supabase remains the private account and ledger authority. MongoDB/R2 integrations are opt-in and are not reported as connected until actual authorized checks pass.
+
 # GRIDIRON AI 10.2
 
 Existing-app upgrade and shared research storage repair: [architecture, operational scope and recovery](docs/GRIDIRON_V10_2.md). Production remains **https://gridiron-ai-gray.vercel.app**. The previous10.0 report below is retained as historical evidence.
