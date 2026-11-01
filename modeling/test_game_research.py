@@ -111,19 +111,28 @@ class ExactGameMarketTests(unittest.TestCase):
         self.assertEqual(yes,parameter_game_interval({**self.result,'simulations':100000},new))
 
     def test_game_sample_storage_is_bounded_reconciled_and_not_inferred_from_home_interval(self):
-        samples=self.result['uncertainty']['parameterBootstrap']['gameSamples']
-        self.assertEqual(samples['encoding'],GAME_PARAMETER_SAMPLE_ENCODING)
-        self.assertEqual(samples['shape'],[10,100,2])
-        self.assertEqual(samples['uncompressedBytes'],8000)
-        self.assertEqual(len(gzip.decompress(base64.b64decode(samples['dataBase64']))),8000)
-        for update in ({'uncompressedBytes':8001},{'shape':[10,100,3]},{'teams':['SYNTH-B','SYNTH-A']},
-                       {'dataBase64':'INVALID'},{'coverage':'regulation'},{'compressedBytes':0}):
+        samples=self.result['uncertainty']['parameterBootstrap']['gameHistograms']
+        self.assertEqual(samples['format'],'per_replicate_score_pair_histograms_v1')
+        self.assertEqual(samples['shape'],[10,2])
+        self.assertNotIn('dataBase64',samples)
+        self.assertNotIn('gameSamples',self.result['uncertainty']['parameterBootstrap'])
+        for rows in samples['histograms']:self.assertEqual(sum(row[2] for row in rows),100)
+        for update in ({'shape':[10,3]},{'teams':['SYNTH-B','SYNTH-A']},
+                       {'histograms':[]},{'coverage':'regulation'},{'gamesPerReplicate':101}):
             changed=copy.deepcopy(self.result)
-            changed['uncertainty']['parameterBootstrap']['gameSamples'].update(update)
+            changed['uncertainty']['parameterBootstrap']['gameHistograms'].update(update)
             self.assertIsNone(parameter_game_interval(changed,definition()))
+        # The old ordered encoding remains readable without changing its probabilities.
+        import struct
+        raw=b''.join(struct.pack('<ii',home,away)*count for group in samples['histograms'] for home,away,count in group)
+        compressed=gzip.compress(raw,mtime=0)
         legacy=copy.deepcopy(self.result)
+        del legacy['uncertainty']['parameterBootstrap']['gameHistograms']
+        legacy['uncertainty']['parameterBootstrap']['gameSamples']={'status':'available','encoding':GAME_PARAMETER_SAMPLE_ENCODING,'valueType':'int32le','teams':[self.result['home'],self.result['away']],'shape':[10,100,2],'uncompressedBytes':len(raw),'compressedBytes':len(compressed),'dataBase64':base64.b64encode(compressed).decode(),'coverage':'full_game_including_overtime'}
+        self.assertEqual(parameter_game_interval(legacy,definition()),parameter_game_interval(self.result,definition()))
         del legacy['uncertainty']['parameterBootstrap']['gameSamples']
         self.assertIsNone(parameter_game_interval(legacy,definition()))
+
 
 
 if __name__=='__main__':unittest.main()

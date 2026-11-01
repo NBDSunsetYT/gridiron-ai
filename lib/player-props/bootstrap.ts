@@ -2,6 +2,7 @@
  * These intervals measure parameter sensitivity, not validated predictive coverage.
  */
 import {gunzipSync} from 'node:zlib';
+import {playerParameterHistograms} from './parameter-histograms';
 
 export const PROP_PARAMETER_METHOD='Whole-historical-game Bayesian bootstrap parameter sensitivity; finite inner simulation noise is included. This is not calibrated predictive coverage.';
 export const PROP_SAMPLE_ENCODING='gzip_base64_int32le_shared_player_stats_v1';
@@ -10,13 +11,13 @@ const STATS=new Set(['passingAttempts','completions','passingYards','passingTouc
 const YARDS=new Set(['passingYards','receivingYards','rushingYards']);
 type Row=Record<string,any>;
 export type PropParameterDetails={interval95:[number,number]|null;status:'available'|'unavailable';method:string;reason?:string;replicates?:number;gamesPerReplicate?:number};
-export type PropParameterSamples={players:string[];stats:string[];replicates:number;gamesPerReplicate:number;raw:Buffer;value:(replicate:number,game:number,player:number,stat:number)=>number};
+export type PropParameterSamples={players:string[];stats:string[];replicates:number;gamesPerReplicate:number;raw:Buffer;histogram?:(replicate:number,player:number,stat:number)=>Array<[number,number]>;value:(replicate:number,game:number,player:number,stat:number)=>number};
 const decodedCache=new WeakMap<object,{encoded:string;metadata:string;samples:PropParameterSamples}>();
 
 /** Missing or corrupt evidence is null, never an inferred all-zero player. */
 export function decodePropParameterSamples(result:Row):PropParameterSamples|null{
  try{
-  const bootstrap=result?.uncertainty?.parameterBootstrap,samples=bootstrap?.playerSamples;
+  const bootstrap=result?.uncertainty?.parameterBootstrap;if(bootstrap?.playerHistograms!==undefined)return playerParameterHistograms(result);const samples=bootstrap?.playerSamples;
   if(!samples||samples.status!=='available'||samples.encoding!==PROP_SAMPLE_ENCODING||samples.valueType!=='int32le')return null;
   const metadata=JSON.stringify([samples.status,samples.encoding,samples.valueType,samples.players,samples.stats,samples.shape,samples.uncompressedBytes,samples.compressedBytes,bootstrap.replicates,bootstrap.gamesPerReplicate,bootstrap.completeGames,bootstrap.historicalGameBlocks]);
   const cached=decodedCache.get(samples);
@@ -77,13 +78,11 @@ export function propParameterInterval(result:Row,playerId:string,stat:string,thr
  const player=samples.players.indexOf(playerId),column=samples.stats.indexOf(stat);
  if(player<0||column<0)return unavailable('This exact player/statistic is not explicitly represented in the parameter samples.');
  const probabilities:number[]=[];
- for(let replicate=0;replicate<samples.replicates;replicate++){
-  let hits=0;for(let game=0;game<samples.gamesPerReplicate;game++){
-   const yes=predicate(samples.value(replicate,game,player,column),threshold,operator)!;
-   hits+=Number(side==='yes'?yes:!yes);
-  }
+ try{for(let replicate=0;replicate<samples.replicates;replicate++){
+  let hits=0;if(samples.histogram){for(const[value,count]of samples.histogram(replicate,player,column)){const yes=predicate(value,threshold,operator)!;hits+=Number(side==='yes'?yes:!yes)*count;}}
+  else for(let game=0;game<samples.gamesPerReplicate;game++){const yes=predicate(samples.value(replicate,game,player,column),threshold,operator)!;hits+=Number(side==='yes'?yes:!yes);}
   probabilities.push(hits/samples.gamesPerReplicate);
- }
+ }}catch{return unavailable('The parameter frequency evidence could not be verified.');}
  probabilities.sort((a,b)=>a-b);
  const interval95:[number,number]=[probabilities[Math.max(0,Math.floor(.025*probabilities.length))],probabilities[Math.min(probabilities.length-1,Math.ceil(.975*probabilities.length)-1)]];
  return{interval95,status:'available',method:PROP_PARAMETER_METHOD,replicates:samples.replicates,gamesPerReplicate:samples.gamesPerReplicate};

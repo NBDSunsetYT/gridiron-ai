@@ -124,6 +124,19 @@ combined to manufacture a total or margin interval.
         _definition(result,definition)
         if outcome not in ('yes','no','push'):return None
         bootstrap=result.get('uncertainty',{}).get('parameterBootstrap',{})
+        if 'gameHistograms' in bootstrap:
+            from .storage_summary import game_parameter_histograms
+            groups,reps,games=game_parameter_histograms(result)
+            probabilities=[]
+            for rows in groups:
+                hits=0
+                for home,away,count in rows:
+                    kind=definition['kind']
+                    value=home-away if kind in ('home_win','spread') else away-home if kind=='away_win' else home+away if kind=='total' else home if definition['team']=='home' else away
+                    if _outcome(value,definition)==outcome:hits+=count
+                probabilities.append(hits/games)
+            probabilities.sort()
+            return[probabilities[max(0,int(.025*reps))],probabilities[min(reps-1,math.ceil(.975*reps)-1)]]
         sample=bootstrap.get('gameSamples',{})
         if sample.get('status')!='available' or sample.get('encoding')!=GAME_PARAMETER_SAMPLE_ENCODING or sample.get('valueType')!='int32le':return None
         shape=sample.get('shape')

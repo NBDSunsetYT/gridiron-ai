@@ -70,7 +70,8 @@ export async function handlePublicNfl(request:Request,parts:string[]=[]):Promise
    const ctx=await cloudContext(request);privateContext=ctx;if(!ctx.user)throw new ApiError('Sign in to GRIDIRON AI to save this analysis to your private account.',401);const user=requireCloudUser(ctx),job=await sharedJob(input.analysisId);
    if(!job||job.game_id!==input.gameId||job.status!=='completed'||!job.result)throw new ApiError('A completed published game analysis is required.',404);
    const id=warehouseId(user.id,'public_simulation',job.id),old=await record(ctx,id,'research_records/saved_simulation').catch(error=>{if(error instanceof ApiError&&error.status===404)return null;throw error;});
-   if(!old)await saveRecord(ctx,'research_records/saved_simulation',{id,publicAnalysisId:job.id,gameId:job.game_id,modelVersion:job.result.result?.modelVersion,summary:job.result.summary,result:job.result.result,source:'GRIDIRON published automatic NFL research',savedAt:new Date().toISOString()},{id,entityKey:job.game_id});
+   const {savedNflReference}=await import('../storage/saved-nfl');
+   if(!old)await saveRecord(ctx,'research_records/saved_simulation',{id,publicAnalysisId:job.id,gameId:job.game_id,modelVersion:job.result.result?.modelVersion,summary:job.result.summary,resultReference:savedNflReference(job),source:'GRIDIRON published automatic NFL research',savedAt:new Date().toISOString()},{id,entityKey:job.game_id});
    return finishCloud(ctx,json({saved:true,id,analysisId:job.id,private:true},old?200:201));
   }
   throw new ApiError('NFL research route not found.',404);

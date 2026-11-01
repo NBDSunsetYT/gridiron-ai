@@ -1,4 +1,5 @@
 import {gunzipSync} from 'node:zlib';
+import {scoreParameterHistograms} from './parameter-histograms';
 import {isGameMarket,type PropMarketContract} from './market-types';
 import {canonicalPropTeam} from './normalize';
 import {PROP_PARAMETER_METHOD,type PropParameterDetails} from './bootstrap';
@@ -10,7 +11,9 @@ export function gameParameterInterval(result:Record<string,any>,contract:PropMar
  const unavailable=(reason:string):PropParameterDetails=>({status:'unavailable',interval95:null,method:PROP_PARAMETER_METHOD,reason});
  if(!isGameMarket(contract.stat)||!Number.isFinite(contract.threshold)||!contract.settlement.fullGame||!contract.settlement.overtimeIncluded)return unavailable('The exact full-game including overtime contract definition is unsupported.');
  try{
-  const bootstrap=result?.uncertainty?.parameterBootstrap,s=bootstrap?.gameSamples;
+  const bootstrap=result?.uncertainty?.parameterBootstrap;
+  if(bootstrap?.gameHistograms!==undefined){const data=scoreParameterHistograms(result),team=canonicalPropTeam(contract.subject?.teamId??contract.team),home=team===canonicalPropTeam(result.home),away=team===canonicalPropTeam(result.away);if(contract.stat!=='totalPoints'&&!home&&!away)return unavailable('The contract team is not a participant in these shared games.');const probabilities:number[]=[];for(const group of data.histograms){let hits=0;for(const[h,a,count]of group){const value=contract.stat==='totalPoints'?h+a:contract.stat==='teamTotal'?(home?h:a):home?h-a:a-h;let hit:boolean;if(contract.stat==='gameWinner'&&value===0){const tie=Number(contract.settlement.tiePayoutCents);if(!Number.isFinite(tie)||tie<0||tie>100)return unavailable('Tie payout is not supported.');hit=(side==='YES'?tie:100-tie)===100;}else{const yes=thresholdHit(value,contract.threshold,contract.operator);hit=side==='YES'?yes:!yes;}hits+=Number(hit)*count;}probabilities.push(hits/data.gamesPerReplicate);}probabilities.sort((a,b)=>a-b);return{status:'available',interval95:[probabilities[Math.floor(.025*data.replicates)],probabilities[Math.min(data.replicates-1,Math.ceil(.975*data.replicates)-1)]],method:PROP_PARAMETER_METHOD,replicates:data.replicates,gamesPerReplicate:data.gamesPerReplicate};}
+  const s=bootstrap?.gameSamples;
   if(!s||s.status!=='available'||s.encoding!=='gzip_base64_int32le_shared_game_scores_v1'||s.valueType!=='int32le'||s.coverage!=='full_game_including_overtime')return unavailable('Whole-game score-pair bootstrap evidence is unavailable for this stored model version.');
   const shape=s.shape;if(!Array.isArray(shape)||shape.length!==3||shape.some(v=>!Number.isInteger(v)||v<=0)||shape[2]!==2||shape[0]<10||shape[0]>40||shape[1]<100||shape[1]>2000)return unavailable('The score bootstrap shape is invalid.');
   const[r,g]=shape;if(bootstrap.replicates!==r||bootstrap.gamesPerReplicate!==g||bootstrap.completeGames!==r*g||!Number.isInteger(bootstrap.historicalGameBlocks)||bootstrap.historicalGameBlocks<8)return unavailable('The bootstrap does not reconcile with its historical-game blocks.');

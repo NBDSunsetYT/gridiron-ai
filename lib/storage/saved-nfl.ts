@@ -1,0 +1,6 @@
+import {ApiError} from '../auth';
+import {checksum} from './schema';
+import {sharedJob,type SharedJob} from '../public-nfl/store';
+export function savedNflReference(job:SharedJob){if(job.status!=='completed'||!job.result?.result)throw new ApiError('A completed published result is required.',404);return{format:'shared-nfl-result-v1',analysisId:job.id,gameId:job.game_id,sha256:checksum(job.result.result)};}
+/** The caller retrieves the private record through its authenticated ownership filter first. */
+export async function hydrateSavedNflData(data:Record<string,any>):Promise<Record<string,any>>{const ref=data.resultReference;if(!ref)return data;if(ref.format!=='shared-nfl-result-v1'||typeof ref.analysisId!=='string'||ref.analysisId!==data.publicAnalysisId||ref.gameId!==data.gameId||!/^[a-f0-9]{64}$/.test(ref.sha256??''))throw new ApiError('Saved NFL result reference could not be verified.',502);const job=await sharedJob(ref.analysisId);if(!job||job.status!=='completed'||job.game_id!==ref.gameId||!job.result?.result||checksum(job.result.result)!==ref.sha256)throw new ApiError('The original NFL result is unavailable or its integrity check failed. Your saved reference was preserved.',503);return{...data,result:job.result.result,summary:job.result.summary};}

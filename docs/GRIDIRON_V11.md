@@ -15,7 +15,7 @@ The deployed Python engine currently runs as the existing private Vercel service
 
 ## Compact runs and reproducibility
 
-Both NFL and NCAA engines already streamed completed games into histograms. This release adds a storage boundary rejecting full-game arrays, raw samples and play collections in ordinary permanent research documents. At most three representative games, each bounded to 1,000 inspection plays, can be retained. The engines default to zero representatives; automatic game research requests one.
+Both NFL and NCAA engines already streamed completed games into histograms. This release adds a storage boundary rejecting full-game arrays, raw samples and play collections in ordinary permanent research documents. At most three representative games, each bounded to 1,000 inspection plays, can be retained. The engines default to zero representatives; automatic game research requests one. Parameter-uncertainty replicates are also saved as marginal player frequencies and joint score-pair frequencies, rather than ordered game/statistic frames. Single-threshold intervals retain the original weighted counts; player marginals are never treated as paired joint outcomes. Both legacy ordered encodings remain readable. An explicit cross-language test verifies unchanged intervals, including tie settlement semantics.
 
 The 10,000, 50,000 and 100,000 modes mean complete games. The six mechanical mode tests reconcile every score histogram and shared contract outcome count, assert bounded serialized output and verify that full sample arrays are absent. Those fixtures are visibly synthetic mechanics tests, not historical calibration evidence.
 
@@ -39,7 +39,7 @@ These operations are not a cross-database transaction. A failed metadata write c
 
 Documents use canonical byte identities, including numeric-looking JSON property names. MongoDB `_id` provides deduplication, and a compound sport/game/time/ID index supports cursor pagination. A single client per warm serverless instance uses a small pool. New collections receive validation; existing unknown schemas are not rewritten. Research collections have no TTL deletion.
 
-New CFB private saves retain a small account-scoped reference and the original owner-bound attestations. Retrieval materializes the research and verifies both result and source context. Encrypted account exports expand those references into complete research evidence so the backup does not silently omit the data. Old inline saved records remain compatible.
+New NFL and CFB private saves retain a small account-scoped reference (NFL references also pin the exact original result checksum; CFB retains its owner-bound attestations). Retrieval materializes the research and verifies both result and source context. Encrypted account exports expand those references into complete research evidence so the backup does not silently omit the data. Old inline saved records remain compatible.
 
 Exact-byte dataset/artifact deduplication uses content-addressed keys and conditional R2 writes. It does not collapse immutable prediction snapshots or claim semantically similar datasets are byte-identical. Durable staging duplication is a recovery mechanism; it is not an assertion that two databases commit atomically.
 

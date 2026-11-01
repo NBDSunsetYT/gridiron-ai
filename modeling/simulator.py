@@ -519,6 +519,8 @@ def simulate(model, home, away, simulations=10000, seed=1, event_start=None, con
             result['combination']['parameterInterval95'] = result['uncertainty']['parameterBootstrap']['combinationInterval95']
     result['correlations']=correlations.summary()
     result['runManifest']=run_manifest(model,home,away,simulations,seed,event_start,contracts,scenario,representative_games,parameter_uncertainty,selected_outcomes,'NFL',postseason,parameter_player_ids)
+    from .storage_summary import compact_parameter_evidence
+    compact_parameter_evidence(result)
     return result
 
 

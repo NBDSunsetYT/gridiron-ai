@@ -21,6 +21,7 @@ export function researchDocument(sport:Sport,gameId:string,kind:ResearchKind,pay
 export function validateCompactSimulation(result:any){
  if(!result||!Number.isSafeInteger(result.simulations)||result.simulations<1||result.simulations>100000)throw Error('A completed aggregate simulation is required.');
  for(const field of ['games','allGames','simulatedGames','gameSamples','plays','playByPlay','rawSamples','rows'])if(result[field]!==undefined)throw Error('Per-game samples and play collections cannot enter permanent research storage.');
+ if(result.uncertainty?.parameterBootstrap?.playerSamples!==undefined||result.uncertainty?.parameterBootstrap?.gameSamples!==undefined)throw Error('Per-game parameter samples must be reduced to aggregate frequency evidence before permanent storage.');
  if(!Array.isArray(result.representativeGames??[])||(result.representativeGames??[]).length>3)throw Error('At most three representative games can be retained.');
  for(const game of result.representativeGames??[])if(!Array.isArray(game.plays)||game.plays.length>1000)throw Error('Representative game trace exceeds the bounded inspection limit.');
  for(const distribution of Object.values(result.scoreDistributions??{}) as any[]){if(!Array.isArray(distribution.histogram)||distribution.histogram.some((b:any)=>!Number.isSafeInteger(b.count)||b.count<0)||distribution.histogram.reduce((n:number,b:any)=>n+b.count,0)!==result.simulations)throw Error('Score histogram does not reconcile to completed games.');}
