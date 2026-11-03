@@ -118,3 +118,40 @@ in force.
 See `docs/reports/performance-*` for actual benchmarks, verification and deployment
 results. Local CPU reduction is not a measured monthly billing reduction. Traffic,
 cold-start frequency, cache warmth and actual model changes determine hosting use.
+
+## Production delivery
+
+The release is live at https://gridiron-ai-gray.vercel.app. Vercel deployment
+`dpl_8RkAogr9tq9o9TRyoWojmXTmPhsq` is READY with source
+`3e91fae793754c5dbb6b1a91a828e15937217458`. Render deployment
+`dep-dbkk14ou01pc73dgvkg0` is live with gateway source
+`94f4a10e79f6ad0efa0728cbeefddf761d9e08d6`. The final preview
+`dpl_3abTiiQ9pjrd8hhxvYKXk7rcYu8p` passed health/dependency and manifest checks.
+Production-only bridge secrets were kept out of Preview.
+
+Verification: 720 TypeScript tests, 191 full-suite Python tests, 17 focused Python
+release checks, 12 PostgreSQL suites, 32 desktop/iPhone-viewport browser checks,
+five live performance checks, six live automatic-research workflow checks and
+15 live PWA checks passed. Four concurrent readers per sport preserved identical
+estimates for identical model inputs. Private Wallet and operator endpoints
+rejected guests, and actual saved research history remained retrievable.
+No personal financial records were written by the production acceptance scripts.
+The first NFL response was stale/pending; automatic refresh completed and the
+subsequent complete workflow passed without clicking an analysis button.
+
+Matched local CPU measurements for 100,000 complete games: NFL 93.62 → 33.41 s;
+CFB 92.62 → 31.63 s. Chronological CDF fitting fell 82.3%, and the warm Render
+page-copy workload fell 93.8%. These use labeled synthetic mechanical fixtures
+and exact output equality; they are not model-accuracy or total-billing claims.
+Real CFB normalization retained identical output and reduced isolated peak RSS
+244.8 → 221.6 MB. That isolated cold normalization was slightly slower, while
+warm normalization was faster.
+
+Live response latency depends heavily on cache warmth and source readiness. The
+first two measured app spans took about 7.47 and 4.88 s; a subsequent warm app span
+was 31 ms. These are cold-versus-warm observations, not a controlled before/after
+release comparison. Existing cold-start installation overhead remains possible.
+No paid plan was enabled, quotas were not increased, and prior consumed CPU was
+not restored. Monthly billed savings require an ongoing observation window.
+The brief verification window did not include observing the next 15-minute cron
+tick; the metadata-only cron change is regression-tested separately.

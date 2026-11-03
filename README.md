@@ -101,3 +101,5 @@ These are reproducible commands, not a claim that any arbitrary deployment passe
 - [Earlier PWA delivery and limitations](docs/DELIVERY_PWA.md)
 
 Native IPA/Xcode work remains postponed. Saving source files to iPhone Files does not execute the web or Python backend. The project never requests sportsbook passwords or places real wagers.
+
+Performance release: [12.1.1 implementation, measured benchmarks and recovery](docs/PERFORMANCE_12_1_1.md).

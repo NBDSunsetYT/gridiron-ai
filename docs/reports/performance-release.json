@@ -1,0 +1,201 @@
+{
+  "version": "12.1.1",
+  "checkedAt": "2026-11-03T02:20:56.952721+00:00",
+  "status": "production_verified",
+  "runtimeSourceCommit": "3e91fae793754c5dbb6b1a91a828e15937217458",
+  "architecture": {
+    "vercel": "Next.js web and private FastAPI quantitative service; both NFL and CFB",
+    "render": "Existing free PropLine gateway only; no duplicate simulation worker",
+    "supabaseProject": "qdtdjbapdipopncklsdb",
+    "scheduledJobs": {
+      "databasePublicRefresh": "*/15 * * * *",
+      "vercelCron": 0,
+      "renderWorkers": 0
+    }
+  },
+  "billingFinding": {
+    "fourHourFluidCpu": "Vercel Hobby, verified official current documentation",
+    "renderFreeInstanceHours": 750,
+    "accountRemainingUsageIndependentlyVerified": false,
+    "paidPlansOrBillingChanged": false
+  },
+  "benchmarks": "performance-benchmark.json",
+  "tests": {
+    "typescript": 720,
+    "pythonFull": 191,
+    "pythonReleaseFocused": 17,
+    "postgresSuites": 12,
+    "propsDesktopMobile": 10,
+    "multiTabDesktopMobile": 2,
+    "existingWalletAndPwaBrowser": 20,
+    "production": "passed",
+    "physicalIphoneTested": false,
+    "productionPerformanceChecks": 5,
+    "productionWorkflowChecks": 6,
+    "productionPwaChecks": 15
+  },
+  "database": {
+    "migration": "20261103014719_shared_performance_cache.sql",
+    "applied": true,
+    "newResearchTables": 0,
+    "existingCacheAndLeaseTablesReused": true,
+    "actualIsolatedCacheWriteReadAcrossProcesses": true,
+    "privateRlsUnchanged": true,
+    "financialProductionWrites": 0,
+    "historyReset": false
+  },
+  "deployment": {
+    "render": {
+      "id": "dep-dbkk14ou01pc73dgvkg0",
+      "state": "live",
+      "sourceCommit": "94f4a10e79f6ad0efa0728cbeefddf761d9e08d6",
+      "errorLogScan": "No error logs returned from deployment completion through verification."
+    },
+    "finalPreview": {
+      "id": "dpl_3abTiiQ9pjrd8hhxvYKXk7rcYu8p",
+      "state": "READY",
+      "url": "https://gridiron-jvwljt8ut-gridiron5.vercel.app",
+      "health": "12.1.1; Supabase and quantitative service reachable; standalone manifest HTTP 200"
+    },
+    "production": {
+      "id": "dpl_8RkAogr9tq9o9TRyoWojmXTmPhsq",
+      "state": "READY",
+      "url": "https://gridiron-ai-gray.vercel.app",
+      "deploymentUrl": "https://gridiron-c9aj96hoe-gridiron5.vercel.app",
+      "runtimeSourceCommit": "3e91fae793754c5dbb6b1a91a828e15937217458",
+      "runtimeManifestSha256": "f0c51d84fa81840d35dc19952062efeb3194e280807f3a4fcbb502b591d76757",
+      "runtimeFileCount": 298,
+      "errorLogScan": "No error/fatal runtime logs returned in the deployment-scoped verification window."
+    }
+  },
+  "limitations": [
+    "Matched CPU benchmarks use synthetic complete-game mechanics, not prediction accuracy evidence. Real CFB normalization and isolated cache tests are identified separately.",
+    "Monthly billed CPU reduction has not been measured; existing consumed quota cannot be restored by this deployment.",
+    "Provider dependency installation is managed by Vercel and remains possible on cold starts. Required packages were retained.",
+    "Preview uses existing preview credentials; production-only provider bridge secrets were not broadened into preview. Live feed acceptance is performed on production.",
+    "A legacy scheduled public-prop database statement timeout was observed. Its exact triggering batch was not captured; no permanent fix is claimed from a new latest-run index alone.",
+    "The observability CPU query API rejected the attempted queries; no total-account CPU saving is inferred from log-line counts.",
+    "No authorized DraftKings Predictions feed or new calibration evidence was added by a performance release.",
+    "Physical iPhone installation and future monthly free-tier sufficiency were not established."
+  ],
+  "filesChanged": [
+    "README.md",
+    "app/api/health/route.ts",
+    "app/api/internal/performance/route.ts",
+    "app/api/nfl/free-props/route.ts",
+    "components/CollegeFootballResearch.tsx",
+    "components/FreePlayerProps.tsx",
+    "components/NflSportsbookReference.tsx",
+    "components/PublicResearch.tsx",
+    "docs/PERFORMANCE_12_1_1.md",
+    "docs/reports/performance-benchmark.json",
+    "docs/reports/performance-gateway-latest.json",
+    "docs/reports/performance-production.json",
+    "docs/reports/performance-props-workflow.json",
+    "docs/reports/performance-pwa.json",
+    "docs/reports/performance-release.json",
+    "lib/cloud/context.ts",
+    "lib/college-football/service.ts",
+    "lib/college-football/sources.ts",
+    "lib/free-props-service.ts",
+    "lib/performance/metrics.ts",
+    "lib/performance/shared-memo.ts",
+    "lib/player-props/service.ts",
+    "lib/player-props/store.ts",
+    "lib/probability/market-board.ts",
+    "lib/props/public-request.ts",
+    "lib/public-nfl/service.ts",
+    "modeling/cfb_public_research.py",
+    "modeling/football_prop_feeds.py",
+    "modeling/hierarchical_props.py",
+    "modeling/performance.py",
+    "modeling/service.py",
+    "modeling/simulator.py",
+    "modeling/sports_data_gateway.py",
+    "modeling/test_performance.py",
+    "package-lock.json",
+    "package.json",
+    "scripts/performance-benchmark.py",
+    "scripts/performance-memory.py",
+    "supabase/migrations/20261103014719_shared_performance_cache.sql",
+    "supabase/tests/verify-performance-cache.mjs",
+    "tests/college-football-cache-instances.test.ts",
+    "tests/fixtures/performance-originals/cfb_public_research.py",
+    "tests/fixtures/performance-originals/football_prop_feeds.py",
+    "tests/fixtures/performance-originals/hierarchical_props.py",
+    "tests/fixtures/performance-originals/simulator.py",
+    "tests/performance-cache.test.ts",
+    "tests/performance-freshness.test.ts",
+    "tests/performance.e2e.spec.ts",
+    "tests/production-performance.mjs",
+    "tests/production-props-v121.mjs",
+    "vercel.json"
+  ],
+  "pointInTimeLiveCoverage": {
+    "NFL": {
+      "loaded": 500,
+      "ready": 211,
+      "methods": [
+        "empirical_history"
+      ],
+      "freshPriceComparisons": 211,
+      "limitedSample": 18
+    },
+    "CFB": {
+      "loaded": 500,
+      "ready": 77,
+      "methods": [
+        "full_game_simulation"
+      ],
+      "freshPriceComparisons": 0,
+      "limitedSample": 0
+    }
+  },
+  "pointInTimeLiveCoverageMeaning": "Coverage at check time, not accuracy. Initial cold NFL read had zero fresh estimates; automatic research completed and the later full workflow passed without a manual analysis request.",
+  "liveConcurrentOutputChecks": {
+    "NFL": 1036,
+    "CFB": 308
+  },
+  "liveConcurrentHttpStatuses": [
+    200
+  ],
+  "liveLatencyCaveat": "Live before/after requests had different data, cache warmth and concurrency. No controlled end-to-end or monthly billing percentage is claimed. Full measurements are in performance-production.json.",
+  "initialBaselineHttpSamples": [
+    {
+      "sport": "NFL",
+      "status": 200,
+      "ms": 837.645804,
+      "bytes": 2972885,
+      "items": 500,
+      "ready": 0,
+      "methodCounts": {
+        "source_unavailable": 127,
+        "empirical_history": 210,
+        "full_game_simulation": 48,
+        "calculating_probability": 115
+      }
+    },
+    {
+      "sport": "CFB",
+      "status": 200,
+      "ms": 684.978001,
+      "bytes": 1860165,
+      "items": 500,
+      "ready": 94,
+      "methodCounts": {
+        "source_unavailable": 332,
+        "full_game_simulation": 168
+      }
+    }
+  ],
+  "sharedCacheObservation": {
+    "entries": 10,
+    "storedBytes": 724930,
+    "note": "Point-in-time observed new cache namespace only, not total database storage."
+  },
+  "projections": [
+    "Ready-view polling interval changes from 10 to 60 seconds: approximately 83% fewer periodic requests for that state; pending views use 15 seconds and backoff. This is an interval projection, not measured monthly account usage.",
+    "Shared cache hits avoid preparation/model work for identical inputs. Actual usage depends on source changes, traffic and cold starts. Simulation counts and daily budget guards are unchanged."
+  ],
+  "financialProductionWrites": 0
+}
