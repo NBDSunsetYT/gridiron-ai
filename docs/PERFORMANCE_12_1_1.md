@@ -25,6 +25,10 @@ in 3.81 seconds. The platform manages that installation, not an application loop
 The release avoids unnecessary cold-path requests and excludes web/test assets
 from the Python bundle. It does not claim to eliminate platform cold starts.
 
+Scheduled CFB metadata refresh no longer calls the dashboard hydration path, which
+prepared up to three unrelated cached games. The separate required prop-job queue
+still refreshes and computes affected matchups.
+
 Other bottlenecks: 10-second per-tab props polling; process-only board/preparation
 caches; a single Python CFB prepared-game slot that evicts when switching games;
 full-season Arrow allocation; repeated identical historical tuning transformations;

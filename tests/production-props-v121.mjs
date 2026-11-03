@@ -5,7 +5,7 @@ import {chromium,devices,expect} from '@playwright/test';
 import {EnvHttpProxyAgent,setGlobalDispatcher} from 'undici';
 import {marketComparison,estimatedProbability,propGameKey} from '../lib/props/view.ts';
 if(process.env.HTTPS_PROXY||process.env.HTTP_PROXY)setGlobalDispatcher(new EnvHttpProxyAgent());
-const base='https://gridiron-ai-gray.vercel.app',version=JSON.parse(await readFile(new URL('../package.json',import.meta.url),'utf8')).version;
+const base=process.env.BASE_URL??'https://gridiron-ai-gray.vercel.app',version=JSON.parse(await readFile(new URL('../package.json',import.meta.url),'utf8')).version;
 const report={version,status:'running',startedAt:new Date().toISOString(),baseUrl:base,mockedResponses:false,financialWrites:0,physicalIphoneTested:false,checks:[],coverage:{}};let browser;const boards={};
 const get=path=>fetch(base+path,{cache:'no-store',signal:AbortSignal.timeout(120000)});
 async function check(name,fn){await fn();report.checks.push({name,status:'passed'});console.log(JSON.stringify({name,status:'passed'}));}
@@ -28,4 +28,4 @@ try{
  await check('Private Wallet routes still reject guest access without caching data',async()=>{for(const p of ['/api/ledger','/api/bets']){const r=await get(p);assert.equal(r.status,401);assert.match(r.headers.get('cache-control')??'',/no-store/);}});
  await ctx.close();report.status='passed';
 }catch(e){report.status='failed';report.error=e instanceof Error?e.message:String(e);report.errorStack=e instanceof Error?e.stack:undefined;process.exitCode=1;}
-finally{await browser?.close();report.finishedAt=new Date().toISOString();await mkdir('docs/reports',{recursive:true});await writeFile('docs/reports/props-v121-production.json',JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify({status:report.status,checks:report.checks.length,error:report.error}));}
+finally{await browser?.close();report.finishedAt=new Date().toISOString();await mkdir('docs/reports',{recursive:true});await writeFile(process.env.QA_PROPS_REPORT_PATH??'docs/reports/props-v121-production.json',JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify({status:report.status,checks:report.checks.length,error:report.error}));}
