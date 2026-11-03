@@ -4,6 +4,12 @@ import {sharedCache,putCache} from '../public-nfl/store';
 import {putResearchObject} from '../public-nfl/objects';
 import {sharedPublicMemo} from '../performance/shared-memo';
 const cacheKey=(sport:string,cursor:number)=>'last-propline-board:'+sport+':'+cursor;
+/** TTLs never extend an upstream quote's own validity window. Keep definitions
+ * for independent research, but remove current price/EV claims after expiry. */
+export function refreshQuoteFreshness<T extends {items:any[];[key:string]:any}>(value:T,now=Date.now()):T{
+ const items=value.items.map(row=>{const at=Date.parse(row.sourceUpdatedAt??''),current=row.marketCurrent!==false&&Number.isFinite(at)&&at<=now+60000&&now-at<=300000;if(current)return row;return{...row,marketCurrent:false,marketImpliedProbability:null,expectedValue:null,expectedNetRoi:null};});
+ return{...value,items,...value.liveMarketAvailable===true&&!items.some(row=>row.marketCurrent!==false)?{liveMarketAvailable:false,diagnostic:{code:'cached_quotes_expired',message:'Current quotes expired. Historical prices remain labeled; independent statistical research can continue.'}}:{}};
+}
 /** Last verified definitions can support independent statistical research. Their
  * historical quotes are never revalidated as executable/current prices. */
 export async function saveVerifiedPropBoard(sport:'NFL'|'CFB',cursor:number,value:any){
@@ -19,8 +25,8 @@ async function previous(sport:'NFL'|'CFB',cursor:number,current:any){
 const boardCache=new Map<string,{until:number;promise:Promise<any>}>();
 export async function loadPropBoard(sport:'NFL'|'CFB',cursor:number){
  if(process.env.NODE_ENV==='test')return fetchPropBoard(sport,cursor);
- const key=sport+':'+cursor,old=boardCache.get(key);if(old&&old.until>Date.now())return structuredClone(await old.promise);
- const promise=sharedPublicMemo('market_board',['propline-board-v2',sport,cursor],{ttlMs:60000,leaseMs:70000},()=>fetchPropBoard(sport,cursor));if(boardCache.size>=12)boardCache.delete(boardCache.keys().next().value!);boardCache.set(key,{until:Date.now()+20000,promise});try{return structuredClone(await promise);}catch(e){boardCache.delete(key);throw e;}
+ const key=sport+':'+cursor,old=boardCache.get(key);if(old&&old.until>Date.now())return refreshQuoteFreshness(structuredClone(await old.promise));
+ const promise=sharedPublicMemo('market_board',['propline-board-v2',sport,cursor],{ttlMs:60000,leaseMs:70000},()=>fetchPropBoard(sport,cursor));if(boardCache.size>=12)boardCache.delete(boardCache.keys().next().value!);boardCache.set(key,{until:Date.now()+20000,promise});try{return refreshQuoteFreshness(structuredClone(await promise));}catch(e){boardCache.delete(key);throw e;}
 }
 async function fetchPropBoard(sport:'NFL'|'CFB',cursor:number){
  let value:any;

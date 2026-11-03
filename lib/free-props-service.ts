@@ -1,4 +1,4 @@
-import {loadPropBoard} from './probability/market-board';
+import {loadPropBoard,refreshQuoteFreshness} from './probability/market-board';
 import {samePropSelection} from './probability/market-identity';
 import {sportsDataBridgeConfiguration} from './sportsbook-reference/bridge';
 import {footballStorage,persistProviderQuotes} from './college-football/store';
@@ -13,7 +13,7 @@ export async function freeProps(sport:'NFL'|'CFB',cursor=0,analyze=false,ctx?:Cl
  const unavailable=(message:string)=>({sport,status:'unavailable',provider:null,items:[],totalResults:0,diagnostic:{message},primaryProvider:'PropLine',fallbackVerified:false});
  if(sportsDataBridgeConfiguration())return unavailable('The secure Render prop gateway is not connected.');
  const value=await loadPropBoard(sport,cursor);
- if(!options.reference&&!options.quoteId&&process.env.GRIDIRON_CLOUD_ONLY==='1'&&process.env.GRIDIRON_AUTO_PROPS!=='0')return sharedPublicMemo('auto_props',['auto-prop-board-v1',sport,cursor,hash([value.items,value.injuries??[]])],{ttlMs:20000,leaseMs:60000},async()=> (await import('./probability/automatic-props')).automaticPropResearch(sport,value));
+ if(!options.reference&&!options.quoteId&&process.env.GRIDIRON_CLOUD_ONLY==='1'&&process.env.GRIDIRON_AUTO_PROPS!=='0')return refreshQuoteFreshness(await sharedPublicMemo('auto_props',['auto-prop-board-v1',sport,cursor,hash([value.items,value.injuries??[]])],{ttlMs:20000,leaseMs:60000},async()=> (await import('./probability/automatic-props')).automaticPropResearch(sport,value)));
  const requestedCount=options.simulations??10000;if(![10000,50000,100000].includes(requestedCount))throw Error('Unsupported complete-game count');
  await options.onProgress?.('resolving_player');
  const analysisChecks:any[]=[];const modelStates=new Map<string,any>();const events=[...new Set<string>(value.items.map((r:any)=>r.espnEventId).filter((id:any)=>typeof id==='string'&&/^\d+$/.test(id)))].filter(id=>!options.quoteId&&!options.reference||value.items.some((r:any)=>(options.reference?samePropSelection(r,options.reference):r.id===options.quoteId)&&r.espnEventId===id)).slice(0,analyze?1:3);
