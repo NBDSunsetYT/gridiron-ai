@@ -140,7 +140,7 @@ export async function executePropRun(id:string,deadline=Date.now()+210000){
  }catch(error){await checkpoint(run,lease,data,'failed',{...previous,progress:{...(previous.progress??{}),phase:'Research paused; saved snapshots remain available'}},error instanceof ApiError?error.message:'A source or research service could not complete this update. No replacement prices or probabilities were invented.').catch(()=>{});}
 }
 export async function refreshPropResearch(){
- const current=await propRun();
+ const current=await propRun(undefined,false,true);
  // Continue an already explicitly selected source even after the phone closes.
  // This never starts an alternative scan or adopts a legacy mixed-provider run.
  if(current?.data.pipelineVersion===NFL_MARKET_PIPELINE_VERSION&&['DraftKings Predictions','Kalshi'].includes(current.data.provider)&&['queued','running'].includes(current.status)){

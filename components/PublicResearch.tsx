@@ -40,11 +40,11 @@ export default function PublicResearch({view,user,onSignIn,onNavigate,onPrivateA
  const [filter,setFilter]=useState('upcoming'),[question,setQuestion]=useState(''),[answer,setAnswer]=useState<Row|null>(null),[answerBusy,setAnswerBusy]=useState(false),[answerError,setAnswerError]=useState(''),[saved,setSaved]=useState(false),[saveBusy,setSaveBusy]=useState(false);
  const autoAttempt=useRef(new Set<string>()),autoSaved=useRef(new Set<string>()),saveInFlight=useRef(new Set<string>()),selectedRef=useRef('');selectedRef.current=selected;
  const loadFeed=useCallback(async(initial=false)=>{if(initial)setLoading(true);try{setFeed(await read('/api/nfl'));setFeedError('');}catch(error){setFeedError((error as Error).message);}finally{setLoading(false);}},[]);
- useEffect(()=>{void loadFeed(true);const timer=setInterval(()=>void loadFeed(),60000);return()=>clearInterval(timer);},[loadFeed]);
+ useEffect(()=>{void loadFeed(true);const timer=setInterval(()=>{if(document.visibilityState==='visible')void loadFeed();},60000);return()=>clearInterval(timer);},[loadFeed]);
  const marketMounted=useRef(true),marketInFlight=useRef(false);
  useEffect(()=>{marketMounted.current=true;return()=>{marketMounted.current=false;};},[]);
  const checkMarketAccess=useCallback(async()=>{if(marketInFlight.current)return;marketInFlight.current=true;setMarketChecking(true);try{const value=await read('/api/nfl/markets?provider=DraftKings%20Predictions&limit=1');if(marketMounted.current)setMarketAccess({providers:value.providers??[],updatedAt:value.updatedAt});}catch{if(marketMounted.current)setMarketAccess({unavailable:true});}finally{marketInFlight.current=false;if(marketMounted.current)setMarketChecking(false);}},[]);
- useEffect(()=>{if(!['home','games'].includes(view))return;void checkMarketAccess();const timer=setInterval(()=>void checkMarketAccess(),60000);return()=>clearInterval(timer);},[view,checkMarketAccess]);
+ useEffect(()=>{if(!['home','games'].includes(view))return;void checkMarketAccess();const timer=setInterval(()=>{if(document.visibilityState==='visible')void checkMarketAccess();},60000);return()=>clearInterval(timer);},[view,checkMarketAccess]);
  useEffect(()=>{const sync=()=>{const parts=window.location.hash.slice(1).replace(/^nfl\//,'').split('/');let id=parts[0]==='games'&&parts[1]?decodeURIComponent(parts.slice(1).join('/')):'';if(parts[0]==='intelligence'){try{id=sessionStorage.getItem('gridiron-public-game-v1')??'';}catch{}}setSelected(id);};sync();window.addEventListener('hashchange',sync);return()=>window.removeEventListener('hashchange',sync);},[]);
  const games:Row[]=Array.isArray(feed.games)?feed.games:[];
  const selectedGame=detail?.game??games.find(game=>game.id===selected);
@@ -62,7 +62,7 @@ export default function PublicResearch({view,user,onSignIn,onNavigate,onPrivateA
  useEffect(()=>{
   if(!selected)return;let alive=true,inFlight=false;
   const refresh=async()=>{if(inFlight)return;inFlight=true;try{const value=await read(`/api/nfl/games/${encodeURIComponent(selected)}`);if(alive){setDetail(value);const status=value.analysis?.status??value.status;if(!activeStates.includes(status))void loadFeed();const key=automaticAttemptKey(selected,value);if(shouldAutomaticallyAnalyze(value)&&!autoAttempt.current.has(key)){autoAttempt.current.add(key);void requestAnalysis(selected);}}}catch(error){if(alive)setDetailError((error as Error).message);}finally{inFlight=false;}};
-  const timer=setInterval(()=>void refresh(),pending?5000:60000);return()=>{alive=false;clearInterval(timer);};
+  const timer=setInterval(()=>{if(document.visibilityState==='visible')void refresh();},pending?5000:60000);return()=>{alive=false;clearInterval(timer);};
  },[selected,pending,loadFeed,requestAnalysis]);
  const openGame=(game:Row)=>{try{sessionStorage.setItem('gridiron-public-game-v1',game.id);}catch{}setSelected(game.id);window.location.hash=`games/${encodeURIComponent(game.id)}`;if(navigator.vibrate)navigator.vibrate(8);window.scrollTo({top:0,behavior:'instant'});};
  const closeGame=()=>{setSelected('');setDetail(null);window.location.hash='games';};

@@ -10,8 +10,15 @@ from fastapi import FastAPI, Header, HTTPException, Request
 from fastapi.responses import JSONResponse
 from .balldontlie_nfl import BDLNFLClient, RESOURCES, DOCS
 from .sports_data_common import authorize_data_bridge, require_render_runtime, DataProviderError, utc_now
+from .performance import install as install_performance, snapshot as performance_snapshot
 
 app = FastAPI(title='GRIDIRON sports-data gateway', docs_url=None, redoc_url=None, openapi_url=None)
+install_performance(app)
+
+@app.get('/metrics')
+async def metrics(authorization: str | None = Header(default=None)):
+    authorize_data_bridge(authorization)
+    return performance_snapshot()
 
 
 def bdl_credential():
@@ -108,6 +115,5 @@ async def football_props(sport: str, cursor: int = 0, limit: int = 500, authoriz
     # ParlayAPI is deliberately disabled until its official endpoint/schema and
     # entitlement are verified. An access-denied docs page is not a spec.
     if cursor<0 or cursor>50000 or not 1<=limit<=500:raise HTTPException(422,'Choose a bounded page.')
-    value=await asyncio.to_thread(choose_feed, prop_line.read, None, sport)
-    rows=value.get('items',[])
-    return {**value,'items':rows[cursor:cursor+limit],'totalResults':len(rows),'nextCursor':cursor+limit if cursor+limit<len(rows) else None}
+    value=await asyncio.to_thread(choose_feed, lambda selected:prop_line.read_page(selected,cursor,limit), None, sport)
+    return {**value,'nextCursor':value.get('nextCursor')}

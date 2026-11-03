@@ -82,6 +82,8 @@ class Evidence:
         self.options=model.get('modelOptions',{})
         self.prior_strength=model.get('shrinkageFit',{}).get('priorPlays') if self.options.get('conditionalShrinkage') else None
         self.weighted_cdf={};self.row_weights={}
+        self.conversion_pools={}
+        self.sample_pools={}
         self.weighted=bool(game_weights or self.options.get('recencyHalfLifeDays'))
         if scenario:
             if set(scenario) != {"playerId", "status"} or scenario["status"] not in ("active", "limited", "inactive"):
@@ -118,7 +120,7 @@ class Evidence:
         if len(self.games) < 4:
             raise ValueError("Insufficient scenario evidence: at least four historical games required")
         if self.weighted:
-            for pool in list(self.pools.values())+list(self.conversions.values()):
+            for pool in list(self.pools.values())+list(self.conversions.values())+list(self.start_rows.values()):
                 total=0.;cdf=[]
                 for row in pool:total+=self.row_weights[id(row)];cdf.append(total)
                 self.weighted_cdf[id(pool)]=(cdf,total)
@@ -133,24 +135,35 @@ class Evidence:
 
     def sample(self, rng, team, defense, down, field, distance, diff, clock):
         z, d, s, late = zone(field), distance_bucket(distance), script_bucket(diff), clock <= 120
-        keys = ((team, defense, down, z, d, s, late), (team, down, z, d, s, late),
-                (team, down, z, d), (team, down))
-        for depth, key in enumerate(keys):
-            pool = self.pools.get(key)
-            if pool and len(pool) >= 3:
-                if self.prior_strength and depth<len(keys)-1:
-                    parent=next((self.pools[k] for k in keys[depth+1:] if self.pools.get(k)),None)
-                    if parent and rng.random()>len(pool)/(len(pool)+self.prior_strength):pool=parent
-                self.backoff[depth] += 1
-                return self.draw(rng,pool)
-        raise ValueError("No applicable historical play pool")
+        identity=(team,defense,down,z,d,s,late)
+        selected=self.sample_pools.get(identity)
+        if selected is None:
+            keys=(identity,(team,down,z,d,s,late),(team,down,z,d),(team,down))
+            for depth,key in enumerate(keys):
+                pool=self.pools.get(key)
+                if pool and len(pool)>=3:
+                    parent=next((self.pools[k] for k in keys[depth+1:] if self.pools.get(k)),None) if self.prior_strength and depth<len(keys)-1 else None
+                    selected=(depth,pool,parent);self.sample_pools[identity]=selected;break
+            if selected is None:raise ValueError('No applicable historical play pool')
+        depth,pool,parent=selected
+        if parent and rng.random()>len(pool)/(len(pool)+self.prior_strength):pool=parent
+        self.backoff[depth]+=1
+        return self.draw(rng,pool)
 
     def start(self, rng, team):
         return self.draw(rng,self.start_rows[team])['field']
 
     def conversion(self, rng, team, diff, late):
         pool = self.conversions[team]
-        contextual = [p for p in pool if script_bucket(p["script"]) == script_bucket(diff) and (p["clock"] <= 120 or 1800 < p["clock"] <= 1920) == late]
+        key=(team,script_bucket(diff),late)
+        contextual=self.conversion_pools.get(key)
+        if contextual is None:
+            contextual = [p for p in pool if script_bucket(p["script"]) == key[1] and (p["clock"] <= 120 or 1800 < p["clock"] <= 1920) == late]
+            self.conversion_pools[key]=contextual
+            if self.weighted:
+                total=0.;cdf=[]
+                for row in contextual:total+=self.row_weights[id(row)];cdf.append(total)
+                self.weighted_cdf[id(contextual)]=(cdf,total)
         if len(contextual) >= 3:
             pool = contextual
         row = self.draw(rng,pool)

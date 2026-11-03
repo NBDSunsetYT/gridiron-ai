@@ -17,7 +17,7 @@ import tempfile
 import threading
 import time
 import urllib.request
-from collections import Counter
+from collections import Counter, OrderedDict
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -33,6 +33,7 @@ _cache_lock=threading.Lock()
 _source_cache=None
 _season_sources={}
 _prepared_cache=None
+_prepared_games=OrderedDict()
 
 
 class CFBSourceUnavailable(RuntimeError):
@@ -106,10 +107,13 @@ def normalize_public_cfb(path, home_espn_id, away_espn_id, before, maximum_team_
     required=set(COLUMNS)-{'EPA','EPA_success','air_yards','yds_punt_return','penalty_flag'}
     if not required.issubset(source.schema.names):
         raise ValueError('The published CFB play schema changed; its identities and event definitions need verification')
-    table=source.read(columns=[name for name in COLUMNS if name in source.schema.names])
     wanted=__import__('pyarrow').array([int(home_espn_id),int(away_espn_id)])
-    selected=pc.or_kleene(pc.or_kleene(pc.is_in(table['pos_team_id'],value_set=wanted),pc.and_kleene(pc.is_in(table['def_pos_team_id'],value_set=wanted),pc.equal(table['defense_score_play'],True))),pc.is_valid(table['two_point_conv_result']))
-    rows=table.filter(selected).to_pylist()
+    rows=[]
+    # Physical row order and the exact predicate are unchanged. Bound Arrow RAM.
+    for batch in source.iter_batches(batch_size=16384,columns=[name for name in COLUMNS if name in source.schema.names]):
+        table=__import__('pyarrow').Table.from_batches([batch])
+        selected=pc.or_kleene(pc.or_kleene(pc.is_in(table['pos_team_id'],value_set=wanted),pc.and_kleene(pc.is_in(table['def_pos_team_id'],value_set=wanted),pc.equal(table['defense_score_play'],True))),pc.is_valid(table['two_point_conv_result']))
+        rows.extend(table.filter(selected).to_pylist())
     del table,source
     cutoff=utc(before);output=[];counts=Counter();seen_drives=set();catalog={};latest={};played=[]
     for raw in rows:
@@ -265,15 +269,21 @@ def _prepare_cfb_public(data):
     if isinstance(seed,bool) or not isinstance(seed,int) or abs(seed)>2**53:
         raise ValueError('An integer reproducible CFB seed is required')
     metadata=source_file(season)
-    key=json.dumps([game_id,home,away,season,game['startTime'],metadata['sha256']])
+    key=json.dumps([MODEL_VERSION,ENGINE_VERSION,game_id,home,away,season,game['startTime'],metadata['sha256']])
     if _prepared_cache and _prepared_cache['key']==key and time.monotonic()<_prepared_cache['until']:
         return _prepared_cache['value']
+    cached=_prepared_games.get(key)
+    if cached and time.monotonic()<cached['until']:
+        _prepared_games.move_to_end(key)
+        return cached['value']
     corpus=normalize_public_cfb(metadata['path'],home,away,now.isoformat())
     model=fit_cfb_csv(corpus['csv'],metadata['url']+'; publisher MIT repository; source availability unknown',corpus['asOf'],100,
                        {'recencyHalfLifeDays':90,'conditionalShrinkage':True})['model']
     if model['syntheticEvidence']:raise ValueError('Synthetic evidence cannot enter automatic CFB research')
     value={'game':game,'home':home,'away':away,'model':model,'corpus':corpus,'metadata':metadata}
     _prepared_cache={'key':key,'until':time.monotonic()+600,'value':value}
+    _prepared_games[key]=_prepared_cache
+    while len(_prepared_games)>4:_prepared_games.popitem(last=False)
     return value
 
 

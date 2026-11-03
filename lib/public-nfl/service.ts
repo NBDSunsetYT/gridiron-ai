@@ -26,6 +26,7 @@ const contextPending=new Map<string,Promise<Context>>();
 const safeRead=async<T>(read:()=>Promise<T>,fallback:T):Promise<T>=>{try{return await read();}catch{return fallback;}};
 
 export async function loadSchedule(force=false):Promise<Schedule>{
+ if(!force&&scheduleMemory&&Date.now()-Date.parse(scheduleMemory.updatedAt)<SCHEDULE_TTL)return scheduleMemory;
  const cache=await safeRead(()=>sharedCache('schedule',String(nflSeason())),null);
  if(!force&&fresh(cache)){scheduleMemory=cache!.data as Schedule;return scheduleMemory;}
  if(!force&&scheduleMemory&&Date.now()-Date.parse(scheduleMemory.updatedAt)<SCHEDULE_TTL)return scheduleMemory;

@@ -60,19 +60,27 @@ def _pool_candidate(records,stat,position,current_season):
     # Half-integer count/yardage targets are fixed using training data alone.
     thresholds=sorted({math.floor(v)+.5 for v in thresholds})
     base_ps=np.array([base_cdf(base,k,'Over') for k in thresholds])
-    def evaluate(targets,strength,window,starting):
+    sufficient_cache={}
+    def sufficient(targets,window,starting):
+        key=(id(targets),window,id(starting))
+        if key in sufficient_cache:return sufficient_cache[key]
         histories=defaultdict(list)
         for r in starting:histories[r['player']].append(r['value'])
-        preds=[];baseline=[];outcomes=[];events=[];sample=[]
+        counts=[];sizes=[];outcomes=[];events=[];sample=[]
         for r in targets:
             # All values used here strictly precede this player's held-out game.
             past=np.array(histories[r['player']][-window:],dtype=float)
             if len(past):
-                hits=np.array([sum(past>k) for k in thresholds]);n=len(past)
-                preds.extend(((hits+strength*base_ps)/(n+strength)).tolist());baseline.extend(((hits+.5)/(n+1)).tolist())
+                hits=np.count_nonzero(past[:,None]>np.asarray(thresholds)[None,:],axis=0);n=len(past)
+                counts.append(hits);sizes.append(n)
                 outcomes.extend([int(r['value']>k) for k in thresholds]);events.extend([r['game']]*len(thresholds));sample.extend([n]*len(thresholds))
             histories[r['player']].append(r['value'])
-        return np.array(preds),np.array(baseline),np.array(outcomes),events,sample
+        result=(np.asarray(counts,dtype=float).reshape(-1,len(thresholds)),np.asarray(sizes,dtype=float)[:,None],np.array(outcomes),events,sample)
+        sufficient_cache[key]=result
+        return result
+    def evaluate(targets,strength,window,starting):
+        hits,n,y,events,sample=sufficient(targets,window,starting)
+        return ((hits+strength*base_ps)/(n+strength)).ravel(),((hits+.5)/(n+1)).ravel(),y,events,sample
     options=[]
     for strength in (.5,2.,8.,32.):
         for window in (4,8,16,24):

@@ -1,4 +1,5 @@
 import {createHash} from 'node:crypto';
+import {sharedPublicMemo} from '../performance/shared-memo';
 import {ApiError} from '../auth';
 import type {CollegeGame,CollegeTeam,CollegeSource,CollegeConference,CollegeProvider,CollegeCoverage} from './types';
 
@@ -37,7 +38,8 @@ export function normalizeCollegeSchedule(data:any,url:string,checkedAt:string,ve
  games.sort((a,b)=>Date.parse(a.startTime)-Date.parse(b.startTime));return{games,sources:[source],updatedAt:checkedAt,conferences:[...new Map(games.flatMap(g=>[g.home.conference,g.away.conference]).filter((v):v is CollegeConference=>v!==null).map(v=>[v.id,v])).values()],inputVersion:version};
 }
 const schedules=new Map<string,{expires:number;value:ReturnType<typeof normalizeCollegeSchedule>}>(),pending=new Map<string,Promise<ReturnType<typeof normalizeCollegeSchedule>>>();
-export async function fetchCollegeSchedule(date?:string){
+export async function fetchCollegeSchedule(date?:string){return sharedPublicMemo('cfb_schedule',['cfb-schedule-v1',date??new Date().toISOString().slice(0,10)],{ttlMs:60000},()=>fetchCollegeScheduleUncached(date));}
+async function fetchCollegeScheduleUncached(date?:string){
  const day=date??new Date().toISOString().slice(0,10),parsed=new Date(day+'T12:00:00Z');if(!/^20\d{2}-\d{2}-\d{2}$/.test(day)||!Number.isFinite(parsed.getTime())||parsed.toISOString().slice(0,10)!==day)throw new ApiError('Choose a valid college-football date.');
  const key=date?'date:'+day:'current',cached=schedules.get(key);if(cached&&cached.expires>Date.now())return cached.value;const active=pending.get(key);if(active)return active;
  const task=(async()=>{try{

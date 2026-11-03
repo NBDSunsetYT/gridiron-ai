@@ -17,6 +17,7 @@ from .fit import fit_csv
 from .simulator import simulate
 from .public_research import ResearchUnavailable
 from .cloud_worker import CloudWorker, Config, WorkerError
+from .performance import install as install_performance, timed_work, snapshot as performance_snapshot
 
 @asynccontextmanager
 async def lifespan(_application):
@@ -29,6 +30,7 @@ async def lifespan(_application):
 
 
 app = FastAPI(title="GRIDIRON empirical simulation service", docs_url=None, redoc_url=None, openapi_url=None, lifespan=lifespan)
+install_performance(app)
 lock = threading.Lock()
 cloud_worker = None
 cloud_worker_lock = threading.Lock()
@@ -91,7 +93,7 @@ def guarded(work):
     if not lock.acquire(blocking=False):
         raise HTTPException(429, "Another simulation/fit is running; retry after it completes")
     try:
-        return work()
+        return timed_work(work)
     except ResearchUnavailable as exc:
         if exc.retryable:
             raise HTTPException(503,'A verified NFL research source is temporarily unavailable. Retry shortly; no replacement statistics or probabilities were invented.',
@@ -107,6 +109,11 @@ def guarded(work):
 async def health():
     return {"status": "ready" if len(os.environ.get("SIMULATION_SERVICE_TOKEN", "")) >= 32 else "unconfigured", "model": "pbp-empirical-2.0.0", "trainedData": False,
             "asyncSupported": True, "asyncConfigured": bool(os.environ.get('SUPABASE_URL') and os.environ.get('SUPABASE_PUBLISHABLE_KEY') and len(os.environ.get('SIMULATION_SERVICE_TOKEN', '')) >= 32)}
+
+@app.get('/metrics')
+async def metrics(authorization: str | None = Header(default=None)):
+    authorize(authorization)
+    return performance_snapshot()
 
 
 def fit_data(data):

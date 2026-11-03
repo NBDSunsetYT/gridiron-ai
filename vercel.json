@@ -29,7 +29,8 @@
       "entrypoint": "modeling.service:app",
       "functions": {
         "modeling/service.py": {
-          "maxDuration": 300
+          "maxDuration": 300,
+          "excludeFiles": "{app/**,components/**,lib/**,public/**,scripts/**,supabase/**,tests/**,docs/**,node_modules/**,.next*/**,modeling/test_*.py,modeling/backtest_*.py}"
         }
       }
     }

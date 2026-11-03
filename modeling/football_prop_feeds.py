@@ -10,6 +10,8 @@ import urllib.error
 import urllib.parse
 import urllib.request
 from datetime import datetime, timezone
+from collections import Counter
+from .performance import event
 from .sports_data_common import DataProviderError, require_render_runtime, utc_now
 
 DOCS = 'https://prop-line.com/docs'
@@ -77,7 +79,7 @@ def normalize(events,sport,now=None):
 
 class PropLineClient:
     def __init__(self,transport=None,clock=time.time):
-        self.transport=transport or self._http;self.clock=clock;self.lock=threading.Lock();self.cache={};self.until=0;self.used=0;self.day=None;self.daily_limit=1000
+        self.transport=transport or self._http;self.clock=clock;self.lock=threading.Lock();self.cache={};self.fresh_windows={};self.until=0;self.used=0;self.day=None;self.daily_limit=1000
     def _http(self,url,key):
         req=urllib.request.Request(url,headers={'X-API-Key':key,'Accept':'application/json'})
         # No redirects may forward a provider credential to another host.
@@ -98,7 +100,7 @@ class PropLineClient:
             if not math.isfinite(retry) or not math.isfinite(reset):return now+60
             return max(now+max(1,retry),reset) if h.get('x-daily-remaining')=='0' else now+max(1,retry)
         except (ValueError,TypeError):return now+60
-    def read(self,sport):
+    def read(self,sport,_copy=True):
         require_render_runtime()
         if sport not in SPORTS:raise DataProviderError('unsupported_sport','Choose NFL or CFB.')
         key=os.environ.get('PROPLINE_API_KEY','')
@@ -106,12 +108,23 @@ class PropLineClient:
         with self.lock:
             now=self.clock();old=self.cache.get(sport)
             if old and now-old[0]<120:
-                result=copy.deepcopy(old[1]);result['items']=[r for r in result['items'] if -60<=now-stamp(r['sourceUpdatedAt'])<=300];result['totalResults']=len(result['items']);result['bookCounts']={k:sum(r['book']['key']==k for r in result['items']) for k in BOOKS};result['marketCounts']={k:sum(r['market']==k for r in result['items']) for k in MARKETS};result['status']='available' if result['items'] else 'unavailable';result['cached']=True;return result
+                event('propline_cache_hit')
+                result=dict(old[1]);window=self.fresh_windows.get(sport)
+                if not window or window[0]!=id(old[1]):
+                    times=[stamp(r['sourceUpdatedAt']) for r in result['items']]
+                    window=(id(old[1]),min(times,default=now)+300,max(times,default=now)-60);self.fresh_windows[sport]=window
+                if not window[2]<=now<=window[1]:
+                    result['items']=[r for r in result['items'] if -60<=now-stamp(r['sourceUpdatedAt'])<=300]
+                # Count each row once; retain zero entries for known categories.
+                if 'bookCounts' not in result or len(result['items'])!=len(old[1]['items']):
+                    books=Counter(r['book']['key'] for r in result['items']);markets=Counter(r['market'] for r in result['items']);result['bookCounts']={k:books[k] for k in BOOKS};result['marketCounts']={k:markets[k] for k in MARKETS}
+                result['totalResults']=len(result['items']);result['status']='available' if result['items'] else 'unavailable';result['cached']=True;return copy.deepcopy(result) if _copy else result
             if now<self.until:raise DataProviderError('provider_quota_paused','PropLine requests are paused until its retry/reset time.',retryable=True,retry_after=math.ceil(self.until-now))
             day=datetime.fromtimestamp(now,timezone.utc).date()
             if day!=self.day:self.day=day;self.used=0
             if self.used>=self.daily_limit:raise DataProviderError('local_daily_limit','The conservative1,000request daily budget is exhausted.',retryable=True)
             self.used+=1
+            event('propline_odds_request')
             url='https://api.prop-line.com/v1/sports/'+SPORTS[sport]+'/odds?'+urllib.parse.urlencode({'markets':','.join(MARKETS),'bookmakers':','.join(BOOKS),'includeBookIds':'true'})
             status,headers,body=self.transport(url,key);headers={k.lower():v for k,v in headers.items()}
             try:self.daily_limit=min(5000,max(1,int(headers.get('x-daily-limit','1000'))))
@@ -133,6 +146,7 @@ class PropLineClient:
             crosswalk_status='unavailable'
             if rows and self.used<999 and now>=self.until:
                 self.used+=1
+                event('propline_ids_request')
                 code,hs,payload=self.transport('https://api.prop-line.com/v1/sports/'+SPORTS[sport]+'/ids',key)
                 if code==200 and key.encode() not in payload:
                     try:
@@ -149,6 +163,7 @@ class PropLineClient:
             injury_status='unavailable';injuries=[]
             if now>=self.until and self.used<self.daily_limit:
                 self.used+=1
+                event('propline_injuries_request')
                 code,hs,payload=self.transport('https://api.prop-line.com/v1/sports/'+SPORTS[sport]+'/injuries',key)
                 if code==200 and key.encode() not in payload:
                     try:
@@ -168,7 +183,17 @@ class PropLineClient:
              'providerHttpStatus':200,'checkedAt':utc_now(),'items':rows,'totalResults':len(rows),'marketCounts':{k:sum(r['market']==k for r in rows) for k in MARKETS},'bookCounts':{k:sum(r['book']['key']==k for r in rows) for k in BOOKS},'rejectedRows':rejected,'quota':quota,'cached':False,
              'diagnostic':{'code':'verified_provider_rows' if rows else 'no_verified_current_props','message':'Current provider rows were validated.' if rows else 'No current supported sportsbook props passed identity and freshness checks.'},
              'fallbackVerified':False,'identityCrosswalkStatus':crosswalk_status,'injuryCoverage':injury_status,'injuries':injuries}
-            self.cache[sport]=(now,value);return copy.deepcopy(value)
+            self.cache[sport]=(now,value);return copy.deepcopy(value) if _copy else value
+
+    def read_page(self,sport,cursor=0,limit=500):
+        """Validate the same board but copy only the requested bounded page.
+
+        Cached row dictionaries never escape to caller mutation. The gateway
+        does not materialize/copy all markets for every visitor/page.
+        """
+        if not isinstance(cursor,int) or not isinstance(limit,int) or cursor<0 or cursor>50000 or not 1<=limit<=500:raise ValueError('Bounded page required')
+        value=self.read(sport,_copy=False);rows=value.get('items',[])
+        return copy.deepcopy({**value,'items':rows[cursor:cursor+limit],'totalResults':len(rows),'nextCursor':cursor+limit if cursor+limit<len(rows) else None})
 
 def choose_feed(primary,fallback,sport):
     checks=[]

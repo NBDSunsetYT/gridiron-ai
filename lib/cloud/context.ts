@@ -1,5 +1,6 @@
 import {createClient, type SupabaseClient, type User} from '@supabase/supabase-js';
 import {ApiError, requestOrigin} from '../auth';
+import {performanceEvent} from '../performance/metrics';
 
 export const ACCESS_COOKIE='gridiron_sb_access';
 export const REFRESH_COOKIE='gridiron_sb_refresh';
@@ -22,6 +23,7 @@ export function cloudClient(accessToken?:string){
  return createClient(url,key,{db:{retry:false},auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false},global:{headers:accessToken?{Authorization:`Bearer ${accessToken}`}:{},fetch:cloudFetch}});
 }
 export function cloudFetch(input:RequestInfo|URL,init?:RequestInit){
+ performanceEvent('database','requests');
  const signals=[AbortSignal.timeout(60000),...(init?.signal?[init.signal]:[]),...(input instanceof Request?[input.signal]:[])];
  return fetch(input,{...init,signal:AbortSignal.any(signals)});
 }

@@ -2,6 +2,7 @@ import {createHash} from 'node:crypto';
 import {ApiError} from '../auth';
 import {sharedCache,putCache} from '../public-nfl/store';
 import {putResearchObject} from '../public-nfl/objects';
+import {sharedPublicMemo} from '../performance/shared-memo';
 const cacheKey=(sport:string,cursor:number)=>'last-propline-board:'+sport+':'+cursor;
 /** Last verified definitions can support independent statistical research. Their
  * historical quotes are never revalidated as executable/current prices. */
@@ -19,7 +20,7 @@ const boardCache=new Map<string,{until:number;promise:Promise<any>}>();
 export async function loadPropBoard(sport:'NFL'|'CFB',cursor:number){
  if(process.env.NODE_ENV==='test')return fetchPropBoard(sport,cursor);
  const key=sport+':'+cursor,old=boardCache.get(key);if(old&&old.until>Date.now())return structuredClone(await old.promise);
- const promise=fetchPropBoard(sport,cursor);if(boardCache.size>=12)boardCache.delete(boardCache.keys().next().value!);boardCache.set(key,{until:Date.now()+20000,promise});try{return structuredClone(await promise);}catch(e){boardCache.delete(key);throw e;}
+ const promise=sharedPublicMemo('market_board',['propline-board-v2',sport,cursor],{ttlMs:60000,leaseMs:70000},()=>fetchPropBoard(sport,cursor));if(boardCache.size>=12)boardCache.delete(boardCache.keys().next().value!);boardCache.set(key,{until:Date.now()+20000,promise});try{return structuredClone(await promise);}catch(e){boardCache.delete(key);throw e;}
 }
 async function fetchPropBoard(sport:'NFL'|'CFB',cursor:number){
  let value:any;
