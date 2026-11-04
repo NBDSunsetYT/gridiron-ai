@@ -1,3 +1,4 @@
+import {evaluateNBAHistogram,NBAProbabilityError} from './probability';
 /** Public NBA research only. Never reads Wallet records or browser API keys. */
 import {createHash} from 'node:crypto';
 import {ApiError} from '../auth';
@@ -33,7 +34,8 @@ export async function nbaMarkets(cursor=0){
   const value=parseNBAResponse(raw,'The NBA market gateway');
   if(!response.ok)return{sport:'NBA',items:[],status:'unavailable',diagnostic:{code:response.status===422?'nba_gateway_update_required':value.diagnostic?.code??'provider_unavailable',message:response.status===422?'NBA support is awaiting the data-gateway update. Football feeds remain separate.':value.diagnostic?.message??'The NBA market source is temporarily unavailable.'}};
   if(value.sport!=='NBA'||!Array.isArray(value.items)||value.items.some((v:any)=>v.sport!=='NBA'||v.provider!=='PropLine'||v.dataFamily!=='sportsbook_reference'||v.draftKingsPredictionsEquivalent!==false))throw new ApiError('The market gateway returned a different sport or product.',502);
-  return value;
+  const mappedEvents=value.items.filter((m:any)=>typeof m.espnEventId==='string').length,mappedPlayers=value.items.filter((m:any)=>/^espn:\d+$/.test(m.player?.id??'')).length;
+  return {...value,analysisAvailability:{status:mappedEvents&&mappedPlayers?'partial_identity_coverage':'identity_mapping_unavailable',mappedEventQuotes:mappedEvents,mappedPlayerQuotes:mappedPlayers,message:'Verified sportsbook prices are available. Quotes without an exact ESPN event and player crosswalk cannot be joined to this model. Independent game simulations remain available; unsupported price comparisons are withheld.'}};
  });
 }
 export function nbaInputKey(game:NBAGame,inputVersion:string,availability:unknown,simulations:number){return hash(['nba-run-v15.1',{id:game.id,startTime:game.startTime,home:game.home.id,away:game.away.id},inputVersion,availability,simulations]);}
@@ -50,13 +52,8 @@ async function preparedModel(){
  const old=await sharedCache('analysis','nba-v15-current-model').catch(()=>null);if(old&&Date.now()-Date.parse(old.updated_at)<6*3600000&&old.data?.model?.version===NBA_VERSION)return old.data;
  return sharedPublicMemo('cfb_prepare',['nba-model-v15',Math.floor(Date.now()/(6*3600000))],{ttlMs:600000,leaseMs:120000},async()=>{const prepared=await worker('nba/prepare',{},90000);if(prepared.model?.sport!=='NBA'||prepared.model.version!==NBA_VERSION)throw new ApiError('NBA artifact identity did not verify.',502);const pointer=await putResearchObject(prepared);await putCache('analysis','nba-v15-current-model',pointer,prepared.model.sha256,6*3600000);return prepared;});
 }
-export function thresholdProbability(histogram:any[],count:number,threshold:number,side:string){
- if(!Number.isSafeInteger(count)||count<1000||!Number.isFinite(threshold)||!Array.isArray(histogram)||!histogram.length||!['over','under','yes','no'].includes(side.toLowerCase()))throw new ApiError('An exact supported NBA threshold and full-game distribution are required.',422);
- let n=0,k=0,push=0;const seen=new Set<number>();
- for(const bin of histogram){if(!Number.isSafeInteger(bin.value)||!Number.isSafeInteger(bin.count)||bin.count<1||seen.has(bin.value))throw new ApiError('NBA distribution failed reconciliation.',502);seen.add(bin.value);n+=bin.count;if(['over','under'].includes(side.toLowerCase())&&bin.value===threshold)push+=bin.count;if(side.toLowerCase()==='over'?bin.value>threshold:side.toLowerCase()==='under'?bin.value<threshold:side.toLowerCase()==='yes'?bin.value>=1:bin.value===0)k+=bin.count;}
- if(n!==count)throw new ApiError('NBA distribution does not match the complete-game count.',502);const p=k/n,z=1.959963984540054,den=1+z*z/n,center=(p+z*z/(2*n))/den,radius=z*Math.sqrt(p*(1-p)/n+z*z/(4*n*n))/den;
- return{rawProbability:p,successes:k,validGames:n,pushProbability:push/n,calibratedProbability:null,monteCarloSE:Math.sqrt(p*(1-p)/n),monteCarloInterval95:[Math.max(0,center-radius),Math.min(1,center+radius)],method:'Raw complete-game outcomes; no approved NBA calibration artifact.'};
-}
+export function thresholdProbability(histogram:any[],count:number,threshold:number,side:string){try{return evaluateNBAHistogram(histogram,count,threshold,side);}catch(e){if(e instanceof NBAProbabilityError)throw new ApiError(e.message,e.status);throw e;}}
+
 export function compareNBAMarkets(result:any,markets:any[],game:NBAGame){
  return markets.filter(m=>m.sport==='NBA'&&m.espnEventId===game.espnId&&Date.parse(m.kickoff)===Date.parse(game.startTime)).map(m=>{const id=typeof m.player?.id==='string'&&/^espn:\d+$/.test(m.player.id)?'nba:'+m.player.id:null,distribution=id?result.players?.[id]?.[m.statistic]:null,at=Date.parse(m.sourceUpdatedAt),current=Number.isFinite(at)&&Date.now()-at<=300000&&at<=Date.now()+60000,periodSupported=!m.period||['full','full_game','game'].includes(m.period);let probability=null;
   if(distribution&&periodSupported&&(m.threshold!==null||m.statistic==='doubleDouble'))try{probability=thresholdProbability(distribution.histogram,result.simulations,Number(m.threshold??1),m.side);}catch{}

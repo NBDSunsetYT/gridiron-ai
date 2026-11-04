@@ -86,3 +86,13 @@ At 100,000 games the NBA summary occupied 37,813 compressed bytes and the benchm
 
 Baseline: 753 TypeScript and 200 Python tests passed. Updated unit, integration, browser, production and deployment evidence is recorded in `reports/v15-release-verification.json` after completion. Real-source public NBA reopen tests use existing Supabase records and perform no financial writes. Local ledger/browser fixtures are isolated and labeled. Physical iPhone installation and live OpenAI generation are not claimed.
 
+
+## Verified live market access
+
+The staged production API returned HTTP200 from PropLine: 12,893 current NBA sportsbook-reference quotes, including 1,816 DraftKings Sportsbook quotes. Current category counts were points2,916; rebounds2,714; assists1,848; three-pointers2,002; steals776; blocks380; PRA1,724; double-doubles533; turnovers0. Other bookmaker counts were FanDuel1,772, BetMGM976 and Hard Rock8,329. Counts change with market availability; this is a timestamped test, not a guarantee of execution.
+
+The documented NBA `/ids` endpoint returned NBA-native team IDs and null ESPN event IDs in the inspected current response. Quote player IDs were NBA-native (`nba:…`), while the historical model uses exact ESPN IDs. No verified crosswalk was established. Exact NBA quote-to-model comparisons therefore remain withheld. The UI distinguishes this identity issue from a provider outage; no fuzzy name-only match or invented contract is substituted. A public ESPN athlete response confirmed its ESPN ID; the inspected NBA CDN roster source returned403 and was not bypassed.
+
+New NBA runs retain the immutable signed fitted-input object reference, configuration, seed and code version. Earlier local test runs without that new reference remain archived unchanged. Public archive links reopen saved distributions without another Monte Carlo run.
+
+Independent NBA player-threshold research remains available through the saved-distribution chart: select a player/statistic, enter a clearly labeled hypothetical threshold and choose over/under. Counts, K/N, Wilson95% sampling intervals, standard errors and pushes come directly from the coherent game distribution. This does not invent a market, imply a current quote, or bypass the missing provider crosswalk.
