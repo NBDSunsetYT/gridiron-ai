@@ -149,7 +149,7 @@ class PropLineClient:
             except (ValueError,UnicodeError):raise DataProviderError('unsupported_response','PropLine did not return valid JSON.') from None
             rows,rejected=normalize(raw,sport,now)
             # Documented free bulk ID crosswalk; never match different games by fuzzy names.
-            crosswalk_status='unavailable'
+            crosswalk_status='unavailable';identity_evidence={}
             if rows and self.used<999 and now>=self.until:
                 self.used+=1
                 event('propline_ids_request')
@@ -157,6 +157,9 @@ class PropLineClient:
                 if code==200 and key.encode() not in payload:
                     try:
                         ids=json.loads(payload)
+                        if sport=='NBA' and isinstance(ids,list):
+                            sample=next((e for e in ids if isinstance(e,dict)),{})
+                            identity_evidence={'source':'https://api.prop-line.com/v1/sports/basketball_nba/ids','eventFields':sorted(sample),'samplePublicIdentifiers':{k:v for k,v in sample.items() if ('id' in k.lower() or 'time' in k.lower()) and not any(x in k.lower() for x in ['token','secret','password','credential','api_key']) and isinstance(v,(str,int)) and len(str(v))<200}}
                         if isinstance(ids,list):
                             mapping={str(e['id']):e for e in ids if isinstance(e,dict) and e.get('id') and str(e.get('espn_event_id','')).isdigit()}
                             for row in rows:
@@ -188,7 +191,7 @@ class PropLineClient:
             value={'provider':'PropLine','sport':sport,'dataFamily':'sportsbook_reference','status':'available' if rows else 'unavailable',
              'providerHttpStatus':200,'checkedAt':utc_now(),'items':rows,'totalResults':len(rows),'marketCounts':{k:sum(r['market']==k for r in rows) for k in supported},'bookCounts':{k:sum(r['book']['key']==k for r in rows) for k in BOOKS},'rejectedRows':rejected,'quota':quota,'cached':False,
              'diagnostic':{'code':'verified_provider_rows' if rows else 'no_verified_current_props','message':'Current provider rows were validated.' if rows else 'No current supported sportsbook props passed identity and freshness checks.'},
-             'fallbackVerified':False,'identityCrosswalkStatus':crosswalk_status,'injuryCoverage':injury_status,'injuries':injuries}
+             'fallbackVerified':False,'identityCrosswalkStatus':crosswalk_status,**({'identityEvidence':identity_evidence} if sport=='NBA' else {}),'injuryCoverage':injury_status,'injuries':injuries}
             self.cache[sport]=(now,value);return copy.deepcopy(value) if _copy else value
 
     def read_page(self,sport,cursor=0,limit=500):

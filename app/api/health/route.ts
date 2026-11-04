@@ -1,3 +1,4 @@
+import {version} from '@/package.json';
 import {cloudOnlyDeployment,selectedBackend} from '@/lib/backend';
 export const runtime='nodejs';
 export const dynamic='force-dynamic';
@@ -13,7 +14,7 @@ export async function GET(request:Request){
  // Credential presence is configuration, never a credit, entitlement or live
  // generation check. Provider budget/status probes remain private operations.
  const assistantStatus={provider:supportedProvider?provider:'unsupported',credentialConfigured:assistantConfigured,generationVerified:false,status:!supportedProvider?'invalid_provider':assistantConfigured?'configured_unverified':'missing_credentials'};
- const base={application:'GRIDIRON AI',version:'14.0.0',backend,cloudOnly:cloudOnlyDeployment(),configuration,assistantStatus};
+ const base={application:'GRIDIRON AI',version,backend,cloudOnly:cloudOnlyDeployment(),configuration,assistantStatus};
  if(new URL(request.url).searchParams.get('check')!=='dependencies')return Response.json({...base,status:'ok'},{headers:{'Cache-Control':'no-store'}});
  const checks:{supabase:Check;simulations:Check}={supabase:'not_configured',simulations:'not_configured'};
  await Promise.all([
