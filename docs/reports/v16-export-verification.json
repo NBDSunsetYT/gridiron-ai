@@ -1,0 +1,18 @@
+[
+  {
+    "path": "artifacts/gridiron-ai-v15.1.0-source.zip",
+    "bytes": 7867230,
+    "files": 1114,
+    "sha256": "2767b5b65957563e821a6ac25b41cbb5e7d1bfd89675deea7f29522b43dd1707",
+    "crc": "passed",
+    "forbiddenPrivateFiles": 0
+  },
+  {
+    "path": "artifacts/gridiron-ai-iterative-v16-research.zip",
+    "bytes": 69361041,
+    "files": 798,
+    "sha256": "310fbb47921dbae1810e9e6a6b17ed314740114a8751c0554ce37afd2dfae184",
+    "crc": "passed",
+    "forbiddenPrivateFiles": 0
+  }
+]

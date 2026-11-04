@@ -82,3 +82,13 @@ Financial records, existing saved research, Supabase tables/RLS, authentication,
 The local learner is operational and stops at its defined plateau/budget rules. It is not a continuously running production training service. Verified historical lineup/availability coverage, better player opportunity/efficiency modeling and stronger untouched samples are still needed before a production forecasting replacement is justified. Physical iPhone installation was not performed; mobile-browser checks are reported separately in the release verification.
 
 See `ITERATIVE_LEARNING.md` for commands and recovery procedures. The app release status and final browser-test results are recorded separately after deployment.
+
+## Release verification and hosting blocker
+
+Code was pushed to GitHub main (`db985d8c123bf0c927433a4283207b86a696324c`) and the exact tested production build was staged, verified and promoted as Vercel deployment `dpl_4mcqmuZroCPGuA1dcvYRwEwwBJF8`. The build is READY. All 774 TypeScript tests, 232 Python tests, 13 local PostgreSQL scripts, eight local production-build browser checks and eight confirmed production browser checks passed. Four optional live-simulation/archive cases were skipped in each browser run to conserve hosting compute. Physical iPhone installation was not tested.
+
+A later cold request received **HTTP 402 `DEPLOYMENT_DISABLED`**, displaying Vercel's Deployment Paused page. This is a platform serving block, despite the successful build and earlier live verification. The official project resume API accepted the request but did not remove the block. Billing/plan settings were not changed. The exact Usage/Billing warning is unavailable through the connected tools; account-side resolution is required before the app can be described as currently usable. Source and result downloads remain available from this workspace/GitHub.
+
+The error-log scan also recorded two existing `/api/nfl/refresh` reconciliation errors: one database statement timeout (`57014`) and one missing final-source/rules-provenance rejection (`22023`). Those live pipeline issues remain unresolved. The SQL validation was not weakened to manufacture settlements. They did not affect the independently verified offline study.
+
+See `reports/v16-release-verification.json`, `reports/v16-production-verification.json` (successful checks at 20:44 UTC), and `reports/v16-platform-status.json` (subsequent HTTP 402) for the exact chronology. Screenshots are explicitly labeled as the locally served production build using the real archived results, because the final cold production capture was blocked by Vercel.

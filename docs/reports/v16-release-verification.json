@@ -1,0 +1,101 @@
+{
+  "status": "deployment_ready_but_platform_serving_disabled",
+  "asOf": "2026-11-04T20:57:43.805295+00:00",
+  "url": "https://gridiron-ai-gray.vercel.app/#engine",
+  "sourceCommit": "db985d8c123bf0c927433a4283207b86a696324c",
+  "sourceTree": "2da1fd958db2869caf597bd943295e29d9e1a125",
+  "vercelDeployment": "dpl_4mcqmuZroCPGuA1dcvYRwEwwBJF8",
+  "vercelBuildStatus": "READY",
+  "currentServing": {
+    "httpStatus": 402,
+    "vercelError": "DEPLOYMENT_DISABLED",
+    "body": "Payment required\n\nDEPLOYMENT_DISABLED\n\ncle1::tflx6-1793825688206-fce79b208bb8\n",
+    "checkedAt": "2026-11-04T20:54:48.254627+00:00",
+    "resumeAttempted": true,
+    "billingChanged": false,
+    "paidResourcesCreated": false
+  },
+  "supabaseProject": "qdtdjbapdipopncklsdb",
+  "dataIntegrity": {
+    "migrationsApplied": 0,
+    "financialWrites": 0,
+    "originalOhioStateUSCChecksumsUnchanged": true,
+    "existingPrivateTablesAndRLSPreserved": true
+  },
+  "tests": {
+    "typescript": {
+      "passed": 774,
+      "files": 108
+    },
+    "python": {
+      "passed": 232
+    },
+    "localPostgresRegressionScripts": {
+      "passed": 13
+    },
+    "productionBuild": "passed",
+    "localBrowser": {
+      "passed": 8,
+      "skipped": 4,
+      "viewports": [
+        "desktop Chromium",
+        "iPhone13-sized Chromium"
+      ]
+    },
+    "productionBrowserBeforeHostBlock": {
+      "passed": 8,
+      "skipped": 4,
+      "durationSeconds": 22.4
+    },
+    "freshProcessArchiveVerification": "passed",
+    "completedWorkerReopen": {
+      "status": "already_complete",
+      "newSimulations": 0
+    },
+    "coldReplayAndIndependentSeeds": "passed",
+    "physicalIphoneInstall": "not run"
+  },
+  "experiment": {
+    "uniqueGames": 112,
+    "forecastVersions": 352,
+    "completeSimulatedGames": 3520000,
+    "stoppingConditions": {
+      "NFL": "validation_improvement_plateau",
+      "CFB": "validation_improvement_plateau",
+      "NBA": "validation_improvement_plateau"
+    },
+    "productionPromotions": 0
+  },
+  "deploymentSequence": [
+    "Published exact tested source tree to GitHub main with frozen research/protocol history retained.",
+    "Built staged production deployment with custom-domain auto-assignment disabled.",
+    "Verified staged report112/352, paired analysis640, protocol hash, PWA manifest and Supabase/private simulation service reachability.",
+    "Promoted the same tested build; restored automatic domain assignment.",
+    "Confirmed8 production browser checks and all public API/PWA/guest-denial checks.",
+    "A subsequent cold visit received HTTP402 DEPLOYMENT_DISABLED. Official unpause endpoint accepted, but serving remained disabled. No billing/plan changes were made."
+  ],
+  "initialBrowserFailures": {
+    "local": "Four failures: inherited private browser cache header and sport-label selector. Added explicit public CDN-only cache directives and accessible selector name; all8 rerun checks passed.",
+    "production": "The first two desktop checks immediately after promotion observed no new report; trace showed only the old default engine request. After the new release was serving, all8 checks passed. A later cold visit exposed the platform disablement."
+  },
+  "runtimeLogScan": {
+    "window": "20-minute deployment-scoped error/fatal scan around20:47UTC",
+    "errorEntries": 2,
+    "path": "/api/nfl/refresh",
+    "messages": [
+      "57014: canceling statement due to statement timeout",
+      "22023: Final-source provenance and matching settlement rules are required"
+    ],
+    "interpretation": "Existing shared NFL reconciliation pipeline warnings remain unresolved. The settlement provenance guard was preserved; unsupported outcomes were not forced through. These are separate from the completed offline experiment."
+  },
+  "limits": [
+    "No new production model was promoted: all three sports reached a validation plateau.",
+    "Historical publication/correction, injury, lineup and weather coverage is incomplete; zero strict prospective-qualified games.",
+    "No verified historical market-line or betting-return evaluation was fabricated.",
+    "The learner runs controlled local experiments; unattended production training was not enabled.",
+    "Current Vercel serving is blocked at the platform level. Exact account Usage/Billing warning is not exposed by the connected tools; authenticated local browser control is unavailable.",
+    "Optional live cloud simulation browser cases were skipped to conserve hosting compute; real simulations were executed locally.",
+    "Live AI text generation and real signed-in cross-device private-record writes were not exercised this turn.",
+    "MongoDB/R2 optional application credentials remain unconfigured; fitted artifacts are supplied as a downloadable archive."
+  ]
+}

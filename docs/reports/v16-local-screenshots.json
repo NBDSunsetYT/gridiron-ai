@@ -1,0 +1,17 @@
+{
+  "url": "http://127.0.0.1:3108/#engine",
+  "scope": "Actual production build, real archived report; local host because Vercel now returns DEPLOYMENT_DISABLED",
+  "physicalIphoneTested": false,
+  "checks": [
+    {
+      "viewport": "desktop",
+      "pageErrors": [],
+      "overflow": false
+    },
+    {
+      "viewport": "iphone-chromium",
+      "pageErrors": [],
+      "overflow": false
+    }
+  ]
+}

@@ -117,3 +117,5 @@ The existing Props screen now includes a compact research board, followed select
 ### Controlled iterative model research
 
 The local NFL/CFB/NBA learner completed three challenger rounds across 112 real games and352 graded forecasts (3.52 million complete simulated games). All leagues stopped at the validation plateau. No challenger satisfied every reliability gate, so production forecasting defaults remain unchanged. See [the measured results](docs/ITERATIVE_LEARNING_RESULTS.md), [protocol and recovery instructions](docs/ITERATIVE_LEARNING.md), and Model validation in the app (`/#engine`). The study is retrospective; complete original pregame injury/lineup/publication archives are unavailable.
+
+Hosting status, 2026-11-04: the 15.1.0 build was deployed and passed production checks, then fresh requests returned Vercel HTTP 402 `DEPLOYMENT_DISABLED`. The resume API did not clear the platform block. No plan/billing change was made. See [release verification](docs/reports/v16-release-verification.json) before treating the cloud URL as currently available.

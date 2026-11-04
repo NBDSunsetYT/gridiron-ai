@@ -1,0 +1,62 @@
+{
+  "status": "passed",
+  "verifiedAt": "2026-11-04T20:44:50.386294+00:00",
+  "url": "https://gridiron-ai-gray.vercel.app",
+  "deployment": "dpl_4mcqmuZroCPGuA1dcvYRwEwwBJF8",
+  "codeCommit": "db985d8c123bf0c927433a4283207b86a696324c",
+  "checks": [
+    {
+      "path": "/api/health?check=dependencies",
+      "status": 200,
+      "version": "15.1.0",
+      "checks": {
+        "supabase": "reachable",
+        "simulations": "reachable"
+      }
+    },
+    {
+      "path": "/api/engine?view=iterations",
+      "status": 200,
+      "games": 112,
+      "forecastVersions": 352,
+      "cacheControl": "public, max-age=0, s-maxage=300",
+      "cdnCacheControl": "public, s-maxage=300"
+    },
+    {
+      "path": "/api/engine?view=paired",
+      "status": 200
+    },
+    {
+      "path": "/api/engine?view=protocol",
+      "status": 200
+    },
+    {
+      "path": "/manifest.webmanifest",
+      "status": 200
+    },
+    {
+      "path": "/icon-192.png",
+      "status": 200,
+      "dimensions": [
+        192,
+        192
+      ]
+    },
+    {
+      "path": "/icon-512.png",
+      "status": 200,
+      "dimensions": [
+        512,
+        512
+      ]
+    },
+    {
+      "path": "/api/ledger",
+      "status": 401,
+      "applicationJsonDenial": true
+    }
+  ],
+  "financialWrites": 0,
+  "newSimulationsStarted": 0,
+  "physicalIphoneTested": false
+}

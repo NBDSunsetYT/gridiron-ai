@@ -1,0 +1,9 @@
+{
+  "path": "artifacts/gridiron-ai-iterative-v16-research.zip",
+  "bytes": 69361041,
+  "sha256": "310fbb47921dbae1810e9e6a6b17ed314740114a8751c0554ce37afd2dfae184",
+  "files": 797,
+  "rawDatasetsIncluded": false,
+  "privateFinancialRecordsIncluded": false,
+  "bulkSimulatedPlaysIncluded": false
+}
