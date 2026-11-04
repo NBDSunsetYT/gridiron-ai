@@ -1,0 +1,77 @@
+{
+  "startedAt": "2026-11-04T07:10:05.171Z",
+  "base": "https://gridiron-ai-gray.vercel.app",
+  "checks": [
+    {
+      "name": "Live application and private quantitative service are ready",
+      "status": "passed",
+      "milliseconds": 1923
+    },
+    {
+      "name": "NFL archived original GAFIE full games, final statistics and persistent read-back",
+      "status": "passed",
+      "milliseconds": 3998
+    },
+    {
+      "name": "CFB archived original GAFIE full games, final statistics and persistent read-back",
+      "status": "passed",
+      "milliseconds": 2149
+    },
+    {
+      "name": "Private records remain protected for guests",
+      "status": "passed",
+      "milliseconds": 957
+    },
+    {
+      "name": "iPhone-sized guest opens real NFL experiment, distributions and a representative full game",
+      "status": "passed",
+      "milliseconds": 2050
+    },
+    {
+      "name": "CFB remains separate and archive survives reload",
+      "status": "passed",
+      "milliseconds": 2211
+    },
+    {
+      "name": "Published PWA install assets and secure cache boundary are served",
+      "status": "passed",
+      "milliseconds": 312
+    }
+  ],
+  "sports": {
+    "NFL": {
+      "comparisonId": "ca135ba2fc74d13823d391270186ce32f7e6ba80d57c21953ab55c69ed5c2d3b",
+      "modelVersion": "gafie-conditional-transition-14.0.0",
+      "mode": "retrospective",
+      "gameId": "2025_13_KC_DAL",
+      "players": 260,
+      "pendingStatistics": 143,
+      "pregameEvaluatedGames": 1,
+      "experimentalUnpromoted": true
+    },
+    "CFB": {
+      "comparisonId": "d9556a71f420e67ecdc086568fe8df17631a4ae5fbd66149a88500f24cedf393",
+      "modelVersion": "cfb-gafie-conditional-transition-14.0.0",
+      "mode": "retrospective",
+      "gameId": "cfb:espn:401752921",
+      "players": 67,
+      "pendingStatistics": 505,
+      "pregameEvaluatedGames": 0,
+      "experimentalUnpromoted": true
+    }
+  },
+  "physicalIPhoneTested": false,
+  "assistant": {
+    "provider": "openai",
+    "credentialConfigured": false,
+    "generationVerified": false,
+    "status": "missing_credentials"
+  },
+  "status": "passed",
+  "finishedAt": "2026-11-04T07:10:18.915Z",
+  "limitations": [
+    "Browser emulation only; no physical iPhone installation.",
+    "Original GAFIE remains experimental. Neither this workflow nor play-level tests establish accurate forecasts.",
+    "No new real wager, personal-account settlement, live LLM generation or licensed DraftKings Predictions feed was tested."
+  ]
+}

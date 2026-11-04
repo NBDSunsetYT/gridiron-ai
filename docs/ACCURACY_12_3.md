@@ -10,6 +10,6 @@
 
 Sources and complete results: `modeling/validated/history-validation-nfl-2025.json`, `modeling/validated/history-validation-nfl-2026.json`, and `docs/reports/history-regularization-audit.json`. Reproduce with `python scripts/audit-history-regularization.py --test-season YEAR --out PATH`.
 
-This checkpoint is not yet deployed. The next staged release includes the user's 13.0/14.0 Simulation vs. Reality learning workflow. The current production release remains 12.2.0 while development continues.
+This accuracy checkpoint shipped with version 14.0.0 after staged and live checks. See GAFIE_GALL_14.md and the production verification reports for the full release scope and remaining limitations.
 
 Storage investigation: Render's free gateway was not suspended, showed about 202 MB of 512 MB memory and low CPU, with no errors during 04:00–06:00 UTC on November 4. Vercel remained reachable and its remote cache was enabled; billing charges API returned `costs_not_found`, so account-wide quota consumption was not established. Supabase measured 475,264,691 database bytes. A non-destructive `VACUUM FULL` on the old shared prediction table reclaimed about 1 MB; all 28,660 prediction IDs and their checksum remained identical. This did not resolve the underlying live-data storage pressure. No records were deleted and no paid resources were added.

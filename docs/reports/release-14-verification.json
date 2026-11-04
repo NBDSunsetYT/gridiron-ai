@@ -1,0 +1,51 @@
+{
+  "version": "14.0.0",
+  "sourceCommit": "b4ca29f0f6bdd3100c8a0d12ff4c5e63126497db",
+  "unitTests": {
+    "passed": 751,
+    "files": 103
+  },
+  "pythonTests": {
+    "passed": 200
+  },
+  "postgresSuites": {
+    "passed": 13
+  },
+  "browserTests": {
+    "broadRunPassed": 67,
+    "initialFailures": 3,
+    "retestsPassed": 10,
+    "notes": "Two stale research-title/evidence-text assertions were updated without removing source-family, missing-data or backend-action checks. A public PWA account-wait dependency was repaired; targeted desktop/iPhone retests passed."
+  },
+  "realRuns": {
+    "baselineNFL": [
+      10000,
+      50000,
+      100000
+    ],
+    "originalGafieNFL": 10000,
+    "originalGafieCFB": 10000,
+    "historicalMode": "retrospective",
+    "gafiePromoted": false
+  },
+  "dataPreservation": {
+    "sharedPredictionRows": 28660,
+    "sharedPredictionIDChecksum": "5a60de3072ea7c79765f03feb342b600",
+    "savedWorkspaceVersions": 17,
+    "financialRecordsModified": 0
+  },
+  "storage": {
+    "databaseBytesAtLastCheck": 474486451,
+    "pressureResolved": false,
+    "paidResourcesCreated": false
+  },
+  "productionVerification": {
+    "status": "passed",
+    "deploymentId": "dpl_HoTzVKpCiNemykEaxtvp4d6NUwnf",
+    "sourceCommit": "b4ca29f0f6bdd3100c8a0d12ff4c5e63126497db",
+    "liveURL": "https://gridiron-ai-gray.vercel.app",
+    "checksPassed": 7,
+    "physicalIPhoneTested": false
+  },
+  "exactArchivedGafieReplay": "passed; see gafie-replay-verification.json"
+}

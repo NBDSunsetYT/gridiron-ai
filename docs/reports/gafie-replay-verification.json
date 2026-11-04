@@ -1,0 +1,17 @@
+{
+  "status": "passed",
+  "sport": "NFL",
+  "simulations": 10000,
+  "retrievedFromPersistentObjectStore": true,
+  "sourceInputArtifactSHA256": "3f40547352f414728f14d0ed260c1b7056ccbab8da37d174356148bf10bda91b",
+  "seed": 14013,
+  "exactStatisticalOutputs": {
+    "players": true,
+    "scoreDistributions": true,
+    "totalDistribution": true,
+    "marginDistribution": true,
+    "correlations": true
+  },
+  "cpuSeconds": 25.342149161000002,
+  "meaning": "Exact statistical replay in the same code/dependency environment; wall-clock timestamps and durations excluded."
+}
