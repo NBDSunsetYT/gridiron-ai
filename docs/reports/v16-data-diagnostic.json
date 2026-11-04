@@ -1,0 +1,81 @@
+{
+  "cutoff": "2025-11-15T00:00:00+00:00",
+  "wholeGameEmbargo": true,
+  "counts": {
+    "NFL:reference": {
+      "pass": {
+        "observedPlays": 18104,
+        "touchdownTrainingLabels": 1290
+      },
+      "rush": {
+        "observedPlays": 22110,
+        "touchdownTrainingLabels": 803
+      }
+    },
+    "NFL:repaired": {
+      "pass": {
+        "observedPlays": 18104,
+        "touchdownTrainingLabels": 1290
+      },
+      "rush": {
+        "observedPlays": 22110,
+        "touchdownTrainingLabels": 803
+      }
+    },
+    "CFB:reference": {
+      "pass": {
+        "observedPlays": 54595,
+        "touchdownTrainingLabels": 84
+      },
+      "rush": {
+        "observedPlays": 99960,
+        "touchdownTrainingLabels": 92
+      }
+    },
+    "CFB:repaired": {
+      "pass": {
+        "observedPlays": 59481,
+        "touchdownTrainingLabels": 4952
+      },
+      "rush": {
+        "observedPlays": 105147,
+        "touchdownTrainingLabels": 5208
+      }
+    }
+  },
+  "confirmedDefect": "Combined touchdown/PAT rows were discarded from offensive play training because conversion handling continued before the primary play. New normalization preserves both observations.",
+  "negativeControlNFLForecastsIdentical": 24,
+  "negativeControlGameFiles": [
+    "2025_01_CIN_CLE.forecast.json.gz",
+    "2025_01_NYG_WAS.forecast.json.gz",
+    "2025_01_PIT_NYJ.forecast.json.gz",
+    "2025_01_TEN_DEN.forecast.json.gz",
+    "2025_02_BUF_NYJ.forecast.json.gz",
+    "2025_02_DEN_IND.forecast.json.gz",
+    "2025_02_SF_NO.forecast.json.gz",
+    "2025_02_WAS_GB.forecast.json.gz",
+    "2025_05_DEN_PHI.forecast.json.gz",
+    "2025_05_DET_CIN.forecast.json.gz",
+    "2025_05_MIN_CLE.forecast.json.gz",
+    "2025_05_WAS_LAC.forecast.json.gz",
+    "2025_06_CHI_WAS.forecast.json.gz",
+    "2025_06_DAL_CAR.forecast.json.gz",
+    "2025_06_LA_BAL.forecast.json.gz",
+    "2025_06_TEN_LV.forecast.json.gz",
+    "2025_09_ARI_DAL.forecast.json.gz",
+    "2025_09_CAR_GB.forecast.json.gz",
+    "2025_09_CHI_CIN.forecast.json.gz",
+    "2025_09_NO_LA.forecast.json.gz",
+    "2025_09_SEA_WAS.forecast.json.gz",
+    "2025_09_SF_NYG.forecast.json.gz",
+    "2025_10_DET_WAS.forecast.json.gz",
+    "2025_10_PIT_LAC.forecast.json.gz"
+  ],
+  "originalOhioStateUSCArtifactsUnchanged": {
+    "fitted-input.json": "5f5dbae34c34f19bb9b1221c12d4744ef29f99dab44eaf499b26b937569d7f05",
+    "diagnostic-result.json": "2460973ca9c5a54e72960d73e9a53a7556d975eb5d888568a72e38bd15858718"
+  },
+  "productionDefaultsChanged": false,
+  "originalPublicationVerified": false,
+  "interpretation": "This confirms a data-extraction defect and an isolated NFL negative control; it does not establish improved full-model accuracy or calibration."
+}

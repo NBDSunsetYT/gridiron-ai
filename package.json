@@ -1,6 +1,6 @@
 {
   "name": "gridiron-ai",
-  "version": "15.0.0",
+  "version": "15.1.0",
   "description": "Evidence-driven NFL, CFB and independent NBA research with a private auditable bankroll terminal",
   "main": "index.js",
   "scripts": {

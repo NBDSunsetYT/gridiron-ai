@@ -1,0 +1,172 @@
+{
+  "status": "passed",
+  "models": 27,
+  "records": [
+    {
+      "sport": "CFB",
+      "modelSha256": "952fda2b733ae5c951128b549d43a4e402ce0429273942c82c8cb8217979eb4f",
+      "drawOrderSha256": "a0e414df120af7818f682b979eda0dc1846fcb7d7eb358324e1e8595642ed99d",
+      "path": "draw-order-v2/952fda2b733ae5c951128b549d43a4e402ce0429273942c82c8cb8217979eb4f.json.gz"
+    },
+    {
+      "sport": "NFL",
+      "modelSha256": "21db2340d1e8014d7dfd1a659593e7c92a928dddc835330cfdf4444b44352efa",
+      "drawOrderSha256": "50ba6c871d9a1998137ae6d86d4e0e88e00795ea13760241756d080ef7c934c6",
+      "path": "draw-order-v2/21db2340d1e8014d7dfd1a659593e7c92a928dddc835330cfdf4444b44352efa.json.gz"
+    },
+    {
+      "sport": "CFB",
+      "modelSha256": "d000e5ea51b739643efa84ebc36d7d67ea60a45ce487201ca8aeb0d0c9544234",
+      "drawOrderSha256": "fc8bf393909238a1ddb9b9765435a8caff928cfd89d845b0a45feed5aa6b6d83",
+      "path": "draw-order-v2/d000e5ea51b739643efa84ebc36d7d67ea60a45ce487201ca8aeb0d0c9544234.json.gz"
+    },
+    {
+      "sport": "CFB",
+      "modelSha256": "d0f53bd7e042e2da74701d09f01234da65f943fc9452de62962581767437f6ab",
+      "drawOrderSha256": "145b91cbd96a78193eafa794ba8d29acb358fc62b11053a0685dfe9acd37c767",
+      "path": "draw-order-v2/d0f53bd7e042e2da74701d09f01234da65f943fc9452de62962581767437f6ab.json.gz"
+    },
+    {
+      "sport": "CFB",
+      "modelSha256": "da18c8db3e984313e9591fc25228996537fb8d2a3ec744be02367457beb0ea39",
+      "drawOrderSha256": "2100c04b5fd6d189198a29c83a7eac0ca25193528b50c59aa5d8d318df66894c",
+      "path": "draw-order-v2/da18c8db3e984313e9591fc25228996537fb8d2a3ec744be02367457beb0ea39.json.gz"
+    },
+    {
+      "sport": "CFB",
+      "modelSha256": "d64d06b1d9b1043d42408fcd3a98e49a2ed30b43465e133736709696baeee29c",
+      "drawOrderSha256": "a98fa22b1c7fcc7b82fe46777395343fdc2e809d0c9e8460ed3a1c2177a71edd",
+      "path": "draw-order-v2/d64d06b1d9b1043d42408fcd3a98e49a2ed30b43465e133736709696baeee29c.json.gz"
+    },
+    {
+      "sport": "NFL",
+      "modelSha256": "538dbacaa45920d0be20c88d47b13f046c3fc080a71f097e5ec3c1c87c45e74a",
+      "drawOrderSha256": "916bab204c953d1846d8647e0f5493a4bb54dcc36ce98b6ac9b537231b764707",
+      "path": "draw-order-v2/538dbacaa45920d0be20c88d47b13f046c3fc080a71f097e5ec3c1c87c45e74a.json.gz"
+    },
+    {
+      "sport": "CFB",
+      "modelSha256": "fe98bcc01e39b0f7cf9f441959ca56cf42c9324e07aac16395d32e9cee2bbbf0",
+      "drawOrderSha256": "7ff57bcd1e94c38f45d31ab2c3aac50504fcaf054da1c03a8340e72ab636d50f",
+      "path": "draw-order-v2/fe98bcc01e39b0f7cf9f441959ca56cf42c9324e07aac16395d32e9cee2bbbf0.json.gz"
+    },
+    {
+      "sport": "CFB",
+      "modelSha256": "294a0660ae1252bba78d1e7452b886efa579f1f789f407449afc2bc65150428c",
+      "drawOrderSha256": "5506a977dd0004505c72e4a4a9f166a5f810bfc8e8d6d010b25dae752a850c81",
+      "path": "draw-order-v2/294a0660ae1252bba78d1e7452b886efa579f1f789f407449afc2bc65150428c.json.gz"
+    },
+    {
+      "sport": "NFL",
+      "modelSha256": "9c3f93dbb845b71f3f302800b95110c1b73304ce6a3a2d13f78811ebdfe5f16c",
+      "drawOrderSha256": "05a54e7bd5669fe6d28101cab6699954960a1f3f1c448408e26e1e08aa98c316",
+      "path": "draw-order-v2/9c3f93dbb845b71f3f302800b95110c1b73304ce6a3a2d13f78811ebdfe5f16c.json.gz"
+    },
+    {
+      "sport": "NFL",
+      "modelSha256": "d0438d82152047dcec82d31ffcd2c600509b81ba5050a1ae6e58bd89912abe64",
+      "drawOrderSha256": "52fe6287d3b8cb5f458ee4db14a9ad5cdf5c50cbf7acb176399721ee4b10281d",
+      "path": "draw-order-v2/d0438d82152047dcec82d31ffcd2c600509b81ba5050a1ae6e58bd89912abe64.json.gz"
+    },
+    {
+      "sport": "NFL",
+      "modelSha256": "0dea9cccd4464f75b311437c53a92956f4fea6ae45d150da32016f4c4c89de4d",
+      "drawOrderSha256": "e78c641a2f3a64db7b1742b634760c98791391083bf6d12931fe05f646249047",
+      "path": "draw-order-v2/0dea9cccd4464f75b311437c53a92956f4fea6ae45d150da32016f4c4c89de4d.json.gz"
+    },
+    {
+      "sport": "NFL",
+      "modelSha256": "9479d5aa63290356561a3b2d625c7d3387720a0a128059972c904ea00115d2e9",
+      "drawOrderSha256": "1c3179e36bfa3f591acd98b0f50b5977418b20872ccc2a20e5e4f5a9278d3d35",
+      "path": "draw-order-v2/9479d5aa63290356561a3b2d625c7d3387720a0a128059972c904ea00115d2e9.json.gz"
+    },
+    {
+      "sport": "CFB",
+      "modelSha256": "f58bd2c32ad430e44f0b9e22a3bae32fbc9735dfc652a13d99f0b1a300383d7f",
+      "drawOrderSha256": "93c575ca907406fd2090562617935e805bda3422380dff48f1b7319bc20478ca",
+      "path": "draw-order-v2/f58bd2c32ad430e44f0b9e22a3bae32fbc9735dfc652a13d99f0b1a300383d7f.json.gz"
+    },
+    {
+      "sport": "CFB",
+      "modelSha256": "67d22c12f1cc80880776fc28ec100694c003d607a0b0d2e33ac7f85ec1c07d94",
+      "drawOrderSha256": "5b26d4844ef1c91907cd29842a81ad84d930fbf9cab8d65414eb0d2f01936230",
+      "path": "draw-order-v2/67d22c12f1cc80880776fc28ec100694c003d607a0b0d2e33ac7f85ec1c07d94.json.gz"
+    },
+    {
+      "sport": "NFL",
+      "modelSha256": "ca6f3cb5f42d1183de1d18e2261927734253b310e500cdc604d27462efd4cdc8",
+      "drawOrderSha256": "5074f9bc5675fe8c3dc8917f9c05913dc1748e67a75afb8261d0dc00bdb148ee",
+      "path": "draw-order-v2/ca6f3cb5f42d1183de1d18e2261927734253b310e500cdc604d27462efd4cdc8.json.gz"
+    },
+    {
+      "sport": "NFL",
+      "modelSha256": "6e6723c6ab797503f51d8f4d37e2856b95d339739b3c783c5a74990556bcae72",
+      "drawOrderSha256": "da4e99d063310cfe442d356e1d2bdf9007f1af8eb9513e5a2eac67ef35c088b1",
+      "path": "draw-order-v2/6e6723c6ab797503f51d8f4d37e2856b95d339739b3c783c5a74990556bcae72.json.gz"
+    },
+    {
+      "sport": "CFB",
+      "modelSha256": "6294fb16090154dea372e009c1d51c98361a4e2971f9c5166a936683936b2508",
+      "drawOrderSha256": "4bb7ab84c4928ad741af114780112fcad91b933998588e541a481f2c715a5a83",
+      "path": "draw-order-v2/6294fb16090154dea372e009c1d51c98361a4e2971f9c5166a936683936b2508.json.gz"
+    },
+    {
+      "sport": "NFL",
+      "modelSha256": "b4ef21085fd38972f6827812a1879de8ecd830d4a62ed0c5e638c48ff3aa8948",
+      "drawOrderSha256": "5b716c30c185a5ae26fcb66f410dcbd525bfc8c2ec28df2e4394d23917c80628",
+      "path": "draw-order-v2/b4ef21085fd38972f6827812a1879de8ecd830d4a62ed0c5e638c48ff3aa8948.json.gz"
+    },
+    {
+      "sport": "NFL",
+      "modelSha256": "a350351b1c08726491c08111ac01911737d9150598a8ca51651eb61d8889ca82",
+      "drawOrderSha256": "1debe606f014519be9929323ba2958bef11de36292cd824d6acc0dd39144eb61",
+      "path": "draw-order-v2/a350351b1c08726491c08111ac01911737d9150598a8ca51651eb61d8889ca82.json.gz"
+    },
+    {
+      "sport": "NFL",
+      "modelSha256": "7d3333450d8bb5a035a9d435d2822a27825c19e677f98ca49a71235e9b8a91aa",
+      "drawOrderSha256": "f3591a631fbc27a54ac34d70309876cba27413d95e0080124406753925fb9830",
+      "path": "draw-order-v2/7d3333450d8bb5a035a9d435d2822a27825c19e677f98ca49a71235e9b8a91aa.json.gz"
+    },
+    {
+      "sport": "CFB",
+      "modelSha256": "2ce8a17c0380103f0c93e9c1da822463c7554edf6db6d6a5659018c4b5fc33b6",
+      "drawOrderSha256": "02c8f31ec066d55a7d40af494bf7ad500e883b61e0ad5be259426ad02c913e98",
+      "path": "draw-order-v2/2ce8a17c0380103f0c93e9c1da822463c7554edf6db6d6a5659018c4b5fc33b6.json.gz"
+    },
+    {
+      "sport": "CFB",
+      "modelSha256": "808ef79c453fafdd283aab938883542d9b8946207b8439802430501dea24d55e",
+      "drawOrderSha256": "d9c3af0c74baa204007e08b160ab0ba8b2d133cb5bcc770c1b1323aa4e9c861f",
+      "path": "draw-order-v2/808ef79c453fafdd283aab938883542d9b8946207b8439802430501dea24d55e.json.gz"
+    },
+    {
+      "sport": "NFL",
+      "modelSha256": "8e30c25a791e836680a0966230a2449e5633cef8def8e22cfe64503a354a73a7",
+      "drawOrderSha256": "c780ce02776bd9a2f35e8c40a5e393e5ef43ef57f0b7fdef09fc0e7f960b73f5",
+      "path": "draw-order-v2/8e30c25a791e836680a0966230a2449e5633cef8def8e22cfe64503a354a73a7.json.gz"
+    },
+    {
+      "sport": "CFB",
+      "modelSha256": "8935a08d3e37ad42f813471dea20bcbd5b1f939785603d6b772c0fcbf39015ca",
+      "drawOrderSha256": "04f6ada095a958ea3c69e4b308057df8a18ca3db35063e9c9f9056af20a98b17",
+      "path": "draw-order-v2/8935a08d3e37ad42f813471dea20bcbd5b1f939785603d6b772c0fcbf39015ca.json.gz"
+    },
+    {
+      "sport": "CFB",
+      "modelSha256": "b297d560c989ee72199cb59c1bf4456bd32b2138fcddd693141fdde7c3e6f0b4",
+      "drawOrderSha256": "2daa0dc8bfd33b813d77cca5b536fee77915c704452d39d48999da827ee2a306",
+      "path": "draw-order-v2/b297d560c989ee72199cb59c1bf4456bd32b2138fcddd693141fdde7c3e6f0b4.json.gz"
+    },
+    {
+      "sport": "NFL",
+      "modelSha256": "8e899c6c3b3acfd15cdb159694bb0ebe6c6216bf892cc8eccfc2116848f019c0",
+      "drawOrderSha256": "fbfe501f3453e13601e64883e2bf9d763359e0d1dc198aeb1888f7900c29dab1",
+      "path": "draw-order-v2/8e899c6c3b3acfd15cdb159694bb0ebe6c6216bf892cc8eccfc2116848f019c0.json.gz"
+    }
+  ],
+  "originalModelsModified": 0,
+  "originalForecastsModified": 0,
+  "method": "Recover first-observed participant ordering from the exact pinned training rows; verify every retained participation count, category identity and unchanged fitted-parameter hash.",
+  "limitation": "Sidecars are required for exact replay of legacy sorted-JSON football artifacts; they are not an accuracy improvement."
+}

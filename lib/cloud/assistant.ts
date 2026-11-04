@@ -11,7 +11,7 @@ import {verifiedCloudJob,verifyCloudResult} from './attestation';
 import {createAiProviderClient} from '../ai-provider';
 import {accountReportIntent,calculateAccountReport} from './account-reports';
 import {PROP_STATS} from '../player-props/market-types';
-import {learningTools,executeLearningTool} from '../learning/assistant';
+import {learningTools,executeLearningTool,executeOfflineLearningTool} from '../learning/assistant';
 import {nbaTools,executeNBATool} from '../nba/assistant';
 import {footballIntelligenceTools,isFootballIntelligenceTool,executeFootballIntelligenceTool} from '../college-football/assistant-tools';
 import {filterRecordedWagers,recordedWagerPerformance} from '../wager-performance';
@@ -110,6 +110,7 @@ export async function cloudAssistant(ctx:CloudContext,input:unknown):Promise<Res
    else if(name==='read_saved_combinations'){const filter=z.object({sport:z.enum(['NFL','CFB']).optional()}).strict().parse(args);let query=ctx.client.from('research_workspaces').select('id,sport,kind,revision,data,updated_at').eq('user_id',requireCloudUser(ctx).id).eq('kind','combination').order('updated_at',{ascending:false}).limit(20);if(filter.sport)query=query.eq('sport',filter.sport);const response=await query;if(response.error)throw new ApiError('Saved combinations could not be retrieved.',503);data={combinations:response.data??[],limit:20,actualWagers:false,warning:'These are user-editable research drafts. Any probability fields require independent verification with read_probability_history before being described as generated model outputs.'};}
    else if(name==='read_source_status')data={providers:providerStatuses(unwrap(await records(ctx,'markets',{limit:80})) as any),preferences:await preferences(ctx),backend:'Supabase PostgreSQL'};
    else if(name==='read_simulation_reality')data=await executeLearningTool(args);
+   else if(name==='read_model_experiments')data=executeOfflineLearningTool(args);
    else if(name==='read_nba_research')data=await executeNBATool(ctx,args);
    else if(isFootballIntelligenceTool(name))data=await executeFootballIntelligenceTool(ctx,name,args,last.content,p.sport);
    else if(additionalResearchTools.some(t=>t.type==='function'&&t.function.name===name))data=await executeResearchTool(cloudToolRequest(ctx),name,args,last.content);

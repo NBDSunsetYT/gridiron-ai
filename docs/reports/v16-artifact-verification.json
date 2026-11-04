@@ -1,0 +1,18 @@
+{
+  "status": "passed",
+  "freshProcessRead": true,
+  "protocolSha256": "2740dde83c33321d6cf7aedecc3bb8a6c50c2c22267dd9417193e3fd84d38eb6",
+  "uniqueGames": 112,
+  "forecastVersions": 352,
+  "completeSimulatedGames": 3520000,
+  "bySportForecastVersions": {
+    "CFB": 112,
+    "NBA": 128,
+    "NFL": 112
+  },
+  "compactForecastBytes": 10737911,
+  "meanForecastBytes": 30505,
+  "finalSelectionUnchanged": true,
+  "privateDatabaseWrites": 0,
+  "bulkPlaysPermanentlyStored": 0
+}

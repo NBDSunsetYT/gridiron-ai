@@ -113,3 +113,7 @@ Performance release: [12.1.1 implementation, measured benchmarks and recovery](d
 ## Football research desk — 12.2
 
 The existing Props screen now includes a compact research board, followed selections, source-backed chronological trends and exact sportsbook comparisons. Model probabilities, observed historical frequencies and market benchmarks retain distinct labels. See [implementation and limitations](docs/RESEARCH_DESK_12_2.md) and [live acceptance](docs/reports/research-desk-release.json). No prediction method, simulation count or financial record was changed.
+
+### Controlled iterative model research
+
+The local NFL/CFB/NBA learner completed three challenger rounds across 112 real games and352 graded forecasts (3.52 million complete simulated games). All leagues stopped at the validation plateau. No challenger satisfied every reliability gate, so production forecasting defaults remain unchanged. See [the measured results](docs/ITERATIVE_LEARNING_RESULTS.md), [protocol and recovery instructions](docs/ITERATIVE_LEARNING.md), and Model validation in the app (`/#engine`). The study is retrospective; complete original pregame injury/lineup/publication archives are unavailable.

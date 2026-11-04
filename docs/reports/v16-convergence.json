@@ -1,0 +1,110 @@
+{
+  "status": "passed",
+  "reports": [
+    {
+      "sport": "NFL",
+      "gameId": "2025_01_TEN_DEN",
+      "phase": "validation",
+      "candidate": "reference-v15",
+      "drawOrderReference": {
+        "sha256": "f3591a631fbc27a54ac34d70309876cba27413d95e0080124406753925fb9830",
+        "path": "7d3333450d8bb5a035a9d435d2822a27825c19e677f98ca49a71235e9b8a91aa.json.gz",
+        "fittedParametersUnchanged": true
+      },
+      "sameSeedExactNumericReplay": true,
+      "independentSeedChecks": [
+        {
+          "metric": "homeScoreMean",
+          "difference": 0.08880000000000265,
+          "combinedMonteCarloSE": 0.12337969193039057,
+          "withinFourSamplingSE": true
+        },
+        {
+          "metric": "awayScoreMean",
+          "difference": 0.044599999999999085,
+          "combinedMonteCarloSE": 0.11060377999695563,
+          "withinFourSamplingSE": true
+        },
+        {
+          "metric": "homeWinProbability",
+          "difference": 0.0019000000000000128,
+          "combinedMonteCarloSE": 0.005924481327508764,
+          "withinFourSamplingSE": true
+        }
+      ],
+      "simulationsPerReplica": 10000,
+      "replicas": 2,
+      "passed": true
+    },
+    {
+      "sport": "CFB",
+      "gameId": "cfb:espn:401756894",
+      "phase": "validation",
+      "candidate": "stronger-shrinkage",
+      "drawOrderReference": {
+        "sha256": "fc8bf393909238a1ddb9b9765435a8caff928cfd89d845b0a45feed5aa6b6d83",
+        "path": "d000e5ea51b739643efa84ebc36d7d67ea60a45ce487201ca8aeb0d0c9544234.json.gz",
+        "fittedParametersUnchanged": true
+      },
+      "sameSeedExactNumericReplay": true,
+      "independentSeedChecks": [
+        {
+          "metric": "homeScoreMean",
+          "difference": 0.2961000000000027,
+          "combinedMonteCarloSE": 0.19880974890237615,
+          "withinFourSamplingSE": true
+        },
+        {
+          "metric": "awayScoreMean",
+          "difference": 0.027200000000000557,
+          "combinedMonteCarloSE": 0.1298174374755074,
+          "withinFourSamplingSE": true
+        },
+        {
+          "metric": "homeWinProbability",
+          "difference": 0.0010999999999999899,
+          "combinedMonteCarloSE": 0.002020642224640472,
+          "withinFourSamplingSE": true
+        }
+      ],
+      "simulationsPerReplica": 10000,
+      "replicas": 2,
+      "passed": true
+    },
+    {
+      "sport": "NBA",
+      "gameId": "nba:espn:401810412",
+      "phase": "validation",
+      "candidate": "conditional-clock",
+      "drawOrderReference": null,
+      "sameSeedExactNumericReplay": true,
+      "independentSeedChecks": [
+        {
+          "metric": "homeScoreMean",
+          "difference": 0.19780000000000086,
+          "combinedMonteCarloSE": 0.1790435082983641,
+          "withinFourSamplingSE": true
+        },
+        {
+          "metric": "awayScoreMean",
+          "difference": 0.037700000000000955,
+          "combinedMonteCarloSE": 0.17605408542575635,
+          "withinFourSamplingSE": true
+        },
+        {
+          "metric": "homeWinProbability",
+          "difference": 0.0044000000000000705,
+          "combinedMonteCarloSE": 0.007066157513104276,
+          "withinFourSamplingSE": true
+        }
+      ],
+      "simulationsPerReplica": 10000,
+      "replicas": 2,
+      "passed": true
+    }
+  ],
+  "additionalCompleteGames": 60000,
+  "newHistoricalGames": 0,
+  "cpuSeconds": 82.023681563,
+  "interpretation": "Sampling stability and replay checks only. These do not measure model accuracy or reduce structural, parameter or availability uncertainty. No test-period outcomes were used."
+}
