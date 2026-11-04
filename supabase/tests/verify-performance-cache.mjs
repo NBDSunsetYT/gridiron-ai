@@ -1,0 +1,16 @@
+import{PGlite}from'@electric-sql/pglite';import{readdirSync,readFileSync}from'node:fs';import assert from'node:assert/strict';
+const db=new PGlite();await db.exec("create role anon;create role authenticated;create role service_role bypassrls;create schema auth;create table auth.users(id uuid primary key,email text);create table auth.sessions(id uuid primary key,user_id uuid references auth.users(id));create function auth.uid()returns uuid language sql stable as $$select null::uuid$$;create function auth.jwt()returns jsonb language sql stable as $$select '{}'::jsonb$$;");
+for(const f of readdirSync(new URL('../migrations/',import.meta.url)).filter(x=>x.endsWith('.sql')).sort())await db.exec(readFileSync(new URL('../migrations/'+f,import.meta.url),'utf8'));
+const cap='SYNTHETIC-PERFORMANCE-CACHE-CAPABILITY-ONLY',key='cfb_prepare:'+('a'.repeat(64));await db.query("insert into gridiron_shared_private.capabilities(name,token_sha256)values('public_nfl_ingestion',encode(sha256(convert_to($1,'UTF8')),'hex'))",[cap]);
+const call=async(p)=>(await db.query('select public.gridiron_performance_cache($1,$2::jsonb) value',[cap,JSON.stringify({key,...p})])).rows[0].value;
+await db.exec('set role anon');await assert.rejects(db.query('select public.gridiron_performance_cache($1,$2::jsonb)',['SYNTHETIC-WRONG',JSON.stringify({key,action:'acquire'})]),/Server capability/);
+const a=await call({action:'acquire'});assert.equal(a.state,'claimed');assert.equal((await call({action:'acquire'})).state,'wait');
+assert.equal((await call({action:'finish',generation:999,value:{encoding:'gzip-base64-v1',body:'SYNTHETIC',sha256:'b'.repeat(64),bytes:1},ttlMs:600000})).accepted,false);
+const value={encoding:'gzip-base64-v1',body:'SYNTHETIC',sha256:'b'.repeat(64),bytes:1};assert.equal((await call({action:'finish',generation:a.generation,value,ttlMs:600000})).accepted,true);assert.equal((await call({action:'acquire'})).state,'hit');
+assert.equal((await db.query("select count(*) n from public.shared_nfl_cache where kind='performance_cache'")).rows[0].n,0,'cache not directly readable through public policies');
+await db.exec("reset role;update public.shared_nfl_cache set expires_at=now()-interval '1 second' where kind='performance_cache';set role anon;");
+const b=await call({action:'acquire'});assert.equal(b.state,'claimed');assert.ok(b.generation>a.generation);assert.equal((await call({action:'finish',generation:a.generation,value,ttlMs:600000})).accepted,false);
+await call({action:'fail',generation:b.generation});assert.equal((await call({action:'acquire'})).state,'wait');
+await db.exec('reset role');assert.deepEqual((await db.query("select data->'value' value from public.shared_nfl_cache where kind='performance_cache'")).rows[0].value,value,'failed refresh retains prior payload');
+await db.exec("set role anon");assert.equal((await call({action:'finish'})).accepted,false);await assert.rejects(call({action:'acquire',key:'wallet:'+('a'.repeat(64))}),/Bounded public/);
+console.log('PASS shared performance cache: capability, RLS, lease exclusion, fencing, changed keys and failure retention');await db.close();

@@ -1,0 +1,10 @@
+import {z} from 'zod';
+export const propReference=z.object({eventId:z.string().min(1).max(150),playerId:z.string().nullable(),playerName:z.string().min(1).max(150),market:z.string().min(1).max(100),side:z.string().max(20),threshold:z.union([z.string().max(40),z.number().finite(),z.null()]),book:z.string().max(80)}).strict();
+export const singleTarget=z.discriminatedUnion('type',[
+ z.object({type:z.literal('prop'),sport:z.enum(['NFL','CFB']),reference:propReference,cursor:z.number().int().min(0).max(50000).default(0)}).strict(),
+ z.object({type:z.literal('game'),sport:z.enum(['NFL','CFB']),gameId:z.string().min(1).max(100),market:z.enum(['winner','spread','total']),side:z.enum(['home','away','over','under']),threshold:z.number().finite().min(-1000).max(1000).optional()}).strict(),
+ z.object({type:z.literal('contract'),sport:z.literal('NFL'),snapshotId:z.string().regex(/^[a-f0-9]{64}$/)}).strict()
+]);
+export const targetSchema=z.union([singleTarget,z.object({type:z.literal('combination'),sport:z.enum(['NFL','CFB']),legs:z.array(singleTarget).min(2).max(12)}).strict()]).superRefine((target,ctx)=>{const legs=target.type==='combination'?target.legs:[target];if(legs.some(l=>l.sport!==target.sport))ctx.addIssue({code:'custom',message:'Every selection must belong to the selected sport.'});for(const leg of legs){if(leg.type==='game'&&((leg.market==='total'&&!['over','under'].includes(leg.side))||(leg.market!=='total'&&!['home','away'].includes(leg.side))||(leg.market!=='winner'&&leg.threshold===undefined)))ctx.addIssue({code:'custom',message:'The game outcome side or threshold is incompatible.'});}if(target.type==='combination'&&new Set(target.legs.map(l=>JSON.stringify(l))).size!==target.legs.length)ctx.addIssue({code:'custom',message:'Duplicate outcomes are not separate legs.'});});
+export const probabilityRequest=z.object({target:targetSchema,simulations:z.union([z.literal(10000),z.literal(50000),z.literal(100000)]).default(10000)}).strict();
+export type ProbabilityTarget=z.infer<typeof targetSchema>;

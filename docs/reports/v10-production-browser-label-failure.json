@@ -1,0 +1,40 @@
+{
+  "status": "failed",
+  "baseUrl": "https://gridiron-ai-gray.vercel.app",
+  "mockedResponses": false,
+  "physicalIphone": false,
+  "financialWrites": false,
+  "simulationsRequested": 0,
+  "checks": [
+    {
+      "profile": "desktop",
+      "name": "Real NFL PropLine quotes render without provider login or client API key",
+      "status": "passed"
+    },
+    {
+      "profile": "desktop",
+      "name": "Verified DraftKings Sportsbook filtering preserves market identity",
+      "status": "passed"
+    },
+    {
+      "profile": "desktop",
+      "name": "Exact Predictions contracts remain a separate unavailable source",
+      "status": "passed"
+    },
+    {
+      "profile": "desktop",
+      "name": "CFB quotes load separately and private history requires GRIDIRON identity",
+      "status": "passed"
+    },
+    {
+      "profile": "desktop",
+      "name": "Public10 live scoreboard shows actual observations and the new navigation",
+      "status": "passed"
+    }
+  ],
+  "error": "expect(locator).toHaveValue(expected) failed\n\nLocator: getByLabel('Notes', { exact: true })\nExpected: \"AUTOMATED QA GUEST DRAFT — NOT A WAGER\"\nTimeout: 90000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toHaveValue\" getByLabel('Notes', { exact: true }) with timeout 90000ms\n  - waiting for getByLabel('Notes', { exact: true })\n",
+  "failureView": {
+    "url": "https://gridiron-ai-gray.vercel.app/#combos",
+    "text": "Skip to content\nGRIDIRON AI\nTHE GAME. UNDERSTOOD.\nG\nYour game companion\nExplore college football research as a guest\nGRIDIRON AI\nHome\nLive\nProps\nCombos\nWallet\nGame simulations\nAdvanced Mode\nMy account & app\nG\nGRIDIRON AI account\nSign in for your private records\nGRIDIRON\nCombos\n⌘ K\nCONNECTED\nG\nNFL\nPRO\nCollege Football\nNCAA\nGames\nSimulations\nAI Research\nHistory\nSaved research\nResearch drafts\nCFB · COMBINATION RESEARCH\nBuild it. Compare it. Keep it.\n\nHypothetical research only. Saving never records a wager.\n\nGuest draft · sign in to save\nSave combination\nBuild combination\nCombination name\nSelections 0/12\nAdd selectionBrowse verified props\nNotes\nHypothetical payout calculator\n\nYour multiplier is an assumption, not a verified platform offer.\n\nAmount (USD)\nGross-return multiplier\nFees on winning return (USD)\nGross theoretical payout\n$70.00\nNet theoretical payout\n$70.00\nTheoretical profit\n$50.00\nBreak-even under entered assumptions\n28.57%\n\nJoint probability: insufficient aligned simulation evidence. Individual probabilities are never multiplied as an independence shortcut. Separate contracts may not be combinable on their platform.\n\n Saved combinations\nSign in to sync across devicesRefresh cloud recordsCheck current pricesVersion history\nExport JSONExport CSV\nImport exported JSON as a new combination\n Cloud saves require your GRIDIRON identity. Device recovery is encrypted. History is retained; restoring creates a new version.\nResearch tools. No guarantees. No wagers placed.\nPrivacy & app\nGRIDIRON AI / 8.0"
+  }
+}

@@ -1,0 +1,10 @@
+import {test,expect} from '@playwright/test';
+test('internal storage panel shows monitored usage, unavailable costs and protected retention on mobile',async({page})=>{
+ await page.request.post('/api/auth',{data:{action:'register',email:`synthetic-storage-${Date.now()}@example.test`,password:'Synthetic-storage-password-2026'}});
+ await page.route('**/api/internal/storage/health',r=>r.fulfill({status:200,contentType:'application/json',body:JSON.stringify({checkedAt:'2026-01-01T00:00:00Z',warnings:['SYNTHETIC database usage warning'],supabase:{status:'reachable',databaseBytes:450000000,sharedObjectBytes:1000000},mongodb:{status:'not_configured',usage:null},r2:{status:'not_configured',catalogBytes:0,simulationArchiveBytes:0,estimatedMonthlyStorageCost:null},synchronization:{states:{retry:1}},backups:{status:'SYNTHETIC backup not verified'},integrityWarnings:[]})}));
+ await page.goto('/#advanced/settings');const panel=page.getByRole('region',{name:'Internal storage health'});await expect(panel).toContainText('450.00 MB');await expect(panel).toContainText('Unavailable without verified usage');await expect(panel).toContainText('Cleanup is preview only');await expect(panel).toContainText('retry: 1');expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
+});
+test('internal storage monitoring does not reveal account infrastructure to unauthorized app users',async({page})=>{
+ await page.request.post('/api/auth',{data:{action:'register',email:`synthetic-storage-denied-${Date.now()}@example.test`,password:'Synthetic-storage-password-2026'}});
+ await page.route('**/api/internal/storage/health',r=>r.fulfill({status:403,contentType:'application/json',body:JSON.stringify({error:'Storage monitoring is restricted to GRIDIRON AI administrators.'})}));await page.goto('/#advanced/settings');const panel=page.getByRole('region',{name:'Internal storage health'});await expect(panel).toContainText('restricted');await expect(panel).not.toContainText('450.00 MB');
+});

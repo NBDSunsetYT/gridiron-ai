@@ -1,0 +1,34 @@
+{
+  "version": "12.1.1",
+  "fixtureUse": "Synthetic NFL/CFB mechanical fixtures only. Public CFB normalization uses real published source when supplied. These benchmarks do not validate prediction accuracy or measure total hosting bills.",
+  "measure": "time.process_time CPU; perf_counter wall. Before and after run sequentially with identical inputs/seeds.",
+  "results": [
+    {
+      "workload": "chronological CDF fit and validation",
+      "before": {
+        "cpuSeconds": 0.062101117999999955,
+        "wallSeconds": 0.06211293299566023
+      },
+      "after": {
+        "cpuSeconds": 0.010926648999999955,
+        "wallSeconds": 0.010929255993687548
+      },
+      "cpuReductionPercent": 82.40506877831095,
+      "exactOutputHash": "b03c89e281b6be287c0e91da0549a550612447d983d64d899bd9125c8970c940"
+    },
+    {
+      "workload": "Render 10 warm 500-row pages from 10000-row board",
+      "before": {
+        "cpuSeconds": 0.530744533,
+        "wallSeconds": 0.5307968980050646
+      },
+      "after": {
+        "cpuSeconds": 0.032870752,
+        "wallSeconds": 0.03287340499809943
+      },
+      "cpuReductionPercent": 93.80667157997839,
+      "exactOutputHash": "b5859e424c7e598817fe995d9343c03d12fb2a610f08f970857a51575a036332"
+    }
+  ],
+  "rssHighWaterBytes": 124051456
+}

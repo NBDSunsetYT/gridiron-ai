@@ -1,0 +1,62 @@
+{
+  "version": "11.0.0",
+  "status": "failed",
+  "baseUrl": "https://gridiron-ai-gray.vercel.app",
+  "mockedResponses": false,
+  "physicalIphone": false,
+  "accountsCreated": 0,
+  "financialWrites": 0,
+  "simulationsRequested": 0,
+  "checks": [
+    {
+      "profile": "desktop",
+      "name": "Guest opens the actual NFL app and real schedule without a developer login",
+      "status": "passed"
+    },
+    {
+      "profile": "desktop",
+      "name": "College football remains a separate sport with explicit source availability",
+      "status": "passed"
+    },
+    {
+      "profile": "desktop",
+      "name": "Private monitoring, ledger and saved research deny the unauthenticated guest",
+      "status": "passed"
+    },
+    {
+      "profile": "desktop",
+      "name": "Guest draft survives refresh without becoming a financial record",
+      "status": "passed"
+    },
+    {
+      "profile": "desktop",
+      "name": "Public Safari installation instructions retain the live HTTPS address",
+      "status": "passed"
+    },
+    {
+      "profile": "desktop",
+      "name": "The actual mobile layout has no horizontal overflow or private provider requests",
+      "status": "passed"
+    }
+  ],
+  "profilesRequested": [
+    "desktop",
+    "iphone-chromium"
+  ],
+  "notRun": [
+    {
+      "profile": "iphone-webkit",
+      "reason": "WebKit host dependencies unavailable: GTK4, Graphene, Harfbuzz ICU, Manette, Hyphen and GLES. Physical iPhone not tested."
+    }
+  ],
+  "cfb": {
+    "status": "partial",
+    "games": 119
+  },
+  "error": "expect(locator).toBeVisible() failed\n\nLocator: locator('main h1').first()\nExpected: visible\nTimeout: 60000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" locator('main h1').first() with timeout 60000ms\n  - waiting for locator('main h1').first()\n",
+  "diagnostic": {
+    "executorFailure": "Envoy cloudflare_https_tunnel immediate connect Invalid argument, HTTP 503 for current JS/CSS assets.",
+    "scope": "Observed in executor Chromium and urllib requests. Independent native Vercel fetch verified production health HTTP 200. The app was not changed to conceal failed browser checks.",
+    "mobileWorkflow": "Not verified by this full browser run; separate actual mobile-sized PWA checks passed."
+  }
+}

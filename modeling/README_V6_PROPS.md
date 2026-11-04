@@ -1,5 +1,10 @@
 # Exact player-prop research, version 6
 
+Version 11 storage update: new runs replace the ordered `playerSamples` described
+below with per-replicate `playerHistograms`. Exact threshold counts and parameter
+intervals are preserved; marginal frequencies do not establish joint outcomes.
+The legacy binary encoding remains readable. See `docs/GRIDIRON_V11.md`.
+
 The play-by-play engine continues to simulate coherent full NFL games. Its player
 histograms use **exact integer values**, not chart buckets. Every player's
 statistic histogram reconciles the base simulation count, including explicitly

@@ -1,0 +1,40 @@
+{
+  "version": "10.0.0",
+  "checkedAt": "2026-10-31T23:09:50.671701+00:00",
+  "unit": {
+    "passed": 627,
+    "files": 82
+  },
+  "python": {
+    "passed": 167,
+    "existingModelsPreserved": true
+  },
+  "postgres": {
+    "scriptsPassed": 6,
+    "includesTwoOwnerVersionedWorkspaces": true
+  },
+  "browserRegression": {
+    "passed": 156,
+    "profiles": [
+      "desktop Chromium",
+      "iPhone-sized Chromium"
+    ],
+    "fixtures": "Synthetic mechanics and isolated local ledger"
+  },
+  "focusedBrowser": {
+    "passed": 14,
+    "overlapsRegression": true,
+    "includesAutomaticRetryAndResearchDraftIsolation": true
+  },
+  "typecheck": "passed",
+  "productionBuild": "passed_final_accessibility_fix",
+  "physicalIphoneTested": false,
+  "productionAuthenticationPersistenceTested": false,
+  "productionDeploymentTests": {
+    "api": 7,
+    "browser": 18,
+    "pwa": 15,
+    "status": "passed_scoped",
+    "authenticatedCrossDeviceAcceptance": false
+  }
+}

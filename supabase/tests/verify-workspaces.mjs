@@ -1,0 +1,17 @@
+import {PGlite} from '@electric-sql/pglite';import {readFileSync} from 'node:fs';import assert from 'node:assert/strict';
+const db=new PGlite(),A='10000000-0000-4000-8000-000000000001',B='10000000-0000-4000-8000-000000000002',id='20000000-0000-4000-8000-000000000001',mutation='30000000-0000-4000-8000-000000000001';
+await db.exec(`create role anon;create role authenticated;create schema auth;create schema gridiron_private;create table auth.users(id uuid primary key);create function auth.uid() returns uuid language sql stable as $$select nullif(current_setting('test.owner',true),'')::uuid$$;grant usage on schema auth,gridiron_private to authenticated;insert into auth.users values('${A}'),('${B}');`);
+await db.exec(readFileSync(new URL('../migrations/20261031225446_v10_saved_workspaces.sql',import.meta.url),'utf8'));
+const owner=async who=>{await db.exec('reset role');await db.query("select set_config('test.owner',$1,false)",[who]);await db.exec('set role authenticated');};
+const write=async p=>(await db.query('select public.gridiron_save_workspace($1::jsonb) value',[JSON.stringify(p)])).rows[0].value;
+const payload={id,mutationId:mutation,expectedRevision:0,kind:'combination',sport:'NFL',data:{name:'SYNTHETIC mechanics only',legs:[]}};
+await owner(A);const first=await write(payload);assert.equal(first.revision,1);assert.ok(first.updated_at);assert.equal((await write(payload)).revision,1);assert.equal((await db.query('select count(*)::int n from research_workspace_versions')).rows[0].n,1);
+await assert.rejects(write({...payload,data:{name:'Changed duplicate request'}}),{code:'23505'});
+const second={...payload,mutationId:'30000000-0000-4000-8000-000000000002',expectedRevision:1,data:{name:'SYNTHETIC edited draft'}};assert.equal((await write(second)).revision,2);
+await assert.rejects(write({...second,mutationId:'30000000-0000-4000-8000-000000000003',expectedRevision:1}),{code:'40001'});
+assert.equal((await write(payload)).revision,1);assert.equal((await db.query('select revision from research_workspaces')).rows[0].revision,2);
+const restored=await write({...second,mutationId:'30000000-0000-4000-8000-000000000004',expectedRevision:2,data:payload.data});assert.equal(restored.revision,3);assert.equal((await db.query('select count(*)::int n from research_workspace_versions')).rows[0].n,3);
+await assert.rejects(db.exec("update research_workspaces set revision=90"),/permission denied/);await assert.rejects(db.exec('delete from research_workspace_versions'),/permission denied/);
+await owner(B);assert.equal((await db.query('select count(*)::int n from research_workspaces')).rows[0].n,0);assert.equal((await db.query('select count(*)::int n from research_workspace_versions')).rows[0].n,0);await assert.rejects(write({...payload,mutationId:'30000000-0000-4000-8000-000000000005'}),{code:'42501'});
+await db.exec('reset role;set role anon');await assert.rejects(db.exec('select * from research_workspaces'),/permission denied/);await assert.rejects(write(payload),/permission denied/);
+await db.close();console.log('PASS synthetic PostgreSQL: idempotent retry, conflict protection, append-only restore, owner isolation, guest denial and direct-write denial.');

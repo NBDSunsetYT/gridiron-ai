@@ -1,0 +1,135 @@
+{
+  "status": "passed_historical_arithmetic_only",
+  "capturedAt": "2026-11-01T19:26:16.987Z",
+  "source": "Actual persisted production complete-game simulation",
+  "gameId": "2026_08_BAL_BUF",
+  "simulationId": "74caf789-b4d4-4139-bad7-668002564351",
+  "eventStart": "2026-11-01T18:00:00+00:00",
+  "modelVersion": "pbp-conditional-4.0.0",
+  "inputVersion": "1f920d9f9d519db55010e14fadd2d94d64f89aacd11fea838a6698e0b3ba7c45",
+  "currentPregameEstimate": false,
+  "newSimulationExecuted": false,
+  "modelAccuracyValidated": false,
+  "liveNFLMarketPricesVerified": false,
+  "checks": [
+    {
+      "stat": "receivingYards",
+      "playerId": "00-0039064",
+      "playerName": "Zay Flowers",
+      "threshold": 82.5,
+      "thresholdBasis": "Explicit hypothetical arithmetic test at stored median + 0.5; not a live market line",
+      "hits": 4901,
+      "simulations": 10000,
+      "rawProbability": 0.4901,
+      "pushes": 0,
+      "pushProbability": 0,
+      "monteCarloSE": 0.004999019803921565,
+      "monteCarloInterval95": [
+        0.480307783441743,
+        0.49989981972599623
+      ]
+    },
+    {
+      "stat": "rushingYards",
+      "playerId": "00-0037248",
+      "playerName": "James Cook",
+      "threshold": 104.5,
+      "thresholdBasis": "Explicit hypothetical arithmetic test at stored median + 0.5; not a live market line",
+      "hits": 4918,
+      "simulations": 10000,
+      "rawProbability": 0.4918,
+      "pushes": 0,
+      "pushProbability": 0,
+      "monteCarloSE": 0.004999327554781743,
+      "monteCarloInterval95": [
+        0.4820065278113462,
+        0.5015997697619328
+      ]
+    },
+    {
+      "stat": "passingYards",
+      "playerId": "00-0034857",
+      "playerName": "Josh Allen",
+      "threshold": 238.5,
+      "thresholdBasis": "Explicit hypothetical arithmetic test at stored median + 0.5; not a live market line",
+      "hits": 4966,
+      "simulations": 10000,
+      "rawProbability": 0.4966,
+      "pushes": 0,
+      "pushProbability": 0,
+      "monteCarloSE": 0.004999884398663633,
+      "monteCarloInterval95": [
+        0.4868035938538263,
+        0.5063990173350942
+      ]
+    },
+    {
+      "stat": "receptions",
+      "playerId": "00-0039064",
+      "playerName": "Zay Flowers",
+      "threshold": 6.5,
+      "thresholdBasis": "Explicit hypothetical arithmetic test at stored median + 0.5; not a live market line",
+      "hits": 4447,
+      "simulations": 10000,
+      "rawProbability": 0.4447,
+      "pushes": 0,
+      "pushProbability": 0,
+      "monteCarloSE": 0.004969325004464892,
+      "monteCarloInterval95": [
+        0.43498338411382875,
+        0.45445908610596797
+      ]
+    },
+    {
+      "stat": "touchdowns",
+      "playerId": "00-0037248",
+      "playerName": "James Cook",
+      "threshold": 1.5,
+      "thresholdBasis": "Explicit hypothetical arithmetic test at stored median + 0.5; not a live market line",
+      "hits": 2342,
+      "simulations": 10000,
+      "rawProbability": 0.2342,
+      "pushes": 0,
+      "pushProbability": 0,
+      "monteCarloSE": 0.004234977685891627,
+      "monteCarloInterval95": [
+        0.22600262921699701,
+        0.2426015043168546
+      ]
+    },
+    {
+      "stat": "winner",
+      "threshold": 0,
+      "thresholdBasis": "Independent historical statistical threshold, not a live quote",
+      "hits": 6922,
+      "simulations": 10000,
+      "rawProbability": 0.6922,
+      "pushes": 54,
+      "pushProbability": 0.0054,
+      "monteCarloSE": 0.004615833185893961,
+      "monteCarloInterval95": [
+        0.6830807647660883,
+        0.7011716262602238
+      ]
+    },
+    {
+      "stat": "total",
+      "threshold": 47.5,
+      "thresholdBasis": "Independent historical statistical threshold, not a live quote",
+      "hits": 4962,
+      "simulations": 10000,
+      "rawProbability": 0.4962,
+      "pushes": 0,
+      "pushProbability": 0,
+      "monteCarloSE": 0.004999855597914804,
+      "monteCarloInterval95": [
+        0.48640380386909343,
+        0.5059991145185235
+      ]
+    }
+  ],
+  "limitations": [
+    "These are historical simulation arithmetic and identity checks, not live player-prop prices or out-of-sample validation.",
+    "Current availability and observed final outcomes were not inferred from these modeled distributions."
+  ]
+}

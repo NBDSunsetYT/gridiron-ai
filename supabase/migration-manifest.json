@@ -1,7 +1,7 @@
 {
   "projectRef": "qdtdjbapdipopncklsdb",
-  "source": "Supabase list_migrations after twenty-one successful applications",
-  "method": "Aligned source filenames only; SQL bytes and remote history unchanged",
+  "source": "Supabase list_migrations after probability capacity reporting",
+  "method": "Source filenames aligned with live versions; existing SQL/history preserved; new v11 metadata migration is additive",
   "migrations": [
     {
       "name": "gridiron_v4",
@@ -148,6 +148,48 @@
       "authoredVersion": "20261031220121",
       "liveVersion": "20261031220149",
       "sha256": "ab8bc8771c282f593bf4ff68ce4a561acef3cb675abea6a4acfd64de07d8cd60",
+      "sqlUnchanged": true
+    },
+    {
+      "name": "v10_saved_workspaces",
+      "authoredVersion": "20261031225047",
+      "liveVersion": "20261031225446",
+      "sha256": "9df2557c9d3113fd21722dae6657b87aa6135fa6ae0da49f1f27f77780952f25",
+      "sqlUnchanged": true
+    },
+    {
+      "name": "v10_workspace_version_index",
+      "authoredVersion": "20261031230122",
+      "liveVersion": "20261031230130",
+      "sha256": "2b9e5c05ff82e032ad0c5d96b88d4d97e12575c4703529389c2dee737a709947",
+      "sqlUnchanged": true
+    },
+    {
+      "name": "v10_2_probability_history",
+      "authoredVersion": "20261031234100",
+      "liveVersion": "20261031234911",
+      "sha256": "1d9364b4beae803daf85c2076107717901a92e3e6aec0b6e39f985c4171fbd07",
+      "sqlUnchanged": true
+    },
+    {
+      "name": "shared_research_object_storage",
+      "authoredVersion": "20261101000200",
+      "liveVersion": "20261031235628",
+      "sha256": "87e0dc4ffc8729c6719381190d3f97095a114b1500c5c77cff9b2440e498c9ad",
+      "sqlUnchanged": true
+    },
+    {
+      "name": "gridiron_storage_coordination",
+      "authoredVersion": "20261101101000",
+      "liveVersion": "20261101101833",
+      "sha256": "852307efb618688bd796e12a06b8eeb29b902a53f899def24fc5f368e58a619f",
+      "sqlUnchanged": true
+    },
+    {
+      "name": "probability_capacity_reporting",
+      "authoredVersion": "20261101190714",
+      "liveVersion": "20261101191026",
+      "sha256": "8df4b7c765d5008a08670f02d3b1678e0b0f2a323fbe43ae14d4ef08c81ff90a",
       "sqlUnchanged": true
     }
   ]

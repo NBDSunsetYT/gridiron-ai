@@ -1,0 +1,3469 @@
+{
+  "version": "12.1.0",
+  "checkedAt": "2026-11-01T23:33:51.463840+00:00",
+  "status": "production_verified",
+  "modelStudies": {
+    "NFL": {
+      "gameId": "2026_08_PHI_WAS",
+      "historicalPlayersWithEvidence": 29,
+      "inputVersion": "dce2df990e3aad0e76d7d1c649d0504c1d4949985347da377a9eb89ef5662cc4",
+      "sources": [
+        {
+          "id": "nflverse-rosters",
+          "name": "nflverse rosters",
+          "kind": "rosters",
+          "url": "https://github.com/nflverse/nflverse-data/releases/download/rosters/roster_2026.csv.gz",
+          "season": 2026,
+          "checkedAt": "2026-11-01T22:57:22.225189+00:00",
+          "sourceUpdatedAt": "2026-11-01T14:17:56+00:00",
+          "version": "49636b4d5c98a97df1137aa1bcc402c0b748fa3e8816ec6073250e63d617b79e",
+          "etag": "\"0x8DF3822ECCED3F0\"",
+          "bytes": 377867,
+          "status": "available",
+          "schemaVerified": true,
+          "access": "Public nflverse release asset; upstream attribution and source terms apply.",
+          "publicationAt": null,
+          "reliability": "retrieved_and_schema_checked; historical first-publication time unknown",
+          "lastCheckedAt": "2026-11-01T23:08:19.071435+00:00"
+        },
+        {
+          "id": "nflverse-injuries",
+          "name": "nflverse injuries",
+          "kind": "injuries",
+          "url": "https://github.com/nflverse/nflverse-data/releases/download/injuries/injuries_2026.csv.gz",
+          "season": 2026,
+          "checkedAt": "2026-11-01T22:57:22.207108+00:00",
+          "sourceUpdatedAt": "2026-11-01T14:14:07+00:00",
+          "version": "40177efec226a0ea97995bb281a8a027240142510d8eb2c9f28f884c03e96e55",
+          "etag": "\"0x8DF382264B80E26\"",
+          "bytes": 52132,
+          "status": "available",
+          "schemaVerified": true,
+          "access": "Public nflverse release asset; upstream attribution and source terms apply.",
+          "publicationAt": null,
+          "reliability": "retrieved_and_schema_checked; historical first-publication time unknown",
+          "lastCheckedAt": "2026-11-01T23:08:19.082272+00:00"
+        },
+        {
+          "id": "nflverse-snaps",
+          "name": "nflverse snap counts",
+          "kind": "snaps",
+          "url": "https://github.com/nflverse/nflverse-data/releases/download/snap_counts/snap_counts_2026.csv.gz",
+          "season": 2026,
+          "checkedAt": "2026-11-01T22:57:22.246430+00:00",
+          "sourceUpdatedAt": "2026-10-30T11:01:36+00:00",
+          "version": "d0acc389f757892912cad08eb6b92de07f1db10af360e3011fff6a626189db45",
+          "etag": "\"0x8DF36752AF41875\"",
+          "bytes": 190301,
+          "status": "available",
+          "schemaVerified": true,
+          "access": "Public nflverse release asset; upstream attribution and source terms apply.",
+          "publicationAt": null,
+          "reliability": "retrieved_and_schema_checked; historical first-publication time unknown",
+          "lastCheckedAt": "2026-11-01T23:08:19.121376+00:00"
+        },
+        {
+          "id": "nflverse-player_stats",
+          "name": "nflverse player_stats",
+          "kind": "player_stats",
+          "url": "https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_2026.csv.gz",
+          "season": 2026,
+          "checkedAt": "2026-11-01T23:08:19.126842+00:00",
+          "sourceUpdatedAt": "2026-11-01T22:05:13+00:00",
+          "version": "a3c260c4d69fadb500d50d56cf69715b5936891d8c0a1dd6d5639f55b0c1d036",
+          "etag": "\"0x8DF3864344A0233\"",
+          "bytes": 488529,
+          "status": "available",
+          "schemaVerified": true,
+          "access": "Public nflverse release asset; upstream attribution and source terms apply.",
+          "publicationAt": null,
+          "reliability": "retrieved_and_schema_checked; historical first-publication time unknown"
+        },
+        {
+          "id": "nflverse-player_stats",
+          "name": "nflverse player_stats",
+          "kind": "player_stats",
+          "url": "https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_2025.csv.gz",
+          "season": 2025,
+          "checkedAt": "2026-11-01T23:08:19.143434+00:00",
+          "sourceUpdatedAt": "2026-08-13T16:51:22+00:00",
+          "version": "c7401e321bdb369443f3280b9acd74ba6e16d82e710383bf1c01acabfebeac0b",
+          "etag": "\"0x8DEF95B1AD8390C\"",
+          "bytes": 1262421,
+          "status": "available",
+          "schemaVerified": true,
+          "access": "Public nflverse release asset; upstream attribution and source terms apply.",
+          "publicationAt": null,
+          "reliability": "retrieved_and_schema_checked; historical first-publication time unknown"
+        },
+        {
+          "id": "nflverse-team_stats",
+          "name": "nflverse team_stats",
+          "kind": "team_stats",
+          "url": "https://github.com/nflverse/nflverse-data/releases/download/stats_team/stats_team_week_2026.csv.gz",
+          "season": 2026,
+          "checkedAt": "2026-11-01T22:57:22.580473+00:00",
+          "sourceUpdatedAt": "2026-11-01T22:05:17+00:00",
+          "version": "8c6e89554d54a9bcfb824dd8aed46ef1e4f81fb71c33414fcaa06da1fb807ee7",
+          "etag": "\"0x8DF386436ABC7A6\"",
+          "bytes": 29952,
+          "status": "available",
+          "schemaVerified": true,
+          "access": "Public nflverse release asset; upstream attribution and source terms apply.",
+          "publicationAt": null,
+          "reliability": "retrieved_and_schema_checked; historical first-publication time unknown",
+          "lastCheckedAt": "2026-11-01T23:08:19.453156+00:00"
+        },
+        {
+          "id": "nflverse-depth",
+          "name": "nflverse depth charts",
+          "kind": "depth",
+          "url": "https://github.com/nflverse/nflverse-data/releases/download/depth_charts/depth_charts_2026.csv.gz",
+          "season": 2026,
+          "checkedAt": "2026-11-01T22:57:22.711346+00:00",
+          "sourceUpdatedAt": "2026-11-01T14:14:37+00:00",
+          "version": "0572574e80e3bb5bb9f2dd51a052161dbe09066eb94c4e581511b8dc25e71892",
+          "etag": "\"0x8DF3822763B0D76\"",
+          "bytes": 14170871,
+          "status": "available",
+          "schemaVerified": true,
+          "access": "Public nflverse release asset; upstream attribution and source terms apply.",
+          "publicationAt": null,
+          "reliability": "retrieved_and_schema_checked; historical first-publication time unknown",
+          "lastCheckedAt": "2026-11-01T23:08:19.504138+00:00"
+        }
+      ],
+      "candidates": {
+        "rushingYards:WR": {
+          "approved": false,
+          "reason": "Chronological improvement did not pass the conservative familywise publication gate.",
+          "base": {
+            "family": "student_t",
+            "df": 0.20233890106576485,
+            "location": -3.035407502542163e-19,
+            "scale": 3.221490704172627e-18
+          },
+          "strength": 2.0,
+          "window": 24,
+          "validation": {
+            "chronological": true,
+            "trainingSeason": 2025,
+            "tuningWeeks": "9\u201318 of prior season",
+            "testSeason": 2026,
+            "testPredictions": 797,
+            "testGames": 107,
+            "brierScore": 0.07811828652752789,
+            "benchmarkBrier": 0.08641342245185957,
+            "logLoss": 0.3722814049105415,
+            "benchmarkLogLoss": 0.29906898247168984,
+            "pairedGameBootstrapBrierDifference95": [
+              -0.012283286098824479,
+              -0.004368100971940964
+            ],
+            "pairedGameBootstrapPValue": 0.0001999600079984003,
+            "calibration": [
+              {
+                "lower": 0.0,
+                "count": 523,
+                "predicted": 0.013377003345035257,
+                "observed": 0.04206500956022945
+              },
+              {
+                "lower": 0.1,
+                "count": 121,
+                "predicted": 0.14912735248196407,
+                "observed": 0.11570247933884298
+              },
+              {
+                "lower": 0.2,
+                "count": 68,
+                "predicted": 0.24255798005090673,
+                "observed": 0.16176470588235295
+              },
+              {
+                "lower": 0.30000000000000004,
+                "count": 45,
+                "predicted": 0.3355897211658208,
+                "observed": 0.24444444444444444
+              },
+              {
+                "lower": 0.4,
+                "count": 22,
+                "predicted": 0.42699247399741486,
+                "observed": 0.45454545454545453
+              },
+              {
+                "lower": 0.5,
+                "count": 14,
+                "predicted": 0.5263787735761518,
+                "observed": 0.7142857142857143
+              },
+              {
+                "lower": 0.6000000000000001,
+                "count": 4,
+                "predicted": 0.6349507504343694,
+                "observed": 0.5
+              }
+            ],
+            "calibrated": false,
+            "limitedSampleTestPredictions": 130,
+            "scope": "Retrospective fixed-threshold player-stat validation; not historical market, first-publication or prospective contract validation.",
+            "familywiseAlpha": 0.025,
+            "familywiseMethod": "Bonferroni over predeclared sport/stat/role families",
+            "familySize": 52,
+            "familywiseAdjustedPValue": 0.010397920415916816
+          },
+          "calibrator": null,
+          "version": "hierarchical-player-cdf-12.1.0",
+          "artifactId": "8bb98155253a111427533d66df3cb56599e240f04ae876d7ac350d87f868836e"
+        },
+        "carries:WR": {
+          "approved": true,
+          "reason": "Supported chronological holdout improvement.",
+          "base": {
+            "family": "negative_binomial",
+            "size": 0.4789065010574774,
+            "probability": 0.7174348697394789
+          },
+          "strength": 2.0,
+          "window": 24,
+          "validation": {
+            "chronological": true,
+            "trainingSeason": 2025,
+            "tuningWeeks": "9\u201318 of prior season",
+            "testSeason": 2026,
+            "testPredictions": 797,
+            "testGames": 107,
+            "brierScore": 0.09387802943064391,
+            "benchmarkBrier": 0.10168713777535046,
+            "logLoss": 0.3170851722089911,
+            "benchmarkLogLoss": 0.3378855123876429,
+            "pairedGameBootstrapBrierDifference95": [
+              -0.01116358538625758,
+              -0.004511468395254735
+            ],
+            "pairedGameBootstrapPValue": 0.0001999600079984003,
+            "calibration": [
+              {
+                "lower": 0.0,
+                "count": 453,
+                "predicted": 0.0396200751724107,
+                "observed": 0.046357615894039736
+              },
+              {
+                "lower": 0.1,
+                "count": 132,
+                "predicted": 0.15012289901002782,
+                "observed": 0.14393939393939395
+              },
+              {
+                "lower": 0.2,
+                "count": 84,
+                "predicted": 0.2526697872695139,
+                "observed": 0.15476190476190477
+              },
+              {
+                "lower": 0.30000000000000004,
+                "count": 56,
+                "predicted": 0.34559174797719827,
+                "observed": 0.17857142857142858
+              },
+              {
+                "lower": 0.4,
+                "count": 45,
+                "predicted": 0.44412680186096204,
+                "observed": 0.35555555555555557
+              },
+              {
+                "lower": 0.5,
+                "count": 17,
+                "predicted": 0.5611479671431251,
+                "observed": 0.5294117647058824
+              },
+              {
+                "lower": 0.6000000000000001,
+                "count": 10,
+                "predicted": 0.6408446533448534,
+                "observed": 0.7
+              }
+            ],
+            "calibrated": false,
+            "limitedSampleTestPredictions": 130,
+            "scope": "Retrospective fixed-threshold player-stat validation; not historical market, first-publication or prospective contract validation.",
+            "familywiseAlpha": 0.025,
+            "familywiseMethod": "Bonferroni over predeclared sport/stat/role families",
+            "familySize": 52,
+            "familywiseAdjustedPValue": 0.010397920415916816
+          },
+          "calibrator": null,
+          "version": "hierarchical-player-cdf-12.1.0",
+          "artifactId": "d77ab92fff3796de67d59c93e08da5053a8eedd59d109adf66f7044e2b09485b"
+        },
+        "rushingTouchdowns:WR": {
+          "approved": true,
+          "reason": "Supported chronological holdout improvement.",
+          "base": {
+            "family": "poisson",
+            "mean": 0.005268703898840885
+          },
+          "strength": 32.0,
+          "window": 4,
+          "validation": {
+            "chronological": true,
+            "trainingSeason": 2025,
+            "tuningWeeks": "9\u201318 of prior season",
+            "testSeason": 2026,
+            "testPredictions": 797,
+            "testGames": 107,
+            "brierScore": 0.005013502708064491,
+            "benchmarkBrier": 0.01876690366652726,
+            "logLoss": 0.03215978395853342,
+            "benchmarkLogLoss": 0.13340650332062642,
+            "pairedGameBootstrapBrierDifference95": [
+              -0.015100753901594025,
+              -0.012393029715299412
+            ],
+            "pairedGameBootstrapPValue": 0.0001999600079984003,
+            "calibration": [
+              {
+                "lower": 0.0,
+                "count": 797,
+                "predicted": 0.005229309745238655,
+                "observed": 0.005018820577164366
+              }
+            ],
+            "calibrated": false,
+            "limitedSampleTestPredictions": 797,
+            "scope": "Retrospective fixed-threshold player-stat validation; not historical market, first-publication or prospective contract validation.",
+            "familywiseAlpha": 0.025,
+            "familywiseMethod": "Bonferroni over predeclared sport/stat/role families",
+            "familySize": 52,
+            "familywiseAdjustedPValue": 0.010397920415916816
+          },
+          "calibrator": null,
+          "version": "hierarchical-player-cdf-12.1.0",
+          "artifactId": "bebf899b3aabf8a72618b004bc290ba025b82acdc07bca4f5d9d1bbe705154e0"
+        },
+        "receivingYards:WR": {
+          "approved": false,
+          "reason": "Chronological improvement did not pass the conservative familywise publication gate.",
+          "base": {
+            "family": "student_t",
+            "df": 5.1585769250192754,
+            "location": 31.339357652079528,
+            "scale": 27.563984924207677
+          },
+          "strength": 2.0,
+          "window": 16,
+          "validation": {
+            "chronological": true,
+            "trainingSeason": 2025,
+            "tuningWeeks": "9\u201318 of prior season",
+            "testSeason": 2026,
+            "testPredictions": 3188,
+            "testGames": 107,
+            "brierScore": 0.18000911331941136,
+            "benchmarkBrier": 0.1820289806513928,
+            "logLoss": 0.5436783289879312,
+            "benchmarkLogLoss": 0.5473214029076697,
+            "pairedGameBootstrapBrierDifference95": [
+              -0.003880221576205665,
+              -0.00026201501293837736
+            ],
+            "pairedGameBootstrapPValue": 0.01219756048790242,
+            "calibration": [
+              {
+                "lower": 0.0,
+                "count": 369,
+                "predicted": 0.05617929589740364,
+                "observed": 0.11924119241192412
+              },
+              {
+                "lower": 0.1,
+                "count": 265,
+                "predicted": 0.15184940912465214,
+                "observed": 0.1811320754716981
+              },
+              {
+                "lower": 0.2,
+                "count": 337,
+                "predicted": 0.2552443814503542,
+                "observed": 0.24925816023738873
+              },
+              {
+                "lower": 0.30000000000000004,
+                "count": 269,
+                "predicted": 0.34733114917956665,
+                "observed": 0.3903345724907063
+              },
+              {
+                "lower": 0.4,
+                "count": 304,
+                "predicted": 0.4476207705875328,
+                "observed": 0.4309210526315789
+              },
+              {
+                "lower": 0.5,
+                "count": 266,
+                "predicted": 0.5519606484857701,
+                "observed": 0.575187969924812
+              },
+              {
+                "lower": 0.6000000000000001,
+                "count": 320,
+                "predicted": 0.647398847779068,
+                "observed": 0.6
+              },
+              {
+                "lower": 0.7000000000000001,
+                "count": 327,
+                "predicted": 0.7563965333256878,
+                "observed": 0.6941896024464832
+              },
+              {
+                "lower": 0.8,
+                "count": 355,
+                "predicted": 0.8525637243700014,
+                "observed": 0.8394366197183099
+              },
+              {
+                "lower": 0.9,
+                "count": 376,
+                "predicted": 0.9386780171262943,
+                "observed": 0.9042553191489362
+              }
+            ],
+            "calibrated": false,
+            "limitedSampleTestPredictions": 520,
+            "scope": "Retrospective fixed-threshold player-stat validation; not historical market, first-publication or prospective contract validation.",
+            "familywiseAlpha": 0.025,
+            "familywiseMethod": "Bonferroni over predeclared sport/stat/role families",
+            "familySize": 52,
+            "familywiseAdjustedPValue": 0.6342731453709258
+          },
+          "calibrator": null,
+          "version": "hierarchical-player-cdf-12.1.0",
+          "artifactId": "2ac902dcd7f351e6de3fb34e1b057e5b1a9de5303d13f9fe9914709c11f44665"
+        },
+        "receptions:WR": {
+          "approved": false,
+          "reason": "Chronological improvement did not pass the conservative familywise publication gate.",
+          "base": {
+            "family": "negative_binomial",
+            "size": 3.1418125198673463,
+            "probability": 0.5152577238084979
+          },
+          "strength": 2.0,
+          "window": 8,
+          "validation": {
+            "chronological": true,
+            "trainingSeason": 2025,
+            "tuningWeeks": "9\u201318 of prior season",
+            "testSeason": 2026,
+            "testPredictions": 3188,
+            "testGames": 107,
+            "brierScore": 0.16172116110528373,
+            "benchmarkBrier": 0.16411099865907142,
+            "logLoss": 0.49283555363946324,
+            "benchmarkLogLoss": 0.5019055688268153,
+            "pairedGameBootstrapBrierDifference95": [
+              -0.00413940874557202,
+              -0.000679864332198062
+            ],
+            "pairedGameBootstrapPValue": 0.003199360127974405,
+            "calibration": [
+              {
+                "lower": 0.0,
+                "count": 654,
+                "predicted": 0.050539614958687695,
+                "observed": 0.06880733944954129
+              },
+              {
+                "lower": 0.1,
+                "count": 412,
+                "predicted": 0.15477246252924143,
+                "observed": 0.1650485436893204
+              },
+              {
+                "lower": 0.2,
+                "count": 371,
+                "predicted": 0.2579116676420667,
+                "observed": 0.25336927223719674
+              },
+              {
+                "lower": 0.30000000000000004,
+                "count": 266,
+                "predicted": 0.35758342509940716,
+                "observed": 0.3383458646616541
+              },
+              {
+                "lower": 0.4,
+                "count": 303,
+                "predicted": 0.46338764054465775,
+                "observed": 0.45544554455445546
+              },
+              {
+                "lower": 0.5,
+                "count": 289,
+                "predicted": 0.5682190779517522,
+                "observed": 0.5778546712802768
+              },
+              {
+                "lower": 0.6000000000000001,
+                "count": 268,
+                "predicted": 0.6657674123701128,
+                "observed": 0.6567164179104478
+              },
+              {
+                "lower": 0.7000000000000001,
+                "count": 237,
+                "predicted": 0.7668666540167247,
+                "observed": 0.759493670886076
+              },
+              {
+                "lower": 0.8,
+                "count": 237,
+                "predicted": 0.8568596476668127,
+                "observed": 0.8523206751054853
+              },
+              {
+                "lower": 0.9,
+                "count": 151,
+                "predicted": 0.9360688671403471,
+                "observed": 0.9271523178807947
+              }
+            ],
+            "calibrated": false,
+            "limitedSampleTestPredictions": 520,
+            "scope": "Retrospective fixed-threshold player-stat validation; not historical market, first-publication or prospective contract validation.",
+            "familywiseAlpha": 0.025,
+            "familywiseMethod": "Bonferroni over predeclared sport/stat/role families",
+            "familySize": 52,
+            "familywiseAdjustedPValue": 0.16636672665466906
+          },
+          "calibrator": null,
+          "version": "hierarchical-player-cdf-12.1.0",
+          "artifactId": "25b7f76bfef7b0af46be1f40d43e583a132defbffacbffc2ecaf5d1a672802ee"
+        },
+        "receivingTouchdowns:WR": {
+          "approved": true,
+          "reason": "Supported chronological holdout improvement.",
+          "base": {
+            "family": "negative_binomial",
+            "size": 7.597249181964398,
+            "probability": 0.970258880192655
+          },
+          "strength": 8.0,
+          "window": 8,
+          "validation": {
+            "chronological": true,
+            "trainingSeason": 2025,
+            "tuningWeeks": "9\u201318 of prior season",
+            "testSeason": 2026,
+            "testPredictions": 1594,
+            "testGames": 107,
+            "brierScore": 0.09218525256388035,
+            "benchmarkBrier": 0.10320497890766048,
+            "logLoss": 0.3102344477473437,
+            "benchmarkLogLoss": 0.34812396076935836,
+            "pairedGameBootstrapBrierDifference95": [
+              -0.014350919807979673,
+              -0.007759670941949208
+            ],
+            "pairedGameBootstrapPValue": 0.0001999600079984003,
+            "calibration": [
+              {
+                "lower": 0.0,
+                "count": 753,
+                "predicted": 0.022453501877396524,
+                "observed": 0.025232403718459494
+              },
+              {
+                "lower": 0.1,
+                "count": 472,
+                "predicted": 0.14366275879374074,
+                "observed": 0.13983050847457626
+              },
+              {
+                "lower": 0.2,
+                "count": 268,
+                "predicted": 0.24691171307919704,
+                "observed": 0.23880597014925373
+              },
+              {
+                "lower": 0.30000000000000004,
+                "count": 69,
+                "predicted": 0.3505460632416029,
+                "observed": 0.3333333333333333
+              },
+              {
+                "lower": 0.4,
+                "count": 32,
+                "predicted": 0.4247519864791559,
+                "observed": 0.21875
+              }
+            ],
+            "calibrated": false,
+            "limitedSampleTestPredictions": 260,
+            "scope": "Retrospective fixed-threshold player-stat validation; not historical market, first-publication or prospective contract validation.",
+            "familywiseAlpha": 0.025,
+            "familywiseMethod": "Bonferroni over predeclared sport/stat/role families",
+            "familySize": 52,
+            "familywiseAdjustedPValue": 0.010397920415916816
+          },
+          "calibrator": null,
+          "version": "hierarchical-player-cdf-12.1.0",
+          "artifactId": "f053f72c6f64e2205e716b88fe123e888eb4a76da7f83b0429f9ada862d0223f"
+        },
+        "targets:WR": {
+          "approved": false,
+          "reason": "Chronological improvement did not pass the conservative familywise publication gate.",
+          "base": {
+            "family": "negative_binomial",
+            "size": 3.3469623399485076,
+            "probability": 0.418080232227559
+          },
+          "strength": 2.0,
+          "window": 8,
+          "validation": {
+            "chronological": true,
+            "trainingSeason": 2025,
+            "tuningWeeks": "9\u201318 of prior season",
+            "testSeason": 2026,
+            "testPredictions": 3188,
+            "testGames": 107,
+            "brierScore": 0.16171821034961256,
+            "benchmarkBrier": 0.1642894554918719,
+            "logLoss": 0.491143737587223,
+            "benchmarkLogLoss": 0.5018009920658324,
+            "pairedGameBootstrapBrierDifference95": [
+              -0.004559002676644458,
+              -0.0006728244530527841
+            ],
+            "pairedGameBootstrapPValue": 0.003799240151969606,
+            "calibration": [
+              {
+                "lower": 0.0,
+                "count": 604,
+                "predicted": 0.04315909871510441,
+                "observed": 0.054635761589403975
+              },
+              {
+                "lower": 0.1,
+                "count": 311,
+                "predicted": 0.1459089821839531,
+                "observed": 0.17684887459807075
+              },
+              {
+                "lower": 0.2,
+                "count": 373,
+                "predicted": 0.24149482637194689,
+                "observed": 0.28418230563002683
+              },
+              {
+                "lower": 0.30000000000000004,
+                "count": 318,
+                "predicted": 0.3417715888699419,
+                "observed": 0.3490566037735849
+              },
+              {
+                "lower": 0.4,
+                "count": 271,
+                "predicted": 0.44132617968307786,
+                "observed": 0.42066420664206644
+              },
+              {
+                "lower": 0.5,
+                "count": 222,
+                "predicted": 0.5419817018689679,
+                "observed": 0.5585585585585585
+              },
+              {
+                "lower": 0.6000000000000001,
+                "count": 226,
+                "predicted": 0.6421831219273957,
+                "observed": 0.6238938053097345
+              },
+              {
+                "lower": 0.7000000000000001,
+                "count": 242,
+                "predicted": 0.7364794478034504,
+                "observed": 0.7148760330578512
+              },
+              {
+                "lower": 0.8,
+                "count": 330,
+                "predicted": 0.831916308674336,
+                "observed": 0.8484848484848485
+              },
+              {
+                "lower": 0.9,
+                "count": 291,
+                "predicted": 0.9324133312959145,
+                "observed": 0.9072164948453608
+              }
+            ],
+            "calibrated": false,
+            "limitedSampleTestPredictions": 520,
+            "scope": "Retrospective fixed-threshold player-stat validation; not historical market, first-publication or prospective contract validation.",
+            "familywiseAlpha": 0.025,
+            "familywiseMethod": "Bonferroni over predeclared sport/stat/role families",
+            "familySize": 52,
+            "familywiseAdjustedPValue": 0.1975604879024195
+          },
+          "calibrator": null,
+          "version": "hierarchical-player-cdf-12.1.0",
+          "artifactId": "9ccbbddccc2b4ce844120853282fc90746ccd52a1e5f3e6f66f4aab801c37191"
+        },
+        "touchdowns:WR": {
+          "approved": true,
+          "reason": "Supported chronological holdout improvement.",
+          "base": {
+            "family": "negative_binomial",
+            "size": 12.171321358762542,
+            "probability": 0.9808093755722396
+          },
+          "strength": 8.0,
+          "window": 8,
+          "validation": {
+            "chronological": true,
+            "trainingSeason": 2025,
+            "tuningWeeks": "9\u201318 of prior season",
+            "testSeason": 2026,
+            "testPredictions": 1594,
+            "testGames": 107,
+            "brierScore": 0.093653855867303,
+            "benchmarkBrier": 0.10478497797824925,
+            "logLoss": 0.3138368382176913,
+            "benchmarkLogLoss": 0.35226609238965306,
+            "pairedGameBootstrapBrierDifference95": [
+              -0.014568433275892682,
+              -0.007816536538184267
+            ],
+            "pairedGameBootstrapPValue": 0.0001999600079984003,
+            "calibration": [
+              {
+                "lower": 0.0,
+                "count": 753,
+                "predicted": 0.022597446127050114,
+                "observed": 0.025232403718459494
+              },
+              {
+                "lower": 0.1,
+                "count": 459,
+                "predicted": 0.14661596586092623,
+                "observed": 0.14596949891067537
+              },
+              {
+                "lower": 0.2,
+                "count": 275,
+                "predicted": 0.24856077696584133,
+                "observed": 0.2290909090909091
+              },
+              {
+                "lower": 0.30000000000000004,
+                "count": 70,
+                "predicted": 0.35328300917226446,
+                "observed": 0.32857142857142857
+              },
+              {
+                "lower": 0.4,
+                "count": 37,
+                "predicted": 0.4310621918239328,
+                "observed": 0.2972972972972973
+              }
+            ],
+            "calibrated": false,
+            "limitedSampleTestPredictions": 260,
+            "scope": "Retrospective fixed-threshold player-stat validation; not historical market, first-publication or prospective contract validation.",
+            "familywiseAlpha": 0.025,
+            "familywiseMethod": "Bonferroni over predeclared sport/stat/role families",
+            "familySize": 52,
+            "familywiseAdjustedPValue": 0.010397920415916816
+          },
+          "calibrator": null,
+          "version": "hierarchical-player-cdf-12.1.0",
+          "artifactId": "6d8102e384c2dd11b1acccdb7490d4ceed097f8ec64d36936a7f3c9962d5639e"
+        },
+        "passingYards:QB": {
+          "approved": false,
+          "reason": "Chronological improvement did not pass the conservative familywise publication gate.",
+          "base": {
+            "family": "student_t",
+            "df": 170297.27584555838,
+            "location": 188.13140548657117,
+            "scale": 100.51426065979274
+          },
+          "strength": 2.0,
+          "window": 16,
+          "validation": {
+            "chronological": true,
+            "trainingSeason": 2025,
+            "tuningWeeks": "9\u201318 of prior season",
+            "testSeason": 2026,
+            "testPredictions": 936,
+            "testGames": 107,
+            "brierScore": 0.1798936591074183,
+            "benchmarkBrier": 0.18322610598658934,
+            "logLoss": 0.5344349058502301,
+            "benchmarkLogLoss": 0.542952041089828,
+            "pairedGameBootstrapBrierDifference95": [
+              -0.0060048265218535886,
+              -0.000938813025300494
+            ],
+            "pairedGameBootstrapPValue": 0.0021995600879824036,
+            "calibration": [
+              {
+                "lower": 0.0,
+                "count": 60,
+                "predicted": 0.05867327703033419,
+                "observed": 0.11666666666666667
+              },
+              {
+                "lower": 0.1,
+                "count": 86,
+                "predicted": 0.15072097442294358,
+                "observed": 0.18604651162790697
+              },
+              {
+                "lower": 0.2,
+                "count": 74,
+                "predicted": 0.247111591726881,
+                "observed": 0.32432432432432434
+              },
+              {
+                "lower": 0.30000000000000004,
+                "count": 110,
+                "predicted": 0.3474847577727643,
+                "observed": 0.41818181818181815
+              },
+              {
+                "lower": 0.4,
+                "count": 87,
+                "predicted": 0.4497724660086115,
+                "observed": 0.5172413793103449
+              },
+              {
+                "lower": 0.5,
+                "count": 104,
+                "predicted": 0.5442853929663438,
+                "observed": 0.5096153846153846
+              },
+              {
+                "lower": 0.6000000000000001,
+                "count": 85,
+                "predicted": 0.6527385724591961,
+                "observed": 0.7411764705882353
+              },
+              {
+                "lower": 0.7000000000000001,
+                "count": 85,
+                "predicted": 0.7477067682192141,
+                "observed": 0.7176470588235294
+              },
+              {
+                "lower": 0.8,
+                "count": 98,
+                "predicted": 0.8509368139250838,
+                "observed": 0.8367346938775511
+              },
+              {
+                "lower": 0.9,
+                "count": 147,
+                "predicted": 0.945256802954533,
+                "observed": 0.9387755102040817
+              }
+            ],
+            "calibrated": false,
+            "limitedSampleTestPredictions": 84,
+            "scope": "Retrospective fixed-threshold player-stat validation; not historical market, first-publication or prospective contract validation.",
+            "familywiseAlpha": 0.025,
+            "familywiseMethod": "Bonferroni over predeclared sport/stat/role families",
+            "familySize": 52,
+            "familywiseAdjustedPValue": 0.11437712457508499
+          },
+          "calibrator": null,
+          "version": "hierarchical-player-cdf-12.1.0",
+          "artifactId": "24abb98f7eff4fef0d150af7ea0d7f1e3c82691241622a7959f9d20f0d7b2477"
+        },
+        "passingTouchdowns:QB": {
+          "approved": false,
+          "reason": "Chronological improvement did not pass the conservative familywise publication gate.",
+          "base": {
+            "family": "negative_binomial",
+            "size": 19.44474849644624,
+            "probability": 0.9377166105781308
+          },
+          "strength": 8.0,
+          "window": 8,
+          "validation": {
+            "chronological": true,
+            "trainingSeason": 2025,
+            "tuningWeeks": "9\u201318 of prior season",
+            "testSeason": 2026,
+            "testPredictions": 702,
+            "testGames": 107,
+            "brierScore": 0.18370707526330973,
+            "benchmarkBrier": 0.18911688168329482,
+            "logLoss": 0.5512295504349544,
+            "benchmarkLogLoss": 0.5700685202083384,
+            "pairedGameBootstrapBrierDifference95": [
+              -0.013238147552316747,
+              0.0020254228013742463
+            ],
+            "pairedGameBootstrapPValue": 0.07698460307938412,
+            "calibration": [
+              {
+                "lower": 0.0,
+                "count": 73,
+                "predicted": 0.07966295342010504,
+                "observed": 0.136986301369863
+              },
+              {
+                "lower": 0.1,
+                "count": 116,
+                "predicted": 0.1524424254358011,
+                "observed": 0.1724137931034483
+              },
+              {
+                "lower": 0.2,
+                "count": 68,
+                "predicted": 0.2504761665995783,
+                "observed": 0.20588235294117646
+              },
+              {
+                "lower": 0.30000000000000004,
+                "count": 113,
+                "predicted": 0.34526267838434466,
+                "observed": 0.37168141592920356
+              },
+              {
+                "lower": 0.4,
+                "count": 77,
+                "predicted": 0.4663174810477386,
+                "observed": 0.5064935064935064
+              },
+              {
+                "lower": 0.5,
+                "count": 37,
+                "predicted": 0.5573875920166044,
+                "observed": 0.5405405405405406
+              },
+              {
+                "lower": 0.6000000000000001,
+                "count": 65,
+                "predicted": 0.6482882448107755,
+                "observed": 0.6615384615384615
+              },
+              {
+                "lower": 0.7000000000000001,
+                "count": 128,
+                "predicted": 0.7651601350619931,
+                "observed": 0.828125
+              },
+              {
+                "lower": 0.8,
+                "count": 25,
+                "predicted": 0.8535801322957839,
+                "observed": 0.72
+              }
+            ],
+            "calibrated": false,
+            "limitedSampleTestPredictions": 63,
+            "scope": "Retrospective fixed-threshold player-stat validation; not historical market, first-publication or prospective contract validation.",
+            "familywiseAlpha": 0.025,
+            "familywiseMethod": "Bonferroni over predeclared sport/stat/role families",
+            "familySize": 52,
+            "familywiseAdjustedPValue": 1.0
+          },
+          "calibrator": null,
+          "version": "hierarchical-player-cdf-12.1.0",
+          "artifactId": "5bf7932f38eb8cee087bee5887bfaa8cfcee0da8d859e6d255cbf07ec60fe013"
+        },
+        "passingAttempts:QB": {
+          "approved": false,
+          "reason": "Chronological improvement did not pass the conservative familywise publication gate.",
+          "base": {
+            "family": "negative_binomial",
+            "size": 4.793152637118162,
+            "probability": 0.15222123674453986
+          },
+          "strength": 2.0,
+          "window": 16,
+          "validation": {
+            "chronological": true,
+            "trainingSeason": 2025,
+            "tuningWeeks": "9\u201318 of prior season",
+            "testSeason": 2026,
+            "testPredictions": 936,
+            "testGames": 107,
+            "brierScore": 0.1681117756731624,
+            "benchmarkBrier": 0.1705263498849832,
+            "logLoss": 0.5066420545138678,
+            "benchmarkLogLoss": 0.512727656543485,
+            "pairedGameBootstrapBrierDifference95": [
+              -0.004990712361627746,
+              -1.999975381635765e-05
+            ],
+            "pairedGameBootstrapPValue": 0.024795040991801638,
+            "calibration": [
+              {
+                "lower": 0.0,
+                "count": 94,
+                "predicted": 0.06327761369015901,
+                "observed": 0.09574468085106383
+              },
+              {
+                "lower": 0.1,
+                "count": 111,
+                "predicted": 0.14595287718832722,
+                "observed": 0.21621621621621623
+              },
+              {
+                "lower": 0.2,
+                "count": 107,
+                "predicted": 0.2558857941779215,
+                "observed": 0.3644859813084112
+              },
+              {
+                "lower": 0.30000000000000004,
+                "count": 94,
+                "predicted": 0.35178896844336566,
+                "observed": 0.44680851063829785
+              },
+              {
+                "lower": 0.4,
+                "count": 74,
+                "predicted": 0.4529693832585506,
+                "observed": 0.47297297297297297
+              },
+              {
+                "lower": 0.5,
+                "count": 80,
+                "predicted": 0.5568419473670596,
+                "observed": 0.6625
+              },
+              {
+                "lower": 0.6000000000000001,
+                "count": 64,
+                "predicted": 0.6452421937229087,
+                "observed": 0.59375
+              },
+              {
+                "lower": 0.7000000000000001,
+                "count": 79,
+                "predicted": 0.7437265519275935,
+                "observed": 0.7848101265822784
+              },
+              {
+                "lower": 0.8,
+                "count": 102,
+                "predicted": 0.853911445887193,
+                "observed": 0.9215686274509803
+              },
+              {
+                "lower": 0.9,
+                "count": 131,
+                "predicted": 0.931430571373212,
+                "observed": 0.9465648854961832
+              }
+            ],
+            "calibrated": false,
+            "limitedSampleTestPredictions": 84,
+            "scope": "Retrospective fixed-threshold player-stat validation; not historical market, first-publication or prospective contract validation.",
+            "familywiseAlpha": 0.025,
+            "familywiseMethod": "Bonferroni over predeclared sport/stat/role families",
+            "familySize": 52,
+            "familywiseAdjustedPValue": 1.0
+          },
+          "calibrator": null,
+          "version": "hierarchical-player-cdf-12.1.0",
+          "artifactId": "7a8fde8f25f87698a2c2c85cb96991f31b09b9aac4ccbe0fe94e5b07d95b509d"
+        },
+        "completions:QB": {
+          "approved": false,
+          "reason": "Chronological improvement did not pass the conservative familywise publication gate.",
+          "base": {
+            "family": "negative_binomial",
+            "size": 5.057898329018822,
+            "probability": 0.22393247649427372
+          },
+          "strength": 2.0,
+          "window": 16,
+          "validation": {
+            "chronological": true,
+            "trainingSeason": 2025,
+            "tuningWeeks": "9\u201318 of prior season",
+            "testSeason": 2026,
+            "testPredictions": 936,
+            "testGames": 107,
+            "brierScore": 0.17083119235249716,
+            "benchmarkBrier": 0.1734684867591527,
+            "logLoss": 0.5136080574707553,
+            "benchmarkLogLoss": 0.5193074888320098,
+            "pairedGameBootstrapBrierDifference95": [
+              -0.005288521203072993,
+              -0.00020109739363435782
+            ],
+            "pairedGameBootstrapPValue": 0.01739652069586083,
+            "calibration": [
+              {
+                "lower": 0.0,
+                "count": 120,
+                "predicted": 0.06193373589694664,
+                "observed": 0.10833333333333334
+              },
+              {
+                "lower": 0.1,
+                "count": 131,
+                "predicted": 0.15092238386366205,
+                "observed": 0.2595419847328244
+              },
+              {
+                "lower": 0.2,
+                "count": 77,
+                "predicted": 0.259691862199425,
+                "observed": 0.3246753246753247
+              },
+              {
+                "lower": 0.30000000000000004,
+                "count": 75,
+                "predicted": 0.3471157407009046,
+                "observed": 0.37333333333333335
+              },
+              {
+                "lower": 0.4,
+                "count": 79,
+                "predicted": 0.4465262586176416,
+                "observed": 0.46835443037974683
+              },
+              {
+                "lower": 0.5,
+                "count": 72,
+                "predicted": 0.5605823027463462,
+                "observed": 0.625
+              },
+              {
+                "lower": 0.6000000000000001,
+                "count": 116,
+                "predicted": 0.6445932262359751,
+                "observed": 0.646551724137931
+              },
+              {
+                "lower": 0.7000000000000001,
+                "count": 55,
+                "predicted": 0.7496568841779413,
+                "observed": 0.7090909090909091
+              },
+              {
+                "lower": 0.8,
+                "count": 79,
+                "predicted": 0.8504671994292909,
+                "observed": 0.9240506329113924
+              },
+              {
+                "lower": 0.9,
+                "count": 132,
+                "predicted": 0.9432632884538159,
+                "observed": 0.946969696969697
+              }
+            ],
+            "calibrated": false,
+            "limitedSampleTestPredictions": 84,
+            "scope": "Retrospective fixed-threshold player-stat validation; not historical market, first-publication or prospective contract validation.",
+            "familywiseAlpha": 0.025,
+            "familywiseMethod": "Bonferroni over predeclared sport/stat/role families",
+            "familySize": 52,
+            "familywiseAdjustedPValue": 0.9046190761847631
+          },
+          "calibrator": null,
+          "version": "hierarchical-player-cdf-12.1.0",
+          "artifactId": "c2a9cfb2d50ac96d1ac434e66684783873b1bbc64ef0b094462d6372107b1387"
+        },
+        "interceptions:QB": {
+          "approved": false,
+          "reason": "Chronological improvement did not pass the conservative familywise publication gate.",
+          "base": {
+            "family": "negative_binomial",
+            "size": 3.7589878252566247,
+            "probability": 0.8725314183123878
+          },
+          "strength": 32.0,
+          "window": 8,
+          "validation": {
+            "chronological": true,
+            "trainingSeason": 2025,
+            "tuningWeeks": "9\u201318 of prior season",
+            "testSeason": 2026,
+            "testPredictions": 468,
+            "testGames": 107,
+            "brierScore": 0.18187472732380805,
+            "benchmarkBrier": 0.1965634391022949,
+            "logLoss": 0.5415432073828207,
+            "benchmarkLogLoss": 0.5867384011749383,
+            "pairedGameBootstrapBrierDifference95": [
+              -0.026971531899979338,
+              -0.002021136618802747
+            ],
+            "pairedGameBootstrapPValue": 0.010397920415916816,
+            "calibration": [
+              {
+                "lower": 0.0,
+                "count": 70,
+                "predicted": 0.09234976929321825,
+                "observed": 0.15714285714285714
+              },
+              {
+                "lower": 0.1,
+                "count": 164,
+                "predicted": 0.12464328498422686,
+                "observed": 0.11585365853658537
+              },
+              {
+                "lower": 0.30000000000000004,
+                "count": 96,
+                "predicted": 0.37620757644075997,
+                "observed": 0.4270833333333333
+              },
+              {
+                "lower": 0.4,
+                "count": 138,
+                "predicted": 0.43970048448551363,
+                "observed": 0.5
+              }
+            ],
+            "calibrated": false,
+            "limitedSampleTestPredictions": 42,
+            "scope": "Retrospective fixed-threshold player-stat validation; not historical market, first-publication or prospective contract validation.",
+            "familywiseAlpha": 0.025,
+            "familywiseMethod": "Bonferroni over predeclared sport/stat/role families",
+            "familySize": 52,
+            "familywiseAdjustedPValue": 0.5406918616276745
+          },
+          "calibrator": null,
+          "version": "hierarchical-player-cdf-12.1.0",
+          "artifactId": "503cb47e6c13ea0863cf738774be9d95ef0fd1ead2eafcd55107830cebee92de"
+        },
+        "rushingYards:QB": {
+          "approved": false,
+          "reason": "Chronological improvement did not pass the conservative familywise publication gate.",
+          "base": {
+            "family": "student_t",
+            "df": 5.496668633130372,
+            "location": 12.45367153086754,
+            "scale": 14.89300030639539
+          },
+          "strength": 2.0,
+          "window": 16,
+          "validation": {
+            "chronological": true,
+            "trainingSeason": 2025,
+            "tuningWeeks": "9\u201318 of prior season",
+            "testSeason": 2026,
+            "testPredictions": 936,
+            "testGames": 107,
+            "brierScore": 0.1576496582236142,
+            "benchmarkBrier": 0.160683643691851,
+            "logLoss": 0.4762633383616028,
+            "benchmarkLogLoss": 0.48824973039312625,
+            "pairedGameBootstrapBrierDifference95": [
+              -0.005636299384785898,
+              -0.0003941731072030053
+            ],
+            "pairedGameBootstrapPValue": 0.010997800439912017,
+            "calibration": [
+              {
+                "lower": 0.0,
+                "count": 135,
+                "predicted": 0.04261585302098293,
+                "observed": 0.022222222222222223
+              },
+              {
+                "lower": 0.1,
+                "count": 82,
+                "predicted": 0.141583762035291,
+                "observed": 0.17073170731707318
+              },
+              {
+                "lower": 0.2,
+                "count": 70,
+                "predicted": 0.2547240100035864,
+                "observed": 0.18571428571428572
+              },
+              {
+                "lower": 0.30000000000000004,
+                "count": 55,
+                "predicted": 0.35037168721273787,
+                "observed": 0.2545454545454545
+              },
+              {
+                "lower": 0.4,
+                "count": 101,
+                "predicted": 0.4504978459353876,
+                "observed": 0.4158415841584158
+              },
+              {
+                "lower": 0.5,
+                "count": 70,
+                "predicted": 0.556012150723536,
+                "observed": 0.5714285714285714
+              },
+              {
+                "lower": 0.6000000000000001,
+                "count": 113,
+                "predicted": 0.6529896765346778,
+                "observed": 0.6017699115044248
+              },
+              {
+                "lower": 0.7000000000000001,
+                "count": 95,
+                "predicted": 0.7597513916649934,
+                "observed": 0.7473684210526316
+              },
+              {
+                "lower": 0.8,
+                "count": 102,
+                "predicted": 0.8453481512684714,
+                "observed": 0.8137254901960784
+              },
+              {
+                "lower": 0.9,
+                "count": 113,
+                "predicted": 0.9375506917880329,
+                "observed": 0.9203539823008849
+              }
+            ],
+            "calibrated": false,
+            "limitedSampleTestPredictions": 84,
+            "scope": "Retrospective fixed-threshold player-stat validation; not historical market, first-publication or prospective contract validation.",
+            "familywiseAlpha": 0.025,
+            "familywiseMethod": "Bonferroni over predeclared sport/stat/role families",
+            "familySize": 52,
+            "familywiseAdjustedPValue": 0.5718856228754249
+          },
+          "calibrator": null,
+          "version": "hierarchical-player-cdf-12.1.0",
+          "artifactId": "2d2a463d5bb8eadea6ecdf1a5ed6f3874c2379b8e0bae73058837b51361dd778"
+        },
+        "carries:QB": {
+          "approved": false,
+          "reason": "Chronological improvement did not pass the conservative familywise publication gate.",
+          "base": {
+            "family": "negative_binomial",
+            "size": 2.704275112248745,
+            "probability": 0.4352782983106127
+          },
+          "strength": 2.0,
+          "window": 16,
+          "validation": {
+            "chronological": true,
+            "trainingSeason": 2025,
+            "tuningWeeks": "9\u201318 of prior season",
+            "testSeason": 2026,
+            "testPredictions": 936,
+            "testGames": 107,
+            "brierScore": 0.1556358904297985,
+            "benchmarkBrier": 0.15806622383898628,
+            "logLoss": 0.46625041559296865,
+            "benchmarkLogLoss": 0.4732082138811055,
+            "pairedGameBootstrapBrierDifference95": [
+              -0.004899144859922969,
+              0.00014550937889922248
+            ],
+            "pairedGameBootstrapPValue": 0.033993201359728054,
+            "calibration": [
+              {
+                "lower": 0.0,
+                "count": 176,
+                "predicted": 0.04242550735634181,
+                "observed": 0.03977272727272727
+              },
+              {
+                "lower": 0.1,
+                "count": 102,
+                "predicted": 0.16078886202198717,
+                "observed": 0.14705882352941177
+              },
+              {
+                "lower": 0.2,
+                "count": 72,
+                "predicted": 0.25164846940016683,
+                "observed": 0.18055555555555555
+              },
+              {
+                "lower": 0.30000000000000004,
+                "count": 78,
+                "predicted": 0.35199863461562836,
+                "observed": 0.3974358974358974
+              },
+              {
+                "lower": 0.4,
+                "count": 88,
+                "predicted": 0.44655695715800464,
+                "observed": 0.45454545454545453
+              },
+              {
+                "lower": 0.5,
+                "count": 96,
+                "predicted": 0.5475192716023631,
+                "observed": 0.4583333333333333
+              },
+              {
+                "lower": 0.6000000000000001,
+                "count": 72,
+                "predicted": 0.6494858881204237,
+                "observed": 0.5416666666666666
+              },
+              {
+                "lower": 0.7000000000000001,
+                "count": 86,
+                "predicted": 0.750611844329587,
+                "observed": 0.7325581395348837
+              },
+              {
+                "lower": 0.8,
+                "count": 87,
+                "predicted": 0.8447693781743018,
+                "observed": 0.8160919540229885
+              },
+              {
+                "lower": 0.9,
+                "count": 79,
+                "predicted": 0.9449014372895155,
+                "observed": 0.9873417721518988
+              }
+            ],
+            "calibrated": false,
+            "limitedSampleTestPredictions": 84,
+            "scope": "Retrospective fixed-threshold player-stat validation; not historical market, first-publication or prospective contract validation.",
+            "familywiseAlpha": 0.025,
+            "familywiseMethod": "Bonferroni over predeclared sport/stat/role families",
+            "familySize": 52,
+            "familywiseAdjustedPValue": 1.0
+          },
+          "calibrator": null,
+          "version": "hierarchical-player-cdf-12.1.0",
+          "artifactId": "c04637f540e99f7bcbd1f4ab1a4dce3a2bf736ab5820e965a21b44a653444a0b"
+        },
+        "rushingTouchdowns:QB": {
+          "approved": false,
+          "reason": "Chronological improvement did not pass the conservative familywise publication gate.",
+          "base": {
+            "family": "negative_binomial",
+            "size": 0.86212568728132,
+            "probability": 0.8525108738631871
+          },
+          "strength": 8.0,
+          "window": 16,
+          "validation": {
+            "chronological": true,
+            "trainingSeason": 2025,
+            "tuningWeeks": "9\u201318 of prior season",
+            "testSeason": 2026,
+            "testPredictions": 234,
+            "testGames": 107,
+            "brierScore": 0.11320888539326837,
+            "benchmarkBrier": 0.12022122430154276,
+            "logLoss": 0.3856845970414856,
+            "benchmarkLogLoss": 0.40643553721701914,
+            "pairedGameBootstrapBrierDifference95": [
+              -0.014311289478041627,
+              -0.0001523495117957669
+            ],
+            "pairedGameBootstrapPValue": 0.021995600879824034,
+            "calibration": [
+              {
+                "lower": 0.0,
+                "count": 92,
+                "predicted": 0.06856684050491305,
+                "observed": 0.09782608695652174
+              },
+              {
+                "lower": 0.1,
+                "count": 93,
+                "predicted": 0.141743588678997,
+                "observed": 0.13978494623655913
+              },
+              {
+                "lower": 0.2,
+                "count": 40,
+                "predicted": 0.2350852072429958,
+                "observed": 0.125
+              },
+              {
+                "lower": 0.30000000000000004,
+                "count": 5,
+                "predicted": 0.35437906567044003,
+                "observed": 0.4
+              },
+              {
+                "lower": 0.4,
+                "count": 3,
+                "predicted": 0.44561964908040363,
+                "observed": 1.0
+              },
+              {
+                "lower": 0.5,
+                "count": 1,
+                "predicted": 0.5011752046359592,
+                "observed": 0.0
+              }
+            ],
+            "calibrated": false,
+            "limitedSampleTestPredictions": 21,
+            "scope": "Retrospective fixed-threshold player-stat validation; not historical market, first-publication or prospective contract validation.",
+            "familywiseAlpha": 0.025,
+            "familywiseMethod": "Bonferroni over predeclared sport/stat/role families",
+            "familySize": 52,
+            "familywiseAdjustedPValue": 1.0
+          },
+          "calibrator": null,
+          "version": "hierarchical-player-cdf-12.1.0",
+          "artifactId": "2db7626c197b9fb24e895ac3abf043a3257af518b489a333524dd0363b88b50a"
+        },
+        "receivingYards:QB": {
+          "approved": false,
+          "reason": "Chronological improvement did not pass the conservative familywise publication gate.",
+          "base": {
+            "family": "student_t",
+            "df": 2.1189677960957045,
+            "location": -1.761335551659757e-21,
+            "scale": 2.9939057784754656e-21
+          },
+          "strength": 32.0,
+          "window": 4,
+          "validation": {
+            "chronological": true,
+            "trainingSeason": 2025,
+            "tuningWeeks": "9\u201318 of prior season",
+            "testSeason": 2026,
+            "testPredictions": 234,
+            "testGames": 107,
+            "brierScore": 0.008573579320933816,
+            "benchmarkBrier": 0.020786146723646728,
+            "logLoss": 0.17808852809202116,
+            "benchmarkLogLoss": 0.13702215911032087,
+            "pairedGameBootstrapBrierDifference95": [
+              -0.01527584157182902,
+              -0.008788084337909032
+            ],
+            "pairedGameBootstrapPValue": 0.0001999600079984003,
+            "calibration": [
+              {
+                "lower": 0.0,
+                "count": 234,
+                "predicted": 0.0009530592863926197,
+                "observed": 0.008547008547008548
+              }
+            ],
+            "calibrated": false,
+            "limitedSampleTestPredictions": 234,
+            "scope": "Retrospective fixed-threshold player-stat validation; not historical market, first-publication or prospective contract validation.",
+            "familywiseAlpha": 0.025,
+            "familywiseMethod": "Bonferroni over predeclared sport/stat/role families",
+            "familySize": 52,
+            "familywiseAdjustedPValue": 0.010397920415916816
+          },
+          "calibrator": null,
+          "version": "hierarchical-player-cdf-12.1.0",
+          "artifactId": "9340b75fc579e3ca99f9b3943f21318af27aab80fa7a986bde5114ade31cbdb4"
+        },
+        "receptions:QB": {
+          "approved": true,
+          "reason": "Supported chronological holdout improvement.",
+          "base": {
+            "family": "poisson",
+            "mean": 0.010169491525423728
+          },
+          "strength": 32.0,
+          "window": 4,
+          "validation": {
+            "chronological": true,
+            "trainingSeason": 2025,
+            "tuningWeeks": "9\u201318 of prior season",
+            "testSeason": 2026,
+            "testPredictions": 234,
+            "testGames": 107,
+            "brierScore": 0.01273452562497419,
+            "benchmarkBrier": 0.025358796296296303,
+            "logLoss": 0.07068192885471775,
+            "benchmarkLogLoss": 0.14963398758117102,
+            "pairedGameBootstrapBrierDifference95": [
+              -0.0161981616586262,
+              -0.008573173264580933
+            ],
+            "pairedGameBootstrapPValue": 0.0001999600079984003,
+            "calibration": [
+              {
+                "lower": 0.0,
+                "count": 234,
+                "predicted": 0.010444388234472224,
+                "observed": 0.01282051282051282
+              }
+            ],
+            "calibrated": false,
+            "limitedSampleTestPredictions": 234,
+            "scope": "Retrospective fixed-threshold player-stat validation; not historical market, first-publication or prospective contract validation.",
+            "familywiseAlpha": 0.025,
+            "familywiseMethod": "Bonferroni over predeclared sport/stat/role families",
+            "familySize": 52,
+            "familywiseAdjustedPValue": 0.010397920415916816
+          },
+          "calibrator": null,
+          "version": "hierarchical-player-cdf-12.1.0",
+          "artifactId": "e0ec63df20cb348ced4cd86376c689c01eb3facbee0d43da870dc7351ce47ee4"
+        },
+        "receivingTouchdowns:QB": {
+          "approved": false,
+          "reason": "A prior-season role cohort is unavailable or degenerate."
+        },
+        "targets:QB": {
+          "approved": true,
+          "reason": "Supported chronological holdout improvement.",
+          "base": {
+            "family": "poisson",
+            "mean": 0.013559322033898305
+          },
+          "strength": 32.0,
+          "window": 4,
+          "validation": {
+            "chronological": true,
+            "trainingSeason": 2025,
+            "tuningWeeks": "9\u201318 of prior season",
+            "testSeason": 2026,
+            "testPredictions": 234,
+            "testGames": 107,
+            "brierScore": 0.01691219004622124,
+            "benchmarkBrier": 0.02946136039886041,
+            "logLoss": 0.08910133678296085,
+            "benchmarkLogLoss": 0.16117182276876943,
+            "pairedGameBootstrapBrierDifference95": [
+              -0.016428038990754693,
+              -0.008141723524979364
+            ],
+            "pairedGameBootstrapPValue": 0.0001999600079984003,
+            "calibration": [
+              {
+                "lower": 0.0,
+                "count": 234,
+                "predicted": 0.01366698474036604,
+                "observed": 0.017094017094017096
+              }
+            ],
+            "calibrated": false,
+            "limitedSampleTestPredictions": 234,
+            "scope": "Retrospective fixed-threshold player-stat validation; not historical market, first-publication or prospective contract validation.",
+            "familywiseAlpha": 0.025,
+            "familywiseMethod": "Bonferroni over predeclared sport/stat/role families",
+            "familySize": 52,
+            "familywiseAdjustedPValue": 0.010397920415916816
+          },
+          "calibrator": null,
+          "version": "hierarchical-player-cdf-12.1.0",
+          "artifactId": "d50d1a28f9950f715314087a4ee6d1804f2e61e6db18a0bed28c8fe77f7f21b9"
+        },
+        "touchdowns:QB": {
+          "approved": false,
+          "reason": "Chronological improvement did not pass the conservative familywise publication gate.",
+          "base": {
+            "family": "negative_binomial",
+            "size": 0.86212568728132,
+            "probability": 0.8525108738631871
+          },
+          "strength": 8.0,
+          "window": 16,
+          "validation": {
+            "chronological": true,
+            "trainingSeason": 2025,
+            "tuningWeeks": "9\u201318 of prior season",
+            "testSeason": 2026,
+            "testPredictions": 234,
+            "testGames": 107,
+            "brierScore": 0.11331970067025565,
+            "benchmarkBrier": 0.12226636715431911,
+            "logLoss": 0.38549143826547855,
+            "benchmarkLogLoss": 0.4100676839341756,
+            "pairedGameBootstrapBrierDifference95": [
+              -0.017095458760783805,
+              -0.0012815556513516943
+            ],
+            "pairedGameBootstrapPValue": 0.010597880423915218,
+            "calibration": [
+              {
+                "lower": 0.0,
+                "count": 92,
+                "predicted": 0.06856684050491305,
+                "observed": 0.09782608695652174
+              },
+              {
+                "lower": 0.1,
+                "count": 85,
+                "predicted": 0.14109757949147064,
+                "observed": 0.15294117647058825
+              },
+              {
+                "lower": 0.2,
+                "count": 48,
+                "predicted": 0.23355614970872826,
+                "observed": 0.10416666666666667
+              },
+              {
+                "lower": 0.30000000000000004,
+                "count": 5,
+                "predicted": 0.35437906567044003,
+                "observed": 0.4
+              },
+              {
+                "lower": 0.4,
+                "count": 3,
+                "predicted": 0.44561964908040363,
+                "observed": 1.0
+              },
+              {
+                "lower": 0.5,
+                "count": 1,
+                "predicted": 0.5011752046359592,
+                "observed": 0.0
+              }
+            ],
+            "calibrated": false,
+            "limitedSampleTestPredictions": 21,
+            "scope": "Retrospective fixed-threshold player-stat validation; not historical market, first-publication or prospective contract validation.",
+            "familywiseAlpha": 0.025,
+            "familywiseMethod": "Bonferroni over predeclared sport/stat/role families",
+            "familySize": 52,
+            "familywiseAdjustedPValue": 0.5510897820435913
+          },
+          "calibrator": null,
+          "version": "hierarchical-player-cdf-12.1.0",
+          "artifactId": "36a805375b454a1331acb3d82290d5afeefb61d653b8e68ca79edba8d059e8b3"
+        },
+        "rushingYards:TE": {
+          "approved": false,
+          "reason": "Chronological improvement did not pass the conservative familywise publication gate.",
+          "base": {
+            "family": "student_t",
+            "df": 2.1238447088369297,
+            "location": 2.115106111607071e-23,
+            "scale": 8.251259909745049e-23
+          },
+          "strength": 0.5,
+          "window": 16,
+          "validation": {
+            "chronological": true,
+            "trainingSeason": 2025,
+            "tuningWeeks": "9\u201318 of prior season",
+            "testSeason": 2026,
+            "testPredictions": 436,
+            "testGames": 107,
+            "brierScore": 0.03621202881593587,
+            "benchmarkBrier": 0.04103829302095526,
+            "logLoss": 0.27978418601903116,
+            "benchmarkLogLoss": 0.16593361775010548,
+            "pairedGameBootstrapBrierDifference95": [
+              -0.006608879028929452,
+              -0.003004599662758839
+            ],
+            "pairedGameBootstrapPValue": 0.0001999600079984003,
+            "calibration": [
+              {
+                "lower": 0.0,
+                "count": 382,
+                "predicted": 0.007272555801895253,
+                "observed": 0.01832460732984293
+              },
+              {
+                "lower": 0.1,
+                "count": 22,
+                "predicted": 0.14312010533794936,
+                "observed": 0.2727272727272727
+              },
+              {
+                "lower": 0.2,
+                "count": 10,
+                "predicted": 0.23597028097935535,
+                "observed": 0.0
+              },
+              {
+                "lower": 0.30000000000000004,
+                "count": 15,
+                "predicted": 0.33535353535353535,
+                "observed": 0.13333333333333333
+              },
+              {
+                "lower": 0.4,
+                "count": 6,
+                "predicted": 0.42020202020202024,
+                "observed": 0.0
+              },
+              {
+                "lower": 0.6000000000000001,
+                "count": 1,
+                "predicted": 0.6666666666666666,
+                "observed": 0.0
+              }
+            ],
+            "calibrated": false,
+            "limitedSampleTestPredictions": 46,
+            "scope": "Retrospective fixed-threshold player-stat validation; not historical market, first-publication or prospective contract validation.",
+            "familywiseAlpha": 0.025,
+            "familywiseMethod": "Bonferroni over predeclared sport/stat/role families",
+            "familySize": 52,
+            "familywiseAdjustedPValue": 0.010397920415916816
+          },
+          "calibrator": null,
+          "version": "hierarchical-player-cdf-12.1.0",
+          "artifactId": "0c6801f85de2af9ebfcf88be8dc52685183d1645576e9abb81123578c3aee036"
+        },
+        "carries:TE": {
+          "approved": true,
+          "reason": "Supported chronological holdout improvement.",
+          "base": {
+            "family": "negative_binomial",
+            "size": 0.049438831983189845,
+            "probability": 0.4356288731779696
+          },
+          "strength": 0.5,
+          "window": 16,
+          "validation": {
+            "chronological": true,
+            "trainingSeason": 2025,
+            "tuningWeeks": "9\u201318 of prior season",
+            "testSeason": 2026,
+            "testPredictions": 436,
+            "testGames": 107,
+            "brierScore": 0.04283010704166211,
+            "benchmarkBrier": 0.04755937118127259,
+            "logLoss": 0.18956318231989955,
+            "benchmarkLogLoss": 0.19067209543033234,
+            "pairedGameBootstrapBrierDifference95": [
+              -0.006539019150373629,
+              -0.0029437188803968367
+            ],
+            "pairedGameBootstrapPValue": 0.0001999600079984003,
+            "calibration": [
+              {
+                "lower": 0.0,
+                "count": 376,
+                "predicted": 0.014414209710484077,
+                "observed": 0.023936170212765957
+              },
+              {
+                "lower": 0.1,
+                "count": 24,
+                "predicted": 0.1413281331019469,
+                "observed": 0.16666666666666666
+              },
+              {
+                "lower": 0.2,
+                "count": 11,
+                "predicted": 0.2386058424236803,
+                "observed": 0.2727272727272727
+              },
+              {
+                "lower": 0.30000000000000004,
+                "count": 17,
+                "predicted": 0.33990060860145155,
+                "observed": 0.11764705882352941
+              },
+              {
+                "lower": 0.4,
+                "count": 7,
+                "predicted": 0.42297464781263566,
+                "observed": 0.0
+              },
+              {
+                "lower": 0.6000000000000001,
+                "count": 1,
+                "predicted": 0.6800831652042024,
+                "observed": 0.0
+              }
+            ],
+            "calibrated": false,
+            "limitedSampleTestPredictions": 46,
+            "scope": "Retrospective fixed-threshold player-stat validation; not historical market, first-publication or prospective contract validation.",
+            "familywiseAlpha": 0.025,
+            "familywiseMethod": "Bonferroni over predeclared sport/stat/role families",
+            "familySize": 52,
+            "familywiseAdjustedPValue": 0.010397920415916816
+          },
+          "calibrator": null,
+          "version": "hierarchical-player-cdf-12.1.0",
+          "artifactId": "b5b492d9323fe909cb03c43b7618e96646a1eab004221a4a81882f57a29cc256"
+        },
+        "rushingTouchdowns:TE": {
+          "approved": true,
+          "reason": "Supported chronological holdout improvement.",
+          "base": {
+            "family": "poisson",
+            "mean": 0.004132231404958678
+          },
+          "strength": 32.0,
+          "window": 4,
+          "validation": {
+            "chronological": true,
+            "trainingSeason": 2025,
+            "tuningWeeks": "9\u201318 of prior season",
+            "testSeason": 2026,
+            "testPredictions": 436,
+            "testGames": 107,
+            "brierScore": 0.004594785437095407,
+            "benchmarkBrier": 0.019811257645259945,
+            "logLoss": 0.030194224052005957,
+            "benchmarkLogLoss": 0.13452800130116516,
+            "pairedGameBootstrapBrierDifference95": [
+              -0.018791182289569757,
+              -0.012221999844768003
+            ],
+            "pairedGameBootstrapPValue": 0.0001999600079984003,
+            "calibration": [
+              {
+                "lower": 0.0,
+                "count": 436,
+                "predicted": 0.0044617408211558,
+                "observed": 0.0045871559633027525
+              }
+            ],
+            "calibrated": false,
+            "limitedSampleTestPredictions": 436,
+            "scope": "Retrospective fixed-threshold player-stat validation; not historical market, first-publication or prospective contract validation.",
+            "familywiseAlpha": 0.025,
+            "familywiseMethod": "Bonferroni over predeclared sport/stat/role families",
+            "familySize": 52,
+            "familywiseAdjustedPValue": 0.010397920415916816
+          },
+          "calibrator": null,
+          "version": "hierarchical-player-cdf-12.1.0",
+          "artifactId": "535b29291fa3b260cd777c2ed88280e9b03f3d4731593e8c876199bff26500bd"
+        },
+        "receivingYards:TE": {
+          "approved": false,
+          "reason": "Chronological improvement did not pass the conservative familywise publication gate.",
+          "base": {
+            "family": "student_t",
+            "df": 3.9987563663821133,
+            "location": 21.14633712577048,
+            "scale": 18.031822967917073
+          },
+          "strength": 2.0,
+          "window": 8,
+          "validation": {
+            "chronological": true,
+            "trainingSeason": 2025,
+            "tuningWeeks": "9\u201318 of prior season",
+            "testSeason": 2026,
+            "testPredictions": 1744,
+            "testGames": 107,
+            "brierScore": 0.1847706996930206,
+            "benchmarkBrier": 0.18777576370974824,
+            "logLoss": 0.5497113405679155,
+            "benchmarkLogLoss": 0.5580700817127345,
+            "pairedGameBootstrapBrierDifference95": [
+              -0.005865466688998387,
+              -0.00030690717688817314
+            ],
+            "pairedGameBootstrapPValue": 0.013197360527894421,
+            "calibration": [
+              {
+                "lower": 0.0,
+                "count": 205,
+                "predicted": 0.047066609816339304,
+                "observed": 0.05365853658536585
+              },
+              {
+                "lower": 0.1,
+                "count": 156,
+                "predicted": 0.14987748354202204,
+                "observed": 0.14743589743589744
+              },
+              {
+                "lower": 0.2,
+                "count": 156,
+                "predicted": 0.24889939042665127,
+                "observed": 0.20512820512820512
+              },
+              {
+                "lower": 0.30000000000000004,
+                "count": 154,
+                "predicted": 0.34641756772105076,
+                "observed": 0.4025974025974026
+              },
+              {
+                "lower": 0.4,
+                "count": 169,
+                "predicted": 0.4410652810280391,
+                "observed": 0.3905325443786982
+              },
+              {
+                "lower": 0.5,
+                "count": 169,
+                "predicted": 0.5490892078125419,
+                "observed": 0.5266272189349113
+              },
+              {
+                "lower": 0.6000000000000001,
+                "count": 181,
+                "predicted": 0.64938293636727,
+                "observed": 0.6519337016574586
+              },
+              {
+                "lower": 0.7000000000000001,
+                "count": 181,
+                "predicted": 0.7451388871639472,
+                "observed": 0.6519337016574586
+              },
+              {
+                "lower": 0.8,
+                "count": 179,
+                "predicted": 0.8470531160712402,
+                "observed": 0.7094972067039106
+              },
+              {
+                "lower": 0.9,
+                "count": 194,
+                "predicted": 0.94849460727409,
+                "observed": 0.8711340206185567
+              }
+            ],
+            "calibrated": false,
+            "limitedSampleTestPredictions": 184,
+            "scope": "Retrospective fixed-threshold player-stat validation; not historical market, first-publication or prospective contract validation.",
+            "familywiseAlpha": 0.025,
+            "familywiseMethod": "Bonferroni over predeclared sport/stat/role families",
+            "familySize": 52,
+            "familywiseAdjustedPValue": 0.6862627474505099
+          },
+          "calibrator": null,
+          "version": "hierarchical-player-cdf-12.1.0",
+          "artifactId": "3847dadfe2bfc9e4985b6c47654ccdebd7b3441cecb9782c741dfed7024ac595"
+        },
+        "receptions:TE": {
+          "approved": false,
+          "reason": "Chronological improvement did not pass the conservative familywise publication gate.",
+          "base": {
+            "family": "negative_binomial",
+            "size": 3.889156446050735,
+            "probability": 0.5980747903050402
+          },
+          "strength": 2.0,
+          "window": 8,
+          "validation": {
+            "chronological": true,
+            "trainingSeason": 2025,
+            "tuningWeeks": "9\u201318 of prior season",
+            "testSeason": 2026,
+            "testPredictions": 1308,
+            "testGames": 107,
+            "brierScore": 0.16099112436442928,
+            "benchmarkBrier": 0.16210239622026748,
+            "logLoss": 0.48575506661034296,
+            "benchmarkLogLoss": 0.48929575962915806,
+            "pairedGameBootstrapBrierDifference95": [
+              -0.0032841040194575015,
+              0.0011391494574258948
+            ],
+            "pairedGameBootstrapPValue": 0.17076584683063387,
+            "calibration": [
+              {
+                "lower": 0.0,
+                "count": 325,
+                "predicted": 0.04827278591280207,
+                "observed": 0.04
+              },
+              {
+                "lower": 0.1,
+                "count": 173,
+                "predicted": 0.14603665181920264,
+                "observed": 0.16184971098265896
+              },
+              {
+                "lower": 0.2,
+                "count": 137,
+                "predicted": 0.24254289435991438,
+                "observed": 0.27007299270072993
+              },
+              {
+                "lower": 0.30000000000000004,
+                "count": 146,
+                "predicted": 0.3445024039513346,
+                "observed": 0.4315068493150685
+              },
+              {
+                "lower": 0.4,
+                "count": 112,
+                "predicted": 0.4408977952527867,
+                "observed": 0.42857142857142855
+              },
+              {
+                "lower": 0.5,
+                "count": 93,
+                "predicted": 0.5453101162647324,
+                "observed": 0.3763440860215054
+              },
+              {
+                "lower": 0.6000000000000001,
+                "count": 67,
+                "predicted": 0.6369158393533373,
+                "observed": 0.6119402985074627
+              },
+              {
+                "lower": 0.7000000000000001,
+                "count": 91,
+                "predicted": 0.7347818466864479,
+                "observed": 0.7362637362637363
+              },
+              {
+                "lower": 0.8,
+                "count": 81,
+                "predicted": 0.8343483980097626,
+                "observed": 0.7530864197530864
+              },
+              {
+                "lower": 0.9,
+                "count": 83,
+                "predicted": 0.9305661538964768,
+                "observed": 0.8795180722891566
+              }
+            ],
+            "calibrated": false,
+            "limitedSampleTestPredictions": 138,
+            "scope": "Retrospective fixed-threshold player-stat validation; not historical market, first-publication or prospective contract validation.",
+            "familywiseAlpha": 0.025,
+            "familywiseMethod": "Bonferroni over predeclared sport/stat/role families",
+            "familySize": 52,
+            "familywiseAdjustedPValue": 1.0
+          },
+          "calibrator": null,
+          "version": "hierarchical-player-cdf-12.1.0",
+          "artifactId": "8fffc78a516f3c5a59a541890f82ce93ab47aedd2f2b4c5cdf35ea71ff0eb5cc"
+        },
+        "receivingTouchdowns:TE": {
+          "approved": false,
+          "reason": "Chronological improvement did not pass the conservative familywise publication gate.",
+          "base": {
+            "family": "poisson",
+            "mean": 0.22727272727272727
+          },
+          "strength": 32.0,
+          "window": 8,
+          "validation": {
+            "chronological": true,
+            "trainingSeason": 2025,
+            "tuningWeeks": "9\u201318 of prior season",
+            "testSeason": 2026,
+            "testPredictions": 872,
+            "testGames": 107,
+            "brierScore": 0.09527808838173854,
+            "benchmarkBrier": 0.10486977938686518,
+            "logLoss": 0.32297134334853245,
+            "benchmarkLogLoss": 0.3568016976486146,
+            "pairedGameBootstrapBrierDifference95": [
+              -0.015144145816700118,
+              -0.0037976642839099295
+            ],
+            "pairedGameBootstrapPValue": 0.0007998400319936012,
+            "calibration": [
+              {
+                "lower": 0.0,
+                "count": 436,
+                "predicted": 0.023666404945617923,
+                "observed": 0.034403669724770644
+              },
+              {
+                "lower": 0.1,
+                "count": 235,
+                "predicted": 0.18025937578166304,
+                "observed": 0.15319148936170213
+              },
+              {
+                "lower": 0.2,
+                "count": 199,
+                "predicted": 0.23123622136179361,
+                "observed": 0.2562814070351759
+              },
+              {
+                "lower": 0.30000000000000004,
+                "count": 2,
+                "predicted": 0.3126372240852307,
+                "observed": 0.0
+              }
+            ],
+            "calibrated": false,
+            "limitedSampleTestPredictions": 92,
+            "scope": "Retrospective fixed-threshold player-stat validation; not historical market, first-publication or prospective contract validation.",
+            "familywiseAlpha": 0.025,
+            "familywiseMethod": "Bonferroni over predeclared sport/stat/role families",
+            "familySize": 52,
+            "familywiseAdjustedPValue": 0.041591681663667265
+          },
+          "calibrator": null,
+          "version": "hierarchical-player-cdf-12.1.0",
+          "artifactId": "6f52359343cf650c10df9c339eb59aa958b9a0cc09afefcced9c22d2eefebdc9"
+        },
+        "targets:TE": {
+          "approved": false,
+          "reason": "Chronological improvement did not pass the conservative familywise publication gate.",
+          "base": {
+            "family": "negative_binomial",
+            "size": 3.7766808094357915,
+            "probability": 0.5154986171267547
+          },
+          "strength": 2.0,
+          "window": 8,
+          "validation": {
+            "chronological": true,
+            "trainingSeason": 2025,
+            "tuningWeeks": "9\u201318 of prior season",
+            "testSeason": 2026,
+            "testPredictions": 1744,
+            "testGames": 107,
+            "brierScore": 0.1534175579938092,
+            "benchmarkBrier": 0.15415275347099422,
+            "logLoss": 0.47335694424113256,
+            "benchmarkLogLoss": 0.47516306706262285,
+            "pairedGameBootstrapBrierDifference95": [
+              -0.002859599571539855,
+              0.0013738035797192416
+            ],
+            "pairedGameBootstrapPValue": 0.2551489702059588,
+            "calibration": [
+              {
+                "lower": 0.0,
+                "count": 336,
+                "predicted": 0.04371979131038771,
+                "observed": 0.05654761904761905
+              },
+              {
+                "lower": 0.1,
+                "count": 187,
+                "predicted": 0.14123310579103923,
+                "observed": 0.10695187165775401
+              },
+              {
+                "lower": 0.2,
+                "count": 150,
+                "predicted": 0.23525736569291505,
+                "observed": 0.22
+              },
+              {
+                "lower": 0.30000000000000004,
+                "count": 159,
+                "predicted": 0.34523157245721336,
+                "observed": 0.4088050314465409
+              },
+              {
+                "lower": 0.4,
+                "count": 132,
+                "predicted": 0.44068468925647175,
+                "observed": 0.4015151515151515
+              },
+              {
+                "lower": 0.5,
+                "count": 134,
+                "predicted": 0.5417859699723154,
+                "observed": 0.4626865671641791
+              },
+              {
+                "lower": 0.6000000000000001,
+                "count": 123,
+                "predicted": 0.6440329978341245,
+                "observed": 0.5447154471544715
+              },
+              {
+                "lower": 0.7000000000000001,
+                "count": 107,
+                "predicted": 0.7403393307950105,
+                "observed": 0.6915887850467289
+              },
+              {
+                "lower": 0.8,
+                "count": 178,
+                "predicted": 0.8365994521932021,
+                "observed": 0.8314606741573034
+              },
+              {
+                "lower": 0.9,
+                "count": 238,
+                "predicted": 0.9436843112530051,
+                "observed": 0.9033613445378151
+              }
+            ],
+            "calibrated": false,
+            "limitedSampleTestPredictions": 184,
+            "scope": "Retrospective fixed-threshold player-stat validation; not historical market, first-publication or prospective contract validation.",
+            "familywiseAlpha": 0.025,
+            "familywiseMethod": "Bonferroni over predeclared sport/stat/role families",
+            "familySize": 52,
+            "familywiseAdjustedPValue": 1.0
+          },
+          "calibrator": null,
+          "version": "hierarchical-player-cdf-12.1.0",
+          "artifactId": "94d2e31348047db3f45ec799f1a7de50313750d395b33ff9f92bb4f0decef643"
+        },
+        "touchdowns:TE": {
+          "approved": false,
+          "reason": "Chronological improvement did not pass the conservative familywise publication gate.",
+          "base": {
+            "family": "poisson",
+            "mean": 0.23140495867768596
+          },
+          "strength": 32.0,
+          "window": 8,
+          "validation": {
+            "chronological": true,
+            "trainingSeason": 2025,
+            "tuningWeeks": "9\u201318 of prior season",
+            "testSeason": 2026,
+            "testPredictions": 872,
+            "testGames": 107,
+            "brierScore": 0.09669239596480338,
+            "benchmarkBrier": 0.10723870911981852,
+            "logLoss": 0.3254405133620042,
+            "benchmarkLogLoss": 0.36181495010624193,
+            "pairedGameBootstrapBrierDifference95": [
+              -0.016589648384967223,
+              -0.004645448569862873
+            ],
+            "pairedGameBootstrapPValue": 0.0005998800239952009,
+            "calibration": [
+              {
+                "lower": 0.0,
+                "count": 436,
+                "predicted": 0.024683421051855396,
+                "observed": 0.034403669724770644
+              },
+              {
+                "lower": 0.1,
+                "count": 213,
+                "predicted": 0.18184325698941495,
+                "observed": 0.15492957746478872
+              },
+              {
+                "lower": 0.2,
+                "count": 221,
+                "predicted": 0.23180501707155518,
+                "observed": 0.25339366515837103
+              },
+              {
+                "lower": 0.30000000000000004,
+                "count": 2,
+                "predicted": 0.3152655204598876,
+                "observed": 0.0
+              }
+            ],
+            "calibrated": false,
+            "limitedSampleTestPredictions": 92,
+            "scope": "Retrospective fixed-threshold player-stat validation; not historical market, first-publication or prospective contract validation.",
+            "familywiseAlpha": 0.025,
+            "familywiseMethod": "Bonferroni over predeclared sport/stat/role families",
+            "familySize": 52,
+            "familywiseAdjustedPValue": 0.031193761247750446
+          },
+          "calibrator": null,
+          "version": "hierarchical-player-cdf-12.1.0",
+          "artifactId": "b26353f5c4df5f6e0cb2057a942b120db0fc3f238a49cdd023078fff7ad25e7e"
+        },
+        "rushingYards:RB": {
+          "approved": false,
+          "reason": "Chronological improvement did not pass the conservative familywise publication gate.",
+          "base": {
+            "family": "student_t",
+            "df": 3.7361426649684852,
+            "location": 29.23317881204898,
+            "scale": 25.998514374446966
+          },
+          "strength": 2.0,
+          "window": 8,
+          "validation": {
+            "chronological": true,
+            "trainingSeason": 2025,
+            "tuningWeeks": "9\u201318 of prior season",
+            "testSeason": 2026,
+            "testPredictions": 2028,
+            "testGames": 107,
+            "brierScore": 0.15370702339601686,
+            "benchmarkBrier": 0.15620077000228097,
+            "logLoss": 0.47010481734250326,
+            "benchmarkLogLoss": 0.48029763348860005,
+            "pairedGameBootstrapBrierDifference95": [
+              -0.004833015652313375,
+              -0.00020308342962129734
+            ],
+            "pairedGameBootstrapPValue": 0.014797040591881624,
+            "calibration": [
+              {
+                "lower": 0.0,
+                "count": 256,
+                "predicted": 0.04900383031482655,
+                "observed": 0.0546875
+              },
+              {
+                "lower": 0.1,
+                "count": 168,
+                "predicted": 0.14328677782192015,
+                "observed": 0.20238095238095238
+              },
+              {
+                "lower": 0.2,
+                "count": 215,
+                "predicted": 0.24799992498571224,
+                "observed": 0.24186046511627907
+              },
+              {
+                "lower": 0.30000000000000004,
+                "count": 177,
+                "predicted": 0.34599511086714047,
+                "observed": 0.288135593220339
+              },
+              {
+                "lower": 0.4,
+                "count": 142,
+                "predicted": 0.44593003762292954,
+                "observed": 0.38028169014084506
+              },
+              {
+                "lower": 0.5,
+                "count": 154,
+                "predicted": 0.5447670322181474,
+                "observed": 0.512987012987013
+              },
+              {
+                "lower": 0.6000000000000001,
+                "count": 156,
+                "predicted": 0.6501946865304191,
+                "observed": 0.5897435897435898
+              },
+              {
+                "lower": 0.7000000000000001,
+                "count": 199,
+                "predicted": 0.7581767194111624,
+                "observed": 0.7135678391959799
+              },
+              {
+                "lower": 0.8,
+                "count": 210,
+                "predicted": 0.8492933058590562,
+                "observed": 0.8523809523809524
+              },
+              {
+                "lower": 0.9,
+                "count": 351,
+                "predicted": 0.9458518701059732,
+                "observed": 0.9430199430199431
+              }
+            ],
+            "calibrated": false,
+            "limitedSampleTestPredictions": 312,
+            "scope": "Retrospective fixed-threshold player-stat validation; not historical market, first-publication or prospective contract validation.",
+            "familywiseAlpha": 0.025,
+            "familywiseMethod": "Bonferroni over predeclared sport/stat/role families",
+            "familySize": 52,
+            "familywiseAdjustedPValue": 0.7694461107778445
+          },
+          "calibrator": null,
+          "version": "hierarchical-player-cdf-12.1.0",
+          "artifactId": "b482a94117f0da3acb60f34b1b3cc718a5a6ca07df3572beb57d2fecb1da95f7"
+        },
+        "carries:RB": {
+          "approved": false,
+          "reason": "Chronological improvement did not pass the conservative familywise publication gate.",
+          "base": {
+            "family": "negative_binomial",
+            "size": 2.184198770568484,
+            "probability": 0.20582698288120932
+          },
+          "strength": 2.0,
+          "window": 8,
+          "validation": {
+            "chronological": true,
+            "trainingSeason": 2025,
+            "tuningWeeks": "9\u201318 of prior season",
+            "testSeason": 2026,
+            "testPredictions": 2028,
+            "testGames": 107,
+            "brierScore": 0.13958866953068585,
+            "benchmarkBrier": 0.14144152282506983,
+            "logLoss": 0.4338237317349122,
+            "benchmarkLogLoss": 0.44064283952663247,
+            "pairedGameBootstrapBrierDifference95": [
+              -0.00451391326555229,
+              0.0007204243875739652
+            ],
+            "pairedGameBootstrapPValue": 0.08498300339932013,
+            "calibration": [
+              {
+                "lower": 0.0,
+                "count": 333,
+                "predicted": 0.04980538159826535,
+                "observed": 0.05405405405405406
+              },
+              {
+                "lower": 0.1,
+                "count": 202,
+                "predicted": 0.14504426805549323,
+                "observed": 0.12376237623762376
+              },
+              {
+                "lower": 0.2,
+                "count": 151,
+                "predicted": 0.24080365736394344,
+                "observed": 0.31125827814569534
+              },
+              {
+                "lower": 0.30000000000000004,
+                "count": 146,
+                "predicted": 0.34118784758187803,
+                "observed": 0.3356164383561644
+              },
+              {
+                "lower": 0.4,
+                "count": 157,
+                "predicted": 0.43756632301234427,
+                "observed": 0.39490445859872614
+              },
+              {
+                "lower": 0.5,
+                "count": 145,
+                "predicted": 0.5444171957700018,
+                "observed": 0.5241379310344828
+              },
+              {
+                "lower": 0.6000000000000001,
+                "count": 155,
+                "predicted": 0.6446717927186288,
+                "observed": 0.6709677419354839
+              },
+              {
+                "lower": 0.7000000000000001,
+                "count": 157,
+                "predicted": 0.749074898980618,
+                "observed": 0.7770700636942676
+              },
+              {
+                "lower": 0.8,
+                "count": 183,
+                "predicted": 0.8525708582398177,
+                "observed": 0.8087431693989071
+              },
+              {
+                "lower": 0.9,
+                "count": 399,
+                "predicted": 0.9481563813850802,
+                "observed": 0.9598997493734336
+              }
+            ],
+            "calibrated": false,
+            "limitedSampleTestPredictions": 312,
+            "scope": "Retrospective fixed-threshold player-stat validation; not historical market, first-publication or prospective contract validation.",
+            "familywiseAlpha": 0.025,
+            "familywiseMethod": "Bonferroni over predeclared sport/stat/role families",
+            "familySize": 52,
+            "familywiseAdjustedPValue": 1.0
+          },
+          "calibrator": null,
+          "version": "hierarchical-player-cdf-12.1.0",
+          "artifactId": "bef1d180489549b41d0ca41198e35115851a67488c367795eab7ab6bb05aec8e"
+        },
+        "rushingTouchdowns:RB": {
+          "approved": false,
+          "reason": "Chronological improvement did not pass the conservative familywise publication gate.",
+          "base": {
+            "family": "negative_binomial",
+            "size": 1.2930399856882973,
+            "probability": 0.8248625229128477
+          },
+          "strength": 8.0,
+          "window": 16,
+          "validation": {
+            "chronological": true,
+            "trainingSeason": 2025,
+            "tuningWeeks": "9\u201318 of prior season",
+            "testSeason": 2026,
+            "testPredictions": 1014,
+            "testGames": 107,
+            "brierScore": 0.10633553932759734,
+            "benchmarkBrier": 0.11009139563398647,
+            "logLoss": 0.34658301361580063,
+            "benchmarkLogLoss": 0.36185065038512176,
+            "pairedGameBootstrapBrierDifference95": [
+              -0.007262957753621806,
+              -0.000506550873450691
+            ],
+            "pairedGameBootstrapPValue": 0.010197960407918417,
+            "calibration": [
+              {
+                "lower": 0.0,
+                "count": 490,
+                "predicted": 0.039822854453067165,
+                "observed": 0.036734693877551024
+              },
+              {
+                "lower": 0.1,
+                "count": 249,
+                "predicted": 0.16182785960644788,
+                "observed": 0.1606425702811245
+              },
+              {
+                "lower": 0.2,
+                "count": 158,
+                "predicted": 0.2510225214180152,
+                "observed": 0.25316455696202533
+              },
+              {
+                "lower": 0.30000000000000004,
+                "count": 75,
+                "predicted": 0.3389688363882591,
+                "observed": 0.36
+              },
+              {
+                "lower": 0.4,
+                "count": 38,
+                "predicted": 0.44330374359600605,
+                "observed": 0.5789473684210527
+              },
+              {
+                "lower": 0.5,
+                "count": 4,
+                "predicted": 0.5267071200599271,
+                "observed": 0.75
+              }
+            ],
+            "calibrated": false,
+            "limitedSampleTestPredictions": 156,
+            "scope": "Retrospective fixed-threshold player-stat validation; not historical market, first-publication or prospective contract validation.",
+            "familywiseAlpha": 0.025,
+            "familywiseMethod": "Bonferroni over predeclared sport/stat/role families",
+            "familySize": 52,
+            "familywiseAdjustedPValue": 0.5302939412117577
+          },
+          "calibrator": null,
+          "version": "hierarchical-player-cdf-12.1.0",
+          "artifactId": "026d5808edd5182112ad27c8dce256001503122e9bfa7288588ab568b6146f84"
+        },
+        "receivingYards:RB": {
+          "approved": false,
+          "reason": "Chronological improvement did not pass the conservative familywise publication gate.",
+          "base": {
+            "family": "student_t",
+            "df": 0.24052792969645492,
+            "location": -2.729626545146739e-18,
+            "scale": 3.7350187204792246e-17
+          },
+          "strength": 0.5,
+          "window": 16,
+          "validation": {
+            "chronological": true,
+            "trainingSeason": 2025,
+            "tuningWeeks": "9\u201318 of prior season",
+            "testSeason": 2026,
+            "testPredictions": 2028,
+            "testGames": 107,
+            "brierScore": 0.20199808523113238,
+            "benchmarkBrier": 0.19624940279321734,
+            "logLoss": 0.8219054616438155,
+            "benchmarkLogLoss": 0.5801291780558174,
+            "pairedGameBootstrapBrierDifference95": [
+              0.00238876654289927,
+              0.00928424154766446
+            ],
+            "pairedGameBootstrapPValue": 1.0,
+            "calibration": [
+              {
+                "lower": 0.0,
+                "count": 424,
+                "predicted": 0.017158042816166518,
+                "observed": 0.16037735849056603
+              },
+              {
+                "lower": 0.1,
+                "count": 182,
+                "predicted": 0.14971488109657502,
+                "observed": 0.24725274725274726
+              },
+              {
+                "lower": 0.2,
+                "count": 160,
+                "predicted": 0.24691069054350487,
+                "observed": 0.38125
+              },
+              {
+                "lower": 0.30000000000000004,
+                "count": 229,
+                "predicted": 0.3347019797806789,
+                "observed": 0.37554585152838427
+              },
+              {
+                "lower": 0.4,
+                "count": 196,
+                "predicted": 0.44926359426855145,
+                "observed": 0.5459183673469388
+              },
+              {
+                "lower": 0.5,
+                "count": 141,
+                "predicted": 0.5489207899735093,
+                "observed": 0.6170212765957447
+              },
+              {
+                "lower": 0.6000000000000001,
+                "count": 230,
+                "predicted": 0.643976387465195,
+                "observed": 0.6521739130434783
+              },
+              {
+                "lower": 0.7000000000000001,
+                "count": 190,
+                "predicted": 0.7566950862012193,
+                "observed": 0.7
+              },
+              {
+                "lower": 0.8,
+                "count": 157,
+                "predicted": 0.8423886393517835,
+                "observed": 0.8089171974522293
+              },
+              {
+                "lower": 0.9,
+                "count": 119,
+                "predicted": 0.9406868752683929,
+                "observed": 0.8823529411764706
+              }
+            ],
+            "calibrated": false,
+            "limitedSampleTestPredictions": 312,
+            "scope": "Retrospective fixed-threshold player-stat validation; not historical market, first-publication or prospective contract validation.",
+            "familywiseAlpha": 0.025,
+            "familywiseMethod": "Bonferroni over predeclared sport/stat/role families",
+            "familySize": 52,
+            "familywiseAdjustedPValue": 1.0
+          },
+          "calibrator": null,
+          "version": "hierarchical-player-cdf-12.1.0",
+          "artifactId": "65b8a71fc627414e6ece59690aa3e58abd9d7cf0fd037efb95133c94f83751f3"
+        },
+        "receptions:RB": {
+          "approved": true,
+          "reason": "Supported chronological holdout improvement.",
+          "base": {
+            "family": "negative_binomial",
+            "size": 1.913220395653243,
+            "probability": 0.5234075313361306
+          },
+          "strength": 2.0,
+          "window": 16,
+          "validation": {
+            "chronological": true,
+            "trainingSeason": 2025,
+            "tuningWeeks": "9\u201318 of prior season",
+            "testSeason": 2026,
+            "testPredictions": 2028,
+            "testGames": 107,
+            "brierScore": 0.1660617155127533,
+            "benchmarkBrier": 0.1694267211101442,
+            "logLoss": 0.5065948847679599,
+            "benchmarkLogLoss": 0.5151024244269299,
+            "pairedGameBootstrapBrierDifference95": [
+              -0.005160203341541777,
+              -0.0015575797271097879
+            ],
+            "pairedGameBootstrapPValue": 0.0001999600079984003,
+            "calibration": [
+              {
+                "lower": 0.0,
+                "count": 475,
+                "predicted": 0.04878289760954133,
+                "observed": 0.08842105263157894
+              },
+              {
+                "lower": 0.1,
+                "count": 291,
+                "predicted": 0.15028493352782912,
+                "observed": 0.18556701030927836
+              },
+              {
+                "lower": 0.2,
+                "count": 185,
+                "predicted": 0.2501510441126531,
+                "observed": 0.23783783783783785
+              },
+              {
+                "lower": 0.30000000000000004,
+                "count": 181,
+                "predicted": 0.34534373545491354,
+                "observed": 0.430939226519337
+              },
+              {
+                "lower": 0.4,
+                "count": 195,
+                "predicted": 0.4481869890083469,
+                "observed": 0.4717948717948718
+              },
+              {
+                "lower": 0.5,
+                "count": 147,
+                "predicted": 0.5491872566672228,
+                "observed": 0.564625850340136
+              },
+              {
+                "lower": 0.6000000000000001,
+                "count": 151,
+                "predicted": 0.6484089790205059,
+                "observed": 0.6887417218543046
+              },
+              {
+                "lower": 0.7000000000000001,
+                "count": 117,
+                "predicted": 0.7479128229534262,
+                "observed": 0.7008547008547008
+              },
+              {
+                "lower": 0.8,
+                "count": 178,
+                "predicted": 0.8476529250581021,
+                "observed": 0.8146067415730337
+              },
+              {
+                "lower": 0.9,
+                "count": 108,
+                "predicted": 0.9399436054110066,
+                "observed": 0.9166666666666666
+              }
+            ],
+            "calibrated": false,
+            "limitedSampleTestPredictions": 312,
+            "scope": "Retrospective fixed-threshold player-stat validation; not historical market, first-publication or prospective contract validation.",
+            "familywiseAlpha": 0.025,
+            "familywiseMethod": "Bonferroni over predeclared sport/stat/role families",
+            "familySize": 52,
+            "familywiseAdjustedPValue": 0.010397920415916816
+          },
+          "calibrator": null,
+          "version": "hierarchical-player-cdf-12.1.0",
+          "artifactId": "60c7bb3f01347a2c813b6c3332aa79191ec25a829f249737cfaab6028a525c3e"
+        },
+        "receivingTouchdowns:RB": {
+          "approved": true,
+          "reason": "Supported chronological holdout improvement.",
+          "base": {
+            "family": "negative_binomial",
+            "size": 46.09624984001134,
+            "probability": 0.9982344153198425
+          },
+          "strength": 32.0,
+          "window": 16,
+          "validation": {
+            "chronological": true,
+            "trainingSeason": 2025,
+            "tuningWeeks": "9\u201318 of prior season",
+            "testSeason": 2026,
+            "testPredictions": 507,
+            "testGames": 107,
+            "brierScore": 0.05889795632299982,
+            "benchmarkBrier": 0.06736113312398802,
+            "logLoss": 0.23449529893873158,
+            "benchmarkLogLoss": 0.2686200597827464,
+            "pairedGameBootstrapBrierDifference95": [
+              -0.01200025435383657,
+              -0.004618991189654903
+            ],
+            "pairedGameBootstrapPValue": 0.0001999600079984003,
+            "calibration": [
+              {
+                "lower": 0.0,
+                "count": 428,
+                "predicted": 0.06921196360976122,
+                "observed": 0.053738317757009345
+              },
+              {
+                "lower": 0.1,
+                "count": 79,
+                "predicted": 0.12959995864029797,
+                "observed": 0.11392405063291139
+              }
+            ],
+            "calibrated": false,
+            "limitedSampleTestPredictions": 78,
+            "scope": "Retrospective fixed-threshold player-stat validation; not historical market, first-publication or prospective contract validation.",
+            "familywiseAlpha": 0.025,
+            "familywiseMethod": "Bonferroni over predeclared sport/stat/role families",
+            "familySize": 52,
+            "familywiseAdjustedPValue": 0.010397920415916816
+          },
+          "calibrator": null,
+          "version": "hierarchical-player-cdf-12.1.0",
+          "artifactId": "b591031eb8592129c9fd871dc70cb648226b651ce4f09ebf8ff63620c987009c"
+        },
+        "targets:RB": {
+          "approved": true,
+          "reason": "Supported chronological holdout improvement.",
+          "base": {
+            "family": "negative_binomial",
+            "size": 1.9718275927861846,
+            "probability": 0.4698795604148435
+          },
+          "strength": 2.0,
+          "window": 16,
+          "validation": {
+            "chronological": true,
+            "trainingSeason": 2025,
+            "tuningWeeks": "9\u201318 of prior season",
+            "testSeason": 2026,
+            "testPredictions": 2028,
+            "testGames": 107,
+            "brierScore": 0.1619639798525267,
+            "benchmarkBrier": 0.1651082032003754,
+            "logLoss": 0.49513648874014543,
+            "benchmarkLogLoss": 0.5049339735995221,
+            "pairedGameBootstrapBrierDifference95": [
+              -0.004815569602915629,
+              -0.0014297331157349933
+            ],
+            "pairedGameBootstrapPValue": 0.0003999200159968006,
+            "calibration": [
+              {
+                "lower": 0.0,
+                "count": 394,
+                "predicted": 0.04713448530538864,
+                "observed": 0.08629441624365482
+              },
+              {
+                "lower": 0.1,
+                "count": 237,
+                "predicted": 0.14841558279832265,
+                "observed": 0.1940928270042194
+              },
+              {
+                "lower": 0.2,
+                "count": 205,
+                "predicted": 0.25191978931087794,
+                "observed": 0.25365853658536586
+              },
+              {
+                "lower": 0.30000000000000004,
+                "count": 163,
+                "predicted": 0.35305991310590656,
+                "observed": 0.3496932515337423
+              },
+              {
+                "lower": 0.4,
+                "count": 146,
+                "predicted": 0.45302609668199006,
+                "observed": 0.541095890410959
+              },
+              {
+                "lower": 0.5,
+                "count": 160,
+                "predicted": 0.5486985645231528,
+                "observed": 0.56875
+              },
+              {
+                "lower": 0.6000000000000001,
+                "count": 155,
+                "predicted": 0.6577177771454328,
+                "observed": 0.7096774193548387
+              },
+              {
+                "lower": 0.7000000000000001,
+                "count": 168,
+                "predicted": 0.7534051518078972,
+                "observed": 0.75
+              },
+              {
+                "lower": 0.8,
+                "count": 205,
+                "predicted": 0.8540699785748882,
+                "observed": 0.7951219512195122
+              },
+              {
+                "lower": 0.9,
+                "count": 195,
+                "predicted": 0.9471205751983633,
+                "observed": 0.9333333333333333
+              }
+            ],
+            "calibrated": false,
+            "limitedSampleTestPredictions": 312,
+            "scope": "Retrospective fixed-threshold player-stat validation; not historical market, first-publication or prospective contract validation.",
+            "familywiseAlpha": 0.025,
+            "familywiseMethod": "Bonferroni over predeclared sport/stat/role families",
+            "familySize": 52,
+            "familywiseAdjustedPValue": 0.020795840831833633
+          },
+          "calibrator": null,
+          "version": "hierarchical-player-cdf-12.1.0",
+          "artifactId": "5bed0e5642c95eec6411dfbda73cd63e897d21ca8409d3b3b91841e0828c22f7"
+        },
+        "touchdowns:RB": {
+          "approved": false,
+          "reason": "Chronological improvement did not pass the conservative familywise publication gate.",
+          "base": {
+            "family": "negative_binomial",
+            "size": 2.3657145986121657,
+            "probability": 0.8691767190609643
+          },
+          "strength": 8.0,
+          "window": 16,
+          "validation": {
+            "chronological": true,
+            "trainingSeason": 2025,
+            "tuningWeeks": "9\u201318 of prior season",
+            "testSeason": 2026,
+            "testPredictions": 1014,
+            "testGames": 107,
+            "brierScore": 0.12331213505975554,
+            "benchmarkBrier": 0.12647492882781206,
+            "logLoss": 0.39318458903797743,
+            "benchmarkLogLoss": 0.4044807856881681,
+            "pairedGameBootstrapBrierDifference95": [
+              -0.006294908286599913,
+              -5.032178796101799e-05
+            ],
+            "pairedGameBootstrapPValue": 0.02299540091981604,
+            "calibration": [
+              {
+                "lower": 0.0,
+                "count": 385,
+                "predicted": 0.041360524141910715,
+                "observed": 0.04155844155844156
+              },
+              {
+                "lower": 0.1,
+                "count": 215,
+                "predicted": 0.14878085104972297,
+                "observed": 0.13488372093023257
+              },
+              {
+                "lower": 0.2,
+                "count": 194,
+                "predicted": 0.2424425725818433,
+                "observed": 0.23195876288659795
+              },
+              {
+                "lower": 0.30000000000000004,
+                "count": 132,
+                "predicted": 0.3364146050266052,
+                "observed": 0.3409090909090909
+              },
+              {
+                "lower": 0.4,
+                "count": 52,
+                "predicted": 0.4461119192874315,
+                "observed": 0.40384615384615385
+              },
+              {
+                "lower": 0.5,
+                "count": 36,
+                "predicted": 0.5298997576997205,
+                "observed": 0.7222222222222222
+              }
+            ],
+            "calibrated": false,
+            "limitedSampleTestPredictions": 156,
+            "scope": "Retrospective fixed-threshold player-stat validation; not historical market, first-publication or prospective contract validation.",
+            "familywiseAlpha": 0.025,
+            "familywiseMethod": "Bonferroni over predeclared sport/stat/role families",
+            "familySize": 52,
+            "familywiseAdjustedPValue": 1.0
+          },
+          "calibrator": null,
+          "version": "hierarchical-player-cdf-12.1.0",
+          "artifactId": "a1efaa420bcfaf85a91428d66916ccb970eb94ebb7e0330ec4ea15e3acbf34ff"
+        }
+      },
+      "approvedCohorts": [
+        "carries:WR",
+        "rushingTouchdowns:WR",
+        "receivingTouchdowns:WR",
+        "touchdowns:WR",
+        "receptions:QB",
+        "targets:QB",
+        "carries:TE",
+        "rushingTouchdowns:TE",
+        "receptions:RB",
+        "receivingTouchdowns:RB",
+        "targets:RB"
+      ],
+      "approvedRecalibrators": []
+    },
+    "CFB": {
+      "gameId": "cfb:espn:401866453",
+      "historicalPlayersWithEvidence": 66,
+      "inputVersion": "704738e638621e992f59b06e389d50a63e5f33bd1b01b33e1f47eeedf9e91497",
+      "sources": [
+        {
+          "id": "sportsdataverse-cfb",
+          "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/espn_cfb_pbp/play_by_play_2026.parquet",
+          "collectedAt": "2026-11-01T23:08:20.471939+00:00",
+          "sha256": "0b2f95d7b8675794fc6d81f843df9995479a614ba195cf01600b19fded6ad3a5",
+          "season": 2026
+        },
+        {
+          "id": "sportsdataverse-cfb-previous",
+          "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/espn_cfb_pbp/play_by_play_2025.parquet",
+          "collectedAt": "2026-11-01T23:08:21.932421+00:00",
+          "sha256": "423364062f326b3c4ee95a754ac399f79145b821ab5e12e32064e74130473c11",
+          "season": 2025
+        }
+      ],
+      "candidates": {
+        "passingYards:CFB_PASSING": {
+          "approved": false,
+          "reason": "A prior-season role cohort is unavailable or degenerate."
+        },
+        "passingTouchdowns:CFB_PASSING": {
+          "approved": false,
+          "reason": "A prior-season role cohort is unavailable or degenerate."
+        },
+        "passingAttempts:CFB_PASSING": {
+          "approved": false,
+          "reason": "A prior-season role cohort is unavailable or degenerate."
+        },
+        "completions:CFB_PASSING": {
+          "approved": false,
+          "reason": "A prior-season role cohort is unavailable or degenerate."
+        },
+        "interceptions:CFB_PASSING": {
+          "approved": false,
+          "reason": "A prior-season role cohort is unavailable or degenerate."
+        },
+        "rushingYards:CFB_RUSHING": {
+          "approved": false,
+          "reason": "A prior-season role cohort is unavailable or degenerate."
+        },
+        "carries:CFB_RUSHING": {
+          "approved": false,
+          "reason": "A prior-season role cohort is unavailable or degenerate."
+        },
+        "rushingTouchdowns:CFB_RUSHING": {
+          "approved": false,
+          "reason": "A prior-season role cohort is unavailable or degenerate."
+        },
+        "receivingYards:CFB_RECEIVING": {
+          "approved": true,
+          "reason": "Supported chronological holdout improvement.",
+          "base": {
+            "family": "student_t",
+            "df": 1.8084056138904547,
+            "location": 12.22144940316502,
+            "scale": 12.134874477362043
+          },
+          "strength": 2.0,
+          "window": 4,
+          "validation": {
+            "chronological": true,
+            "trainingSeason": 2025,
+            "tuningWeeks": "9\u201318 of prior season",
+            "testSeason": 2026,
+            "testPredictions": 408,
+            "testGames": 15,
+            "brierScore": 0.19018626736922745,
+            "benchmarkBrier": 0.2011492374727669,
+            "logLoss": 0.570718988907965,
+            "benchmarkLogLoss": 0.5932111079296579,
+            "pairedGameBootstrapBrierDifference95": [
+              -0.01803540043473162,
+              -0.003738375472737939
+            ],
+            "pairedGameBootstrapPValue": 0.001799640071985603,
+            "calibration": [
+              {
+                "lower": 0.0,
+                "count": 67,
+                "predicted": 0.05143085697858412,
+                "observed": 0.1044776119402985
+              },
+              {
+                "lower": 0.1,
+                "count": 19,
+                "predicted": 0.1376244732696596,
+                "observed": 0.3157894736842105
+              },
+              {
+                "lower": 0.2,
+                "count": 50,
+                "predicted": 0.24060912436159643,
+                "observed": 0.4
+              },
+              {
+                "lower": 0.30000000000000004,
+                "count": 22,
+                "predicted": 0.34734388390616167,
+                "observed": 0.5909090909090909
+              },
+              {
+                "lower": 0.4,
+                "count": 47,
+                "predicted": 0.4416628041260345,
+                "observed": 0.425531914893617
+              },
+              {
+                "lower": 0.5,
+                "count": 34,
+                "predicted": 0.5499666927420064,
+                "observed": 0.7058823529411765
+              },
+              {
+                "lower": 0.6000000000000001,
+                "count": 25,
+                "predicted": 0.6400171555722355,
+                "observed": 0.76
+              },
+              {
+                "lower": 0.7000000000000001,
+                "count": 62,
+                "predicted": 0.7320148967526947,
+                "observed": 0.8064516129032258
+              },
+              {
+                "lower": 0.8,
+                "count": 47,
+                "predicted": 0.8546664214249297,
+                "observed": 0.7872340425531915
+              },
+              {
+                "lower": 0.9,
+                "count": 35,
+                "predicted": 0.9142175021302018,
+                "observed": 0.8285714285714286
+              }
+            ],
+            "calibrated": false,
+            "limitedSampleTestPredictions": 408,
+            "scope": "Retrospective fixed-threshold player-stat validation; not historical market, first-publication or prospective contract validation.",
+            "familywiseAlpha": 0.025,
+            "familywiseMethod": "Bonferroni over predeclared sport/stat/role families",
+            "familySize": 13,
+            "familywiseAdjustedPValue": 0.023395320935812838
+          },
+          "calibrator": null,
+          "version": "hierarchical-player-cdf-12.1.0",
+          "artifactId": "5fcd1bc94633f22c4b43a0028a79035c16b8472cc9552bb2dcefb77f6d3d6a7d"
+        },
+        "receptions:CFB_RECEIVING": {
+          "approved": false,
+          "reason": "Chronological improvement did not pass the conservative familywise publication gate.",
+          "base": {
+            "family": "negative_binomial",
+            "size": 1.6564017072346184,
+            "probability": 0.4616794672483004
+          },
+          "strength": 2.0,
+          "window": 4,
+          "validation": {
+            "chronological": true,
+            "trainingSeason": 2025,
+            "tuningWeeks": "9\u201318 of prior season",
+            "testSeason": 2026,
+            "testPredictions": 306,
+            "testGames": 15,
+            "brierScore": 0.1695440485997583,
+            "benchmarkBrier": 0.17706653957879445,
+            "logLoss": 0.5154920084001853,
+            "benchmarkLogLoss": 0.5380452704327443,
+            "pairedGameBootstrapBrierDifference95": [
+              -0.01867974934763909,
+              0.002229436306320882
+            ],
+            "pairedGameBootstrapPValue": 0.07638472305538892,
+            "calibration": [
+              {
+                "lower": 0.0,
+                "count": 82,
+                "predicted": 0.07567314965663645,
+                "observed": 0.13414634146341464
+              },
+              {
+                "lower": 0.1,
+                "count": 45,
+                "predicted": 0.15365060054174023,
+                "observed": 0.08888888888888889
+              },
+              {
+                "lower": 0.2,
+                "count": 40,
+                "predicted": 0.24728225270200016,
+                "observed": 0.225
+              },
+              {
+                "lower": 0.30000000000000004,
+                "count": 44,
+                "predicted": 0.3394048503948539,
+                "observed": 0.38636363636363635
+              },
+              {
+                "lower": 0.4,
+                "count": 40,
+                "predicted": 0.47436214232081025,
+                "observed": 0.55
+              },
+              {
+                "lower": 0.5,
+                "count": 16,
+                "predicted": 0.5827386251229568,
+                "observed": 0.75
+              },
+              {
+                "lower": 0.6000000000000001,
+                "count": 21,
+                "predicted": 0.6561271242032005,
+                "observed": 0.6190476190476191
+              },
+              {
+                "lower": 0.7000000000000001,
+                "count": 9,
+                "predicted": 0.7467354852115348,
+                "observed": 0.6666666666666666
+              },
+              {
+                "lower": 0.8,
+                "count": 9,
+                "predicted": 0.8247175593484058,
+                "observed": 1.0
+              }
+            ],
+            "calibrated": false,
+            "limitedSampleTestPredictions": 306,
+            "scope": "Retrospective fixed-threshold player-stat validation; not historical market, first-publication or prospective contract validation.",
+            "familywiseAlpha": 0.025,
+            "familywiseMethod": "Bonferroni over predeclared sport/stat/role families",
+            "familySize": 13,
+            "familywiseAdjustedPValue": 0.993001399720056
+          },
+          "calibrator": null,
+          "version": "hierarchical-player-cdf-12.1.0",
+          "artifactId": "94f6b2592d2c013bc4c4f7add1d8f619388a7ee35112f1c9856d4b0e77370dd7"
+        },
+        "receivingTouchdowns:CFB_RECEIVING": {
+          "approved": false,
+          "reason": "A prior-season role cohort is unavailable or degenerate."
+        }
+      },
+      "approvedCohorts": [
+        "receivingYards:CFB_RECEIVING"
+      ],
+      "approvedRecalibrators": []
+    }
+  },
+  "tests": {
+    "typescriptInitialFull": 713,
+    "latestFocused": 29,
+    "pythonFull": 188,
+    "postgresSuites": 11,
+    "newBrowserDesktopAndIphoneViewport": 10,
+    "legacyBrowserAndPwa": 18,
+    "physicalIphoneTested": false,
+    "typescriptFull": 714,
+    "focusedPython": 14,
+    "productionBuild": "passed",
+    "productionWorkflowChecks": 6,
+    "productionPwaChecks": 15,
+    "productionFinancialWrites": 0
+  },
+  "database": {
+    "project": "qdtdjbapdipopncklsdb",
+    "migrationsApplied": [
+      "automatic_prop_history",
+      "prop_snapshot_deduplication"
+    ],
+    "existingHistoryReadVerified": true,
+    "ownerPreferenceReadWriteUpdateAndIsolationVerifiedWithRollback": true,
+    "financialWrites": 0,
+    "userTablesReset": false
+  },
+  "remainingLimitations": [
+    "No tested real-data recalibrator passed the publication gate. Raw simulation, conditional partial-pooling estimates and empirical historical rates are separately labeled.",
+    "Player-stat validation is retrospective and conditional; it is not prospective contract calibration, verified historical executable-price testing or evidence of beating the market.",
+    "NFL complete-game compute budget had reached its existing daily guard; it was not increased or reset. This release reuses supported simulation distributions and uses separately labeled historical/statistical evidence where full-game coverage is missing.",
+    "Current weather/coaching/opponent effect coefficients are not invented when independent validation is absent. Missing verified availability can withhold research; structural model uncertainty is not fully quantified.",
+    "PropLine provides sportsbook references, including DraftKings Sportsbook; an authorized exact DraftKings Predictions feed remains unavailable. After-fee value requires verified fees and settlement terms.",
+    "Quote freshness and available players change continuously. Stale prices are withheld from current market comparisons.",
+    "General OpenAI chat credential and previously unconfigured Atlas/R2 services were not changed or newly verified in this release.",
+    "Physical iPhone installation was not tested. Chromium with an iPhone viewport, HTTPS metadata, actual service-worker registration and offline behavior were tested."
+  ],
+  "deployment": {
+    "id": "dpl_7qhyEsAcXSXmYBBESrZnzG2FGDhQ",
+    "state": "READY",
+    "productionUrl": "https://gridiron-ai-gray.vercel.app",
+    "runtimeSourceCommit": "4d7135e292e26c9a25e018c8f2e59b0100dcbc81",
+    "runtimeManifestSha256": "bf2ab9c0f336d122a665160f85cd965885b213d97e149b8b5b9edba5df5881d9",
+    "runtimeFileCount": 293,
+    "errorLogScan": "No error/fatal runtime logs returned for final deployment during verification."
+  },
+  "firstProductionWorkflow": {
+    "deployment": "dpl_6HNt5A88QadNNeW2rjLLQ6vmJvHV",
+    "checksPassed": 6,
+    "pwaChecksPassed": 15,
+    "coverage": {
+      "NFL": {
+        "loaded": 500,
+        "ready": 372,
+        "methods": [
+          "empirical_history",
+          "hierarchical_distribution"
+        ],
+        "freshPriceComparisons": 372,
+        "limitedSample": 7
+      },
+      "CFB": {
+        "loaded": 91,
+        "ready": 56,
+        "methods": [
+          "full_game_simulation",
+          "empirical_history",
+          "hierarchical_distribution"
+        ],
+        "freshPriceComparisons": 0,
+        "limitedSample": 14
+      }
+    },
+    "note": "Point-in-time source coverage, not model accuracy. The initial browser attempt was corrected to wait for current rather than stale cached results."
+  },
+  "finalMobilePatch": {
+    "runtimeSourceCommit": "4d7135e292e26c9a25e018c8f2e59b0100dcbc81",
+    "deployment": "dpl_7qhyEsAcXSXmYBBESrZnzG2FGDhQ",
+    "state": "READY",
+    "runtimeManifestSha256": "bf2ab9c0f336d122a665160f85cd965885b213d97e149b8b5b9edba5df5881d9",
+    "checks": "typecheck, 10 desktop/mobile browser tests, 6 live workflow checks and 15 live PWA checks passed"
+  },
+  "productionWorkflow": {
+    "checkedAt": "2026-11-01T23:33:25.721Z",
+    "status": "passed",
+    "report": "props-v121-production.json",
+    "pwaReport": "props-v121-pwa.json",
+    "coverage": {
+      "NFL": {
+        "loaded": 500,
+        "ready": 347,
+        "methods": [
+          "empirical_history",
+          "hierarchical_distribution"
+        ],
+        "freshPriceComparisons": 347,
+        "limitedSample": 8
+      },
+      "CFB": {
+        "loaded": 91,
+        "ready": 56,
+        "methods": [
+          "full_game_simulation",
+          "empirical_history",
+          "hierarchical_distribution"
+        ],
+        "freshPriceComparisons": 56,
+        "limitedSample": 14
+      }
+    },
+    "immutableHistory": {
+      "sport": "CFB",
+      "points": 4,
+      "immutable": true
+    },
+    "coverageMeaning": "Point-in-time feed and evidence availability, not accuracy, guaranteed future prices or a supported estimate for every player."
+  },
+  "preservedInfrastructure": {
+    "supabaseProject": "qdtdjbapdipopncklsdb",
+    "render": "Existing PropLine gateway retained without service, tier or credential changes.",
+    "quantitativeService": "Existing private Python service on Vercel retained.",
+    "privateData": "No financial writes, resets or user-data migration. Personal RLS remains enabled."
+  }
+}

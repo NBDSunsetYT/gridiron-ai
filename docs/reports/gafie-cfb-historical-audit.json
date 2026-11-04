@@ -1,0 +1,31 @@
+{
+  "sport": "CFB",
+  "gameId": "cfb:espn:401752921",
+  "modelVersion": "cfb-gafie-conditional-transition-14.0.0",
+  "simulations": 10000,
+  "fitCPUSeconds": 1.5509146930000002,
+  "simulationCPUSeconds": 39.476980034,
+  "trainingGames": 14,
+  "holdoutGames": 8,
+  "playSelectionValidation": {
+    "chronological": true,
+    "candidate": {
+      "logLoss": 0.7770052421724847,
+      "multiclassBrier": 0.4648043394366047,
+      "n": 493
+    },
+    "stateAwareHistoricalBaseline": {
+      "logLoss": 0.9404319005344733,
+      "multiclassBrier": 0.5226514899571408,
+      "n": 493
+    },
+    "scope": "Held-out play selection only; full-game score/player calibration and personnel transport remain unvalidated."
+  },
+  "predictedHome": 43.2849,
+  "predictedAway": 65.6211,
+  "modelPromoted": false,
+  "mode": "retrospective",
+  "sourceInputVersion": "7c939f3ec05015f61270da203b89f5363d1be3b6cd770eb2bdefd17ae2c92414",
+  "candidateId": "1f6f00ce424afd220becde22a616a1e412f77eabc1cacebd8e4527a866a24a28",
+  "allGamesRetained": false
+}

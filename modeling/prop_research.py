@@ -42,6 +42,20 @@ def parameter_player_interval(result,definition,outcome='yes'):
     """A new threshold's sensitivity across the fixed whole-game replicates."""
     try:
         bootstrap=result.get('uncertainty',{}).get('parameterBootstrap',{})
+        if 'playerHistograms' in bootstrap:
+            from .storage_summary import player_parameter_histograms
+            groups,reps,games=player_parameter_histograms(result,definition['playerId'],definition['stat'])
+            if outcome not in ('yes','no'):return None
+            if definition['stat']=='touchdowns' and (definition.get('touchdownScope')!='offensive_rushing_receiving_only' or result.get('statisticCoverage',{}).get('touchdowns')!='offensive_rushing_receiving_only'):return None
+            probabilities=[]
+            for rows in groups:
+                hits=0
+                for value,count in rows:
+                    key=definition['equality'] if value==definition['threshold'] else 'yes' if (value>definition['threshold'] if definition['direction']=='over' else value<definition['threshold']) else 'no'
+                    if key==outcome:hits+=count
+                probabilities.append(hits/games)
+            probabilities.sort()
+            return[probabilities[max(0,int(.025*reps))],probabilities[min(reps-1,math.ceil(.975*reps)-1)]]
         samples=bootstrap.get('playerSamples',{})
         if samples.get('status')!='available' or samples.get('encoding')!=PARAMETER_SAMPLE_ENCODING or samples.get('valueType')!='int32le':return None
         shape=samples.get('shape')

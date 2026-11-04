@@ -1,0 +1,31 @@
+{
+  "sport": "NFL",
+  "gameId": "2025_13_KC_DAL",
+  "modelVersion": "gafie-conditional-transition-14.0.0",
+  "simulations": 10000,
+  "fitCPUSeconds": 0.20381669999999996,
+  "simulationCPUSeconds": 26.622287033,
+  "trainingGames": 14,
+  "holdoutGames": 8,
+  "playSelectionValidation": {
+    "chronological": true,
+    "candidate": {
+      "logLoss": 0.8521755788541095,
+      "multiclassBrier": 0.49881891385512483,
+      "n": 1053
+    },
+    "stateAwareHistoricalBaseline": {
+      "logLoss": 1.0890270342706974,
+      "multiclassBrier": 0.5823298984748779,
+      "n": 1053
+    },
+    "scope": "Held-out play selection only; full-game score/player calibration and personnel transport remain unvalidated."
+  },
+  "predictedHome": 20.5678,
+  "predictedAway": 25.0748,
+  "modelPromoted": false,
+  "mode": "retrospective",
+  "sourceInputVersion": "71d384ba882f14de11f1c45126c956feaf709c4e8e85a9d4280418a03b5168ed",
+  "candidateId": "14886c4c8c6ef6d81c11d32495afd922e8a6994de5569e30f70b7fabf52ec2c9",
+  "allGamesRetained": false
+}

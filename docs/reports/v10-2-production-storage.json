@@ -1,0 +1,184 @@
+{
+  "version": "10.2.0",
+  "status": "passed_scoped",
+  "baseUrl": "https://gridiron-ai-gray.vercel.app",
+  "deployment": {
+    "id": "dpl_23nX3hriTtR9Vphgg4gEYK6Dfsay",
+    "url": "https://gridiron-qgwe4syv3-gridiron5.vercel.app",
+    "state": "READY",
+    "sourceCommit": "bb18d82ae756ca68f80b50a17a40ffff190940cf",
+    "sourceManifest": "ead383fb44ee285a40bbd66432f2eaef874a3f152e65415cbc75043f5f64a8d3"
+  },
+  "transport": "Final HTTP POSTs used the existing Supabase pg_net extension and authorized connector. GET verification used the Vercel connector. The workspace outbound proxy failed independently for all external sites.",
+  "mockedResponses": false,
+  "privateUserWrites": false,
+  "financialWrites": false,
+  "storageCanary": {
+    "http": 200,
+    "checks": [
+      "private_object_write",
+      "private_object_read",
+      "database_metadata_write",
+      "database_metadata_read",
+      "database_metadata_update",
+      "updated_object_retrieval",
+      "original_object_preserved"
+    ],
+    "status": "passed",
+    "checkedAt": "2026-11-01T00:30:45.702Z",
+    "tableReset": false,
+    "financialWrites": false,
+    "privateUserRecordsTouched": false,
+    "verifiedDeploymentId": "dpl_5oXXpDS31rGgZPgS9MvyrkWhu8S7",
+    "verificationScope": "Writes verified on the preceding production deployment. Storage modules are byte-identical in the final deployment; the final deployment reopened the persisted test and complete-game result."
+  },
+  "jointResearch": {
+    "http": 200,
+    "hits": 4064,
+    "mode": "pregame",
+    "gameId": "2026_08_BAL_BUF",
+    "market": {
+      "fees": null,
+      "family": "hypothetical_combination",
+      "breakEven": null
+    },
+    "method": "Selected legs evaluated against aligned outcomes from the same generated football games.",
+    "reason": "Joint statistical threshold probability from aligned complete-game outcomes. Participation, push, void and actual platform combination settlement rules remain unverified.",
+    "status": "ready",
+    "target": {
+      "legs": [
+        {
+          "side": "home",
+          "type": "game",
+          "sport": "NFL",
+          "gameId": "2026_08_BAL_BUF",
+          "market": "winner"
+        },
+        {
+          "side": "over",
+          "type": "game",
+          "sport": "NFL",
+          "gameId": "2026_08_BAL_BUF",
+          "market": "total",
+          "threshold": 45.5
+        }
+      ],
+      "type": "combination",
+      "sport": "NFL"
+    },
+    "kickoff": "2026-11-01T18:00:00.000Z",
+    "checkedAt": "2026-11-01T00:30:43.284Z",
+    "targetKey": "31597d1f5e06064c7428d2c94057701a512b8d46ba109df1ea2c8c0a2617a69f",
+    "analysisId": "df85f53bb2447551d1d72c92d9a10bb4b75e28d81db0e1b087845fe6388262f9",
+    "evidenceKey": "8691ccb742611c5dbe3394215dc40e7e153a047d44f8a68c7014757694fc24ac",
+    "persistence": {
+      "saved": false,
+      "reason": "Guest analysis; sign in for permanent history."
+    },
+    "simulations": 10000,
+    "calculatedAt": "2026-11-01T00:30:59.257442+00:00",
+    "inputVersion": "90d42be9c1751d3bce15da3f9874273e0757683036352c1d71551d7d9dfb5427",
+    "modelVersion": "pbp-conditional-4.0.0",
+    "monteCarloSE": 0.0049116091049675355,
+    "rawProbability": 0.4064,
+    "modelInterval95": null,
+    "pushProbability": 0.0054,
+    "alignedMarginals": [
+      {
+        "id": "leg-0",
+        "probability": 0.6922
+      },
+      {
+        "id": "leg-1",
+        "probability": 0.5626
+      }
+    ],
+    "inputDataVersion": "9a5c8ff188a8bac835fd8bb01face3f5b1f319155f9be88caf8d5ce9334c3585",
+    "modelReliability": null,
+    "calibrationReason": "No approved chronological out-of-sample calibration evidence is available.",
+    "baseFeatureVersion": "41a936eccefd53ad1dcb9d9a9297c3ebc1b197b29986172a01a673baf24ad033",
+    "monteCarloInterval95": [
+      0.3968111466575237,
+      0.4160607378374668
+    ],
+    "calibratedProbability": null,
+    "independenceComparison": 0.38943172000000004,
+    "referenceModelDataVersion": "7c2724c36aa10501f4d93b6a1f625e63f84841906624cd2afba58c916bd39822",
+    "verifiedDeploymentId": "dpl_5oXXpDS31rGgZPgS9MvyrkWhu8S7"
+  },
+  "singleProbability": {
+    "http": 200,
+    "source": "Supabase request108; final game output remains persisted and retrievable",
+    "simulations": 10000,
+    "hits": 6922,
+    "rawProbability": 0.6922,
+    "calibratedProbability": null
+  },
+  "preservation": {
+    "oldNflSnapshotDigestBefore": "fddd430ae500450efb45077787de8b9b",
+    "oldNflSnapshotDigestAfter": "fddd430ae500450efb45077787de8b9b",
+    "privateBucket": true,
+    "existingTablesReused": true
+  },
+  "limitations": [
+    "No authenticated production QA identity was available for private-account write and cross-device tests.",
+    "No physical iPhone installation was performed.",
+    "Actual live browser/PWA checks passed on the first storage deployment; the environment-wide outbound tunnel failure prevented repeating those exact browser runs against the final minor fixes.",
+    "The raw simulator is not prospectively calibrated; unknown settlement fees and rules withhold actual combination value.",
+    "Bulk quote archiving retains its450MB reserve; lightweight NFL operational metadata is bounded separately at470MB."
+  ],
+  "storageCodeHashes": {
+    "lib/public-nfl/store.ts": "6d16433f83eabc83d47314494bc817d1b299b1587a02daac539c028b58f0e04c",
+    "lib/public-nfl/objects.ts": "ae419470e8aa4088f9ec991027a2191b3c0a7e2eff954365e0d8afdbfacc211b",
+    "lib/public-nfl/storage-errors.ts": "9e1e61a90b08fb8105d9416cba56e7fb558aa3969d2c2b44ae54cf065ca77448",
+    "app/api/nfl/storage-check/route.ts": "d7f73d5c416fa0e2c80668b625646f7625a16ee50d0bfe98f5c205db78c88d0c",
+    "app/api/nfl/workspaces/route.ts": "f5c410410ffb7517e9514c8a98c454717d01604b34238483a7ee3f63418591f5"
+  },
+  "reopenedAfterFinalDeployment": {
+    "http": 200,
+    "status": "verified_previous_canary",
+    "updatedAt": "2026-11-01T00:30:44.919855+00:00",
+    "deploymentId": "dpl_23nX3hriTtR9Vphgg4gEYK6Dfsay"
+  },
+  "reopenedSimulationAfterFinalDeployment": {
+    "http": 200,
+    "status": "completed",
+    "simulations": 10000,
+    "analysisId": "8f976ebc-aa8e-4b2d-956b-6f99b8cb3ece",
+    "stale": false
+  },
+  "productionHealth": {
+    "http": 200,
+    "status": "ok",
+    "backend": "supabase"
+  },
+  "privateGuestRequest": {
+    "http": 401,
+    "path": "/api/nfl/workspaces",
+    "scope": "Unauthenticated denial only; not an authenticated private-account write."
+  },
+  "liveSchema": {
+    "allRequiredTablesExist": true,
+    "rlsEnabled": [
+      "saved_research",
+      "research_workspaces",
+      "research_workspace_versions",
+      "gridiron_records",
+      "probability_history"
+    ],
+    "privateBucket": true,
+    "databaseBytes": 452064947
+  },
+  "diagnosis": {
+    "failingRequest": "POST /api/nfl/games/2026_08_BAL_BUF/analyze",
+    "observedHttpStatus": 503,
+    "internalSqlState": "54000",
+    "rootCause": "Application admission guard blocked new NFL job payloads above 450000000 database bytes.",
+    "measuredDatabaseBytesAtFailure": 451843763,
+    "supabaseReachable": true,
+    "requiredTablesExisted": true,
+    "missingTableWasCause": false,
+    "personalSignInWasCause": false,
+    "renderGatewayWasChanged": false
+  }
+}

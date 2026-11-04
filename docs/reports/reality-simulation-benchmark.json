@@ -1,0 +1,45 @@
+{
+  "gameId": "2025_13_KC_DAL",
+  "mode": "retrospective",
+  "runs": [
+    {
+      "simulations": 10000,
+      "cpuSeconds": 3.996545428,
+      "compactBytes": 232831,
+      "homeWinProbability": 0.4785,
+      "homeMean": 22.4639,
+      "awayMean": 23.8311,
+      "allGamesRetained": false,
+      "allPlaysRetained": false,
+      "representativeGames": 1,
+      "exactSeedReplay": true
+    },
+    {
+      "simulations": 50000,
+      "cpuSeconds": 23.733635418,
+      "compactBytes": 257383,
+      "homeWinProbability": 0.47406,
+      "homeMean": 22.39116,
+      "awayMean": 23.86914,
+      "allGamesRetained": false,
+      "allPlaysRetained": false,
+      "representativeGames": 1,
+      "exactSeedReplay": false
+    },
+    {
+      "simulations": 100000,
+      "cpuSeconds": 41.429922678,
+      "compactBytes": 267251,
+      "homeWinProbability": 0.47428,
+      "homeMean": 22.40785,
+      "awayMean": 23.88202,
+      "allGamesRetained": false,
+      "allPlaysRetained": false,
+      "representativeGames": 1,
+      "exactSeedReplay": false
+    }
+  ],
+  "methodologyChanged": false,
+  "seed": 14013,
+  "inputVersion": "71d384ba882f14de11f1c45126c956feaf709c4e8e85a9d4280418a03b5168ed"
+}

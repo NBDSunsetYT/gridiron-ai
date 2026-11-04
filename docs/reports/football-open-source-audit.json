@@ -1,0 +1,52 @@
+{
+  "checkedAt": "2026-11-04T06:31:35.367626+00:00",
+  "sources": [
+    {
+      "repository": "nflverse/nflverse-data",
+      "url": "https://github.com/nflverse/nflverse-data",
+      "license": "CC-BY-4.0",
+      "defaultBranch": "main"
+    },
+    {
+      "repository": "nflverse/nflfastR",
+      "url": "https://github.com/nflverse/nflfastR",
+      "license": "NOASSERTION",
+      "defaultBranch": "master",
+      "inspectedSource": "https://github.com/nflverse/nflfastR/blob/master/R/calculate_series_conversion_rates.R",
+      "sourceSha256": "3acd4091766dbf0938d358c607d1250aaf5b793d4fa5d7b5f1f02796eddfdb98",
+      "sourceBytes": 7402
+    },
+    {
+      "repository": "nflverse/nflreadpy",
+      "url": "https://github.com/nflverse/nflreadpy",
+      "license": "MIT",
+      "defaultBranch": "main"
+    },
+    {
+      "repository": "nflverse/nfl4th",
+      "url": "https://github.com/nflverse/nfl4th",
+      "license": "NOASSERTION",
+      "defaultBranch": "master",
+      "inspectedSource": "https://github.com/nflverse/nfl4th/blob/master/R/apply_win_prob.R",
+      "sourceSha256": "0613abe59921c3d1df5739f2be76824670ed763622bb2d7385c3fd7e7d7e8948",
+      "sourceBytes": 3212
+    },
+    {
+      "repository": "rtelmore/NFLSimulatoR",
+      "url": "https://github.com/rtelmore/NFLSimulatoR",
+      "license": "NOASSERTION",
+      "defaultBranch": "master",
+      "inspectedSource": "https://github.com/rtelmore/NFLSimulatoR/blob/master/R/down_distance_updater.R",
+      "sourceSha256": "a8252e9b327e5d3c6881d286a4e878e05bd92cf5c21c9251cedac4ec994c3dd7",
+      "sourceBytes": 4451
+    },
+    {
+      "repository": "sportsdataverse/sportsdataverse-data",
+      "url": "https://github.com/sportsdataverse/sportsdataverse-data",
+      "license": "MIT",
+      "defaultBranch": "main"
+    }
+  ],
+  "codeCopied": false,
+  "note": "Metadata and source inspection only. Package and dataset licenses differ; see method-origin document. No claim of official partnership or imported model validation."
+}

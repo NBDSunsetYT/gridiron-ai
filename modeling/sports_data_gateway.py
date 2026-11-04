@@ -110,8 +110,8 @@ prop_line = PropLineClient()
 async def football_props(sport: str, cursor: int = 0, limit: int = 500, authorization: str | None = Header(default=None)):
     authorize_data_bridge(authorization)
     require_render_runtime()
-    if sport not in ('NFL','CFB'):
-        raise HTTPException(422,'Choose NFL or CFB.')
+    if sport not in ('NFL','CFB','NBA'):
+        raise HTTPException(422,'Choose NFL, CFB or NBA.')
     # ParlayAPI is deliberately disabled until its official endpoint/schema and
     # entitlement are verified. An access-denied docs page is not a spec.
     if cursor<0 or cursor>50000 or not 1<=limit<=500:raise HTTPException(422,'Choose a bounded page.')

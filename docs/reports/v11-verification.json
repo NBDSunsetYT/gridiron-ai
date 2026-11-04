@@ -1,0 +1,166 @@
+{
+  "version": "11.0.0",
+  "scope": "Storage optimization and compatibility. Does not establish predictive accuracy or activate unauthorized cloud services.",
+  "productionUrl": "https://gridiron-ai-gray.vercel.app",
+  "sourceCommit": "55d50f9fd7025ee4289d4d806f8f52401063a738",
+  "deployment": {
+    "id": "dpl_2dhz8jAJDSsMKdK5DzCFJrQdQEq1",
+    "status": "READY",
+    "runtimeManifestSha256": "6c615b97aa3ef6a2f722643bd417b4b4f7ac4326227d5d7ac369b56dbc002495",
+    "runtimeFiles": 262,
+    "uniqueUrl": "https://gridiron-3dse55yev-gridiron5.vercel.app"
+  },
+  "checks": [
+    {
+      "name": "TypeScript unit and integration tests",
+      "status": "passed",
+      "tests": 670,
+      "files": 89,
+      "command": "npm test"
+    },
+    {
+      "name": "Python engine, research and service tests",
+      "status": "passed",
+      "tests": 174,
+      "command": "npm run test:python"
+    },
+    {
+      "name": "NFL and NCAA complete-game 10,000/50,000/100,000 mechanical mode checks",
+      "status": "passed",
+      "fixtureType": "SYNTHETIC mechanics, not historical accuracy validation",
+      "assertions": [
+        "Complete game and joint-outcome counts reconcile.",
+        "Output below 2 MB, no all-game arrays.",
+        "At most three representative games.",
+        "Monte Carlo error and parameter/model uncertainty remain separate."
+      ]
+    },
+    {
+      "name": "New compact parameter histograms preserve exact threshold intervals",
+      "status": "passed",
+      "scope": "Python producer and TypeScript/Python consumers; both sides, game categories, ties, corruption and legacy decoding."
+    },
+    {
+      "name": "Real isolated MongoDB engine",
+      "status": "passed",
+      "tests": 2,
+      "scope": "Synthetic public research insert/read/idempotency/pagination/sport separation/indexes/stats. This is not Atlas cloud access."
+    },
+    {
+      "name": "Private R2 adapter and privacy/integrity controls",
+      "status": "passed",
+      "scope": "Controlled SDK transport only; conditional gzip writes, checksums, bounded downloads, private domain verification. This is not R2 cloud access."
+    },
+    {
+      "name": "PostgreSQL RLS, ledger and coordinator suites",
+      "status": "passed",
+      "suites": 9,
+      "command": "npm run test:postgres",
+      "scope": "Isolated PGlite PostgreSQL fixtures. Includes financial arithmetic, ownership, immutable history, outbox leases, retries and integrity acknowledgement."
+    },
+    {
+      "name": "Production Supabase coordinator enqueue/claim/retry/readback",
+      "status": "passed_rolled_back_isolation",
+      "scope": "Existing server capability remained within SQL. No financial record touched and no false MongoDB delivery acknowledgement. Isolated test rows rolled back."
+    },
+    {
+      "name": "Pre-upgrade shared snapshot preservation",
+      "status": "passed",
+      "preUpgradeSnapshotCount": 93,
+      "cutoff": "2026-11-01T10:11:03.253752Z",
+      "scope": "Additive migration changed no old table contents; original snapshot count rechecked."
+    },
+    {
+      "name": "Pre-release private application-data recovery checkpoint",
+      "status": "passed_scoped",
+      "privateTables": 20,
+      "encryption": "AES-256-GCM",
+      "roundTripVerified": true,
+      "outsideRepository": true,
+      "limitations": "Authentication secrets excluded. This is not a tested full multi-provider disaster restore."
+    },
+    {
+      "name": "Baseline desktop/iPhone Chromium regression suite",
+      "status": "passed",
+      "tests": 178,
+      "scope": "174 existing tests plus 4 storage panel tests before the final reference/histogram refinement."
+    },
+    {
+      "name": "Final desktop/iPhone Chromium targeted storage/history/recovery regressions",
+      "status": "passed",
+      "tests": 72
+    },
+    {
+      "name": "Final production build",
+      "status": "passed",
+      "command": "NEXT_DIST_DIR=.next-v11-final npm run build"
+    },
+    {
+      "name": "Actual production PWA, asset privacy and offline shell",
+      "status": "passed",
+      "checks": 15,
+      "report": "v11-production-pwa.json"
+    },
+    {
+      "name": "Actual production Supabase storage canary, reopening and guest authorization boundaries",
+      "status": "passed_scoped",
+      "checks": 6,
+      "report": "v11-production-storage.json"
+    },
+    {
+      "name": "Actual hosted guest desktop and mobile workflow",
+      "status": "partial",
+      "passedChecks": 6,
+      "report": "v11-production-browser.json",
+      "limitation": "Desktop checks passed. Mobile run could not load assets through this executor: Envoy egress tunnel 503. Not claimed as a mobile workflow pass. Separate production mobile-sized PWA tests passed."
+    }
+  ],
+  "backends": {
+    "supabase": {
+      "project": "qdtdjbapdipopncklsdb",
+      "status": "connected",
+      "migration": "20261101101833_gridiron_storage_coordination",
+      "databaseBytesObserved": 452507315,
+      "databaseLimitBytes": 500000000,
+      "capacityWarning": true,
+      "privateRecordsMovedToMongoOrR2": false
+    },
+    "mongodbAtlas": {
+      "status": "blocked_not_activated",
+      "reason": "AI client access disabled in both organizations by Atlas organization policy; deployed application URI absent. No reauthentication or security bypass attempted."
+    },
+    "cloudflareR2": {
+      "status": "not_configured_not_activated",
+      "reason": "No available authorized R2 account tools or deployed server credentials. No bucket or paid resource created."
+    }
+  },
+  "cleanup": {
+    "mode": "preview_only",
+    "irreversibleAutomatedCleanup": false,
+    "financialHistoryDeleted": false,
+    "savedResearchDeleted": false
+  },
+  "notVerified": [
+    "Actual Atlas cloud access and retrieval.",
+    "Actual R2 cloud upload, download and exact artifact replay.",
+    "Full multi-provider backup restore.",
+    "Physical iPhone Safari installation and standalone launch.",
+    "Authenticated private production account read/write across devices; no isolated app identity was supplied.",
+    "WebKit browser profile: host missing GTK/Graphene/Harfbuzz-ICU/Manette/Hyphen/GLES libraries.",
+    "Full hosted mobile NFL workflow on this final browser run: executor asset egress tunnel failure. Local mobile regression and separate hosted mobile PWA checks passed."
+  ],
+  "unchangedExternalLimitations": [
+    "DraftKings Predictions exact live feed lacks authorized provider access. Sportsbook reference data remains a different product.",
+    "General language-model credentials were absent; AI engine availability was not fabricated."
+  ],
+  "notes": [
+    "No existing table reset, destructive migration, financial record migration or paid resource provisioning.",
+    "Simulation mode tests are not historical calibration evidence. No improved forecasting accuracy or profit guarantee is claimed.",
+    "Internal dashboard requires the owner\u2019s verified app identity. User-editable metadata cannot grant administration."
+  ],
+  "productionVerificationNotes": [
+    "Initial command-line production probes hit a transient executor Envoy egress tunnel 503 affecting unrelated sites as well. Native Vercel fetch confirmed production 200 and reachable Supabase/Python. Executor HTTPS subsequently recovered; real-browser/API checks rerun.",
+    "No Vercel runtime error/fatal logs found for this deployment in the scoped initial 10-minute check."
+  ],
+  "status": "deployed_with_external_activation_blockers_and_scoped_verification"
+}

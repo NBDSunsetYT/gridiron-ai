@@ -1,0 +1,20 @@
+{
+  "source": "Actual public NFL page 1500 research, reconstructed read-only from saved verified definitions and simulation references",
+  "rows": 500,
+  "rawBytes": 5464436,
+  "compression": {
+    "gzip1": {
+      "bytes": 604006,
+      "cpuSecondsPerPack": 0.015443799999999999
+    },
+    "gzip6": {
+      "bytes": 333817,
+      "cpuSecondsPerPack": 0.0335704
+    }
+  },
+  "compressedLimitUnchanged": 500000,
+  "rawLimitUnchanged": 16000000,
+  "completeRoundTrip": "passed",
+  "modelCalculationsChanged": false,
+  "financialWrites": 0
+}

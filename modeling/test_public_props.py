@@ -119,7 +119,7 @@ class ExactPropResearchTests(unittest.TestCase):
         self.assertAlmostEqual(yes['parameterInterval95'][1]+no['parameterInterval95'][0],1)
         self.assertIsNone(parameter_player_interval(result,{**new_rule,'playerId':'SYNTH-MISSING'}))
         invalid=copy.deepcopy(result)
-        invalid['uncertainty']['parameterBootstrap']['playerSamples']['uncompressedBytes']+=4
+        invalid['uncertainty']['parameterBootstrap']['playerHistograms']['gamesPerReplicate']+=1
         self.assertIsNone(parameter_player_interval(invalid,new_rule))
 
     def test_unsupported_what_if_assumptions_fail_without_fetching_or_inventing_adjustments(self):

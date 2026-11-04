@@ -15,13 +15,17 @@ from .performance import event
 from .sports_data_common import DataProviderError, require_render_runtime, utc_now
 
 DOCS = 'https://prop-line.com/docs'
-SPORTS = {'NFL':'football_nfl', 'CFB':'football_ncaaf'}
+SPORTS = {'NFL':'football_nfl', 'CFB':'football_ncaaf', 'NBA':'basketball_nba'}
 MARKETS = {'player_pass_yds':'passingYards','player_pass_tds':'passingTouchdowns',
  'player_pass_attempts':'passingAttempts','player_pass_completions':'completions',
  'player_pass_interceptions':'interceptions','player_rush_yds':'rushingYards',
  'player_rush_attempts':'carries','player_rush_tds':'rushingTouchdowns',
  'player_reception_yds':'receivingYards','player_receptions':'receptions',
  'player_reception_tds':'receivingTouchdowns','player_anytime_td':'touchdowns'}
+NBA_MARKETS={'player_points':'points','player_rebounds':'rebounds','player_assists':'assists',
+ 'player_threes':'threePointersMade','player_steals':'steals','player_blocks':'blocks',
+ 'player_turnovers':'turnovers','player_points_rebounds_assists':'pointsReboundsAssists',
+ 'player_double_double':'doubleDouble'}
 BOOKS = {'draftkings':'DraftKings Sportsbook','fanduel':'FanDuel','betmgm':'BetMGM','hardrock':'Hard Rock'}
 
 def stamp(value):
@@ -36,6 +40,7 @@ def finite(value):
 
 def normalize(events,sport,now=None):
     now=time.time() if now is None else now
+    supported=NBA_MARKETS if sport=='NBA' else MARKETS
     if sport not in SPORTS or not isinstance(events,list) or len(events)>500:
         raise DataProviderError('unsupported_response','The provider dataset is not a bounded football board.')
     rows=[];rejected=0
@@ -50,7 +55,7 @@ def normalize(events,sport,now=None):
             markets=book.get('markets',[])
             if not isinstance(markets,list):raise DataProviderError('unsupported_response','Invalid market collection.')
             for market in markets[:500]:
-                if not isinstance(market,dict) or market.get('key') not in MARKETS:continue
+                if not isinstance(market,dict) or market.get('key') not in supported:continue
                 updated=market.get('last_update');ts=stamp(updated)
                 outcomes=market.get('outcomes',[])
                 if not isinstance(outcomes,list):raise DataProviderError('unsupported_response','Invalid outcome collection.')
@@ -60,13 +65,13 @@ def normalize(events,sport,now=None):
                     # Provider observation time is not a sportsbook publication or executable quote guarantee.
                     if (not ts or ts>now+60 or now-ts>300 or seen!=ts or not finite(price) or int(price)!=price or abs(price)<100 or abs(price)>100000 or not isinstance(name,str) or not name.strip() or not isinstance(side,str) or not side.strip() or (line is not None and not finite(line))):rejected+=1;continue
                     # Preserve null thresholds for touchdown selection markets; don't invent0.5.
-                    if line is None and market['key']!='player_anytime_td':rejected+=1;continue
+                    if line is None and market['key'] not in ('player_anytime_td','player_double_double'):rejected+=1;continue
                     identity=json.dumps([sport,str(event['id']),book['key'],market['key'],outcome.get('player_id'),name,side,line,price,updated],separators=(',',':'))
                     rows.append({'id':hashlib.sha256(identity.encode()).hexdigest(),'provider':'PropLine','sport':sport,
                      'dataFamily':'sportsbook_reference','eventId':str(event['id']),'espnEventId':str(event['espn_event_id']) if event.get('espn_event_id') else None,
                      'home':event['home_team'],'away':event['away_team'],'kickoff':event['commence_time'],
                      'player':{'id':outcome.get('player_id') if isinstance(outcome.get('player_id'),str) else None,'name':name},
-                     'book':{'key':book['key'],'name':BOOKS[book['key']]},'market':market['key'],'statistic':MARKETS[market['key']],
+                     'book':{'key':book['key'],'name':BOOKS[book['key']]},'market':market['key'],'statistic':supported[market['key']],
                      'side':side,'threshold':str(line) if line is not None else None,'americanOdds':int(price),
                      'period':market.get('period'),'sourceUpdatedAt':updated,'lastSeenAt':outcome['last_seen_at'],
                      'quotedAt':None,'observedAt':datetime.fromtimestamp(now,timezone.utc).isoformat(),
@@ -102,7 +107,8 @@ class PropLineClient:
         except (ValueError,TypeError):return now+60
     def read(self,sport,_copy=True):
         require_render_runtime()
-        if sport not in SPORTS:raise DataProviderError('unsupported_sport','Choose NFL or CFB.')
+        if sport not in SPORTS:raise DataProviderError('unsupported_sport','Choose NFL, CFB or NBA.')
+        supported=NBA_MARKETS if sport=='NBA' else MARKETS
         key=os.environ.get('PROPLINE_API_KEY','')
         if not key:raise DataProviderError('credentials_missing','Configure PROPLINE_API_KEY on Render.',requires_operator=True)
         with self.lock:
@@ -117,7 +123,7 @@ class PropLineClient:
                     result['items']=[r for r in result['items'] if -60<=now-stamp(r['sourceUpdatedAt'])<=300]
                 # Count each row once; retain zero entries for known categories.
                 if 'bookCounts' not in result or len(result['items'])!=len(old[1]['items']):
-                    books=Counter(r['book']['key'] for r in result['items']);markets=Counter(r['market'] for r in result['items']);result['bookCounts']={k:books[k] for k in BOOKS};result['marketCounts']={k:markets[k] for k in MARKETS}
+                    books=Counter(r['book']['key'] for r in result['items']);markets=Counter(r['market'] for r in result['items']);result['bookCounts']={k:books[k] for k in BOOKS};result['marketCounts']={k:markets[k] for k in supported}
                 result['totalResults']=len(result['items']);result['status']='available' if result['items'] else 'unavailable';result['cached']=True;return copy.deepcopy(result) if _copy else result
             if now<self.until:raise DataProviderError('provider_quota_paused','PropLine requests are paused until its retry/reset time.',retryable=True,retry_after=math.ceil(self.until-now))
             day=datetime.fromtimestamp(now,timezone.utc).date()
@@ -125,7 +131,7 @@ class PropLineClient:
             if self.used>=self.daily_limit:raise DataProviderError('local_daily_limit','The conservative1,000request daily budget is exhausted.',retryable=True)
             self.used+=1
             event('propline_odds_request')
-            url='https://api.prop-line.com/v1/sports/'+SPORTS[sport]+'/odds?'+urllib.parse.urlencode({'markets':','.join(MARKETS),'bookmakers':','.join(BOOKS),'includeBookIds':'true'})
+            url='https://api.prop-line.com/v1/sports/'+SPORTS[sport]+'/odds?'+urllib.parse.urlencode({'markets':','.join(supported),'bookmakers':','.join(BOOKS),'includeBookIds':'true'})
             status,headers,body=self.transport(url,key);headers={k.lower():v for k,v in headers.items()}
             try:self.daily_limit=min(5000,max(1,int(headers.get('x-daily-limit','1000'))))
             except ValueError:pass
@@ -180,7 +186,7 @@ class PropLineClient:
                     except (ValueError,TypeError):pass
                 elif code==429:self.until=self.retry_time(hs,now)
             value={'provider':'PropLine','sport':sport,'dataFamily':'sportsbook_reference','status':'available' if rows else 'unavailable',
-             'providerHttpStatus':200,'checkedAt':utc_now(),'items':rows,'totalResults':len(rows),'marketCounts':{k:sum(r['market']==k for r in rows) for k in MARKETS},'bookCounts':{k:sum(r['book']['key']==k for r in rows) for k in BOOKS},'rejectedRows':rejected,'quota':quota,'cached':False,
+             'providerHttpStatus':200,'checkedAt':utc_now(),'items':rows,'totalResults':len(rows),'marketCounts':{k:sum(r['market']==k for r in rows) for k in supported},'bookCounts':{k:sum(r['book']['key']==k for r in rows) for k in BOOKS},'rejectedRows':rejected,'quota':quota,'cached':False,
              'diagnostic':{'code':'verified_provider_rows' if rows else 'no_verified_current_props','message':'Current provider rows were validated.' if rows else 'No current supported sportsbook props passed identity and freshness checks.'},
              'fallbackVerified':False,'identityCrosswalkStatus':crosswalk_status,'injuryCoverage':injury_status,'injuries':injuries}
             self.cache[sport]=(now,value);return copy.deepcopy(value) if _copy else value

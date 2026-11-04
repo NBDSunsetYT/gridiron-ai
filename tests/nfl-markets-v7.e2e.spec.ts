@@ -29,7 +29,7 @@ async function transport(page:Page,{authorized=false,expiresSoon=false,unavailab
 
 test('the primary platform remains DraftKings Predictions and an alternative is shown only after an explicit choice',async({page})=>{
  const t=await transport(page);await page.goto('/');
- await expect(page.locator('.bottom-nav').getByText('NFL',{exact:true})).toHaveCount(1);
+ await expect(page.locator('.bottom-nav').getByText('Live',{exact:true})).toHaveCount(1);
  await page.getByRole('button',{name:'ANALYZE ALL NFL MARKETS',exact:true}).click();await expect(page.getByRole('heading',{name:'Every market. The exact contract.'})).toBeVisible();
  await expect.poll(()=>t.posts.length).toBe(1);expect(t.posts[0]).toEqual({});
  await expect(page.getByRole('heading',{name:'A market connection is required.'})).toBeVisible({timeout:15000});

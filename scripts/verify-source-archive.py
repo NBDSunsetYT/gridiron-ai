@@ -31,7 +31,7 @@ def private_values(value):
 def configured_secrets(root: Path, fixtures: list[str]) -> set[bytes]:
     values: set[bytes] = set()
     for key, value in os.environ.items():
-        if re.search(r"secret|token|password|(?:^|_)key(?:$|_)|database_url|connection_string", key, re.I) and len(value) >= 16:
+        if re.search(r"secret|token|password|(?:^|_)key(?:$|_)|database_url|connection_string|mongodb_uri|mongodb_url", key, re.I) and len(value) >= 16:
             values.add(value.encode())
     for path in root.glob(".env*"):
         if path.name == ".env.example" or not path.is_file():
@@ -42,7 +42,7 @@ def configured_secrets(root: Path, fixtures: list[str]) -> set[bytes]:
                 continue
             key, value = line.removeprefix("export ").split("=", 1)
             value = value.strip().strip("\"'")
-            if re.search(r"secret|token|password|(?:^|_)key(?:$|_)|database_url|connection_string", key, re.I) and len(value) >= 16:
+            if re.search(r"secret|token|password|(?:^|_)key(?:$|_)|database_url|connection_string|mongodb_uri|mongodb_url", key, re.I) and len(value) >= 16:
                 values.add(value.encode())
     for name in fixtures:
         path = Path(name)
@@ -61,7 +61,7 @@ def main() -> None:
     archive = Path(args.archive).resolve()
     forbidden_parts = {".git", "node_modules", ".venv", "__pycache__", "data", "backups", "xcuserdata", "deriveddata", ".build", ".vercel", ".temp", ".branches"}
     forbidden_suffixes = {".db", ".sqlite", ".sqlite3", ".key", ".pem", ".p8", ".p12", ".pfx", ".mobileprovision"}
-    credential_pattern = re.compile(rb"(?:^|[\s\"'=])(?:sb_secret_[A-Za-z0-9_-]{24,}|sk-proj-[A-Za-z0-9_-]{24,}|gh[pousr]_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9_]{30,}|-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----)")
+    credential_pattern = re.compile(rb"(?:^|[\s\"'=])(?:sb_secret_[A-Za-z0-9_-]{24,}|sk-proj-[A-Za-z0-9_-]{24,}|gh[pousr]_[A-Za-z0-9]{30,}|mongodb(?:\+srv)?://[^\s/@:]+:[^\s/@]+@|github_pat_[A-Za-z0-9_]{30,}|-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----)")
     secrets = configured_secrets(root, args.private_fixture)
     files = []
     with zipfile.ZipFile(archive) as handle:

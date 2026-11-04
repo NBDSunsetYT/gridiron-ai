@@ -39,3 +39,4 @@ docs/reports/*
 !docs/reports/baseline-backtest.json
 !docs/reports/simulation-backtest.json
 !docs/reports/v4-model-benchmark.json
+!docs/reports/v8-cfb-historical-audit.json

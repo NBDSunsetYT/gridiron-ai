@@ -92,6 +92,12 @@ class SimulationTests(unittest.TestCase):
             self.assertTrue(all(x["outcomes"][0] == x["outcomes"][1] for x in result["jointOutcomes"]))
             self.assertIsNone(result["uncertainty"]["modelInterval"])
             self.assertEqual(result["convergence"][-1]["simulations"], count)
+            self.assertLess(len(json.dumps(result)), 2_000_000)
+            self.assertNotIn('games', result)
+            self.assertLessEqual(len(result['representativeGames']), 3)
+            self.assertFalse(result['runManifest']['storage']['allGamesRetained'])
+            self.assertFalse(result['runManifest']['storage']['allPlaysRetained'])
+            self.assertTrue(all(pair['games']==count for pair in result['correlations']))
             reports.append(result)
         # Mechanical convergence check, not an accuracy claim or a tight flaky threshold.
         self.assertLess(abs(reports[0]["homeWinProbability"] - reports[-1]["homeWinProbability"]), .03)

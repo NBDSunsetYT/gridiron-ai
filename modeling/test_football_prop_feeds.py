@@ -10,6 +10,17 @@ class FreePropsTests(unittest.TestCase):
  def test_normalize_sportsbook_not_contract(self):
   rows,n=normalize(self.board,'NFL',self.now);self.assertEqual(len(rows),1);self.assertFalse(rows[0]['draftKingsPredictionsEquivalent']);self.assertEqual(rows[0]['threshold'],'250.5');self.assertIsNone(rows[0]['modelProbability']);self.assertIsNone(rows[0]['quotedAt'])
  def test_separate_sports(self):self.assertEqual(normalize(self.board,'CFB',self.now)[0],[])
+ def test_nba_uses_its_own_documented_market_namespace(self):
+  board=copy.deepcopy(self.board);board[0]['sport_key']='basketball_nba';board[0]['bookmakers'][0]['markets'][0]['key']='player_points';calls=[]
+  def transport(url,key):
+   calls.append(url)
+   if url.endswith('/ids'):return 200,{},b'[]'
+   if url.endswith('/injuries'):return 200,{},b'{"players":[]}'
+   return 200,{},json.dumps(board).encode()
+  value=PropLineClient(transport).read('NBA');self.assertEqual(value['items'][0]['sport'],'NBA');self.assertEqual(value['items'][0]['statistic'],'points');self.assertIn('player_points',calls[0]);self.assertNotIn('player_pass_yds',calls[0]);self.assertFalse(value['items'][0]['draftKingsPredictionsEquivalent'])
+ def test_nba_binary_double_double_does_not_invent_a_numeric_line(self):
+  board=copy.deepcopy(self.board);board[0]['sport_key']='basketball_nba';market=board[0]['bookmakers'][0]['markets'][0];market['key']='player_double_double';market['outcomes'][0].update(name='Yes',point=None)
+  rows,_=normalize(board,'NBA',self.now);self.assertEqual(rows[0]['statistic'],'doubleDouble');self.assertIsNone(rows[0]['threshold']);self.assertEqual(normalize(board,'NFL',self.now)[0],[])
  def test_reject_stale_withdrawn_prices_and_unrelated_books(self):
   for change in [{'price':None},{'price':True},{'price':0},{'last_seen_at':'2000-01-01T00:00:00Z'}]:
    board=copy.deepcopy(self.board);board[0]['bookmakers'][0]['markets'][0]['outcomes'][0].update(change);self.assertEqual(normalize(board,'NFL',self.now)[0],[])

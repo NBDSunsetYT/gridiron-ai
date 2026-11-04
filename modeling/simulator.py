@@ -82,6 +82,8 @@ class Evidence:
         self.options=model.get('modelOptions',{})
         self.prior_strength=model.get('shrinkageFit',{}).get('priorPlays') if self.options.get('conditionalShrinkage') else None
         self.weighted_cdf={};self.row_weights={}
+        self.conversion_pools={}
+        self.sample_pools={}
         self.weighted=bool(game_weights or self.options.get('recencyHalfLifeDays'))
         if scenario:
             if set(scenario) != {"playerId", "status"} or scenario["status"] not in ("active", "limited", "inactive"):
@@ -118,7 +120,7 @@ class Evidence:
         if len(self.games) < 4:
             raise ValueError("Insufficient scenario evidence: at least four historical games required")
         if self.weighted:
-            for pool in list(self.pools.values())+list(self.conversions.values()):
+            for pool in list(self.pools.values())+list(self.conversions.values())+list(self.start_rows.values()):
                 total=0.;cdf=[]
                 for row in pool:total+=self.row_weights[id(row)];cdf.append(total)
                 self.weighted_cdf[id(pool)]=(cdf,total)
@@ -133,24 +135,35 @@ class Evidence:
 
     def sample(self, rng, team, defense, down, field, distance, diff, clock):
         z, d, s, late = zone(field), distance_bucket(distance), script_bucket(diff), clock <= 120
-        keys = ((team, defense, down, z, d, s, late), (team, down, z, d, s, late),
-                (team, down, z, d), (team, down))
-        for depth, key in enumerate(keys):
-            pool = self.pools.get(key)
-            if pool and len(pool) >= 3:
-                if self.prior_strength and depth<len(keys)-1:
-                    parent=next((self.pools[k] for k in keys[depth+1:] if self.pools.get(k)),None)
-                    if parent and rng.random()>len(pool)/(len(pool)+self.prior_strength):pool=parent
-                self.backoff[depth] += 1
-                return self.draw(rng,pool)
-        raise ValueError("No applicable historical play pool")
+        identity=(team,defense,down,z,d,s,late)
+        selected=self.sample_pools.get(identity)
+        if selected is None:
+            keys=(identity,(team,down,z,d,s,late),(team,down,z,d),(team,down))
+            for depth,key in enumerate(keys):
+                pool=self.pools.get(key)
+                if pool and len(pool)>=3:
+                    parent=next((self.pools[k] for k in keys[depth+1:] if self.pools.get(k)),None) if self.prior_strength and depth<len(keys)-1 else None
+                    selected=(depth,pool,parent);self.sample_pools[identity]=selected;break
+            if selected is None:raise ValueError('No applicable historical play pool')
+        depth,pool,parent=selected
+        if parent and rng.random()>len(pool)/(len(pool)+self.prior_strength):pool=parent
+        self.backoff[depth]+=1
+        return self.draw(rng,pool)
 
     def start(self, rng, team):
         return self.draw(rng,self.start_rows[team])['field']
 
     def conversion(self, rng, team, diff, late):
         pool = self.conversions[team]
-        contextual = [p for p in pool if script_bucket(p["script"]) == script_bucket(diff) and (p["clock"] <= 120 or 1800 < p["clock"] <= 1920) == late]
+        key=(team,script_bucket(diff),late)
+        contextual=self.conversion_pools.get(key)
+        if contextual is None:
+            contextual = [p for p in pool if script_bucket(p["script"]) == key[1] and (p["clock"] <= 120 or 1800 < p["clock"] <= 1920) == late]
+            self.conversion_pools[key]=contextual
+            if self.weighted:
+                total=0.;cdf=[]
+                for row in contextual:total+=self.row_weights[id(row)];cdf.append(total)
+                self.weighted_cdf[id(contextual)]=(cdf,total)
         if len(contextual) >= 3:
             pool = contextual
         row = self.draw(rng,pool)
@@ -409,7 +422,7 @@ def combination_summary(contracts, joint, selected_outcomes, simulations):
                            'Push/void payouts, combined-product settlement rules and fees require independent verification.']}
 
 
-def simulate(model, home, away, simulations=10000, seed=1, event_start=None, contracts=None, scenario=None, postseason=False, parameter_uncertainty=None, representative_games=0, selected_outcomes=None, parameter_player_ids=None, **kwargs):
+def simulate(model, home, away, simulations=10000, seed=1, event_start=None, contracts=None, scenario=None, postseason=False, parameter_uncertainty=None, representative_games=0, selected_outcomes=None, parameter_player_ids=None, _evidence_factory=None, **kwargs):
     if not isinstance(simulations, int) or not 1 <= simulations <= 100000:
         raise ValueError("simulations must be an integer 1..100000")
     if not isinstance(seed, int) or abs(seed) > 2**53:
@@ -428,7 +441,7 @@ def simulate(model, home, away, simulations=10000, seed=1, event_start=None, con
     if any(not isinstance(i, str) or not i for i in ids) or len(set(ids)) != len(ids):
         raise ValueError("Contracts need distinct nonempty IDs")
     selected_outcomes = validate_selected_outcomes(contracts, selected_outcomes)
-    evidence = Evidence(model, home, away, scenario)
+    evidence = (_evidence_factory or Evidence)(model, home, away, scenario)
     if not isinstance(representative_games,int) or not 0<=representative_games<=3:raise ValueError('representativeGames must be0..3')
     known_players = {r[k] for r in evidence.rows for k in ("qb", "receiver", "runner") if r[k]}
     if parameter_player_ids is not None and (not isinstance(parameter_player_ids,list) or len(parameter_player_ids)>256 or
@@ -448,10 +461,13 @@ def simulate(model, home, away, simulations=10000, seed=1, event_start=None, con
     all_totals, wins, ties = Counter(), 0, 0
     convergence = []
     representatives=[]
+    from .storage_summary import CorrelationSummary, run_manifest
+    correlations=CorrelationSummary(evidence.rows)
     checkpoints = {max(1, simulations // 10), max(1, simulations // 2), simulations}
     for index in range(simulations):
         scores, players, totals, trace = simulate_game(evidence, rng, [home, away], postseason,index<representative_games)
         if index<representative_games:representatives.append({'index':index,'score':scores,'players':dict(players),'environment':dict(totals),'plays':trace})
+        correlations.add(scores, players)
         wins += scores[0] > scores[1]
         ties += scores[0] == scores[1]
         for side in (0, 1):
@@ -514,6 +530,10 @@ def simulate(model, home, away, simulations=10000, seed=1, event_start=None, con
         result['uncertainty']['model']='Game-block Bayesian bootstrap parameter interval estimated separately from base-run Monte Carlo error; structural and cohort uncertainty remain unestimated.'
         if selected_outcomes:
             result['combination']['parameterInterval95'] = result['uncertainty']['parameterBootstrap']['combinationInterval95']
+    result['correlations']=correlations.summary()
+    result['runManifest']=run_manifest(model,home,away,simulations,seed,event_start,contracts,scenario,representative_games,parameter_uncertainty,selected_outcomes,'NFL',postseason,parameter_player_ids)
+    from .storage_summary import compact_parameter_evidence
+    compact_parameter_evidence(result)
     return result
 
 

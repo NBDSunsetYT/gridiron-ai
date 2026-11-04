@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { Plus, ArrowDownLeft, ArrowUpRight, Download, Wallet, X, Receipt, ShieldCheck, TrendingUp, RefreshCw, Upload, ChevronRight } from 'lucide-react';
+import {useParlay} from './ParlayProvider';
 import FinancialCalendar from './FinancialCalendar';
 import {useFootballSport} from './FootballSportContext';
 import {filterRecordedWagers,recordedWagerPerformance,recordedWagerSport,type RecordedWagerSport} from '@/lib/wager-performance';
@@ -25,6 +26,7 @@ const localDate = () => { const now = new Date(); now.setMinutes(now.getMinutes(
 
 export default function Bankroll() {
   const {sport:contextSport,ready:sportReady}=useFootballSport();
+  const parlay=useParlay();
   const [wagerSport,setWagerSport]=useState<RecordedWagerSport|'all'>(contextSport);
   const [wagerSportsbook,setWagerSportsbook]=useState('all');
   const [wagerMarket,setWagerMarket]=useState('all');
@@ -73,6 +75,7 @@ export default function Bankroll() {
     if(busy||loading||!loaded||!sportReady)return;
     setError(''); setSuccess(''); setForm(current => ({...current,sport:contextSport,event:'',player:'',market:'',selection:'',stake:'',note:'',date:localDate(),betType:'single',legSelections:'',marketInstrument:'event_contract',odds:'-110',contractPriceCents:'',contractQuantity:'',entryFeeCents:''})); setModal('wager');
   }
+  useEffect(()=>{if(!loaded||loading||!parlay?.user)return;const key='gridiron-record-parlay:'+parlay.user.id;try{const raw=sessionStorage.getItem(key);if(!raw)return;const draft=JSON.parse(raw);if(!Array.isArray(draft.legs)||draft.legs.length>12||!['NFL','CFB'].includes(draft.sport))throw Error();setForm(current=>({...current,sport:draft.sport,event:String(draft.name).slice(0,250),market:'User-recorded parlay',selection:draft.legs.join(' + ').slice(0,1000),stake:String(draft.amount),note:String(draft.notes??'').slice(0,5000),date:localDate(),betType:'parlay',legSelections:draft.legs.join('\n'),marketInstrument:'sportsbook',odds:'',contractPriceCents:'',contractQuantity:'',entryFeeCents:''}));setModal('wager');setSuccess('Review this research prefill and enter the actual accepted odds before confirming. No wager has been recorded.');sessionStorage.removeItem(key);}catch{setError('The research prefill could not be loaded. Your ledger was not changed.');}},[loaded,loading,parlay?.user?.id]);
   function openSettlement(bet: Row) {
     if(busy||loading||!loaded)return;
     setError(''); setSelectedBet(bet); setForm(current => ({...current,result:'won',payout:'',settlementTime:localDate()})); setModal('settle');

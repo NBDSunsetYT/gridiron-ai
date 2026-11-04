@@ -1,5 +1,10 @@
 # Full NFL event-contract research, version 7
 
+Version 11 storage update: new runs replace the ordered `gameSamples` described
+below with per-replicate joint `gameHistograms` of home score, away score and
+frequency. Threshold intervals preserve the same counts and settlement rules.
+The legacy binary encoding remains readable. See `docs/GRIDIRON_V11.md`.
+
 The existing empirical play-by-play simulator still produces coherent complete
 games in 10,000, 50,000 and 100,000 modes. The v7 additions do not replace its
 conditional play-selection or create independent player guesses. Player events,

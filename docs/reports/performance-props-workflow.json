@@ -1,0 +1,280 @@
+{
+  "version": "12.1.1",
+  "status": "passed",
+  "startedAt": "2026-11-03T02:17:47.961Z",
+  "baseUrl": "https://gridiron-ai-gray.vercel.app",
+  "mockedResponses": false,
+  "financialWrites": 0,
+  "physicalIphoneTested": false,
+  "checks": [
+    {
+      "name": "Production release and preserved Supabase/private Python dependencies are reachable",
+      "status": "passed"
+    },
+    {
+      "name": "NFL automatic estimates use exact source definitions and retain separate market probabilities",
+      "status": "passed"
+    },
+    {
+      "name": "CFB automatic estimates use exact source definitions and retain separate market probabilities",
+      "status": "passed"
+    },
+    {
+      "name": "Actual saved prediction history is readable for an exact current selection",
+      "status": "passed"
+    },
+    {
+      "name": "Real iPhone-sized page automatically shows both probabilities, sorted estimates, and game filtering",
+      "status": "passed"
+    },
+    {
+      "name": "Private Wallet routes still reject guest access without caching data",
+      "status": "passed"
+    }
+  ],
+  "coverage": {
+    "NFL": {
+      "loaded": 500,
+      "ready": 211,
+      "methods": [
+        "empirical_history"
+      ],
+      "freshPriceComparisons": 211,
+      "limitedSample": 18,
+      "examples": [
+        {
+          "player": "Brenton Strange",
+          "event": "87238",
+          "playerId": "espn:4430539",
+          "threshold": "3.5",
+          "side": "Under",
+          "marketType": "player_receptions",
+          "method": "empirical_history",
+          "probability": 0.5263157894736842,
+          "sampleSize": 19,
+          "inputVersion": "7008e9d0c854c9b3b9eb337204f2002cc4f8dd5ba0255fb70f50b710c408463d",
+          "comparison": {
+            "beforeFees": 0.5145631067961165,
+            "afterFees": null,
+            "differencePp": 1.1752682677567683,
+            "decimalOdds": "1.9433962264150943396",
+            "family": "sportsbook_reference",
+            "current": true,
+            "feesVerified": false,
+            "reason": "Descriptive percentage-point difference; incomplete settlement, fees and model validation do not establish positive net value."
+          },
+          "modelTime": "2026-11-03T01:45:21.148910+00:00",
+          "quoteTime": "2026-11-03T02:17:38.828343Z"
+        },
+        {
+          "player": "Trevor Lawrence",
+          "event": "87238",
+          "playerId": "espn:4360310",
+          "threshold": "31.5",
+          "side": "Under",
+          "marketType": "player_pass_attempts",
+          "method": "empirical_history",
+          "probability": 0.5833333333333334,
+          "sampleSize": 24,
+          "inputVersion": "7008e9d0c854c9b3b9eb337204f2002cc4f8dd5ba0255fb70f50b710c408463d",
+          "comparison": {
+            "beforeFees": 0.5169082125603864,
+            "afterFees": null,
+            "differencePp": 6.642512077294693,
+            "decimalOdds": "1.9345794392523364486",
+            "family": "sportsbook_reference",
+            "current": true,
+            "feesVerified": false,
+            "reason": "Descriptive percentage-point difference; incomplete settlement, fees and model validation do not establish positive net value."
+          },
+          "modelTime": "2026-11-03T01:45:21.148910+00:00",
+          "quoteTime": "2026-11-03T02:17:38.828343Z"
+        },
+        {
+          "player": "Ja'Kobi Lane",
+          "event": "87238",
+          "playerId": "espn:4870847",
+          "threshold": "14.5",
+          "side": "Under",
+          "marketType": "player_reception_yds",
+          "method": "empirical_history",
+          "probability": 0.5,
+          "sampleSize": 4,
+          "inputVersion": "7008e9d0c854c9b3b9eb337204f2002cc4f8dd5ba0255fb70f50b710c408463d",
+          "comparison": {
+            "beforeFees": 0.5169082125603864,
+            "afterFees": null,
+            "differencePp": -1.6908212560386437,
+            "decimalOdds": "1.9345794392523364486",
+            "family": "sportsbook_reference",
+            "current": true,
+            "feesVerified": false,
+            "reason": "Descriptive percentage-point difference; incomplete settlement, fees and model validation do not establish positive net value."
+          },
+          "modelTime": "2026-11-03T01:45:21.148910+00:00",
+          "quoteTime": "2026-11-03T02:17:38.828343Z"
+        },
+        {
+          "player": "Zay Flowers",
+          "event": "87238",
+          "playerId": "espn:4429615",
+          "threshold": "43.5",
+          "side": "Under",
+          "marketType": "player_reception_yds",
+          "method": "empirical_history",
+          "probability": 0.16666666666666666,
+          "sampleSize": 24,
+          "inputVersion": "7008e9d0c854c9b3b9eb337204f2002cc4f8dd5ba0255fb70f50b710c408463d",
+          "comparison": {
+            "beforeFees": 0.5348837209302325,
+            "afterFees": null,
+            "differencePp": -36.82170542635659,
+            "decimalOdds": "1.8695652173913043478",
+            "family": "sportsbook_reference",
+            "current": true,
+            "feesVerified": false,
+            "reason": "Descriptive percentage-point difference; incomplete settlement, fees and model validation do not establish positive net value."
+          },
+          "modelTime": "2026-11-03T01:45:21.148910+00:00",
+          "quoteTime": "2026-11-03T02:17:38.828343Z"
+        }
+      ]
+    },
+    "CFB": {
+      "loaded": 500,
+      "ready": 77,
+      "methods": [
+        "full_game_simulation"
+      ],
+      "freshPriceComparisons": 0,
+      "limitedSample": 0,
+      "examples": [
+        {
+          "player": "Jordan Gant",
+          "event": "542189",
+          "playerId": "espn:5084582",
+          "threshold": "11.5",
+          "side": "Under",
+          "marketType": "player_reception_yds",
+          "method": "full_game_simulation",
+          "probability": 0.2731,
+          "sampleSize": 10000,
+          "inputVersion": "203d841b34fac447d6cea109dd735acf2de0aa0d4b830e55ede508f2f021d2c5",
+          "comparison": {
+            "beforeFees": null,
+            "afterFees": null,
+            "differencePp": null,
+            "decimalOdds": "1.8928571428571428571",
+            "family": "sportsbook_reference",
+            "current": false,
+            "feesVerified": false,
+            "reason": "Current market comparison unavailable; quote is missing or stale."
+          },
+          "modelTime": "2026-11-02T09:30:36.547600+00:00",
+          "quoteTime": "2026-11-03T02:10:12.775413Z"
+        },
+        {
+          "player": "Miles Burris",
+          "event": "542189",
+          "playerId": "espn:5193102",
+          "threshold": "29.5",
+          "side": "Over",
+          "marketType": "player_reception_yds",
+          "method": "full_game_simulation",
+          "probability": 0.6224,
+          "sampleSize": 10000,
+          "inputVersion": "203d841b34fac447d6cea109dd735acf2de0aa0d4b830e55ede508f2f021d2c5",
+          "comparison": {
+            "beforeFees": null,
+            "afterFees": null,
+            "differencePp": null,
+            "decimalOdds": "1.8771929824561403509",
+            "family": "sportsbook_reference",
+            "current": false,
+            "feesVerified": false,
+            "reason": "Current market comparison unavailable; quote is missing or stale."
+          },
+          "modelTime": "2026-11-02T09:30:36.547600+00:00",
+          "quoteTime": "2026-11-03T02:10:12.775413Z"
+        },
+        {
+          "player": "Nick Poulos",
+          "event": "542189",
+          "playerId": "espn:5228762",
+          "threshold": "1.5",
+          "side": "Under",
+          "marketType": "player_pass_tds",
+          "method": "full_game_simulation",
+          "probability": 0.6669,
+          "sampleSize": 10000,
+          "inputVersion": "203d841b34fac447d6cea109dd735acf2de0aa0d4b830e55ede508f2f021d2c5",
+          "comparison": {
+            "beforeFees": null,
+            "afterFees": null,
+            "differencePp": null,
+            "decimalOdds": "1.8196721311475409836",
+            "family": "sportsbook_reference",
+            "current": false,
+            "feesVerified": false,
+            "reason": "Current market comparison unavailable; quote is missing or stale."
+          },
+          "modelTime": "2026-11-02T09:30:36.547600+00:00",
+          "quoteTime": "2026-11-03T02:10:12.775413Z"
+        },
+        {
+          "player": "Riley Neer",
+          "event": "542189",
+          "playerId": "espn:5228764",
+          "threshold": "56.5",
+          "side": "Under",
+          "marketType": "player_reception_yds",
+          "method": "full_game_simulation",
+          "probability": 0.2271,
+          "sampleSize": 10000,
+          "inputVersion": "203d841b34fac447d6cea109dd735acf2de0aa0d4b830e55ede508f2f021d2c5",
+          "comparison": {
+            "beforeFees": null,
+            "afterFees": null,
+            "differencePp": null,
+            "decimalOdds": "1.8771929824561403509",
+            "family": "sportsbook_reference",
+            "current": false,
+            "feesVerified": false,
+            "reason": "Current market comparison unavailable; quote is missing or stale."
+          },
+          "modelTime": "2026-11-02T09:30:36.547600+00:00",
+          "quoteTime": "2026-11-03T02:10:12.775413Z"
+        }
+      ]
+    }
+  },
+  "health": {
+    "application": "GRIDIRON AI",
+    "version": "12.1.1",
+    "backend": "supabase",
+    "cloudOnly": true,
+    "configuration": {
+      "supabase": true,
+      "simulations": true,
+      "assistant": false
+    },
+    "assistantStatus": {
+      "provider": "openai",
+      "credentialConfigured": false,
+      "generationVerified": false,
+      "status": "missing_credentials"
+    },
+    "status": "ready",
+    "checks": {
+      "supabase": "reachable",
+      "simulations": "reachable"
+    },
+    "limitations": "Reachability and provider credential presence do not establish model calibration, a completed simulation, email delivery, AI credit entitlement or a live AI response."
+  },
+  "history": {
+    "sport": "CFB",
+    "points": 6,
+    "immutable": true
+  },
+  "finishedAt": "2026-11-03T02:18:53.909Z"
+}

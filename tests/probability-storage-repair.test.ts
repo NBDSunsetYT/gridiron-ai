@@ -1,0 +1,11 @@
+import {beforeEach,describe,it,expect,vi} from 'vitest';
+const m=vi.hoisted(()=>({rows:new Map<string,any>(),objects:new Map<string,any>()}));
+vi.mock('../lib/public-nfl/store',()=>({sharedCache:vi.fn(async(kind:string,key:string)=>m.rows.get(kind+key)??null),putCache:vi.fn(async(kind:string,key:string,data:any)=>{m.rows.set(kind+key,{data});})}));
+vi.mock('../lib/storage/research',()=>({saveSharedResearch:vi.fn(async(_sport:string,_id:string,_kind:string,value:any)=>{const id='SYNTHETIC-CONTENT';m.objects.set(id,value);return{_sharedResearchObject:{id}};})}));
+vi.mock('../lib/public-nfl/objects',()=>({isResearchPointer:(p:any)=>Boolean(p?._sharedResearchObject),readResearchObject:vi.fn(async(p:any)=>m.objects.get(p._sharedResearchObject.id))}));
+import {saveProbabilitySimulation,readProbabilitySimulation,simulationStorageKey} from '../lib/probability/simulation-storage';
+beforeEach(()=>{m.rows.clear();m.objects.clear();});
+describe('permanent compact simulation references',()=>{
+ it('survives a fresh request after temporary caches expire with matching inputs',async()=>{const payload={result:{simulations:10000,eventStart:'2099-01-01',players:{'SYNTHETIC':{receivingYards:{histogram:[{value:20,count:10000}]}}}}};await saveProbabilitySimulation('CFB','cfb:SYNTHETIC',10000,'SYNTHETIC-INPUT',payload);const read=await readProbabilitySimulation('CFB','cfb:SYNTHETIC',10000,'SYNTHETIC-INPUT');expect(read?.result.players).toEqual(payload.result.players);expect(await readProbabilitySimulation('NFL','cfb:SYNTHETIC',10000,'SYNTHETIC-INPUT')).toBeNull();expect(await readProbabilitySimulation('CFB','cfb:SYNTHETIC',10000,'CHANGED-INJURY')).toBeNull();const stored=[...m.rows.values()][0];expect(stored.data).not.toHaveProperty('result');});
+ it('refuses a corrupted cross-game reference without substituting distributions',async()=>{await saveProbabilitySimulation('NFL','SYNTHETIC',10000,'SYNTHETIC-INPUT',{result:{simulations:10000,eventStart:'2099-01-01'}});m.rows.get('analysis'+simulationStorageKey('NFL','SYNTHETIC',10000,'SYNTHETIC-INPUT')).data.gameId='OTHER';await expect(readProbabilitySimulation('NFL','SYNTHETIC',10000,'SYNTHETIC-INPUT')).rejects.toThrow('verified inputs');});
+});

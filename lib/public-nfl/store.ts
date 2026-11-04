@@ -1,20 +1,25 @@
 import {cloudClient} from '../cloud/context';
 import {ApiError} from '../auth';
+import {researchStorageFailure} from './storage-errors';
+import {putResearchObject,readResearchObject,isResearchPointer,hydrateResearchJob} from './objects';
 
 export type SharedCache={kind:string;key:string;data:Record<string,any>;input_hash:string|null;updated_at:string;expires_at:string|null};
 export type SharedJob={id:string;game_id:string;input_hash:string;status:'queued'|'running'|'completed'|'failed';data:Record<string,any>;result:Record<string,any>|null;error:string|null;lease:string|null;created_at:string;updated_at:string};
 const client=()=>cloudClient();
-function failure(error:unknown):never{throw new ApiError('Shared NFL research storage is temporarily unavailable. Previously saved research remains intact.',503);}
+function failure(error:unknown):never{return researchStorageFailure(error);}
 export async function sharedWrite(payload:Record<string,any>):Promise<any>{
  const token=process.env.GRIDIRON_PUBLIC_INGEST_TOKEN;if(!token||token.length<40)throw new ApiError('Automatic NFL research is temporarily unavailable. Please retry shortly.',503);
- const result=await client().rpc('gridiron_public_write',{token,payload});if(result.error)failure(result.error);return result.data;
+ let packed={...payload};
+ if(payload.action==='job_enqueue'&&payload.data?.context&&Buffer.byteLength(JSON.stringify(payload.data.context))>8192)packed={...payload,data:{...payload.data,context:await putResearchObject(payload.data.context)}};
+ if(payload.action==='job_complete'&&payload.result?.result){const pointer=payload.gameId?await(await import('../storage/research')).saveSharedResearch('NFL',payload.gameId,'simulation',payload.result):await putResearchObject(payload.result),r=payload.result.result;packed={...payload,result:{payload:pointer,result:Object.fromEntries(['modelVersion','simulations','home','away','homeWinProbability','awayWinProbability','tieProbability','eventStart'].filter(k=>r[k]!==undefined).map(k=>[k,r[k]])),summary:payload.result.summary?{generatedByAI:payload.result.summary.generatedByAI,method:payload.result.summary.method}:null}};}
+ const result=await client().rpc('gridiron_public_write',{token,payload:packed});if(result.error)failure(result.error);return result.data?.game_id?hydrateResearchJob(result.data):result.data;
 }
 export async function sharedCache(kind:string,key:string):Promise<SharedCache|null>{
- const result=await client().from('shared_nfl_cache').select('*').eq('kind',kind).eq('key',key).maybeSingle();if(result.error)failure(result.error);return result.data;
+ const result=await client().from('shared_nfl_cache').select('*').eq('kind',kind).eq('key',key).maybeSingle();if(result.error)failure(result.error);const row=result.data;return row&&isResearchPointer(row.data)?{...row,data:await readResearchObject(row.data)}:row;
 }
 export async function putCache(kind:string,key:string,data:Record<string,any>,inputHash:string,ttlMs:number){return sharedWrite({action:'cache_put',kind,key,data,inputHash,expiresAt:new Date(Date.now()+ttlMs).toISOString()});}
-export async function latestJob(gameId:string,inputHash?:string):Promise<SharedJob|null>{let query=client().from('shared_nfl_jobs').select('*').eq('game_id',gameId);if(inputHash)query=query.eq('input_hash',inputHash);const result=await query.order('created_at',{ascending:false}).limit(1).maybeSingle();if(result.error)failure(result.error);return result.data;}
-export async function sharedJob(id:string):Promise<SharedJob|null>{const result=await client().from('shared_nfl_jobs').select('*').eq('id',id).maybeSingle();if(result.error)failure(result.error);return result.data;}
+export async function latestJob(gameId:string,inputHash?:string):Promise<SharedJob|null>{let query=client().from('shared_nfl_jobs').select('*').eq('game_id',gameId);if(inputHash)query=query.eq('input_hash',inputHash);const result=await query.order('created_at',{ascending:false}).limit(1).maybeSingle();if(result.error)failure(result.error);return hydrateResearchJob(result.data);}
+export async function sharedJob(id:string):Promise<SharedJob|null>{const result=await client().from('shared_nfl_jobs').select('*').eq('id',id).maybeSingle();if(result.error)failure(result.error);return hydrateResearchJob(result.data);}
 export async function cachedContextStates(gameIds:string[]):Promise<Map<string,SharedCache>>{
  const contexts=new Map<string,SharedCache>();for(let offset=0;offset<gameIds.length;offset+=35){const result=await client().from('shared_nfl_cache').select('kind,key,data,input_hash,updated_at,expires_at').eq('kind','detail').in('key',gameIds.slice(offset,offset+35));if(result.error)failure(result.error);for(const row of result.data??[])contexts.set(row.key,row as SharedCache);}return contexts;
 }

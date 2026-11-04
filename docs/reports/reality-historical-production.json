@@ -1,0 +1,59 @@
+{
+  "checkedAt": "2026-11-04T06:27:55.967Z",
+  "gameId": "2025_13_KC_DAL",
+  "sport": "NFL",
+  "mode": "retrospective",
+  "forecastId": "eb823f1c5e3b75447fce8f0358e2ff731d40761965262da781c832d931f84b45",
+  "evaluationId": "f0baa53e7e5bf2da5556cbc444468d2b48301120506fb6cc5695019a3bd6d7c5",
+  "simulations": 10000,
+  "players": 260,
+  "pendingPlayerStatistics": 143,
+  "predicted": {
+    "home": 22.4639,
+    "away": 23.8311
+  },
+  "actual": {
+    "home": 31,
+    "away": 28
+  },
+  "errors": {
+    "home": 8.536100000000001,
+    "away": 4.168900000000001,
+    "total": 12.704999999999998,
+    "margin": 4.3672
+  },
+  "persistentReadBack": true,
+  "idempotentRetry": true,
+  "sourceCount": 2,
+  "sourceUrls": [
+    "https://raw.githubusercontent.com/nflverse/nfldata/master/data/games.csv",
+    "https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_2025.csv.gz"
+  ],
+  "prospectiveGames": 1,
+  "retrospectiveGames": 1,
+  "background": {
+    "status": "completed",
+    "completedAt": "2026-11-04T06:27:55.622Z",
+    "legacy": {
+      "cursor": "2026-10-30T20:18:33.938687+00:00",
+      "imported": 3,
+      "complete": false,
+      "notes": []
+    },
+    "NFL": {
+      "checked": 3,
+      "evaluationsAppended": 3,
+      "performanceUpdated": true
+    },
+    "CFB": {
+      "checked": 0,
+      "evaluationsAppended": 0,
+      "performanceUpdated": true
+    },
+    "errors": [],
+    "personalRecordsChanged": 0
+  },
+  "status": "passed",
+  "seconds": 22.827,
+  "claim": "Mechanical persistence and historical comparison only; no prospective accuracy or model superiority claim."
+}

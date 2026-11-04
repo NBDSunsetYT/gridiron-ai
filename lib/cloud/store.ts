@@ -14,7 +14,9 @@ export async function records(ctx:CloudContext,kind:string,options:{entityKey?:s
   const {data,error,count}=await query;if(error)cloudError(error);
   if(typeof count!=='number')throw new ApiError('The research history count could not be verified. No partial history was returned.',503);
   if(expected===null)expected=count;else if(count!==expected)throw new ApiError('Research records changed during retrieval. Retry to load the current history.',409);
-  const page=(data??[]).map(row=>({...row,data:decodeCloudData(row.data)})) as CloudRecord[];bytes+=Buffer.byteLength(JSON.stringify(page),'utf8');
+  const page=(data??[]).map(row=>({...row,data:decodeCloudData(row.data)})) as CloudRecord[];
+  if(kind==='research_records/saved_simulation'){const{hydrateSavedNflData}=await import('../storage/saved-nfl');let expanded=0;for(let start=0;start<page.length;start+=4){const group=await Promise.all(page.slice(start,start+4).map(async row=>row.data.resultReference?{...row,data:await hydrateSavedNflData(row.data)}:row));expanded+=Buffer.byteLength(JSON.stringify(group));if(expanded>40_000_000)throw new ApiError('Expanded saved research exceeds the interactive request bound. Use a bounded query or project export; no partial history was returned.',413);page.splice(start,group.length,...group);}}
+  bytes+=Buffer.byteLength(JSON.stringify(page),'utf8');
   if(bytes>40_000_000)throw new ApiError('Expanded research history exceeds this interactive request bound. Use a bounded query or project export; no partial history was returned.',413);
   rows.push(...page);offset+=page.length;const target=Math.min(expected,limit);
   if(offset===target)break;
@@ -29,7 +31,9 @@ export async function allRecords(ctx:CloudContext,kind:string){
   const{data,error,count}=await ctx.client.from('gridiron_records').select('*',{count:'exact'}).eq('user_id',user.id).eq('kind',kind).order('created_at',{ascending:false}).order('id',{ascending:false}).range(offset,offset+999);if(error)cloudError(error);
   if(typeof count!=='number')throw new ApiError('Complete research history could not be verified. No partial history was scored as the complete model record.',503);
   if(expected===null)expected=count;else if(count!==expected)throw new ApiError('Research records changed during retrieval. Retry before scoring the complete model history.',409);
-  const page=(data??[]).map(row=>({...row,data:decodeCloudData(row.data)})) as CloudRecord[];bytes+=Buffer.byteLength(JSON.stringify(page),'utf8');
+  const page=(data??[]).map(row=>({...row,data:decodeCloudData(row.data)})) as CloudRecord[];
+  if(kind==='research_records/saved_simulation'){const{hydrateSavedNflData}=await import('../storage/saved-nfl');let expanded=0;for(let start=0;start<page.length;start+=4){const group=await Promise.all(page.slice(start,start+4).map(async row=>row.data.resultReference?{...row,data:await hydrateSavedNflData(row.data)}:row));expanded+=Buffer.byteLength(JSON.stringify(group));if(expanded>40_000_000)throw new ApiError('Expanded saved research exceeds the interactive request bound. Use a bounded query or project export; no partial history was returned.',413);page.splice(start,group.length,...group);}}
+  bytes+=Buffer.byteLength(JSON.stringify(page),'utf8');
   if(bytes>40_000_000)throw new ApiError('Complete expanded research history exceeds this interactive request bound. No partial history was scored as the complete model record; use a bounded report or project export.',413);
   rows.push(...page);offset+=page.length;
   if(offset===expected)break;
@@ -39,7 +43,7 @@ export async function allRecords(ctx:CloudContext,kind:string){
 }
 export async function record(ctx:CloudContext,id:string,kind?:string){
  const user=requireCloudUser(ctx);let query=ctx.client.from('gridiron_records').select('*').eq('user_id',user.id).eq('id',id);if(kind)query=query.eq('kind',kind);
- const {data,error}=await query.maybeSingle();if(error)cloudError(error);if(!data)throw new ApiError('Owned record not found.',404);return {...data,data:decodeCloudData(data.data)} as CloudRecord;
+ const {data,error}=await query.maybeSingle();if(error)cloudError(error);if(!data)throw new ApiError('Owned record not found.',404);let value=decodeCloudData(data.data);if(data.kind==='research_records/saved_simulation'&&value.resultReference)value=await(await import('../storage/saved-nfl')).hydrateSavedNflData(value);return {...data,data:value} as CloudRecord;
 }
 export async function saveRecord(ctx:CloudContext,kind:string,data:Record<string,any>,options:{id?:string;entityKey?:string;source?:string;observedAt?:string}={}){
  const user=requireCloudUser(ctx),id=options.id??data.id??randomUUID(),now=new Date().toISOString();

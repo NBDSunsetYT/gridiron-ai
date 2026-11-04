@@ -1,3 +1,25 @@
+Version 14.0: [original GAFIE candidate, Simulation vs. Reality, automatic evaluation, storage and remaining validation limits](docs/GAFIE_GALL_14.md).
+
+Version 12.1: [automatic probabilities, sorting, market comparison and limitations](docs/PROPS_V12_1.md).
+
+Version 12 automatic prop research: [operation, limitations and recovery](docs/AUTOMATIC_PROPS_V12.md).
+
+# Probability engine repair — 11.0.1
+
+See [the observed cause, repair and verification scope](docs/PROBABILITY_REPAIR.md). Probability requests now follow backend jobs, preserve specific failures and reopen compact simulations from durable references. Existing data and infrastructure are preserved.
+
+# GRIDIRON AI 11.0 — compact cloud storage
+
+The existing application is preserved. See [storage architecture, retention, recovery and provider activation](docs/GRIDIRON_V11.md). Supabase remains the private account and ledger authority. MongoDB/R2 integrations are opt-in and are not reported as connected until actual authorized checks pass.
+
+# GRIDIRON AI 10.2
+
+Existing-app upgrade and shared research storage repair: [architecture, operational scope and recovery](docs/GRIDIRON_V10_2.md). Production remains **https://gridiron-ai-gray.vercel.app**. The previous10.0 report below is retained as historical evidence.
+
+# GRIDIRON AI10.0
+
+Existing-app upgrade: [operational scope, recovery and remaining requirements](docs/GRIDIRON_V10.md).
+
 # GRIDIRON AI 9.0.0
 
 GRIDIRON AI is an installable NFL and College Football research app with public game analysis and a private personal wallet. The existing application has been upgraded; its previous ledger, research tools and data remain preserved.
@@ -16,7 +38,7 @@ The DraftKings repair distinguishes missing configuration, credential rejection,
 
 1. Open GRIDIRON AI and choose NFL or College Football. Available published games and public research do not require an app or database-provider login.
 2. Tap a game. The app retrieves available statistics, reported injuries and weather, then reuses or queues a 10,000-complete-game analysis.
-3. For NFL player props, choose **Sportsbook references (BALLDONTLIE)** or **DraftKings Predictions contracts** explicitly. **ANALYZE ALL NFL PLAYER PROPS** checks authorized sportsbook reference access for the selected verified matchup; it does not claim full-slate coverage or convert those odds into percentage-priced contracts. The separate **Analyze All NFL Markets** event-contract workflow validates exact identities, thresholds, quotes and settlement rules and reports missing licensed access honestly. In College Football, **Analyze Game** produces a separate complete-game historical baseline; independent player distributions remain separate from missing market contracts.
+3. For NFL player props, choose **Sportsbook references (PropLine)** or **DraftKings Predictions contracts** explicitly. **ANALYZE ALL NFL PLAYER PROPS** checks authorized sportsbook reference access for the selected verified matchup; it does not claim full-slate coverage or convert those odds into percentage-priced contracts. The separate **Analyze All NFL Markets** event-contract workflow validates exact identities, thresholds, quotes and settlement rules and reports missing licensed access honestly. In College Football, **Analyze Game** produces a separate complete-game historical baseline; independent player distributions remain separate from missing market contracts.
 4. Sign in to **GRIDIRON AI** when opening Wallet or saving personal research and conversation history. An application account is not a Supabase developer account.
 5. On iPhone, open the app in Safari and choose **Share → Add to Home Screen → Add**.
 
@@ -81,3 +103,10 @@ These are reproducible commands, not a claim that any arbitrary deployment passe
 - [Earlier PWA delivery and limitations](docs/DELIVERY_PWA.md)
 
 Native IPA/Xcode work remains postponed. Saving source files to iPhone Files does not execute the web or Python backend. The project never requests sportsbook passwords or places real wagers.
+
+Performance release: [12.1.1 implementation, measured benchmarks and recovery](docs/PERFORMANCE_12_1_1.md).
+
+
+## Football research desk — 12.2
+
+The existing Props screen now includes a compact research board, followed selections, source-backed chronological trends and exact sportsbook comparisons. Model probabilities, observed historical frequencies and market benchmarks retain distinct labels. See [implementation and limitations](docs/RESEARCH_DESK_12_2.md) and [live acceptance](docs/reports/research-desk-release.json). No prediction method, simulation count or financial record was changed.

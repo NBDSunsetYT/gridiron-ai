@@ -1,0 +1,25 @@
+{
+  "status": "completed",
+  "completedAt": "2026-11-04T07:29:27.224Z",
+  "legacy": {
+    "cursor": {
+      "at": "2026-10-30T20:45:28.993844+00:00",
+      "id": "055f1d38-49c8-41eb-8c34-87f5b81ed992"
+    },
+    "imported": 3,
+    "complete": false,
+    "notes": []
+  },
+  "NFL": {
+    "checked": 3,
+    "evaluationsAppended": 1,
+    "performanceUpdated": true
+  },
+  "CFB": {
+    "checked": 2,
+    "evaluationsAppended": 0,
+    "performanceUpdated": false
+  },
+  "errors": [],
+  "personalRecordsChanged": 0
+}

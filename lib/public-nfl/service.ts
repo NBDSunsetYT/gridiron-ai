@@ -26,6 +26,7 @@ const contextPending=new Map<string,Promise<Context>>();
 const safeRead=async<T>(read:()=>Promise<T>,fallback:T):Promise<T>=>{try{return await read();}catch{return fallback;}};
 
 export async function loadSchedule(force=false):Promise<Schedule>{
+ if(!force&&scheduleMemory&&Date.now()-Date.parse(scheduleMemory.updatedAt)<SCHEDULE_TTL)return scheduleMemory;
  const cache=await safeRead(()=>sharedCache('schedule',String(nflSeason())),null);
  if(!force&&fresh(cache)){scheduleMemory=cache!.data as Schedule;return scheduleMemory;}
  if(!force&&scheduleMemory&&Date.now()-Date.parse(scheduleMemory.updatedAt)<SCHEDULE_TTL)return scheduleMemory;
@@ -127,8 +128,10 @@ export async function executePublicJob(id:string){
   const engine=sanitizeEnginePayload(await response.json());if(engine.result.simulations!==claimed.data.simulations||engine.result.home!==game.home.id||engine.result.away!==game.away.id)throw new ApiError('The engine returned a different matchup or game count; the result was withheld.',502);
   for(const team of [game.home.id,game.away.id])if(engine.result.scoreDistributions[team]?.histogram?.reduce((n:number,row:any)=>n+row.count,0)!==claimed.data.simulations)throw new ApiError('The engine score distribution did not reconcile every complete game.',502);
   const summary=evidenceBrief(game,context,engine.result,engine.research),result={...engine,summary};
-  const completed=await sharedWrite({action:'job_complete',id,lease,result});
+  const completed=await sharedWrite({action:'job_complete',id,lease,gameId:game.id,result});
+  try{await(await import('../learning/store')).captureSimulation({...game,sport:'NFL'},{id,createdAt:engine.result.createdAt??completed.updated_at,inputVersion:claimed.input_hash,result:engine.result,research:engine.research});}catch(error){await putCache('status','learning-capture:'+id,{status:'pending',gameId:game.id,message:error instanceof Error?error.message:'Learning snapshot archival pending.'},claimed.input_hash,86400000).catch(()=>{});}
   await putCache('analysis',game.id,{jobId:id,inputHash:claimed.input_hash,summary:analysisSummary(completed)},claimed.input_hash,ANALYSIS_TTL).catch(()=>{});
+  if(process.env.GRIDIRON_MONGODB_RESEARCH==='1')await(await import('../storage/outbox')).deliverResearchQueue(1).catch(()=>{});
   if(process.env.OPENAI_API_KEY)await publicAssistant(game.id).catch(()=>{});
  }catch(error){const message=error instanceof ApiError?error.message:'Automatic research could not finish. Existing results and source records remain saved; please retry shortly.';await sharedWrite({action:'job_fail',id,lease,error:message}).catch(()=>{});}
 }
@@ -138,8 +141,13 @@ export async function analyzePublicGame(id:string,simulations=10000):Promise<Pub
  const game=await trustedGame(id);if(game.status==='final'||Date.parse(game.startTime)<=Date.now())throw new ApiError('This game has started or finished. Saved pregame research remains historical; unsupported live probabilities are not invented.',409);
  const context=await currentContext(game);if(!recentVerifiedContext(context))throw new ApiError('Latest statistical and injury source verification is temporarily unavailable. No new simulation was queued; saved research remains historical until fresh inputs can be checked.',503);const inputHash=evidenceHash(game,context,simulations);
  const job:SharedJob=await sharedWrite({action:'job_enqueue',gameId:id,inputHash,data:{game,context,simulations,automatic:true,modelVersion:PUBLIC_PIPELINE_VERSION,sourceUpdatedAt:context.updatedAt}});
- if(job.status!=='completed')scheduleJob(job.id);
- return publicGameDetail(id,simulations);
+ const retryEligible=job.status==='failed'&&Date.now()-Date.parse(job.updated_at)>=2*60000;
+ if(job.status!=='completed'&&(job.status!=='failed'||retryEligible))scheduleJob(job.id);
+ const detail=await publicGameDetail(id,simulations);
+ // A genuine retry was scheduled above. Do not return the previous attempt's
+ // failure as though the user had made no new request; snapshots stay unchanged.
+ if(retryEligible&&detail.analysis?.id===job.id&&detail.analysis.status==='failed')return{...detail,status:'queued',analysis:{...detail.analysis,status:'queued',error:null},game:{...detail.game,analysis:detail.game.analysis?{...detail.game.analysis,status:'queued',error:null}:null},message:'A new backend attempt is queued. The earlier result and saved history are preserved.'};
+ return detail;
 }
 export async function publicAssistant(gameId:string,message?:string):Promise<{summary:PublicSummary;analysisId:string|null;status:string}>{
  const detail=await publicGameDetail(gameId),context={...(await gameContext(detail.game)),markets:detail.markets,sources:detail.sources},fallback=detail.summary??evidenceBrief(detail.game,context,detail.analysis?.result,detail.analysis?.research);
@@ -168,8 +176,15 @@ export async function refreshPublicResearch(){
   if(!recentVerifiedContext(context)){results.push({gameId:game.id,status:'sources_unavailable'});continue;}
   if(old?.input_hash&&old.input_hash!==hash){await sharedWrite({action:'invalidate_game',gameId:game.id,reason:'Published injury, weather or statistical evidence changed.'});await putCache('detail',game.id,context,hash,CONTEXT_TTL).catch(()=>{});}
   const latest=await safeRead(()=>latestJob(game.id,hash),null);
-  if(!latest||latest.input_hash!==hash||latest.status==='queued'||latest.status==='failed'&&Date.now()-Date.parse(latest.updated_at)>2*60000){const next=await analyzePublicGame(game.id);results.push({gameId:game.id,status:next.status});break;}
+  if(!latest||latest.input_hash!==hash||latest.status==='queued'||latest.status==='failed'&&Date.now()-Date.parse(latest.updated_at)>2*60000){const capacity=await(await import('../probability/capacity')).probabilityCapacity();if(capacity.used+10000>capacity.backgroundLimit){results.push({gameId:game.id,status:'background_capacity_reserved_for_on_demand',resetsAt:capacity.resetsAt});break;}const next=await analyzePublicGame(game.id);results.push({gameId:game.id,status:next.status});break;}
   results.push({gameId:game.id,status:latest.status});
  }
  return{status:'refreshed',games:schedule.games.length,scheduled:results,updatedAt:schedule.updatedAt};
+}
+
+/** Internal source context for aligned threshold research; client inputs never choose raw statistics. */
+export async function verifiedProbabilityInputs(id:string,count:number){
+ const game=await trustedGame(id),context=await currentContext(game);
+ if(game.status!=='scheduled'||Date.parse(game.startTime)<=Date.now()||!recentVerifiedContext(context))throw new ApiError('Fresh verified pregame inputs are required.',422);
+ return{game:{id:game.id,home:game.home.id,away:game.away.id,startTime:game.startTime,season:game.season,week:game.week},inputContext:{injuries:context.injuries,weather:context.weather,markets:context.markets},inputHash:evidenceHash(game,context,count)};
 }

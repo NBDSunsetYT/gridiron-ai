@@ -17,7 +17,7 @@ import tempfile
 import threading
 import time
 import urllib.request
-from collections import Counter
+from collections import Counter, OrderedDict
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -31,7 +31,9 @@ MAX_SOURCE_BYTES=80_000_000
 SOURCE_CACHE_SECONDS=6*3600
 _cache_lock=threading.Lock()
 _source_cache=None
+_season_sources={}
 _prepared_cache=None
+_prepared_games=OrderedDict()
 
 
 class CFBSourceUnavailable(RuntimeError):
@@ -70,10 +72,10 @@ def source_file(season):
     global _source_cache
     now=time.monotonic()
     with _cache_lock:
-        if _source_cache and _source_cache['season']==season and now<_source_cache['until'] and Path(_source_cache['path']).is_file():
-            return dict(_source_cache)
+        cached=_season_sources.get(season)
+        if cached and now<cached['until'] and Path(cached['path']).is_file():return dict(cached)
         url=f'https://github.com/sportsdataverse/sportsdataverse-data/releases/download/espn_cfb_pbp/play_by_play_{season}.parquet'
-        path=Path(tempfile.gettempdir())/'gridiron-cfb-public-pbp.parquet'
+        path=Path(tempfile.gettempdir())/f'gridiron-cfb-public-pbp-{season}.parquet'
         partial=path.with_suffix('.partial')
         digest=hashlib.sha256();size=0
         try:
@@ -93,6 +95,7 @@ def source_file(season):
         _source_cache={'season':season,'path':str(path),'sha256':digest.hexdigest(),'bytes':size,
                        'url':url,'collectedAt':datetime.now(timezone.utc).isoformat(),
                        'availableAt':None,'until':now+SOURCE_CACHE_SECONDS}
+        _season_sources[season]=dict(_source_cache)
         return dict(_source_cache)
 
 
@@ -104,10 +107,13 @@ def normalize_public_cfb(path, home_espn_id, away_espn_id, before, maximum_team_
     required=set(COLUMNS)-{'EPA','EPA_success','air_yards','yds_punt_return','penalty_flag'}
     if not required.issubset(source.schema.names):
         raise ValueError('The published CFB play schema changed; its identities and event definitions need verification')
-    table=source.read(columns=[name for name in COLUMNS if name in source.schema.names])
     wanted=__import__('pyarrow').array([int(home_espn_id),int(away_espn_id)])
-    selected=pc.or_kleene(pc.or_kleene(pc.is_in(table['pos_team_id'],value_set=wanted),pc.and_kleene(pc.is_in(table['def_pos_team_id'],value_set=wanted),pc.equal(table['defense_score_play'],True))),pc.is_valid(table['two_point_conv_result']))
-    rows=table.filter(selected).to_pylist()
+    rows=[]
+    # Physical row order and the exact predicate are unchanged. Bound Arrow RAM.
+    for batch in source.iter_batches(batch_size=16384,columns=[name for name in COLUMNS if name in source.schema.names]):
+        table=__import__('pyarrow').Table.from_batches([batch])
+        selected=pc.or_kleene(pc.or_kleene(pc.is_in(table['pos_team_id'],value_set=wanted),pc.and_kleene(pc.is_in(table['def_pos_team_id'],value_set=wanted),pc.equal(table['defense_score_play'],True))),pc.is_valid(table['two_point_conv_result']))
+        rows.extend(table.filter(selected).to_pylist())
     del table,source
     cutoff=utc(before);output=[];counts=Counter();seen_drives=set();catalog={};latest={};played=[]
     for raw in rows:
@@ -263,15 +269,21 @@ def _prepare_cfb_public(data):
     if isinstance(seed,bool) or not isinstance(seed,int) or abs(seed)>2**53:
         raise ValueError('An integer reproducible CFB seed is required')
     metadata=source_file(season)
-    key=json.dumps([game_id,home,away,season,game['startTime'],metadata['sha256']])
+    key=json.dumps([MODEL_VERSION,ENGINE_VERSION,game_id,home,away,season,game['startTime'],metadata['sha256']])
     if _prepared_cache and _prepared_cache['key']==key and time.monotonic()<_prepared_cache['until']:
         return _prepared_cache['value']
+    cached=_prepared_games.get(key)
+    if cached and time.monotonic()<cached['until']:
+        _prepared_games.move_to_end(key)
+        return cached['value']
     corpus=normalize_public_cfb(metadata['path'],home,away,now.isoformat())
     model=fit_cfb_csv(corpus['csv'],metadata['url']+'; publisher MIT repository; source availability unknown',corpus['asOf'],100,
                        {'recencyHalfLifeDays':90,'conditionalShrinkage':True})['model']
     if model['syntheticEvidence']:raise ValueError('Synthetic evidence cannot enter automatic CFB research')
     value={'game':game,'home':home,'away':away,'model':model,'corpus':corpus,'metadata':metadata}
     _prepared_cache={'key':key,'until':time.monotonic()+600,'value':value}
+    _prepared_games[key]=_prepared_cache
+    while len(_prepared_games)>4:_prepared_games.popitem(last=False)
     return value
 
 
@@ -304,9 +316,28 @@ def analyze_cfb_public(data):
     result=simulate_cfb(model,'cfb:espn:'+home,'cfb:espn:'+away,count,data.get('seed',1),game['startTime'],
                         parameter_uncertainty={'replicates':10,'gamesPerReplicate':100} if len(corpus['historicalGameIds'])>=8 else None,
                         representative_games=1)
+    from .artifact_archive import archive_replay_input
+    result=archive_replay_input(result,model,'CFB')
     result['limitations'].extend(['This automatically fitted baseline is conditional on historical player participation; current injury, depth-chart, transfer and snap-limit coverage is incomplete.',
                                   'Historical publication availability is unknown. Source retrieval today does not establish historical point-in-time availability or calibration.',
                                   'Penalties and unsupported source plays are excluded from the empirical corpus; see actual rejection counts.'])
     return {'status':'completed','sport':'CFB','game':game,'simulations':count,'modelVersion':MODEL_VERSION,
             'engineVersion':ENGINE_VERSION,'inputHash':model['sha256'],'result':result,
             'research':_research(prepared)}
+
+
+def analyze_cfb_targets(data):
+    """Exact statistical thresholds evaluated on shared complete NCAA games."""
+    if not isinstance(data, dict) or set(data)-{'game','simulations','seed','contracts'}:
+        raise ValueError('Trusted matchup and exact statistical targets required')
+    definitions=data.get('contracts')
+    if not isinstance(definitions,list) or not 2<=len(definitions)<=12:
+        raise ValueError('Choose 2..12 distinct statistical targets')
+    if any(not isinstance(d,dict) or d.get('kind') not in ('player','spread','total') for d in definitions):
+        raise ValueError('Unsupported statistical target')
+    base={k:v for k,v in data.items() if k!='contracts'}
+    prepared=_prepare_cfb_public(base)
+    model,game=prepared['model'],prepared['game']
+    result=simulate_cfb(model,'cfb:espn:'+prepared['home'],'cfb:espn:'+prepared['away'],
+        data.get('simulations',10000),data.get('seed',2026),game['startTime'],contracts=definitions)
+    return {'sport':'CFB','inputHash':model['sha256'],'result':result,'research':_research(prepared)}

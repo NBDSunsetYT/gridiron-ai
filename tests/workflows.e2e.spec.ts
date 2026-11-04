@@ -39,7 +39,14 @@ test('all research and financial screens fit desktop and iPhone viewports',async
 test('encrypted snapshot unlocks actual recorded history offline and rejects an incorrect password',async({page,context})=>{
  const account=credentials();await page.request.post('/api/auth',{data:{action:'register',...account}});
  const deposited=await page.request.post('/api/ledger',{data:{type:'deposit',amount:'123.45',sportsbook:'DraftKings',reference:'SYNTHETIC-OFFLINE-QA'}});expect(deposited.ok()).toBeTruthy();
- await page.goto('/#advanced/settings');await page.getByLabel('Offline snapshot passphrase').fill('Offline-synthetic-password-1742');
+ // A slow identity response must not expose an editable guest form that will
+ // be remounted (and silently lose the passphrase) when the owner is known.
+ let releaseIdentity!:()=>void;const identityReady=new Promise<void>(resolve=>{releaseIdentity=resolve;});
+ await page.route('**/api/auth',async route=>{if(route.request().method()==='GET')await identityReady;await route.continue();});
+ const identityRequest=page.waitForRequest(request=>request.url().endsWith('/api/auth')&&request.method()==='GET');
+ await page.goto('/#advanced/settings');await identityRequest;
+ await expect(page.getByLabel('Offline snapshot passphrase')).toHaveCount(0);
+ releaseIdentity();await page.getByLabel('Offline snapshot passphrase').fill('Offline-synthetic-password-1742');
  await page.getByRole('checkbox',{name:/I want an encrypted copy/}).check();
  await page.getByRole('button',{name:'Save encrypted snapshot'}).click();
  await expect(page.getByText(/Encrypted historical snapshot saved on this device/)).toBeVisible();

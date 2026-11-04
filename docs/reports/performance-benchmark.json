@@ -1,0 +1,163 @@
+{
+  "version": "12.1.1",
+  "fixtureUse": "Synthetic NFL/CFB mechanical fixtures only. Public CFB normalization uses real published source when supplied. These benchmarks do not validate prediction accuracy or measure total hosting bills.",
+  "measure": "time.process_time CPU; perf_counter wall. Before and after run sequentially with identical inputs/seeds.",
+  "results": [
+    {
+      "workload": "chronological CDF fit and validation",
+      "before": {
+        "cpuSeconds": 0.06238293900000014,
+        "wallSeconds": 0.06239053499302827
+      },
+      "after": {
+        "cpuSeconds": 0.011046017000000186,
+        "wallSeconds": 0.011113903994555585
+      },
+      "cpuReductionPercent": 82.29320840430401,
+      "exactOutputHash": "b03c89e281b6be287c0e91da0549a550612447d983d64d899bd9125c8970c940"
+    },
+    {
+      "workload": "NFL 10000 complete games",
+      "before": {
+        "cpuSeconds": 9.164438795,
+        "wallSeconds": 9.166045759004191
+      },
+      "after": {
+        "cpuSeconds": 3.326762093000001,
+        "wallSeconds": 3.327846590007539
+      },
+      "cpuReductionPercent": 63.69922733495651,
+      "exactOutputHash": "34e49925115c3a3059957dd86dbe1bae8209c7e862fcd75d90c958881f319234"
+    },
+    {
+      "workload": "NFL 50000 complete games",
+      "before": {
+        "cpuSeconds": 47.193214993000005,
+        "wallSeconds": 47.74875604300178
+      },
+      "after": {
+        "cpuSeconds": 16.791421604999996,
+        "wallSeconds": 17.104852014002972
+      },
+      "cpuReductionPercent": 64.41983957335688,
+      "exactOutputHash": "d9569e391d45de2e7d722ace7f68947676e13fe8f9d11fe4c81b99d25ad5199f"
+    },
+    {
+      "workload": "NFL 100000 complete games",
+      "before": {
+        "cpuSeconds": 93.62155069199999,
+        "wallSeconds": 94.40860572300153
+      },
+      "after": {
+        "cpuSeconds": 33.407638711000004,
+        "wallSeconds": 34.2281034560001
+      },
+      "cpuReductionPercent": 64.31629420355809,
+      "exactOutputHash": "71017dde5c091e82023c77270b4e8510c3e7b3487eb97df37d396e8ca3cae5db"
+    },
+    {
+      "workload": "CFB 10000 complete games",
+      "before": {
+        "cpuSeconds": 9.101992544000012,
+        "wallSeconds": 9.102727856996353
+      },
+      "after": {
+        "cpuSeconds": 3.1351975800000105,
+        "wallSeconds": 3.1359168350027176
+      },
+      "cpuReductionPercent": 65.55482148722791,
+      "exactOutputHash": "6639c8bfa6cc5dd4f238a2b15761cbe143691973c97d81eb762a1d9de372a92a"
+    },
+    {
+      "workload": "CFB 50000 complete games",
+      "before": {
+        "cpuSeconds": 46.55597464699997,
+        "wallSeconds": 48.32233674199961
+      },
+      "after": {
+        "cpuSeconds": 16.18442646699998,
+        "wallSeconds": 17.251992218996747
+      },
+      "cpuReductionPercent": 65.23662840330442,
+      "exactOutputHash": "673a47e34aa1844b0d62a7f336bcc2e2171720caf40fd1a6c7caabfc04768998"
+    },
+    {
+      "workload": "CFB 100000 complete games",
+      "before": {
+        "cpuSeconds": 92.62260204400002,
+        "wallSeconds": 93.58014699698833
+      },
+      "after": {
+        "cpuSeconds": 31.630454693000047,
+        "wallSeconds": 31.654902905997005
+      },
+      "cpuReductionPercent": 65.85017696007492,
+      "exactOutputHash": "4871ff3a9364330628c3d2131e038d54c86db48bf7fa54aa7b4f1085fe20d733"
+    },
+    {
+      "workload": "real CFB parquet normalization, Akron/Ohio, unchanged row order",
+      "before": {
+        "cpuSeconds": 0.2482573830000092,
+        "wallSeconds": 0.21066698100185022
+      },
+      "after": {
+        "cpuSeconds": 0.09322623600002089,
+        "wallSeconds": 0.05811135799740441
+      },
+      "cpuReductionPercent": 62.44774883491886,
+      "exactOutputHash": "1b3a55c1e7c42f086f3e2ffc210a5a23af2d8b9d65e80d8b4214d1df3c5de9ce"
+    },
+    {
+      "workload": "Render 10 warm 500-row pages from 10000-row board",
+      "before": {
+        "cpuSeconds": 0.530744533,
+        "wallSeconds": 0.5307968980050646
+      },
+      "after": {
+        "cpuSeconds": 0.032870752,
+        "wallSeconds": 0.03287340499809943
+      },
+      "cpuReductionPercent": 93.80667157997839,
+      "exactOutputHash": "b5859e424c7e598817fe995d9343c03d12fb2a610f08f970857a51575a036332"
+    }
+  ],
+  "publicCfbSourceSha256": "0b2f95d7b8675794fc6d81f843df9995479a614ba195cf01600b19fded6ad3a5",
+  "rssHighWaterBytes": 348786688,
+  "gatewayFinalOptimizationRechecked": true,
+  "isolatedColdNormalization": {
+    "before": {
+      "phase": "before",
+      "cpuSeconds": 0.7279472920000001,
+      "peakRssBytes": 244830208,
+      "outputSha256": "fdf0ad03cc795b1383d62983c71bdd54271dea93444d5738a8d8dd805d94fae5"
+    },
+    "after": {
+      "phase": "after",
+      "cpuSeconds": 0.759142554,
+      "peakRssBytes": 221638656,
+      "outputSha256": "fdf0ad03cc795b1383d62983c71bdd54271dea93444d5738a8d8dd805d94fae5"
+    },
+    "peakRssReductionPercent": 9.472504307965135,
+    "note": "Includes cold PyArrow import. This single cold measurement was slightly slower after batching; warm CPU and peak-memory results are separate."
+  },
+  "actualSupabaseCacheCrossProcess": {
+    "first": {
+      "computes": 1,
+      "elapsedMs": 979.291172,
+      "value": {
+        "purpose": "ISOLATED CACHE TEST ONLY; no prediction or game record",
+        "exactDecimal": "0.123456789"
+      }
+    },
+    "second": {
+      "computes": 0,
+      "elapsedMs": 359.19374899999997,
+      "value": {
+        "purpose": "ISOLATED CACHE TEST ONLY; no prediction or game record",
+        "exactDecimal": "0.123456789"
+      }
+    },
+    "purpose": "An isolated disposable cache entry only, not a prediction, user record or financial write."
+  },
+  "checkedAt": "2026-11-03T02:03:19.839953+00:00"
+}

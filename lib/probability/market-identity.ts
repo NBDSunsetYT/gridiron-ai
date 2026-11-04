@@ -1,0 +1,2 @@
+/** Price and display-name changes never change the identity of a player line. */
+export function samePropSelection(row:any,ref:any){return row?.eventId===ref?.eventId&&typeof ref?.playerId==='string'&&ref.playerId.length>0&&row.player?.id===ref.playerId&&row.market===ref.market&&row.side===ref.side&&row.book?.key===ref.book&&(row.threshold===null||ref.threshold===null?row.threshold===ref.threshold:Number.isFinite(Number(row.threshold))&&Number(row.threshold)===Number(ref.threshold));}

@@ -1,0 +1,180 @@
+{
+  "checkedAt": "2026-11-03T02:17:47.517Z",
+  "version": "12.1.1",
+  "status": "passed",
+  "financialWrites": 0,
+  "mockedResponses": false,
+  "requests": [
+    {
+      "path": "/api/health?check=dependencies",
+      "host": "https://gridiron-ai-gray.vercel.app",
+      "status": 200,
+      "wallMs": 1821.831586,
+      "bytes": 544,
+      "serverTiming": null,
+      "cacheControl": "no-store"
+    },
+    {
+      "path": "/api/nfl/free-props?sport=NFL",
+      "host": "https://gridiron-ai-gray.vercel.app",
+      "status": 200,
+      "wallMs": 7823.649015999999,
+      "bytes": 2978454,
+      "serverTiming": "app;dur=7473.09, processcpu;dur=309.57",
+      "cacheControl": "no-store"
+    },
+    {
+      "path": "/api/nfl/free-props?sport=CFB",
+      "host": "https://gridiron-ai-gray.vercel.app",
+      "status": 200,
+      "wallMs": 5148.267588000001,
+      "bytes": 1420036,
+      "serverTiming": "app;dur=4879.11, processcpu;dur=774.21",
+      "cacheControl": "no-store"
+    },
+    {
+      "path": "/api/nfl/free-props?sport=NFL",
+      "host": "https://gridiron-ai-gray.vercel.app",
+      "status": 200,
+      "wallMs": 382.28004599999986,
+      "bytes": 2978454,
+      "serverTiming": "app;dur=31.39, processcpu;dur=30.80",
+      "cacheControl": "no-store"
+    },
+    {
+      "path": "/api/nfl/free-props?sport=NFL",
+      "host": "https://gridiron-ai-gray.vercel.app",
+      "status": 200,
+      "wallMs": 1617.5814229999996,
+      "bytes": 2978454,
+      "serverTiming": "app;dur=503.49, processcpu;dur=352.81",
+      "cacheControl": "no-store"
+    },
+    {
+      "path": "/api/nfl/free-props?sport=NFL",
+      "host": "https://gridiron-ai-gray.vercel.app",
+      "status": 200,
+      "wallMs": 1736.3996289999995,
+      "bytes": 2978454,
+      "serverTiming": "app;dur=42.19, processcpu;dur=41.73",
+      "cacheControl": "no-store"
+    },
+    {
+      "path": "/api/nfl/free-props?sport=NFL",
+      "host": "https://gridiron-ai-gray.vercel.app",
+      "status": 200,
+      "wallMs": 2263.595534,
+      "bytes": 2978454,
+      "serverTiming": "app;dur=607.40, processcpu;dur=493.13",
+      "cacheControl": "no-store"
+    },
+    {
+      "path": "/api/nfl/free-props?sport=CFB",
+      "host": "https://gridiron-ai-gray.vercel.app",
+      "status": 200,
+      "wallMs": 572.2586999999985,
+      "bytes": 1420036,
+      "serverTiming": "app;dur=345.13, processcpu;dur=245.13",
+      "cacheControl": "no-store"
+    },
+    {
+      "path": "/api/nfl/free-props?sport=CFB",
+      "host": "https://gridiron-ai-gray.vercel.app",
+      "status": 200,
+      "wallMs": 597.9858410000015,
+      "bytes": 1420036,
+      "serverTiming": "app;dur=236.47, processcpu;dur=105.01",
+      "cacheControl": "no-store"
+    },
+    {
+      "path": "/api/nfl/free-props?sport=CFB",
+      "host": "https://gridiron-ai-gray.vercel.app",
+      "status": 200,
+      "wallMs": 850.2451900000015,
+      "bytes": 1420036,
+      "serverTiming": "app;dur=65.26, processcpu;dur=61.80",
+      "cacheControl": "no-store"
+    },
+    {
+      "path": "/api/nfl/free-props?sport=CFB",
+      "host": "https://gridiron-ai-gray.vercel.app",
+      "status": 200,
+      "wallMs": 1297.8277420000013,
+      "bytes": 1420036,
+      "serverTiming": "app;dur=631.15, processcpu;dur=401.35",
+      "cacheControl": "no-store"
+    },
+    {
+      "path": "/api/ledger",
+      "host": "https://gridiron-ai-gray.vercel.app",
+      "status": 401,
+      "wallMs": 245.00498499999958,
+      "bytes": 66,
+      "serverTiming": null,
+      "cacheControl": "private, no-store"
+    },
+    {
+      "path": "/api/bets",
+      "host": "https://gridiron-ai-gray.vercel.app",
+      "status": 401,
+      "wallMs": 237.8391449999981,
+      "bytes": 66,
+      "serverTiming": null,
+      "cacheControl": "private, no-store"
+    },
+    {
+      "path": "/api/internal/performance",
+      "host": "https://gridiron-ai-gray.vercel.app",
+      "status": 401,
+      "wallMs": 730.0704440000009,
+      "bytes": 66,
+      "serverTiming": null,
+      "cacheControl": "private, no-store"
+    },
+    {
+      "path": "/health",
+      "host": "https://gridiron-propline-gateway.onrender.com",
+      "status": 200,
+      "wallMs": 366.2974099999992,
+      "bytes": 151,
+      "serverTiming": null,
+      "cacheControl": null
+    },
+    {
+      "path": "/metrics",
+      "host": "https://gridiron-propline-gateway.onrender.com",
+      "status": 401,
+      "wallMs": 96.89407800000117,
+      "bytes": 46,
+      "serverTiming": "app;dur=0.73",
+      "cacheControl": null
+    }
+  ],
+  "checks": [
+    "Live release, Supabase and private quantitative service healthy",
+    "NFL and CFB sources/identities, full-game counts and sportsbook identity preserved",
+    "Four simultaneous readers per sport preserve identical estimates for identical inputs",
+    "Private Wallet and operator metrics require authorization and are not cached",
+    "Updated Render gateway healthy and new diagnostics protected"
+  ],
+  "coverage": {
+    "NFL": {
+      "loaded": 500,
+      "ready": 0,
+      "methods": [
+        "empirical_history",
+        "full_game_simulation"
+      ],
+      "concurrentMatchedOutputChecks": 1036
+    },
+    "CFB": {
+      "loaded": 500,
+      "ready": 56,
+      "methods": [
+        "full_game_simulation"
+      ],
+      "concurrentMatchedOutputChecks": 308
+    }
+  },
+  "finishedAt": "2026-11-03T02:18:07.600Z"
+}

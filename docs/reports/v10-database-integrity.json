@@ -1,0 +1,51 @@
+{
+  "version": "10.0.0",
+  "checkedAt": "2026-10-31T23:04:54.462420+00:00",
+  "project": "qdtdjbapdipopncklsdb",
+  "sourceCheckpoint": "checkpoint/pre-v10-df565dc",
+  "recoveryCheckpoint": {
+    "encrypted": true,
+    "AESGCMRoundTrip": "passed",
+    "outsideSource": true,
+    "ciphertextSha256": "00a36ae2755c4725a54002f9fe52fcaa95a58e23a1e039b35b73b34ff48efe22"
+  },
+  "before": {
+    "authUsers": 2,
+    "profiles": 1,
+    "genericPrivateRecords": 0,
+    "ledgerEntries": 0
+  },
+  "after": {
+    "authUsers": 2,
+    "profiles": 1,
+    "genericPrivateRecords": 0,
+    "ledgerEntries": 0,
+    "workspaces": 0,
+    "workspaceVersions": 0
+  },
+  "migrations": [
+    "20261031225446_v10_saved_workspaces",
+    "20261031230130_v10_workspace_version_index"
+  ],
+  "productionRPC": {
+    "write": "passed_in_rolled_back_transaction",
+    "identicalRetry": "passed",
+    "staleRevisionRejected": "passed",
+    "testRecordsPersisted": false
+  },
+  "syntheticPostgres": [
+    "twoOwnerIsolation",
+    "guestDenial",
+    "directWriteDenial",
+    "idempotency",
+    "conflictDetection",
+    "restorationAppendsVersion"
+  ],
+  "securityAdvisors": {
+    "newRLSFindings": 0,
+    "existingLeakedPasswordProtectionWarning": true,
+    "existingRecoveryTableIntentionallyDeniesClients": true
+  },
+  "realAppAuthenticationPersistenceEndToEnd": false,
+  "accountDeletionPerformed": false
+}

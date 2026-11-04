@@ -1,0 +1,109 @@
+{
+  "version": "12.0.0",
+  "checkedAt": "2026-11-01T21:12:27.468709+00:00",
+  "status": "production_verified",
+  "tests": {
+    "typescript": {
+      "passed": 701,
+      "files": 95
+    },
+    "python": {
+      "fullSuitePassed": 180,
+      "additionalCandidateAndHistoryTestsPassed": 10,
+      "note": "Overlapping fallback tests are not additive; candidate and CFB tests were added after initial full discovery.",
+      "latestFallbackAndCandidatePassed": 10,
+      "distinctTestsAcrossRuns": 184
+    },
+    "postgres": {
+      "suitesPassed": 11
+    },
+    "browser": {
+      "automaticDesktopAndIphoneViewportPassed": 2,
+      "legacyRegressionStatus": "passed",
+      "physicalIphoneTested": false,
+      "legacyRegressionFinalPassed": 14,
+      "pwaRegressionPassed": 4,
+      "productionWorkflowChecksPassed": 5,
+      "productionPwaChecksPassed": 15
+    },
+    "build": {
+      "status": "passed",
+      "directory": ".next-v12-prod",
+      "note": "A prior concurrent dev/build output collision failed; the isolated production build passed.",
+      "latestTypecheck": "passed"
+    }
+  },
+  "sources": {
+    "nflEmpirical": {
+      "verifiedGame": "2026_08_PHI_WAS",
+      "supportedPlayers": 41,
+      "sampleSizes": [
+        5,
+        6,
+        7
+      ],
+      "method": "published_nflverse_weekly_totals"
+    },
+    "cfbEmpirical": {
+      "verifiedGame": "cfb:espn:401866453",
+      "supportedPlayers": 15,
+      "method": "published_completed_game_stat_events",
+      "limitedCohortsExcluded": true,
+      "coverageDiagnostics": {
+        "incompleteTeamStatisticCohortsExcluded": true,
+        "missingParticipationNotCountedAsZero": true
+      }
+    }
+  },
+  "database": {
+    "additiveMigrationApplied": true,
+    "productionIsolatedReadWriteUpdateRetrieveRolledBack": true,
+    "privateQueueAccessDenied": true,
+    "userTablesAltered": false,
+    "persistedPublicDistributionVersionsVerified": 5,
+    "persistedExactSelectionSnapshotsVerified": 7
+  },
+  "limitations": [
+    "No approved prospectively validated distribution candidate or calibrator is configured.",
+    "Empirical estimates are conditional historical research, not calibrated next-game forecasts.",
+    "Hosted daily complete-game usage remains 500000 of 500000; no limit was raised.",
+    "Authorized DraftKings Predictions, Atlas policy approval, R2 and general OpenAI credentials remain unavailable."
+  ],
+  "github": {
+    "runtimeSourceCommit": "ebdc0fd51b3b8e5f172d1409ad2d64770ccf5700",
+    "pushVerified": true
+  },
+  "deployment": {
+    "id": "dpl_5awcdu21hw5DWgn8Tq5fGGQcWJcg",
+    "state": "READY",
+    "runtimeFiles": 284,
+    "runtimeManifestSha256": "3845994283416eefd88ec0e3d4503c8556732c8956db7a6d6b0a1177cbc386c7",
+    "url": "https://gridiron-ai-gray.vercel.app"
+  },
+  "productionCoverage": {
+    "NFL": {
+      "loaded": 500,
+      "ready": 199,
+      "methods": [
+        "empirical_history"
+      ]
+    },
+    "CFB": {
+      "loaded": 46,
+      "ready": 28,
+      "methods": [
+        "full_game_simulation"
+      ]
+    },
+    "meaning": "Point-in-time verified first provider page. Unavailable/stale/unsupported rows are not fabricated. These counts are not model accuracy."
+  },
+  "observability": {
+    "deploymentErrorLogScan": "No error/fatal logs returned for the tested deployment in the verification window."
+  },
+  "environment": {
+    "render": "Existing PropLine gateway preserved; no Render deployment or credential change required.",
+    "quant": "Existing private Vercel FastAPI service, preserved architecture.",
+    "supabaseProject": "qdtdjbapdipopncklsdb",
+    "userFinancialWrites": 0
+  }
+}
