@@ -9,5 +9,6 @@ await assert.rejects(db.query('update public.football_learning_records set summa
 const retro=await call({...base,id:'d'.repeat(64),eventStart:'2020-01-01T00:00:00Z',summary:{predictedAt:'2019-01-01T00:00:00Z'}});assert.equal(retro.mode,'retrospective','JSON backdating does not turn a current import into a pregame forecast');
 const evaluated=await call({...base,id:'e'.repeat(64),kind:'evaluation',parentId:retro.id,eventStart:retro.event_start});assert.equal(evaluated.mode,'retrospective');await assert.rejects(call({...base,id:'f'.repeat(64),kind:'evaluation',parentId:retro.id,gameId:'ANOTHER-GAME',eventStart:retro.event_start}),/Matching frozen/);
 await assert.rejects(call({...base,id:'1'.repeat(64),legacySnapshotId:'00000000-0000-4000-a000-000000000001'}),/Original snapshot/);
+await call({...base,id:'2'.repeat(64),kind:'promotion',summary:{candidateId:'SYNTHETIC-ARTIFACT'}});await assert.rejects(call({...base,id:'3'.repeat(64),kind:'promotion',summary:{candidateId:'SYNTHETIC-ARTIFACT'}}),/duplicate key/);
 await db.exec('reset role');await assert.rejects(db.query('delete from public.football_learning_records'),/append-only/);
 console.log('PASS learning refs: RLS guest read, blocked direct writes, capability, idempotency, no backdating, immutable history, exact correction parent');await db.close();

@@ -1,41 +1,41 @@
 {
-  "startedAt": "2026-11-04T07:10:05.171Z",
+  "startedAt": "2026-11-04T07:22:20.612Z",
   "base": "https://gridiron-ai-gray.vercel.app",
   "checks": [
     {
       "name": "Live application and private quantitative service are ready",
       "status": "passed",
-      "milliseconds": 1923
+      "milliseconds": 1619
     },
     {
       "name": "NFL archived original GAFIE full games, final statistics and persistent read-back",
       "status": "passed",
-      "milliseconds": 3998
+      "milliseconds": 4284
     },
     {
       "name": "CFB archived original GAFIE full games, final statistics and persistent read-back",
       "status": "passed",
-      "milliseconds": 2149
+      "milliseconds": 1552
     },
     {
       "name": "Private records remain protected for guests",
       "status": "passed",
-      "milliseconds": 957
+      "milliseconds": 924
     },
     {
       "name": "iPhone-sized guest opens real NFL experiment, distributions and a representative full game",
       "status": "passed",
-      "milliseconds": 2050
+      "milliseconds": 2578
     },
     {
       "name": "CFB remains separate and archive survives reload",
       "status": "passed",
-      "milliseconds": 2211
+      "milliseconds": 2930
     },
     {
       "name": "Published PWA install assets and secure cache boundary are served",
       "status": "passed",
-      "milliseconds": 312
+      "milliseconds": 343
     }
   ],
   "sports": {
@@ -68,7 +68,7 @@
     "status": "missing_credentials"
   },
   "status": "passed",
-  "finishedAt": "2026-11-04T07:10:18.915Z",
+  "finishedAt": "2026-11-04T07:22:35.003Z",
   "limitations": [
     "Browser emulation only; no physical iPhone installation.",
     "Original GAFIE remains experimental. Neither this workflow nor play-level tests establish accurate forecasts.",

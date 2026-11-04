@@ -35,7 +35,7 @@ private quantitative service as well as the web app.
   closed rather than presenting a truncated subset as all-time performance.
 - The controlled home-win recalibration candidate requires 200 distinct pregame
   games and 40 weeks. It uses fixed regularization and chronological 60/20/20
-  week partitions, two separate held-out tests, paired two-week bootstrap
+  week partitions, at least 40 new distinct games between subsequent fits, two separate held-out tests, paired two-week bootstrap
   intervals and non-worse log loss. Only a successful candidate may become a
   separately displayed home-win calibration. It cannot replace player models or
   game mechanics. Promotion and rollback are append-only; future deterioration
