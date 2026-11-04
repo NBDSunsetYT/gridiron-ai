@@ -281,3 +281,8 @@ async def trace(request:Request,authorization:str|None=Header(default=None)):
 # NCAA models and transitions remain separate from every existing NFL endpoint.
 from .cfb_routes import make_cfb_router
 app.include_router(make_cfb_router(authorize,body,guarded,signature,verify_artifact))
+
+# Separate sport-specific candidate boundaries; existing engines and owner
+# routes remain available until out-of-sample promotion gates are satisfied.
+from .engine_v15_routes import make_engine_router
+app.include_router(make_engine_router(authorize,body,guarded,signature,verify_artifact))

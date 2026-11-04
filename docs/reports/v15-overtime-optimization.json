@@ -1,0 +1,34 @@
+{
+  "workload": "Identical 1,000 complete CFB games, seed15015, fixed pregame artifact; representative traces disabled",
+  "before": {
+    "cpuSeconds": 6.977393463,
+    "outputSha256": "03be698a65a9be27aa6921fb6fde588c8ea1332769134054de9e018dd4e80445",
+    "simulations": 1000,
+    "seed": 15015,
+    "fields": [
+      "scoreDistributions",
+      "totalDistribution",
+      "marginDistribution",
+      "players",
+      "gameEnvironment",
+      "convergence"
+    ]
+  },
+  "after": {
+    "cpuSeconds": 1.7558300620000002,
+    "outputSha256": "03be698a65a9be27aa6921fb6fde588c8ea1332769134054de9e018dd4e80445",
+    "simulations": 1000,
+    "seed": 15015,
+    "fields": [
+      "scoreDistributions",
+      "totalDistribution",
+      "marginDistribution",
+      "players",
+      "gameEnvironment",
+      "convergence"
+    ]
+  },
+  "cpuReductionFraction": 0.748354443344655,
+  "outputsExactlyEqual": true,
+  "hostingSavingsMeasured": false
+}

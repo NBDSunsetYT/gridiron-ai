@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "originalFiles": {
+    "fitted-input.json": "5f5dbae34c34f19bb9b1221c12d4744ef29f99dab44eaf499b26b937569d7f05",
+    "diagnostic-result.json": "2460973ca9c5a54e72960d73e9a53a7556d975eb5d888568a72e38bd15858718"
+  },
+  "replayedGames": 10000,
+  "replayCPUSeconds": 46.921968489,
+  "exactOutputChecks": {
+    "scoreDistributions": true,
+    "totalDistribution": true,
+    "marginDistribution": true,
+    "players": true,
+    "gameEnvironment": true,
+    "convergence": true,
+    "correlations": true,
+    "representativeGames": true
+  },
+  "trainingCutoff": "2026-10-29T02:37:24.000001+00:00",
+  "modelVersion": "cfb-gafie-conditional-transition-14.0.0",
+  "seed": 14031,
+  "teams": {
+    "cfb:espn:30": {
+      "plays": 534,
+      "passAttemptsByHistoricalQB": {
+        "cfb:espn:4685454": 257,
+        "cfb:espn:5161854": 13
+      },
+      "zeroClockFraction": 0.1760299625468165,
+      "meanRecordedClockDelta": 22.616104868913858,
+      "labeledAvailabilityRows": 0
+    },
+    "cfb:espn:194": {
+      "plays": 445,
+      "passAttemptsByHistoricalQB": {
+        "cfb:espn:5079712": 166,
+        "cfb:espn:5214646": 12,
+        "cfb:espn:5146824": 6
+      },
+      "zeroClockFraction": 0.5370786516853933,
+      "meanRecordedClockDelta": 13.665168539325842,
+      "labeledAvailabilityRows": 0
+    }
+  },
+  "defects": [
+    {
+      "code": "historical_personnel_not_current_lineup",
+      "confirmed": true,
+      "evidence": "The sampler returns historical qb/receiver/runner IDs. No current starter allocation step exists."
+    },
+    {
+      "code": "unmodeled_confirmed_absence",
+      "confirmed": true,
+      "evidence": "No availability-labeled training rows; the saved run contains passing attempts for a reported-out quarterback."
+    },
+    {
+      "code": "tempo_not_validated",
+      "confirmed": true,
+      "evidence": {
+        "meanSimulatedPlays": 207.5782,
+        "clockEvidence": {
+          "cfb:espn:30": {
+            "plays": 534,
+            "passAttemptsByHistoricalQB": {
+              "cfb:espn:4685454": 257,
+              "cfb:espn:5161854": 13
+            },
+            "zeroClockFraction": 0.1760299625468165,
+            "meanRecordedClockDelta": 22.616104868913858,
+            "labeledAvailabilityRows": 0
+          },
+          "cfb:espn:194": {
+            "plays": 445,
+            "passAttemptsByHistoricalQB": {
+              "cfb:espn:5079712": 166,
+              "cfb:espn:5214646": 12,
+              "cfb:espn:5146824": 6
+            },
+            "zeroClockFraction": 0.5370786516853933,
+            "meanRecordedClockDelta": 13.665168539325842,
+            "labeledAvailabilityRows": 0
+          }
+        }
+      }
+    },
+    {
+      "code": "opponent_outcome_backoff",
+      "confirmed": true,
+      "evidence": "Outcome events back off to same-offense/down pools; play-call coefficients do not independently adjust pass/rush efficiency for an unseen defense."
+    },
+    {
+      "code": "uncalibrated_full_game_model",
+      "confirmed": true,
+      "evidence": "Held-out play-choice log loss was tested, but full-game score/player distributions were not approved."
+    },
+    {
+      "code": "retrospective_source_corrections",
+      "confirmed": true,
+      "evidence": "Source events precede kickoff, but original publication and correction availability timestamps are not established."
+    }
+  ],
+  "historicalForecastAltered": false,
+  "actualBoxScoreUsedForReplay": false,
+  "publishedAsValidatedForecast": false
+}

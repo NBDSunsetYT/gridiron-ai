@@ -40,3 +40,5 @@ docs/reports/*
 !docs/reports/simulation-backtest.json
 !docs/reports/v4-model-benchmark.json
 !docs/reports/v8-cfb-historical-audit.json
+!docs/reports/v15-validation.json
+!docs/reports/v15-original-run-diagnostic.json

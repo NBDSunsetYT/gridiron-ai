@@ -1,0 +1,399 @@
+{
+  "status": "passed",
+  "scope": "local real historical inputs; mechanical/convergence check, not accuracy validation",
+  "runs": [
+    {
+      "sport": "NFL",
+      "modelVersion": "football-possession-hurdle-candidate-15.1.0",
+      "inputVersion": "a80f59c4db75897bddcb62ff4d97308f5dc75e5f31ae29b0ee7be981b300f2d3",
+      "games": 10000,
+      "seed": 15023,
+      "cpuSeconds": 9.921473986,
+      "wallSeconds": 23.78970282199589,
+      "rssHighWaterBytes": 167968768,
+      "compressedSummaryBytes": 19862,
+      "homeWinProbability": 0.4675,
+      "monteCarloSE": 0.004989426319728552,
+      "monteCarloInterval95": [
+        0.4577352538506943,
+        0.47728970604339965
+      ],
+      "accounting": {
+        "productionEligible": false,
+        "lineupsVerified": false,
+        "injuriesComplete": false,
+        "allGamesAccountingReconciled": true
+      },
+      "distributionChecksum": "c79bbe656c9761e8fa3aa5120bf060efd68a407409ef3e8a1b27514ecb981867"
+    },
+    {
+      "sport": "NFL",
+      "modelVersion": "football-possession-hurdle-candidate-15.1.0",
+      "inputVersion": "a80f59c4db75897bddcb62ff4d97308f5dc75e5f31ae29b0ee7be981b300f2d3",
+      "games": 10000,
+      "seed": 15023,
+      "cpuSeconds": 8.677001223,
+      "wallSeconds": 13.9911684769977,
+      "rssHighWaterBytes": 168353792,
+      "compressedSummaryBytes": 19862,
+      "homeWinProbability": 0.4675,
+      "monteCarloSE": 0.004989426319728552,
+      "monteCarloInterval95": [
+        0.4577352538506943,
+        0.47728970604339965
+      ],
+      "accounting": {
+        "productionEligible": false,
+        "lineupsVerified": false,
+        "injuriesComplete": false,
+        "allGamesAccountingReconciled": true
+      },
+      "distributionChecksum": "c79bbe656c9761e8fa3aa5120bf060efd68a407409ef3e8a1b27514ecb981867",
+      "exactSeedReplayPassed": true
+    },
+    {
+      "sport": "NFL",
+      "modelVersion": "football-possession-hurdle-candidate-15.1.0",
+      "inputVersion": "a80f59c4db75897bddcb62ff4d97308f5dc75e5f31ae29b0ee7be981b300f2d3",
+      "games": 10000,
+      "seed": 15024,
+      "cpuSeconds": 8.973884820999999,
+      "wallSeconds": 13.291514256998198,
+      "rssHighWaterBytes": 169918464,
+      "compressedSummaryBytes": 19803,
+      "homeWinProbability": 0.4612,
+      "monteCarloSE": 0.004984922868009093,
+      "monteCarloInterval95": [
+        0.45144649455126906,
+        0.47098330372229535
+      ],
+      "accounting": {
+        "productionEligible": false,
+        "lineupsVerified": false,
+        "injuriesComplete": false,
+        "allGamesAccountingReconciled": true
+      },
+      "distributionChecksum": "72ec8871468f17e4cbb793b206b9e88ac7e4d0315ac056b3231c0b3cd2378039"
+    },
+    {
+      "sport": "NFL",
+      "modelVersion": "football-possession-hurdle-candidate-15.1.0",
+      "inputVersion": "a80f59c4db75897bddcb62ff4d97308f5dc75e5f31ae29b0ee7be981b300f2d3",
+      "games": 50000,
+      "seed": 15023,
+      "cpuSeconds": 45.679962605,
+      "wallSeconds": 63.39878021399636,
+      "rssHighWaterBytes": 170147840,
+      "compressedSummaryBytes": 25055,
+      "homeWinProbability": 0.46102,
+      "monteCarloSE": 0.002229262477143506,
+      "monteCarloInterval95": [
+        0.45665388721190076,
+        0.4653921019305514
+      ],
+      "accounting": {
+        "productionEligible": false,
+        "lineupsVerified": false,
+        "injuriesComplete": false,
+        "allGamesAccountingReconciled": true
+      },
+      "distributionChecksum": "b8628ea23b5cf881ef6185d22304f20c074e47eec179eeda379eb367e9cb3f17"
+    },
+    {
+      "sport": "NFL",
+      "modelVersion": "football-possession-hurdle-candidate-15.1.0",
+      "inputVersion": "a80f59c4db75897bddcb62ff4d97308f5dc75e5f31ae29b0ee7be981b300f2d3",
+      "games": 100000,
+      "seed": 15023,
+      "cpuSeconds": 92.465677996,
+      "wallSeconds": 126.96794637400308,
+      "rssHighWaterBytes": 170520576,
+      "compressedSummaryBytes": 27775,
+      "homeWinProbability": 0.45983,
+      "monteCarloSE": 0.0015760278268482446,
+      "monteCarloInterval95": [
+        0.4567426442188729,
+        0.4629204418905921
+      ],
+      "accounting": {
+        "productionEligible": false,
+        "lineupsVerified": false,
+        "injuriesComplete": false,
+        "allGamesAccountingReconciled": true
+      },
+      "distributionChecksum": "b38b0481294257f650bb945a50c3d7adfc09428a7bcec12991485188e00abd6d"
+    },
+    {
+      "sport": "CFB",
+      "modelVersion": "football-possession-hurdle-candidate-15.1.0",
+      "inputVersion": "e49b49528dd0f3e1c60df6f3a398da88108894c97c22018c879ad940f2145d7a",
+      "games": 10000,
+      "seed": 15023,
+      "cpuSeconds": 16.352879888,
+      "wallSeconds": 35.3913693229988,
+      "rssHighWaterBytes": 176115712,
+      "compressedSummaryBytes": 20699,
+      "homeWinProbability": 0.5097,
+      "monteCarloSE": 0.004999059011454056,
+      "monteCarloInterval95": [
+        0.4999001802725902,
+        0.5194923701590188
+      ],
+      "accounting": {
+        "productionEligible": false,
+        "lineupsVerified": false,
+        "injuriesComplete": false,
+        "allGamesAccountingReconciled": true
+      },
+      "distributionChecksum": "756953f389c4df105b909a6e4318de71055d9e9026404bc116bdfddac41d6b15"
+    },
+    {
+      "sport": "CFB",
+      "modelVersion": "football-possession-hurdle-candidate-15.1.0",
+      "inputVersion": "e49b49528dd0f3e1c60df6f3a398da88108894c97c22018c879ad940f2145d7a",
+      "games": 10000,
+      "seed": 15023,
+      "cpuSeconds": 15.882095542999998,
+      "wallSeconds": 30.125495145002787,
+      "rssHighWaterBytes": 177426432,
+      "compressedSummaryBytes": 20699,
+      "homeWinProbability": 0.5097,
+      "monteCarloSE": 0.004999059011454056,
+      "monteCarloInterval95": [
+        0.4999001802725902,
+        0.5194923701590188
+      ],
+      "accounting": {
+        "productionEligible": false,
+        "lineupsVerified": false,
+        "injuriesComplete": false,
+        "allGamesAccountingReconciled": true
+      },
+      "distributionChecksum": "756953f389c4df105b909a6e4318de71055d9e9026404bc116bdfddac41d6b15",
+      "exactSeedReplayPassed": true
+    },
+    {
+      "sport": "CFB",
+      "modelVersion": "football-possession-hurdle-candidate-15.1.0",
+      "inputVersion": "e49b49528dd0f3e1c60df6f3a398da88108894c97c22018c879ad940f2145d7a",
+      "games": 10000,
+      "seed": 15024,
+      "cpuSeconds": 15.911959821000004,
+      "wallSeconds": 27.598545317996468,
+      "rssHighWaterBytes": 178343936,
+      "compressedSummaryBytes": 20659,
+      "homeWinProbability": 0.5269,
+      "monteCarloSE": 0.0049927586562941335,
+      "monteCarloInterval95": [
+        0.5171059168539291,
+        0.5366734240337285
+      ],
+      "accounting": {
+        "productionEligible": false,
+        "lineupsVerified": false,
+        "injuriesComplete": false,
+        "allGamesAccountingReconciled": true
+      },
+      "distributionChecksum": "8d2bd7d4dc843b4cd0b88757374b3dbe519bbf7fbf4f33625cdaf37f46499cf7"
+    },
+    {
+      "sport": "CFB",
+      "modelVersion": "football-possession-hurdle-candidate-15.1.0",
+      "inputVersion": "e49b49528dd0f3e1c60df6f3a398da88108894c97c22018c879ad940f2145d7a",
+      "games": 50000,
+      "seed": 15023,
+      "cpuSeconds": 75.61056622999999,
+      "wallSeconds": 108.15625061000173,
+      "rssHighWaterBytes": 179654656,
+      "compressedSummaryBytes": 26178,
+      "homeWinProbability": 0.52036,
+      "monteCarloSE": 0.0022342133756649116,
+      "monteCarloInterval95": [
+        0.5159796260556382,
+        0.5247372457006387
+      ],
+      "accounting": {
+        "productionEligible": false,
+        "lineupsVerified": false,
+        "injuriesComplete": false,
+        "allGamesAccountingReconciled": true
+      },
+      "distributionChecksum": "3646a4b9fb2514b1c0aeb2b445273f0f092dbfdf11af49edf1ffdb4af32f7ae9"
+    },
+    {
+      "sport": "CFB",
+      "modelVersion": "football-possession-hurdle-candidate-15.1.0",
+      "inputVersion": "e49b49528dd0f3e1c60df6f3a398da88108894c97c22018c879ad940f2145d7a",
+      "games": 100000,
+      "seed": 15023,
+      "cpuSeconds": 142.58039989899999,
+      "wallSeconds": 142.7695364120009,
+      "rssHighWaterBytes": 180047872,
+      "compressedSummaryBytes": 28800,
+      "homeWinProbability": 0.51989,
+      "monteCarloSE": 0.0015798872994615787,
+      "monteCarloInterval95": [
+        0.5167927731364519,
+        0.5229856987899295
+      ],
+      "accounting": {
+        "productionEligible": false,
+        "lineupsVerified": false,
+        "injuriesComplete": false,
+        "allGamesAccountingReconciled": true
+      },
+      "distributionChecksum": "08f7eb4c174c2bfe94654554bbdf890e098f232d6204dbd276d9641814a9c9a7"
+    },
+    {
+      "sport": "NBA",
+      "modelVersion": "nba-possession-rotation-candidate-15.1.1",
+      "inputVersion": "83bd55933ae7ad7f87b4e929d8f3453e56d3aa8ba25e0eb1c013ed657d4ed425",
+      "games": 10000,
+      "seed": 15023,
+      "cpuSeconds": 17.768999710000003,
+      "wallSeconds": 17.770087367003725,
+      "rssHighWaterBytes": 193466368,
+      "compressedSummaryBytes": 29042,
+      "homeWinProbability": 0.6733,
+      "monteCarloSE": 0.004690065138140407,
+      "monteCarloInterval95": [
+        0.6640426184992193,
+        0.6824242876655041
+      ],
+      "accounting": {
+        "productionEligible": false,
+        "lineupsVerified": false,
+        "injuriesComplete": false,
+        "playerTeamPointsReconciled": true,
+        "minutesReconciled": true,
+        "combinedStatsShareOutcomes": true,
+        "regulationQuarters": 4,
+        "quarterSeconds": 720,
+        "overtimeSeconds": 300
+      },
+      "distributionChecksum": "196d198e3364c2c31e4062cc968f54021a3ec29be10d3f104af5f9bd68f1ad12"
+    },
+    {
+      "sport": "NBA",
+      "modelVersion": "nba-possession-rotation-candidate-15.1.1",
+      "inputVersion": "83bd55933ae7ad7f87b4e929d8f3453e56d3aa8ba25e0eb1c013ed657d4ed425",
+      "games": 10000,
+      "seed": 15023,
+      "cpuSeconds": 19.185230599000022,
+      "wallSeconds": 19.256893277997733,
+      "rssHighWaterBytes": 193466368,
+      "compressedSummaryBytes": 29041,
+      "homeWinProbability": 0.6733,
+      "monteCarloSE": 0.004690065138140407,
+      "monteCarloInterval95": [
+        0.6640426184992193,
+        0.6824242876655041
+      ],
+      "accounting": {
+        "productionEligible": false,
+        "lineupsVerified": false,
+        "injuriesComplete": false,
+        "playerTeamPointsReconciled": true,
+        "minutesReconciled": true,
+        "combinedStatsShareOutcomes": true,
+        "regulationQuarters": 4,
+        "quarterSeconds": 720,
+        "overtimeSeconds": 300
+      },
+      "distributionChecksum": "196d198e3364c2c31e4062cc968f54021a3ec29be10d3f104af5f9bd68f1ad12",
+      "exactSeedReplayPassed": true
+    },
+    {
+      "sport": "NBA",
+      "modelVersion": "nba-possession-rotation-candidate-15.1.1",
+      "inputVersion": "83bd55933ae7ad7f87b4e929d8f3453e56d3aa8ba25e0eb1c013ed657d4ed425",
+      "games": 10000,
+      "seed": 15024,
+      "cpuSeconds": 18.92224522400005,
+      "wallSeconds": 18.92328481000004,
+      "rssHighWaterBytes": 193466368,
+      "compressedSummaryBytes": 29124,
+      "homeWinProbability": 0.6676,
+      "monteCarloSE": 0.004710734974502386,
+      "monteCarloInterval95": [
+        0.6583043195103275,
+        0.6767669642358216
+      ],
+      "accounting": {
+        "productionEligible": false,
+        "lineupsVerified": false,
+        "injuriesComplete": false,
+        "playerTeamPointsReconciled": true,
+        "minutesReconciled": true,
+        "combinedStatsShareOutcomes": true,
+        "regulationQuarters": 4,
+        "quarterSeconds": 720,
+        "overtimeSeconds": 300
+      },
+      "distributionChecksum": "dba5a1cb99009678cd4c2ecf9df786fc6c89f4147b8f9bf77152c85b8df4e0fe"
+    },
+    {
+      "sport": "NBA",
+      "modelVersion": "nba-possession-rotation-candidate-15.1.1",
+      "inputVersion": "83bd55933ae7ad7f87b4e929d8f3453e56d3aa8ba25e0eb1c013ed657d4ed425",
+      "games": 50000,
+      "seed": 15023,
+      "cpuSeconds": 94.41308071199995,
+      "wallSeconds": 95.81826676499622,
+      "rssHighWaterBytes": 193466368,
+      "compressedSummaryBytes": 34932,
+      "homeWinProbability": 0.6748,
+      "monteCarloSE": 0.0020949699759185095,
+      "monteCarloInterval95": [
+        0.6706806413541347,
+        0.6788925012292241
+      ],
+      "accounting": {
+        "productionEligible": false,
+        "lineupsVerified": false,
+        "injuriesComplete": false,
+        "playerTeamPointsReconciled": true,
+        "minutesReconciled": true,
+        "combinedStatsShareOutcomes": true,
+        "regulationQuarters": 4,
+        "quarterSeconds": 720,
+        "overtimeSeconds": 300
+      },
+      "distributionChecksum": "9e5b9b6d01ebd116d530e54c915f3fdf2fed334a0f192f8df446208bfd399c33"
+    },
+    {
+      "sport": "NBA",
+      "modelVersion": "nba-possession-rotation-candidate-15.1.1",
+      "inputVersion": "83bd55933ae7ad7f87b4e929d8f3453e56d3aa8ba25e0eb1c013ed657d4ed425",
+      "games": 100000,
+      "seed": 15023,
+      "cpuSeconds": 192.17998666100004,
+      "wallSeconds": 213.0178084759973,
+      "rssHighWaterBytes": 193466368,
+      "compressedSummaryBytes": 37813,
+      "homeWinProbability": 0.67571,
+      "monteCarloSE": 0.001480290498179327,
+      "monteCarloInterval95": [
+        0.67280198224255,
+        0.6786045186214262
+      ],
+      "accounting": {
+        "productionEligible": false,
+        "lineupsVerified": false,
+        "injuriesComplete": false,
+        "playerTeamPointsReconciled": true,
+        "minutesReconciled": true,
+        "combinedStatsShareOutcomes": true,
+        "regulationQuarters": 4,
+        "quarterSeconds": 720,
+        "overtimeSeconds": 300
+      },
+      "distributionChecksum": "3fc767495f78701b9c1271ffb6fcb4bd3abab2f7c9c4229c2e07f1c59f4c7421"
+    }
+  ],
+  "retainedIndividualGames": 0,
+  "limitations": [
+    "Independent-seed differences measure numerical sampling variation, not underlying model validity.",
+    "Same-seed exact replay requires identical model, code, dependency versions and batch configuration."
+  ]
+}

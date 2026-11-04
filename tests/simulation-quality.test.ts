@@ -1,0 +1,7 @@
+import {describe,it,expect} from 'vitest';
+import {footballSimulationQuality} from '../lib/probability/simulation-quality';
+describe('football model integrity is independent from market price',()=>{
+ it('withholds the whole-game evidence when a reported-out QB still gets attempts',()=>{const r={players:{'cfb:espn:1':{passingAttempts:{mean:25}}}},q=footballSimulationQuality(r,{playerCatalog:[{id:'cfb:espn:1',name:'Synthetic test QB'}]},[{player_id:'espn:1',status_code:'out',source_updated_at:new Date().toISOString()}]);expect(q.usable).toBe(false);expect(q.reasons.join()).toContain('personnel-aware rerun');});
+ it('does not join an unrelated player by name or invent availability',()=>{const r={players:{p:{passingAttempts:{mean:25}}}};expect(footballSimulationQuality(r,{playerCatalog:[{id:'p',espnId:'2'}]},[{player_id:'espn:1',status_code:'out',source_updated_at:new Date().toISOString()}]).usable).toBe(true);expect(footballSimulationQuality(r,{},[]).validated).toBe(false);});
+ it('flags inconsistent passing/receiving totals without changing archived numbers',()=>{const r={players:{p:{passingYards:{mean:100},receivingYards:{mean:0},completions:{mean:10},receptions:{mean:0}},w:{passingYards:{mean:0},receivingYards:{mean:90},completions:{mean:0},receptions:{mean:10}}}};const before=JSON.stringify(r);expect(footballSimulationQuality(r,{},[]).usable).toBe(false);expect(JSON.stringify(r)).toBe(before);});
+});

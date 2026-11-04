@@ -1,0 +1,10 @@
+import {describe,it,expect,vi} from 'vitest';
+const f=vi.hoisted(()=>({schedule:vi.fn(),markets:vi.fn(),analyze:vi.fn(),saved:vi.fn(),read:vi.fn()}));
+vi.mock('../lib/nba/service',()=>({nbaSchedule:f.schedule,nbaMarkets:f.markets,analyzeNBAGame:f.analyze,nbaSaved:f.saved,readSavedNBA:f.read,readPublicNBA:vi.fn()}));
+import{GET,POST}from'../app/api/nba/route';
+describe('bounded NBA API',()=>{
+ it('serves public schedules without touching personal data',async()=>{f.schedule.mockResolvedValue({sport:'NBA',games:[]});const r=await GET(new Request('https://example.com/api/nba'));expect(r.status).toBe(200);expect((await r.json()).sport).toBe('NBA');expect(f.saved).not.toHaveBeenCalled();});
+ it('rejects oversized and cross-origin requests before starting compute',async()=>{const r=await POST(new Request('https://example.com/api/nba',{method:'POST',headers:{'Content-Type':'application/json'},body:' '.repeat(3001)}));expect(r.status).toBe(413);const c=await POST(new Request('https://example.com/api/nba',{method:'POST',headers:{'Content-Type':'application/json',Origin:'https://evil.example'},body:'{}'}));expect(c.status).toBe(403);expect(f.analyze).not.toHaveBeenCalled();});
+ it('requires exact NBA identity and supported complete-game counts',async()=>{for(const b of [{action:'analyze',gameId:'cfb:espn:1',simulations:10000},{action:'analyze',gameId:'nba:espn:1',simulations:1000}]){const r=await POST(new Request('https://example.com/api/nba',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)}));expect(r.status).toBe(400);}expect(f.analyze).not.toHaveBeenCalled();});
+ it('does not claim success on a worker outage',async()=>{f.analyze.mockRejectedValue(new Error('synthetic outage'));const r=await POST(new Request('https://example.com/api/nba',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'analyze',gameId:'nba:espn:1',simulations:10000})}));expect(r.status).toBe(503);expect((await r.json()).status).toBe('unavailable');expect(r.headers.get('cache-control')).toBe('no-store');});
+});

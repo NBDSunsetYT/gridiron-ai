@@ -1,5 +1,8 @@
 Version 14.0: [original GAFIE candidate, Simulation vs. Reality, automatic evaluation, storage and remaining validation limits](docs/GAFIE_GALL_14.md).
 
+**Engine overhaul / NBA research:** see [the v15 audit and release report](docs/ENGINE_V15_REPORT.md). The 500-game football audit did not justify promoting the replacement football candidate. NBA is a separate experimental possession/rotation engine; raw probabilities are explicitly uncalibrated. Existing user records and infrastructure are preserved.
+
+
 Version 12.1: [automatic probabilities, sorting, market comparison and limitations](docs/PROPS_V12_1.md).
 
 Version 12 automatic prop research: [operation, limitations and recovery](docs/AUTOMATIC_PROPS_V12.md).

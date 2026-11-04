@@ -1,0 +1,62 @@
+{
+  "python": "3.12.14",
+  "dependencies": {
+    "numpy": "2.3.5",
+    "scipy": "1.17.0",
+    "scikit-learn": "1.8.0",
+    "pyarrow": "26.0.0"
+  },
+  "modelSources": {
+    "football_v15.py": "7781fc3d59cd7e975e4fb2b7d2d462e70eb4d22c6efbb8f44d5a262a6a580ee9",
+    "football_v15_baseline.py": "ec99e52fd6dee9c9822c0fc4214e4a92a4d5637c4a572b2013fb385ae143f578",
+    "football_data_v15.py": "1b59b6d65db82f6ecd32403419dc41e58ceac319c6b106e8f3c2e653738aa37d",
+    "nba_v15.py": "6264c2124458b0ad7dc97ad936a828062542e5d1d33588b0bfd9799a82700dbe",
+    "nba_v15_baseline.py": "12807f1eaea86d49bd5f54ad04658cd9a41db784cecf34d79024a43039e2c769"
+  },
+  "sourceDatasetsAreUploaded": false,
+  "fullSimulatedPlaysArePermanentlyStored": false,
+  "sourceFiles": [
+    {
+      "filename": "gridiron-nfl-pbp-2024.parquet",
+      "url": "https://github.com/nflverse/nflverse-data/releases/download/pbp/play_by_play_2024.parquet",
+      "sha256": "3fd2896bc0b911b615142d2f1fabae54a4bbba5ab7b73b28187b118ef8af6a3b",
+      "bytes": 20597560
+    },
+    {
+      "filename": "gridiron-nfl-pbp-2025.parquet",
+      "url": "https://github.com/nflverse/nflverse-data/releases/download/pbp/play_by_play_2025.parquet",
+      "sha256": "c6ecedd6d678cc37ed316b23ef84ee1ec6abb69c514bb11868a7ebd5a367df29",
+      "bytes": 20337029
+    },
+    {
+      "filename": "gridiron-cfb-public-pbp-2024.parquet",
+      "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/espn_cfb_pbp/play_by_play_2024.parquet",
+      "sha256": "7d2abd259e95550e9702258f8790a2dccb29ae916a978ee115c257c7dae06fbc",
+      "bytes": 55012124
+    },
+    {
+      "filename": "gridiron-cfb-public-pbp-2025.parquet",
+      "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/espn_cfb_pbp/play_by_play_2025.parquet",
+      "sha256": "423364062f326b3c4ee95a754ac399f79145b821ab5e12e32064e74130473c11",
+      "bytes": 59474923
+    },
+    {
+      "filename": "gridiron-nba-player_box_2025.parquet",
+      "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/espn_nba_player_boxscores/player_box_2025.parquet",
+      "sha256": "e89f7fbc1124092c715b722e6d72d9dd1b9d28776ca6888b508fd2831cd705e2",
+      "bytes": 610289
+    },
+    {
+      "filename": "gridiron-nba-team_box_2025.parquet",
+      "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/espn_nba_team_boxscores/team_box_2025.parquet",
+      "sha256": "f735bf3b743618e50987f3e3e296734e1dba43c450a21af848d7c34f23bf2aee",
+      "bytes": 136502
+    },
+    {
+      "filename": "gridiron-nba-pbp-2025.parquet",
+      "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/espn_nba_pbp/play_by_play_2025.parquet",
+      "sha256": "71d7d02671268f793f13a13d1a8a271cba1241cd9ba28c3a363a3f16ad56acc7",
+      "bytes": 21409425
+    }
+  ]
+}

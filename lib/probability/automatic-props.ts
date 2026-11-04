@@ -9,6 +9,7 @@ import {compareFreeProp} from '../free-prop-comparison';
 import {wilson} from '../model';
 import {probabilityCapacity} from './capacity';
 import {hierarchicalThreshold,regularizedHistoricalThreshold} from '../props/distribution';
+import {footballSimulationQuality} from './simulation-quality';
 type Sport='NFL'|'CFB';
 const VERSION='automatic-props-12.1.0',JOB_NAMESPACE='automatic-props-12.0.0';
 const hash=(v:unknown)=>createHash('sha256').update(canonicalJson(v)).digest('hex');
@@ -42,6 +43,7 @@ export function attachAutomaticEvidence(row:any,evidence:any,job:any,injuries:an
  const injury=injuries.find((i:any)=>i.player_id===row.player.id),restricted=injury&&!['active','cleared'].includes(String(injury.status_code??'').toLowerCase());
  if(restricted||pid&&(evidence.withheldPlayers?.[pid]||secondary?.withheldPlayers?.[pid]||evidence.result?.publicPlayerForecastsWithheld?.[pid]))return{...base,state:'source_unavailable',injuryStatus:injury?.status??null,reasonCode:'availability_mixture_unfitted',reason:evidence.withheldPlayers?.[pid!]??secondary?.withheldPlayers?.[pid!]??evidence.result?.publicPlayerForecastsWithheld?.[pid!]??'Verified availability is restricted or uncertain. No calibrated availability mixture supports this player.'};
  const r=evidence.result,d=pid?r?.players?.[pid]?.[row.statistic]:null;
+ if(r){const quality=footballSimulationQuality(r,evidence.research??evidence,injuries);if(!quality.usable)return{...base,state:'simulation_failed',reasonCode:quality.reasonCode,reason:quality.reasons.join(' '),simulationQuality:quality};}
  let comparison:any=evidence.method==='empirical_history'?empiricalComparison(row,evidence,pid):compareFreeProp(row,d?{sport:row.sport,providerPlayerId:row.player.id,providerEventId:row.eventId,kickoff:evidence.eventStart,stale:false,simulations:r.simulations,statistic:row.statistic,histogram:d.histogram,modelVersion:r.modelVersion}:null);
  let usedEvidence=evidence;
  if((!comparison||comparison.modelProbability===null&&comparison.method!=='empirical_history')&&secondary){const fallback=empiricalComparison(row,secondary,pid);if(fallback){comparison=fallback;usedEvidence=secondary;}}
