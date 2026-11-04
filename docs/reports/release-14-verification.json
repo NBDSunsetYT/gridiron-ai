@@ -1,8 +1,8 @@
 {
   "version": "14.0.0",
-  "sourceCommit": "b4ca29f0f6bdd3100c8a0d12ff4c5e63126497db",
+  "sourceCommit": "328284f5d5c5c821fb14560bf5db9e06ca4a2250",
   "unitTests": {
-    "passed": 751,
+    "passed": 753,
     "files": 103
   },
   "pythonTests": {
@@ -35,17 +35,55 @@
     "financialRecordsModified": 0
   },
   "storage": {
-    "databaseBytesAtLastCheck": 474486451,
+    "databaseBytesAtLastCheck": 474560179,
     "pressureResolved": false,
     "paidResourcesCreated": false
   },
   "productionVerification": {
     "status": "passed",
-    "deploymentId": "dpl_HoTzVKpCiNemykEaxtvp4d6NUwnf",
-    "sourceCommit": "b4ca29f0f6bdd3100c8a0d12ff4c5e63126497db",
+    "deploymentId": "dpl_6ZSRoh9Bdyr2yce17Lv9MpEbaw27",
+    "sourceCommit": "328284f5d5c5c821fb14560bf5db9e06ca4a2250",
     "liveURL": "https://gridiron-ai-gray.vercel.app",
     "checksPassed": 7,
-    "physicalIPhoneTested": false
+    "physicalIPhoneTested": false,
+    "mobileViewport": "390px, no document overflow, six navigation targets at least 44px",
+    "finalDataPreservation": {
+      "oldPredictionRows": 28660,
+      "predictionIdChecksum": "5a60de3072ea7c79765f03feb342b600",
+      "savedWorkspaceVersions": 17,
+      "promotedModels": 0
+    }
   },
-  "exactArchivedGafieReplay": "passed; see gafie-replay-verification.json"
+  "exactArchivedGafieReplay": "passed; see gafie-replay-verification.json",
+  "learningSafeguards": {
+    "newDistinctGamesBeforeRefit": 40,
+    "driftDeduplicatesGameVersions": true,
+    "registryEventUniqueIndex": true
+  },
+  "backgroundLearning": {
+    "status": "completed",
+    "completedAt": "2026-11-04T07:29:27.224Z",
+    "legacy": {
+      "cursor": {
+        "at": "2026-10-30T20:45:28.993844+00:00",
+        "id": "055f1d38-49c8-41eb-8c34-87f5b81ed992"
+      },
+      "imported": 3,
+      "complete": false,
+      "notes": []
+    },
+    "NFL": {
+      "checked": 3,
+      "evaluationsAppended": 1,
+      "performanceUpdated": true
+    },
+    "CFB": {
+      "checked": 2,
+      "evaluationsAppended": 0,
+      "performanceUpdated": false
+    },
+    "errors": [],
+    "personalRecordsChanged": 0
+  },
+  "productionLogs": "No error or fatal logs for the final deployment during verification."
 }

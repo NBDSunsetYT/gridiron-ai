@@ -86,7 +86,7 @@ explicit research limitations, not completed capabilities.
 
 ## Storage, durability and recovery
 
-Migration `20261104061515_football_reality_learning_refs.sql` adds one compact
+Migration `20261104062537_football_reality_learning_refs.sql` adds one compact
 reference table. It does not modify private account tables. RLS permits public
 football reads; direct anonymous/authenticated writes are denied. The existing
 server capability authorizes writes through an invoker RPC and a private,
@@ -173,3 +173,5 @@ have been established. No unrelated sportsbook line is presented as that feed.
 
 Install the existing HTTPS app from Safari → Share → Add to Home Screen. Mobile
 browser emulation checks are not a physical-iPhone installation test.
+
+Production release verified at https://gridiron-ai-gray.vercel.app/#reality. The final deployment is `dpl_6ZSRoh9Bdyr2yce17Lv9MpEbaw27`, runtime source `328284f5d5c5c821fb14560bf5db9e06ca4a2250`. All seven live read-only acceptance checks passed, including real NFL/CFB archived experiments, private guest denial, reload persistence and the 390px mobile viewport. Full local results: 753 TypeScript tests, 200 Python tests and 13 PostgreSQL suites. Applied migration filenames match the Supabase migration-history versions; no database reset or history repair was performed.
