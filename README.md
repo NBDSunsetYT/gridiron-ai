@@ -103,3 +103,8 @@ These are reproducible commands, not a claim that any arbitrary deployment passe
 Native IPA/Xcode work remains postponed. Saving source files to iPhone Files does not execute the web or Python backend. The project never requests sportsbook passwords or places real wagers.
 
 Performance release: [12.1.1 implementation, measured benchmarks and recovery](docs/PERFORMANCE_12_1_1.md).
+
+
+## Football research desk — 12.2
+
+The existing Props screen now includes a compact research board, followed selections, source-backed chronological trends and exact sportsbook comparisons. Model probabilities, observed historical frequencies and market benchmarks retain distinct labels. See [implementation and limitations](docs/RESEARCH_DESK_12_2.md) and [live acceptance](docs/reports/research-desk-release.json). No prediction method, simulation count or financial record was changed.

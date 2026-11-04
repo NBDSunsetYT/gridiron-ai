@@ -1,0 +1,146 @@
+{
+  "version": "12.2.0",
+  "checkedAt": "2026-11-04T05:28:38.682019+00:00",
+  "status": "production_verified",
+  "runtimeSourceCommit": "0ccb59aee6252b341d2eb9536ca2117429201e13",
+  "referenceReviewed": "https://www.propsmadeeasy.com/how-it-works",
+  "referenceAccess": "Official public guide and embedded public explanation only. Member tools access-restricted. No paid subscription, copied proprietary code/assets, or verified competitor accuracy.",
+  "applicationUrl": "https://gridiron-ai-gray.vercel.app/#props",
+  "deployment": {
+    "previewId": "dpl_4ArP3pb3pWbpoRVwGhthkrFicg9P",
+    "previewStatus": "READY",
+    "productionId": "dpl_3Ww4CMChWQop96zwpH7oedoA126c",
+    "productionStatus": "READY",
+    "productionUrl": "https://gridiron-awiph2wy1-gridiron5.vercel.app",
+    "renderService": "srv-dbj680s9v7es7397nv2g",
+    "renderGatewayUrl": "https://gridiron-propline-gateway.onrender.com",
+    "renderChanged": false,
+    "supabaseProject": "qdtdjbapdipopncklsdb",
+    "supabaseReachable": true,
+    "runtimeFiles": 301,
+    "runtimeManifestSha256": "90ba1562766e9a629f92173ce360ef4c2bbf5620dc1a0bd265a1278843b4fef0"
+  },
+  "implemented": [
+    "Compact NFL/CFB research board and existing card view",
+    "Player/team/market search with local filtering, exact matchup filters and existing sort modes",
+    "Stable followed selections in existing scoped preference workflow",
+    "Correctly labeled simulated means or historical averages versus exact lines",
+    "Chronological Last 5 / Last 10 / partial season trends with sample sizes and equality counts",
+    "Exact loaded-page sportsbook comparisons with freshness and conflict checks",
+    "Inspectable two-sided other-book reference, excluding target book and unsupported pushes",
+    "Existing combination actions preserved",
+    "Adaptive compression for large real research pages with unchanged privacy, integrity and size guards"
+  ],
+  "tests": {
+    "typescript": 729,
+    "python": 192,
+    "postgresSuites": 12,
+    "desktopAndIphoneSizedBrowserChecks": 36,
+    "productionChecks": 6,
+    "typecheck": "passed",
+    "nextProductionBuild": "passed locally and both deployment environments",
+    "physicalIphoneTested": false,
+    "productionReport": "research-desk-production.json",
+    "privatePreferenceWritesInProduction": "Not rerun: no disposable QA login credential available in this restored environment. Existing scoped workflow tested in browser mocks and local PostgreSQL isolation; guest persistence verified live."
+  },
+  "initialProductionFailure": {
+    "status": 500,
+    "rootCause": "Real 500-row public research exceeded the existing level-1 compressed cache bound. Fully preserved research now uses adaptive level-6 compression only at that boundary.",
+    "diagnostic": "research-cache-boundary.json",
+    "rawBytes": 5464436,
+    "beforeCompressedBytes": 604006,
+    "afterCompressedBytes": 333817,
+    "fullResponseRoundTrip": "passed",
+    "finalAllPagesRead": "passed"
+  },
+  "productionCoverage": {
+    "NFL": {
+      "loaded": 2000,
+      "total": 7618,
+      "books": {
+        "draftkings": 0,
+        "fanduel": 642,
+        "betmgm": 336,
+        "hardrock": 6640
+      },
+      "markets": {
+        "player_pass_yds": 924,
+        "player_pass_tds": 184,
+        "player_pass_attempts": 4,
+        "player_pass_completions": 6,
+        "player_pass_interceptions": 0,
+        "player_rush_yds": 1558,
+        "player_rush_attempts": 2,
+        "player_rush_tds": 0,
+        "player_reception_yds": 3190,
+        "player_receptions": 890,
+        "player_reception_tds": 0,
+        "player_anytime_td": 860
+      },
+      "ready": 802,
+      "methods": {
+        "empirical_history": 772,
+        "hierarchical_distribution": 30,
+        "full_game_simulation": 834
+      },
+      "distributions": 1636,
+      "pairedGameTrends": 802,
+      "validOtherBookReferences": 84,
+      "coverage": "First four source pages only; stale evidence stays labeled and benchmarks require matched current pairs."
+    },
+    "CFB": {
+      "loaded": 1559,
+      "total": 1559,
+      "books": {
+        "draftkings": 0,
+        "fanduel": 1164,
+        "betmgm": 126,
+        "hardrock": 269
+      },
+      "markets": {
+        "player_pass_yds": 102,
+        "player_pass_tds": 98,
+        "player_pass_attempts": 18,
+        "player_pass_completions": 18,
+        "player_pass_interceptions": 0,
+        "player_rush_yds": 196,
+        "player_rush_attempts": 0,
+        "player_rush_tds": 0,
+        "player_reception_yds": 364,
+        "player_receptions": 174,
+        "player_reception_tds": 0,
+        "player_anytime_td": 589
+      },
+      "ready": 190,
+      "methods": {
+        "full_game_simulation": 444,
+        "empirical_history": 120
+      },
+      "distributions": 564,
+      "pairedGameTrends": 188,
+      "validOtherBookReferences": 0,
+      "coverage": "First four source pages only; stale evidence stays labeled and benchmarks require matched current pairs."
+    }
+  },
+  "preservation": {
+    "financialWrites": 0,
+    "databaseMigrations": 0,
+    "userRecordsDeleted": 0,
+    "modelsChanged": false,
+    "simulationCountsReduced": false,
+    "newPollingOrProviderRequestsPerExpandedCard": false,
+    "newPaidResourcesOrSubscriptions": false,
+    "credentialsChanged": false,
+    "existingRlsPreserved": true,
+    "checkpointBranch": "checkpoint/pre-research-desk-20261104"
+  },
+  "limitations": [
+    "No exact guaranteed outcomes or market-superiority claim. Proprietary PME weights and future-line signals are not reproduced.",
+    "Other-book references need at least two current exact matched two-sided books; no qualifying college reference existed in live acceptance.",
+    "Provider reported zero DraftKings Sportsbook rows for both sports in the final coverage check; no authorized exact DraftKings Predictions feed was added.",
+    "Historical observations are explicitly uncalibrated frequencies unless existing validated sport/market recalibration applies. Stale complete-game predictions remain marked stale.",
+    "Current structural injury, weather, roster and role uncertainty remains visible where unsupported by the existing models.",
+    "OpenAI production credential remains unconfigured in the existing deployment. This update does not claim live language-model generation.",
+    "Physical Safari/Home Screen installation and a new cross-device signed-in preference write were not performed."
+  ]
+}

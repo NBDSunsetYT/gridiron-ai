@@ -1,0 +1,128 @@
+{
+  "version": "12.2.0",
+  "startedAt": "2026-11-04T05:26:55.792Z",
+  "baseUrl": "https://gridiron-ai-gray.vercel.app",
+  "status": "passed",
+  "checks": [
+    {
+      "name": "Production release, Supabase and private simulation service are reachable",
+      "status": "passed"
+    },
+    {
+      "name": "NFL real research retains exact model identities, sample counts and market families",
+      "status": "passed"
+    },
+    {
+      "name": "CFB real research retains exact model identities, sample counts and market families",
+      "status": "passed"
+    },
+    {
+      "name": "iPhone-sized guest can search, follow, open research board and reopen preferences with real rows",
+      "status": "passed"
+    },
+    {
+      "name": "College research remains independently accessible on the mobile workflow",
+      "status": "passed"
+    },
+    {
+      "name": "Guest cannot retrieve private wallet, preferences or account conversation records",
+      "status": "passed"
+    }
+  ],
+  "coverage": {
+    "NFL": {
+      "loaded": 2000,
+      "total": 7618,
+      "books": {
+        "draftkings": 0,
+        "fanduel": 642,
+        "betmgm": 336,
+        "hardrock": 6640
+      },
+      "markets": {
+        "player_pass_yds": 924,
+        "player_pass_tds": 184,
+        "player_pass_attempts": 4,
+        "player_pass_completions": 6,
+        "player_pass_interceptions": 0,
+        "player_rush_yds": 1558,
+        "player_rush_attempts": 2,
+        "player_rush_tds": 0,
+        "player_reception_yds": 3190,
+        "player_receptions": 890,
+        "player_reception_tds": 0,
+        "player_anytime_td": 860
+      },
+      "ready": 802,
+      "methods": {
+        "empirical_history": 772,
+        "hierarchical_distribution": 30,
+        "full_game_simulation": 834
+      },
+      "distributions": 1636,
+      "pairedGameTrends": 802,
+      "validOtherBookReferences": 84,
+      "coverage": "First four source pages only; stale evidence stays labeled and benchmarks require matched current pairs."
+    },
+    "CFB": {
+      "loaded": 1559,
+      "total": 1559,
+      "books": {
+        "draftkings": 0,
+        "fanduel": 1164,
+        "betmgm": 126,
+        "hardrock": 269
+      },
+      "markets": {
+        "player_pass_yds": 102,
+        "player_pass_tds": 98,
+        "player_pass_attempts": 18,
+        "player_pass_completions": 18,
+        "player_pass_interceptions": 0,
+        "player_rush_yds": 196,
+        "player_rush_attempts": 0,
+        "player_rush_tds": 0,
+        "player_reception_yds": 364,
+        "player_receptions": 174,
+        "player_reception_tds": 0,
+        "player_anytime_td": 589
+      },
+      "ready": 190,
+      "methods": {
+        "full_game_simulation": 444,
+        "empirical_history": 120
+      },
+      "distributions": 564,
+      "pairedGameTrends": 188,
+      "validOtherBookReferences": 0,
+      "coverage": "First four source pages only; stale evidence stays labeled and benchmarks require matched current pairs."
+    }
+  },
+  "financialWrites": 0,
+  "physicalIphoneTested": false,
+  "mockedResponses": false,
+  "health": {
+    "application": "GRIDIRON AI",
+    "version": "12.2.0",
+    "backend": "supabase",
+    "cloudOnly": true,
+    "configuration": {
+      "supabase": true,
+      "simulations": true,
+      "assistant": false
+    },
+    "assistantStatus": {
+      "provider": "openai",
+      "credentialConfigured": false,
+      "generationVerified": false,
+      "status": "missing_credentials"
+    },
+    "status": "ready",
+    "checks": {
+      "supabase": "reachable",
+      "simulations": "reachable"
+    },
+    "limitations": "Reachability and provider credential presence do not establish model calibration, a completed simulation, email delivery, AI credit entitlement or a live AI response."
+  },
+  "finishedAt": "2026-11-04T05:27:29.705Z"
+}
