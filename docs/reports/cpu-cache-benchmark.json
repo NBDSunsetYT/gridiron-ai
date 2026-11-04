@@ -1,0 +1,28 @@
+{
+  "scope": "local immutable-object codec only; excludes database/network and football computation; not Vercel billed CPU",
+  "artifactSha256": "62c2443ce16af480c035b79bbe6d66c030cb1a0a350066a28f6f728d67274522",
+  "requests": 400,
+  "artifactBytes": 206446,
+  "simulationsExecuted": 0,
+  "before": {
+    "cpuMs": 722.532,
+    "wallMs": 662.6116069999999,
+    "loads": 400,
+    "checksum": 385.99999999999744
+  },
+  "after": {
+    "cpuMs": 442.317,
+    "wallMs": 434.0140590000001,
+    "loads": 1,
+    "checksum": 385.99999999999744
+  },
+  "cpuReductionPercent": 38.78236534852436,
+  "memory": {
+    "rss": 132124672,
+    "heapTotal": 44769280,
+    "heapUsed": 21915920,
+    "external": 8128355,
+    "arrayBuffers": 5615833
+  },
+  "createdAt": "2026-11-04T21:25:21.919Z"
+}

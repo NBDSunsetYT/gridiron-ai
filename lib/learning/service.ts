@@ -1,4 +1,5 @@
 import {cloudClient} from '../cloud/context';
+import {computeAllowed} from '../compute/policy';
 import {ApiError} from '../auth';
 import {sharedCache,putCache,sharedWrite} from '../public-nfl/store';
 import {isResearchPointer,readResearchObject} from '../public-nfl/objects';
@@ -53,6 +54,7 @@ export async function refreshLearningPerformance(sport:FootballSport){
 /** Called by the existing signed scheduler. No extra cron, per-visitor audit,
  * unbounded work queue or automatic full-game resimulation is introduced. */
 export async function refreshFootballLearning(){
+ if(!computeAllowed())return{status:'queued',message:'Historical evaluation runs on the controlled worker, never during a web refresh.'};
  if(process.env.GRIDIRON_GALL_ENABLED==='0')return{status:'disabled',message:'Learning refresh is paused by the operator; all forecasts and comparisons remain readable.'};
  const reservation=await sharedWrite({action:'rate_limit',key:learningId('hourly-learning-v14'),limit:1,windowMs:3600000});if(!reservation?.allowed)return{status:'cached',message:'The bounded hourly learning audit already ran.'};
  const old=await sharedCache('status','gall-cursor').catch(()=>null),state=old?.data??{},errors:string[]=[],changes:Record<string,any>={},now=Date.now();

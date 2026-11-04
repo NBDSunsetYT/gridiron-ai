@@ -1,5 +1,7 @@
 import {randomUUID} from 'node:crypto';
 import {after} from 'next/server';
+import {computeAllowed,deferWorker,assertComputeAllowed} from '../compute/policy';
+import {enqueueCompute} from '../compute/queue';
 import performance from '../../docs/reports/v4-model-benchmark.json';
 import {ApiError} from '../auth';
 import {createAiProviderClient} from '../ai-provider';
@@ -108,6 +110,7 @@ function sanitizeEnginePayload(value:Record<string,any>){
  return{result,research,inputVersion:value.inputVersion??result.inputDataVersion};
 }
 export async function executePublicJob(id:string){
+ assertComputeAllowed();
  const lease=randomUUID(),claimed:SharedJob|null=await sharedWrite({action:'job_claim',id,lease});if(!claimed)return;
  try{
   const endpoint=process.env.SIMULATION_SERVICE_URL,secret=process.env.SIMULATION_SERVICE_TOKEN;if(!endpoint||!secret||secret.length<32)throw new ApiError('The simulation service is starting. Please retry shortly.',503);
@@ -135,9 +138,16 @@ export async function executePublicJob(id:string){
   if(process.env.OPENAI_API_KEY)await publicAssistant(game.id).catch(()=>{});
  }catch(error){const message=error instanceof ApiError?error.message:'Automatic research could not finish. Existing results and source records remain saved; please retry shortly.';await sharedWrite({action:'job_fail',id,lease,error:message}).catch(()=>{});}
 }
-function scheduleJob(id:string){after(async()=>{await executePublicJob(id).catch(()=>{});});}
+function scheduleJob(id:string){if(process.env.GRIDIRON_COMPUTE_ROLE==='worker')deferWorker(()=>executePublicJob(id));else if(computeAllowed())after(async()=>{await executePublicJob(id).catch(()=>{});});}
 export async function analyzePublicGame(id:string,simulations=10000):Promise<PublicGameDetail>{
  if(![10000,50000,100000].includes(simulations))throw new ApiError('Choose 10,000, 50,000 or 100,000 complete games.');
+ if(!computeAllowed()){
+  const detail=await publicGameDetail(id,simulations);
+  if(detail.analysis?.status==='completed'&&!detail.analysis.stale&&detail.analysis.simulations===simulations)return detail;
+  if(detail.game.status!=='scheduled'||Date.parse(detail.game.startTime)<=Date.now())throw new ApiError('Only an upcoming verified matchup can be queued.',422);
+  const job=await enqueueCompute({kind:'game',sport:'NFL',gameId:id,simulations,...detail.requiredInputHash?{inputVersion:detail.requiredInputHash}:{}});
+  return{...detail,status:job.status==='running'?'running':'queued',message:'Research is queued for the controlled worker. The web server only retrieves saved predictions.'};
+ }
  const game=await trustedGame(id);if(game.status==='final'||Date.parse(game.startTime)<=Date.now())throw new ApiError('This game has started or finished. Saved pregame research remains historical; unsupported live probabilities are not invented.',409);
  const context=await currentContext(game);if(!recentVerifiedContext(context))throw new ApiError('Latest statistical and injury source verification is temporarily unavailable. No new simulation was queued; saved research remains historical until fresh inputs can be checked.',503);const inputHash=evidenceHash(game,context,simulations);
  const job:SharedJob=await sharedWrite({action:'job_enqueue',gameId:id,inputHash,data:{game,context,simulations,automatic:true,modelVersion:PUBLIC_PIPELINE_VERSION,sourceUpdatedAt:context.updatedAt}});

@@ -1,3 +1,5 @@
+import {computeAllowed,assertComputeAllowed} from '../compute/policy';
+import {enqueueCompute,queueMessage} from '../compute/queue';
 import {evaluateNBAHistogram,NBAProbabilityError} from './probability';
 /** Public NBA research only. Never reads Wallet records or browser API keys. */
 import {createHash} from 'node:crypto';
@@ -40,6 +42,7 @@ export async function nbaMarkets(cursor=0){
 }
 export function nbaInputKey(game:NBAGame,inputVersion:string,availability:unknown,simulations:number){return hash(['nba-run-v15.1',{id:game.id,startTime:game.startTime,home:game.home.id,away:game.away.id},inputVersion,availability,simulations]);}
 async function worker(path:string,payload:unknown,timeout=240000){
+ assertComputeAllowed();
  const base=process.env.SIMULATION_SERVICE_URL,token=process.env.SIMULATION_SERVICE_TOKEN;
  if(!base||!token||token.length<32)throw new ApiError('The private NBA simulation service is not configured.',503);
  const u=new URL(path,base.endsWith('/')?base:base+'/');
@@ -64,6 +67,7 @@ export async function analyzeNBAGame(request:Request,gameId:string,simulations:n
  await publicRateLimit(request,'nba-simulation-v15',6,3600000);
  const schedule=await nbaSchedule(),game=schedule.games.find(g=>g.id===gameId);
  if(!game||game.status!=='scheduled'||Date.parse(game.startTime)<=Date.now())throw new ApiError('Choose a verified upcoming NBA game. Historical audits use the separate evaluation pipeline.',422);
+ if(!computeAllowed()){const latest=await sharedCache('status','nba-latest:'+game.id).catch(()=>null),saved=latest?.data?.id?await sharedCache('analysis','nba-run:'+latest.data.id):null;const analysis=saved?.data;if(analysis?.result?.simulations===simulations&&analysis.game.startTime===game.startTime&&latest?.expires_at&&Date.parse(latest.expires_at)>Date.now()){const board=await nbaMarkets().catch(()=>({items:[],diagnostic:null}));return{sport:'NBA',analysis,markets:compareNBAMarkets(analysis.result,board.items??[],game),marketDiagnostic:board.diagnostic??null,modelValidated:false};}const job=await enqueueCompute({kind:'game',sport:'NBA',gameId,simulations});return{sport:'NBA',status:job.status==='running'?'running':'queued',jobId:job.id,analysis:null,markets:[],message:queueMessage(job),modelValidated:false};}
  const prepared=await preparedModel(),board=await nbaMarkets().catch(()=>({items:[],injuries:[]})),model=prepared.model,lineups:Record<string,any>={};
  const previousAvailability=await sharedCache('status','nba-availability:'+game.id).catch(()=>null);
  if(previousAvailability?.data?.hasReportedAbsence&&board.injuryCoverage!=='available')throw new ApiError('The NBA availability feed is delayed. A previously reported absence cannot be silently treated as healthy. Saved research remains available.',503);
@@ -74,7 +78,8 @@ export async function analyzeNBAGame(request:Request,gameId:string,simulations:n
  let analysis=saved?.data;
  if(!analysis)analysis=await sharedPublicMemo('auto_props',['nba-simulation-v15',key],{ttlMs:600000,leaseMs:300000,waitMs:3000},async()=>{const result=await worker('nba/analyze',{model,home:game.home.id,away:game.away.id,eventStart:game.startTime,simulations,seed:15002,lineups});if(result.sport!=='NBA'||result.simulations!==simulations||result.home!==game.home.id||result.away!==game.away.id||result.inputDataVersion!==model.sha256||!result.quality?.playerTeamPointsReconciled||!result.quality?.minutesReconciled)throw new ApiError('NBA simulation identity or accounting did not verify.',502);
   const inputSnapshotReference=await putResearchObject(prepared);
-  const value={id:key,game,result,inputSnapshotReference,configuration:{simulations,seed:15002,batchSize:1000,engineVersion:NBA_VERSION,dependencyManifest:'modeling/requirements.txt'},codeVersion:process.env.VERCEL_GIT_COMMIT_SHA??NBA_VERSION,createdAt:new Date().toISOString(),sourceVersions:model.sources??[],modelVersion:NBA_VERSION,inputVersion:model.sha256,availabilityAssumptions:lineups,calibrated:false},pointer=await putResearchObject(value);await sharedWrite({action:'cache_put',kind:'analysis',key:'nba-run:'+key,data:pointer,inputHash:key,expiresAt:null});await putCache('status','nba-latest:'+game.id,{id:key,inputVersion:model.sha256},key,86400000);return value;});
+  const value={id:key,game,result,inputSnapshotReference,configuration:{simulations,seed:15002,batchSize:1000,engineVersion:NBA_VERSION,dependencyManifest:'modeling/requirements.txt'},codeVersion:process.env.VERCEL_GIT_COMMIT_SHA??NBA_VERSION,createdAt:new Date().toISOString(),sourceVersions:model.sources??[],modelVersion:NBA_VERSION,inputVersion:model.sha256,availabilityAssumptions:lineups,calibrated:false},pointer=await putResearchObject(value);await sharedWrite({action:'cache_put',kind:'analysis',key:'nba-run:'+key,data:pointer,inputHash:key,expiresAt:null});await putCache('status','nba-latest:'+game.id,{id:key,inputVersion:model.sha256},key,600000);return value;});
+ await putCache('status','nba-latest:'+game.id,{id:key,inputVersion:model.sha256},key,600000);
  return{sport:'NBA',analysis,markets:compareNBAMarkets(analysis.result,board.items??[],game),marketDiagnostic:board.diagnostic??null,modelValidated:false};
 }
 export async function nbaSaved(request:Request,body?:{analysisId:string}){

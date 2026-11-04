@@ -1,4 +1,5 @@
 'use client';
+import {pollResearch} from '@/lib/client/research-poll';
 import GameProbabilityActions from './GameProbabilityActions';
 
 import {useCallback,useEffect,useRef,useState} from 'react';
@@ -61,8 +62,8 @@ export default function PublicResearch({view,user,onSignIn,onNavigate,onPrivateA
  },[selected,requestAnalysis]);
  useEffect(()=>{
   if(!selected)return;let alive=true,inFlight=false;
-  const refresh=async()=>{if(inFlight)return;inFlight=true;try{const value=await read(`/api/nfl/games/${encodeURIComponent(selected)}`);if(alive){setDetail(value);const status=value.analysis?.status??value.status;if(!activeStates.includes(status))void loadFeed();const key=automaticAttemptKey(selected,value);if(shouldAutomaticallyAnalyze(value)&&!autoAttempt.current.has(key)){autoAttempt.current.add(key);void requestAnalysis(selected);}}}catch(error){if(alive)setDetailError((error as Error).message);}finally{inFlight=false;}};
-  const timer=setInterval(()=>{if(document.visibilityState==='visible')void refresh();},pending?5000:60000);return()=>{alive=false;clearInterval(timer);};
+  const refresh=async()=>{if(inFlight)return;inFlight=true;try{const value=await read(`/api/nfl/games/${encodeURIComponent(selected)}`);if(alive){setDetail(value);const status=value.analysis?.status??value.status;if(!activeStates.includes(status))void loadFeed();const key=automaticAttemptKey(selected,value);if(shouldAutomaticallyAnalyze(value)&&!autoAttempt.current.has(key)){autoAttempt.current.add(key);void requestAnalysis(selected);}}}catch(error){if(alive)setDetailError((error as Error).message);return false;}finally{inFlight=false;}};
+  const stop=pollResearch(refresh,pending?30000:120000);return()=>{alive=false;stop();};
  },[selected,pending,loadFeed,requestAnalysis]);
  const openGame=(game:Row)=>{try{sessionStorage.setItem('gridiron-public-game-v1',game.id);}catch{}setSelected(game.id);window.location.hash=`games/${encodeURIComponent(game.id)}`;if(navigator.vibrate)navigator.vibrate(8);window.scrollTo({top:0,behavior:'instant'});};
  const closeGame=()=>{setSelected('');setDetail(null);window.location.hash='games';};

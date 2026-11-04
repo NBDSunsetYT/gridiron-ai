@@ -1,0 +1,847 @@
+{
+  "excludedFinalGameCount": 210,
+  "legacy": {
+    "CFB": {
+      "calendarYears": [
+        2024
+      ],
+      "games": 150,
+      "moneyline": {
+        "bins": [
+          {
+            "meanPredicted": 0.1373222222222222,
+            "n": 9,
+            "observed": 0.4444444444444444
+          },
+          {
+            "meanPredicted": 0.3143772727272727,
+            "n": 22,
+            "observed": 0.36363636363636365
+          },
+          {
+            "meanPredicted": 0.5119205128205129,
+            "n": 39,
+            "observed": 0.38461538461538464
+          },
+          {
+            "meanPredicted": 0.7042157894736842,
+            "n": 38,
+            "observed": 0.6578947368421053
+          },
+          {
+            "meanPredicted": 0.8929357142857142,
+            "n": 42,
+            "observed": 0.8333333333333334
+          }
+        ],
+        "brier": 0.20682405773333334,
+        "ece": 0.08717466666666662,
+        "logLoss": 0.6185808197539784,
+        "n": 150
+      },
+      "players": {
+        "carries": {
+          "bias": 0.7106354714064915,
+          "coverage90": 0.6537867078825348,
+          "mae": 3.995509814528593,
+          "n": 1294,
+          "rmse": 5.580540298637919
+        },
+        "completions": {
+          "bias": 1.8376867741935485,
+          "coverage90": 0.6967741935483871,
+          "mae": 5.187069999999999,
+          "n": 310,
+          "rmse": 6.852270785774643
+        },
+        "interceptions": {
+          "bias": 0.038503225806451595,
+          "coverage90": 0.9483870967741935,
+          "mae": 0.7095425806451613,
+          "n": 310,
+          "rmse": 0.9529844400787759
+        },
+        "passingAttempts": {
+          "bias": 4.1505212903225805,
+          "coverage90": 0.5870967741935483,
+          "mae": 8.39957677419355,
+          "n": 310,
+          "rmse": 11.032065851835085
+        },
+        "passingTouchdowns": {
+          "bias": -0.74528,
+          "coverage90": 0.7774193548387097,
+          "mae": 0.9787083870967741,
+          "n": 310,
+          "rmse": 1.3606301672861116
+        },
+        "passingYards": {
+          "bias": -1.9593612903225812,
+          "coverage90": 0.6645161290322581,
+          "mae": 63.49804516129032,
+          "n": 310,
+          "rmse": 82.71092623826245
+        },
+        "receivingTouchdowns": {
+          "bias": -0.15576950578338591,
+          "coverage90": 0.9095688748685594,
+          "mae": 0.24506298633017876,
+          "n": 1902,
+          "rmse": 0.4947825331713323
+        },
+        "receivingYards": {
+          "bias": -8.303290168243953,
+          "coverage90": 0.7860147213459516,
+          "mae": 20.921187644584645,
+          "n": 1902,
+          "rmse": 30.003795966378952
+        },
+        "receptions": {
+          "bias": -0.42503822292323873,
+          "coverage90": 0.8401682439537329,
+          "mae": 1.4789305467928497,
+          "n": 1902,
+          "rmse": 2.0143513044147157
+        },
+        "rushingTouchdowns": {
+          "bias": -0.17058431221020093,
+          "coverage90": 0.9211746522411128,
+          "mae": 0.398404714064915,
+          "n": 1294,
+          "rmse": 0.6620156168806123
+        },
+        "rushingYards": {
+          "bias": -2.1551734930448223,
+          "coverage90": 0.6591962905718701,
+          "mae": 25.157095595054095,
+          "n": 1294,
+          "rmse": 36.52114456401179
+        }
+      },
+      "sourceChecksums": {
+        "artifacts/engine-v15/runs/cfb_espn_401628379.json.summary.json": "9251d30f81bac6a18652ef5d797b1c1a235d9891ce953fc32cf947eb9075287c",
+        "artifacts/engine-v15/runs/cfb_espn_401628380.json.summary.json": "6e2b00922bca8e781ed0b22f34a74013fde14c072e6b1393737c3ea17a507fd5",
+        "artifacts/engine-v15/runs/cfb_espn_401628381.json.summary.json": "ed8cd7d986453e2a92af6b50f8297f509137dda4f3886b8492bcb1ec2e52a75c",
+        "artifacts/engine-v15/runs/cfb_espn_401628382.json.summary.json": "dc3792a008420ddc6a93baedde0c0e21f624d0d814e9adf227e89c2e7106f7dc",
+        "artifacts/engine-v15/runs/cfb_espn_401628385.json.summary.json": "58759a6405e6340011300f5ded02444cc84fe27c10304b1ad6c916d39f93a2a3",
+        "artifacts/engine-v15/runs/cfb_espn_401628388.json.summary.json": "98628bd2ae7e2eb5a09d8edd0073a2ef31fca4e8dedb1cc502c1f4513ef13904",
+        "artifacts/engine-v15/runs/cfb_espn_401628389.json.summary.json": "cfc980d0380490afedb268016ae3a4e357c65e61de04a2c4d65cebee5ddfa20f",
+        "artifacts/engine-v15/runs/cfb_espn_401628390.json.summary.json": "b4d4ab18f29159c4603215916aefeb2b93df3360d038f92f091208a6920a83cf",
+        "artifacts/engine-v15/runs/cfb_espn_401628392.json.summary.json": "0714e53bae011ecb3449000522f3f36edab803011a91ca24fd039d86e687c615",
+        "artifacts/engine-v15/runs/cfb_espn_401628402.json.summary.json": "fff83e1c28b799624d5cdbf2978dcb9b57937f101e0e5b29c106d72934b7ad5f",
+        "artifacts/engine-v15/runs/cfb_espn_401628403.json.summary.json": "eb8a4274e8cca992c1722c3cb02d336637e773ffc0d49fc272b2aa9da65f211d",
+        "artifacts/engine-v15/runs/cfb_espn_401628404.json.summary.json": "ced1e5e92301bd51aa5bd1ee3c2d188e10967fdc3bfcdb54709a067e05b9be30",
+        "artifacts/engine-v15/runs/cfb_espn_401628411.json.summary.json": "7d7328207690094d26695434d6bf54aac834d9b8b33283ec06c66c751afa250f",
+        "artifacts/engine-v15/runs/cfb_espn_401628418.json.summary.json": "823e3eca68f26733176ac5884b11058f8c7494dfc80cc74db48916cf0ca6ff4d",
+        "artifacts/engine-v15/runs/cfb_espn_401628428.json.summary.json": "8488328e1545188723bb43caebae7ac1da525ca0402529bc1b9c72a571613d3b",
+        "artifacts/engine-v15/runs/cfb_espn_401628436.json.summary.json": "c53cfdfd938f54a639e1fac7393b51f507780df87d7a2c73a4b6422117f936ab",
+        "artifacts/engine-v15/runs/cfb_espn_401628442.json.summary.json": "019bf57c36c1c9eba6da33469e9f3c0ea8e2c99f96f79187d589a80e30f3a600",
+        "artifacts/engine-v15/runs/cfb_espn_401628443.json.summary.json": "1cff54fb76477a63a538e3ac4d353e1dbf5964b1f241a9712884c78a1bde89a7",
+        "artifacts/engine-v15/runs/cfb_espn_401628444.json.summary.json": "ffa014c399a887134cd8a5c90237e0bb0a4d738de81399c2716182645584da96",
+        "artifacts/engine-v15/runs/cfb_espn_401628445.json.summary.json": "44bbb529ef98ae1efe210219bb2ac0f5a97f68a51e4b3742954460c2ec8cfccb",
+        "artifacts/engine-v15/runs/cfb_espn_401628506.json.summary.json": "c8d72be527ad5fcc7ca9c3f4ba944adbb9999314c1103e5a0b9e75d0f054263c",
+        "artifacts/engine-v15/runs/cfb_espn_401628519.json.summary.json": "0a43561c4bba98ad34ae15a86bb2781787a07a228d48f82675617671c48ec07b",
+        "artifacts/engine-v15/runs/cfb_espn_401628524.json.summary.json": "22256a117a1b4f73018ed10bfc5a22b9f6b764b008056390c4b90f437168507a",
+        "artifacts/engine-v15/runs/cfb_espn_401628525.json.summary.json": "90faa888a6db964ce0c10eb9d5d2c5bb39bd4c267fb05ea0ad2c38071fd8b339",
+        "artifacts/engine-v15/runs/cfb_espn_401628534.json.summary.json": "9fbc60512e84f63b8c363e31330a7ac1fe13d7661666226b7c74b7f13be6098f",
+        "artifacts/engine-v15/runs/cfb_espn_401628538.json.summary.json": "ce5642925b1c5b5c047c3b34f22208c57f36824043b2ae330db8e0da53615515",
+        "artifacts/engine-v15/runs/cfb_espn_401628541.json.summary.json": "3381f86f9e672b7f1e23114b72478a2ef09cf2c5d22224b5a23c328cfc32e190",
+        "artifacts/engine-v15/runs/cfb_espn_401628547.json.summary.json": "70674c3578833b82dc8d48863b93fd2995291301b9cdedfa272a5d614e543f59",
+        "artifacts/engine-v15/runs/cfb_espn_401628549.json.summary.json": "45bb5b398d4822c0bb28cdd5472b75e088f82d24aa9404e31c201e6557aa12cb",
+        "artifacts/engine-v15/runs/cfb_espn_401628551.json.summary.json": "24170d56682958f19ea7202337da1c225271274ae06955cd132d8695fbad3362",
+        "artifacts/engine-v15/runs/cfb_espn_401628556.json.summary.json": "d55c0b1cb04f4ca72494d63fbb7ab68c3c26996b18256da6aba51feafa6942d1",
+        "artifacts/engine-v15/runs/cfb_espn_401628557.json.summary.json": "aa1d1dfae5fc5cd2e188e30bdf6247f978f873c584b7964b191dd9057bc50b49",
+        "artifacts/engine-v15/runs/cfb_espn_401628558.json.summary.json": "1c096c02f84e6f40689dd64c005f016873e4e873b61cd5802ab380267fb8d3a4",
+        "artifacts/engine-v15/runs/cfb_espn_401628561.json.summary.json": "897ca682221a39ee5b4c9be3aa03afacde8612c05daafa0d01904d30576393f3",
+        "artifacts/engine-v15/runs/cfb_espn_401628565.json.summary.json": "47a23a8e305db4c3a6437464421f33e98700d5ef62bba26bb9b502d2401356b6",
+        "artifacts/engine-v15/runs/cfb_espn_401628572.json.summary.json": "759ad07b506b58b9b7243c426a4e92e4353dff2a94279350c910f2e5e91860fc",
+        "artifacts/engine-v15/runs/cfb_espn_401628983.json.summary.json": "8db2f5a45f44443bf5f5fe526712867c1699ef4698edb5a06015b44ff038544d",
+        "artifacts/engine-v15/runs/cfb_espn_401628985.json.summary.json": "73232edee25d05b3c72b065ffbe341ea2fefbfcc0699420577eb431e187b314a",
+        "artifacts/engine-v15/runs/cfb_espn_401629036.json.summary.json": "80d710e2c05a611ccffb394592fb2bbd9cd4075278df017e3ffda216a5df3b57",
+        "artifacts/engine-v15/runs/cfb_espn_401629037.json.summary.json": "d6434dbe01475994bb8c4f2950d078bec589689bff30501a722bbdfce10f6a5e",
+        "artifacts/engine-v15/runs/cfb_espn_401629038.json.summary.json": "96dfbc4bf2d0a71a9e627f2ae69e8ddbbecf307616d04c790630e1acbd482eda",
+        "artifacts/engine-v15/runs/cfb_espn_401629044.json.summary.json": "957bdf5ff417131fb364ea44f9c85fad71cd8747cecd048065474f573e25a605",
+        "artifacts/engine-v15/runs/cfb_espn_401629046.json.summary.json": "5426a8423f1582010abd19d8c56203622036a767e90ebc68b0f894fcd726e478",
+        "artifacts/engine-v15/runs/cfb_espn_401634188.json.summary.json": "a9616a6a7a92180ef5b1f47831d5eda28e2814072e46d0bdda156c34f6f8f43a",
+        "artifacts/engine-v15/runs/cfb_espn_401634768.json.summary.json": "26452900961d45626fad75ed6192b85d2efdcce9e6e6bba98bc1f232fa7a8a2f",
+        "artifacts/engine-v15/runs/cfb_espn_401634773.json.summary.json": "657c8dace9b960ccbb008ce452eb40ea63d141c626d2aac432a5046f9a171884",
+        "artifacts/engine-v15/runs/cfb_espn_401634779.json.summary.json": "d76ad7b0d227db0c3cc27c17a59aa622675db2b561fae0e24920e5c7a1b0604a",
+        "artifacts/engine-v15/runs/cfb_espn_401635516.json.summary.json": "0bc28acfbc3f0a8ef68e2f3ae9843ae404fce7ee465ac8b558516d7295ec5a56",
+        "artifacts/engine-v15/runs/cfb_espn_401635517.json.summary.json": "05f245bfac8c7a97975d25fbfe986ef372460bcc6bd4ef28820d26649ff1fe56",
+        "artifacts/engine-v15/runs/cfb_espn_401635518.json.summary.json": "70642a12848feabb73c657c023bc765937ea20c85dc3ad92e6a127ab437c3d26",
+        "artifacts/engine-v15/runs/cfb_espn_401635571.json.summary.json": "b076b30c8ed8f147699678d01b4734a39007d0d3479feb1b30731ffd10a76226",
+        "artifacts/engine-v15/runs/cfb_espn_401635573.json.summary.json": "bde13fa20bd338669ecc5446ee6c739552dfcaf02152e0b813bcb8fec3cfe218",
+        "artifacts/engine-v15/runs/cfb_espn_401635575.json.summary.json": "806c577cc2590f291906d82fba792d8085d1a2892028e5e87343a0377911b33c",
+        "artifacts/engine-v15/runs/cfb_espn_401635600.json.summary.json": "ad3e313785db7ffce1f7d78e4cfad13646abb4a706665fb80bba1cef51fef7e5",
+        "artifacts/engine-v15/runs/cfb_espn_401635601.json.summary.json": "7bdb1662b23f6c94de05c0d3b7251c0ebd77012d1504a1e1696041d93ea5d911",
+        "artifacts/engine-v15/runs/cfb_espn_401635606.json.summary.json": "89daaeba284ff623bd90e9d1762d8a4bda23b9abb7a6ba840f3f406e513b3862",
+        "artifacts/engine-v15/runs/cfb_espn_401635608.json.summary.json": "21a2159283eaa3ae6e8597ef8319fd3018054effe0413a1f14c4a41025e17e82",
+        "artifacts/engine-v15/runs/cfb_espn_401635609.json.summary.json": "b794e78ff4cb6f733b0bfbf83657c3b1a43f593b573aa3ac07203254b3952d5e",
+        "artifacts/engine-v15/runs/cfb_espn_401635621.json.summary.json": "59764d5aa14038bef6669bbbf37cbed8a4ef6fc42afe1f0f6840accb1e3520e1",
+        "artifacts/engine-v15/runs/cfb_espn_401635622.json.summary.json": "d807393dd2a9c0ace6d55dd15b873f4460f06d18d2c2e4345c7839259d132d35",
+        "artifacts/engine-v15/runs/cfb_espn_401635624.json.summary.json": "c8ce06fe01c733fc6a9a2c7665a81f808f94b56b9ce4ccfc527d522cb6ab17ee",
+        "artifacts/engine-v15/runs/cfb_espn_401636887.json.summary.json": "cd413eb9bf96c1f37d877868615b5cbf61d3e351c64dafad7b93787126da87e3",
+        "artifacts/engine-v15/runs/cfb_espn_401636890.json.summary.json": "479d7e482fe41d97c942b9d047a3ed3b9a73262ae495f81dd37ff8c876a8fc70",
+        "artifacts/engine-v15/runs/cfb_espn_401636892.json.summary.json": "4bf1dd0c5e2b403e2d82b1f0d06aa8692d63e69bdec1b7268feb6677ba106ab8",
+        "artifacts/engine-v15/runs/cfb_espn_401636896.json.summary.json": "bd51e8fdedde57bace09cd06f753b27db158bae5f7bf00cacef0fe68c31c03c8",
+        "artifacts/engine-v15/runs/cfb_espn_401636899.json.summary.json": "874fc3fc812843fa57c9479861670af9cc8e9adcfe2f39c3f63268de2cd2a22e",
+        "artifacts/engine-v15/runs/cfb_espn_401636900.json.summary.json": "3c2ae0e4905f70a1606903074449620e12f39033e204c1ce09220cb52ab58893",
+        "artifacts/engine-v15/runs/cfb_espn_401636902.json.summary.json": "5c20fdf8ed0de15cf01ef821a6273527b5adfb0fb1b2fea76848b03fc8b6886a",
+        "artifacts/engine-v15/runs/cfb_espn_401636903.json.summary.json": "14062b0725ea288fdaf5813122891bcd39da8fb66bb711a4533236562b4dcae2",
+        "artifacts/engine-v15/runs/cfb_espn_401636907.json.summary.json": "8876e560247f118a967acd1f717d27152e2b4ea7c400bd81622dd75cd41c1574",
+        "artifacts/engine-v15/runs/cfb_espn_401636915.json.summary.json": "ac5081f18c3611732b61a7cc984a566e2557d29559945c64679af25325fd67e2",
+        "artifacts/engine-v15/runs/cfb_espn_401636920.json.summary.json": "ac324f6293ebcaf27ca464a3dba20b3c919a71a272c5725cf42d5852b6bc0bb7",
+        "artifacts/engine-v15/runs/cfb_espn_401636923.json.summary.json": "d3d6421d9a37a4bff848fe7c46b2415f549cf1f9b894020cd3d56bd6b79bef1d",
+        "artifacts/engine-v15/runs/cfb_espn_401636927.json.summary.json": "78b5dfa5f6c4dff797d90931770015b1fe88de97885f008a6070ab187a295777",
+        "artifacts/engine-v15/runs/cfb_espn_401636929.json.summary.json": "b10ff594df2e22c7e44fc5ac57c3239e62a23ab017b35f80d7c8d984446ea2f7",
+        "artifacts/engine-v15/runs/cfb_espn_401636930.json.summary.json": "99845e7c134cc07ce982c3a06c38fe9a15fbad9cf85b2671741963e887f54f48",
+        "artifacts/engine-v15/runs/cfb_espn_401636941.json.summary.json": "a6c2622b40f6346eaca861b1312dacc1d913efd8465ac25aa6c787e3b4c1b70c",
+        "artifacts/engine-v15/runs/cfb_espn_401636945.json.summary.json": "765b10011dd11c3c1f58cee0ca5eee0d3653f13b5098a553ef2114812399be8c",
+        "artifacts/engine-v15/runs/cfb_espn_401640982.json.summary.json": "c5f53409b26aabb317ca4671121cbf59004c12be55dacdd54e14b7dc1dd8378b",
+        "artifacts/engine-v15/runs/cfb_espn_401640983.json.summary.json": "b7f66966e9790eb5dd21806282f884c8f9f61a42314400bc5e3032e4823af8cc",
+        "artifacts/engine-v15/runs/cfb_espn_401640996.json.summary.json": "58455ab9b82c46e427cb2f7bdb47deccbac9b73cbff92b17170834bdf7fe5706",
+        "artifacts/engine-v15/runs/cfb_espn_401641004.json.summary.json": "ff5ef29d21a23b1f545cad682acdd4291ea18a2aff98cf6649c5c8b5d98b5508",
+        "artifacts/engine-v15/runs/cfb_espn_401641006.json.summary.json": "87313b3bb5488576c27651964e1f63f050c39721abf9f97558af6bf7b9077545",
+        "artifacts/engine-v15/runs/cfb_espn_401641014.json.summary.json": "8b3d56e075d2f0525b2ed38366e798b62f9746f4351028b7537401feac741272",
+        "artifacts/engine-v15/runs/cfb_espn_401641020.json.summary.json": "59d8b17b7d1ff496fff9efc9c4609d8fa6d0045ef6a8edbf126dfc06530fd740",
+        "artifacts/engine-v15/runs/cfb_espn_401641031.json.summary.json": "6fcdacf7158db73ccef41a7cc9a610ffecd8e9bdc54254d2b95581ae7b5a2376",
+        "artifacts/engine-v15/runs/cfb_espn_401641036.json.summary.json": "3381f82c59ae6febfdd69863a0828eef73f3506273e70838c3184e0c30809e3d",
+        "artifacts/engine-v15/runs/cfb_espn_401641038.json.summary.json": "82fbad4886148f2fa8529ef1f1e6d1914088a5e65ac1dac77ea0a8a8f08f0d76",
+        "artifacts/engine-v15/runs/cfb_espn_401643734.json.summary.json": "643012b4b94f16c9036ad7125bb05fdbd305c29af43d29234da5aa31001d2b31",
+        "artifacts/engine-v15/runs/cfb_espn_401643738.json.summary.json": "6ed214f3d09dffe5d7fa1333c8c326311d632f27e5b229db38a445a7eb010a4b",
+        "artifacts/engine-v15/runs/cfb_espn_401643739.json.summary.json": "0b071d207841abc8fd609664c67911357772c2f9a80f847586dd03e642ed4981",
+        "artifacts/engine-v15/runs/cfb_espn_401643741.json.summary.json": "53dbcb139d7024aafdc71c8ca8d72b02d0001da83d405a29b7843167f0a1a728",
+        "artifacts/engine-v15/runs/cfb_espn_401643749.json.summary.json": "c596c1426e51f9e2ca89e4d7b46a63c948515707f2eb79a6a39c5a6f9fa4c6cb",
+        "artifacts/engine-v15/runs/cfb_espn_401643751.json.summary.json": "ce70b18151fcf665ca618b6d70d5edf283cda0c87077b3099a92b1e33a832b2e",
+        "artifacts/engine-v15/runs/cfb_espn_401643752.json.summary.json": "267e3c7f6b761f37ddd9c7f7bf2b1cf7c7b3c9b26e7288932bc429faa1c9f3ef",
+        "artifacts/engine-v15/runs/cfb_espn_401643755.json.summary.json": "2a4331438710047bb3039309c3d1349e512a87a6160cb6c91f17c7a26b78dcf7",
+        "artifacts/engine-v15/runs/cfb_espn_401643757.json.summary.json": "194dc9fa3f6e06d90d51ef32dc3adc6d1fef7e49a59d99f37ef7a69916253574",
+        "artifacts/engine-v15/runs/cfb_espn_401643760.json.summary.json": "b67bf8f1f5ccdbaa7959083a0c18ee9f713af0fc35fde2b8f55a342a133402fb",
+        "artifacts/engine-v15/runs/cfb_espn_401643761.json.summary.json": "ccc92d76c7ab8dc073eedd2e0ccba66c27aefa2b0b1e25247e95ea777c23f7fa",
+        "artifacts/engine-v15/runs/cfb_espn_401643762.json.summary.json": "f7b86f1d84c2ae6e635a8d2aa3bb2209c792cadacfa8f3274218ad6c92d9c7c7",
+        "artifacts/engine-v15/runs/cfb_espn_401643771.json.summary.json": "a22d6839ba7c593b3ca9404015fe86d239b471d66d1f5d0691e741db3d882259",
+        "artifacts/engine-v15/runs/cfb_espn_401643773.json.summary.json": "64cefc3f21e546a801c26ce186ac3012d4f3c1587d4de910b399a371ebc496f7",
+        "artifacts/engine-v15/runs/cfb_espn_401643799.json.summary.json": "16423a36ba0fc4274ec17c763840b3ab4c642fef15602eaecc59738f5381582b",
+        "artifacts/engine-v15/runs/cfb_espn_401643801.json.summary.json": "54f2cad24134923350634938e1b29d42f314008a5b209875dc3ef044fb58f088",
+        "artifacts/engine-v15/runs/cfb_espn_401643808.json.summary.json": "f39c8405e5599617fa5ac1017dc6c3c32864a0821d5ea5e2e2b8535b6bd8e91d",
+        "artifacts/engine-v15/runs/cfb_espn_401643814.json.summary.json": "8d0f7e85100142e4518c960496e6673f9cc9d3032a97e0c045c274017a9a79a7",
+        "artifacts/engine-v15/runs/cfb_espn_401643815.json.summary.json": "217641e25adeaceb8ef7ce9f5e99afcc10887e4b25a054d4cb23cc9ddd17155f",
+        "artifacts/engine-v15/runs/cfb_espn_401643817.json.summary.json": "8cb87ffd7e7ef70f9c5e0eb81ca2df049b5388ea8a4adbc88da6731defeaaf7f",
+        "artifacts/engine-v15/runs/cfb_espn_401643819.json.summary.json": "f4a5ca6444a913c38345c0b59670f8743db66945f961ec2394803af2c08219d1",
+        "artifacts/engine-v15/runs/cfb_espn_401643821.json.summary.json": "0579e4ddecee2766010178c28a5e76a88634f921f149d3910c2c9ba1483c0a36",
+        "artifacts/engine-v15/runs/cfb_espn_401643822.json.summary.json": "ca0da24380eaf68670a1a7ebe9439c6bcdd87a21bd317c4eac2d752a08085ac7",
+        "artifacts/engine-v15/runs/cfb_espn_401643827.json.summary.json": "4e76e0bb247c7c4c100795889d677e4540ed8d5cdabbec2c772e00dbd210dedd",
+        "artifacts/engine-v15/runs/cfb_espn_401643830.json.summary.json": "f290121f61abfe8f09024ce8b3a02bca8d3edbf297baac82837e566016db55c3",
+        "artifacts/engine-v15/runs/cfb_espn_401643834.json.summary.json": "b7930942aacf80fc8742e73cf886509df1e3ea52a7f041b21236e92f65dee4eb",
+        "artifacts/engine-v15/runs/cfb_espn_401643835.json.summary.json": "efe896381578a31b6477fc20d71c75cf4aedf105a48187faf462de79e64b63a0",
+        "artifacts/engine-v15/runs/cfb_espn_401643841.json.summary.json": "f3e652ba7b7278f676143b2a84114b146694e06bacc9eb7db6e26addea69fbe9",
+        "artifacts/engine-v15/runs/cfb_espn_401643848.json.summary.json": "a69367bfc3db7577493b2e1c4544d6074d919e612934a0256426dcf97df4bba0",
+        "artifacts/engine-v15/runs/cfb_espn_401644686.json.summary.json": "260e1cb9394e4237e516fbd1c65cea98cf8d38219955f214537669217a922969",
+        "artifacts/engine-v15/runs/cfb_espn_401644742.json.summary.json": "ff9a3bae26bea4d4f41c1b1adc60521970c868143bdeca2e00e4f9477ff2d74e",
+        "artifacts/engine-v15/runs/cfb_espn_401644743.json.summary.json": "f117c90e8cf5134ef3a4d3b63a0e00aeb7d472ae922dcc5ea64b498e406aec7f",
+        "artifacts/engine-v15/runs/cfb_espn_401644746.json.summary.json": "249f4b36163bc4206e5dbcd771dd3376cf09cfaaeb0d63f0f5d378491150396e",
+        "artifacts/engine-v15/runs/cfb_espn_401644750.json.summary.json": "8bb1727f1e06e1b898927d8cb8bd92cb7804c842fa5fd8eb92c583d5fd8b4b6f",
+        "artifacts/engine-v15/runs/cfb_espn_401644752.json.summary.json": "fd42a79f941772bc1e16a47540dd800e2e5bca87bb1df4e4fc2ca0ec2536d302",
+        "artifacts/engine-v15/runs/cfb_espn_401644760.json.summary.json": "c2b13b76274416c452b4e713668ef33f2a474de4dffc2e71a1599e91759b5496",
+        "artifacts/engine-v15/runs/cfb_espn_401644762.json.summary.json": "a2caa131fcf321d1dbdf70d1008aa194827f668f66db9e22107ad2b2d63cb44d",
+        "artifacts/engine-v15/runs/cfb_espn_401644764.json.summary.json": "beb4282fe10f2c002321a3b149721b2f7bf741432f8b43320de231216ae0ab6c",
+        "artifacts/engine-v15/runs/cfb_espn_401644767.json.summary.json": "239c9d825428fb4ff0993b7c06c84ce3527857c8c51fb1f9168199ed045d5f82",
+        "artifacts/engine-v15/runs/cfb_espn_401644772.json.summary.json": "4965321c9bd573f4198758687e7c305b7c8a5f29fc6b53913fe2a1144d484431",
+        "artifacts/engine-v15/runs/cfb_espn_401644779.json.summary.json": "a3307cd565eb622f739e14cd1907954c9dbe12a085d4b541d69f3eb7cb7fb1a4",
+        "artifacts/engine-v15/runs/cfb_espn_401645341.json.summary.json": "5b9a5e2fed290d376b6ae135a3769d9cdb3a5f1a100486793d56ee2e364a281a",
+        "artifacts/engine-v15/runs/cfb_espn_401645355.json.summary.json": "832762618b2758b599348653c9efef0051bc70afa41194d66eacc4bb194bf66e",
+        "artifacts/engine-v15/runs/cfb_espn_401645356.json.summary.json": "a3c9d8d6448787a43f108e7f9dcf48c58f47d3349329a9ec92c305fa0cdbfe44",
+        "artifacts/engine-v15/runs/cfb_espn_401645363.json.summary.json": "87e074c6cd27b6cea790e59189bbda17e04dcf0596dcee73a58b11f3c99244ae",
+        "artifacts/engine-v15/runs/cfb_espn_401645370.json.summary.json": "e4a09eb7fefdeb0033e213034c43d430038e5c243da2c68a79a077a984551e73",
+        "artifacts/engine-v15/runs/cfb_espn_401645373.json.summary.json": "a521eac329f3b8dc4e62837794b960e0a31fdd09140eec67c7a1b6672a4ceddd",
+        "artifacts/engine-v15/runs/cfb_espn_401645375.json.summary.json": "76307b9628b6e3b859ca57eb81fd524cba2bb4046edb43f08ccb1065c9aedb7c",
+        "artifacts/engine-v15/runs/cfb_espn_401645380.json.summary.json": "e11fe89bd84f373821e06172e2e53dd341b01e9feecf014f02a184879f1b512f",
+        "artifacts/engine-v15/runs/cfb_espn_401645381.json.summary.json": "bc84af3c0a6aa9dae4ca582489826e55596cb516f213231f69567504886e030e",
+        "artifacts/engine-v15/runs/cfb_espn_401673462.json.summary.json": "9e91e07b5b00f0edeff1686f116588c914a98ed74ca5c46e45b61814fda80013",
+        "artifacts/engine-v15/runs/cfb_espn_401673466.json.summary.json": "6d87905d163b44fab11c4a4f23a53ea4c09eadb061e0a62b6b261f1719b13f92",
+        "artifacts/engine-v15/runs/cfb_espn_401677081.json.summary.json": "26261caad961f9e535159336a5214edfe6d61a52b7ddfece5e518c527aa53592",
+        "artifacts/engine-v15/runs/cfb_espn_401677085.json.summary.json": "a0ba30611ec0d7054d30f72deeb73563dd6f01173a5356326ca782ddb170932c",
+        "artifacts/engine-v15/runs/cfb_espn_401677093.json.summary.json": "2f382e7c2210f3ea38b68e380a133ac768491996c0ae62d8631eb38a381d37c2",
+        "artifacts/engine-v15/runs/cfb_espn_401677094.json.summary.json": "754a037152d884c8470c21263f2d56f6ece89e0e11e0b13b19760b04effe1ced",
+        "artifacts/engine-v15/runs/cfb_espn_401677095.json.summary.json": "a4c195a6dae8aed4272c233429b8071adc5d733ce9f835085b5187d78ea34ec2",
+        "artifacts/engine-v15/runs/cfb_espn_401677098.json.summary.json": "0feb98929b5d811c5dd1a1dff74b0f7285ee9d3cc60878fc8c432953c57c07c0",
+        "artifacts/engine-v15/runs/cfb_espn_401677100.json.summary.json": "c4258fb059526f647aed768e8ae77b067de2be304e51195cbd9b318f4c7ad8f5",
+        "artifacts/engine-v15/runs/cfb_espn_401677101.json.summary.json": "6095ed61286c754752c92293a02789a894bf25affb1c73bd208d33d5396eab0e",
+        "artifacts/engine-v15/runs/cfb_espn_401677176.json.summary.json": "6ee773423601a4b7b7eafa301fb81deae0728af0e44c367e7806b2867157f2de",
+        "artifacts/engine-v15/runs/cfb_espn_401729786.json.summary.json": "e807974538eb519000abc1f97fc858a8a03aed6906face4555ce184d3692fed7"
+      },
+      "teamScores": {
+        "bias": -9.465189,
+        "mae": 12.098624333333333,
+        "n": 300,
+        "rmse": 15.34156845778488
+      },
+      "use": "Descriptive audit only. Different input/model versions are not pooled into a production calibrator."
+    },
+    "NBA": {
+      "calendarYears": [
+        2025
+      ],
+      "games": 20,
+      "moneyline": {
+        "bins": [
+          {
+            "meanPredicted": 0.33487999999999996,
+            "n": 5,
+            "observed": 0.6
+          },
+          {
+            "meanPredicted": 0.48567499999999997,
+            "n": 8,
+            "observed": 0.25
+          },
+          {
+            "meanPredicted": 0.6692428571428571,
+            "n": 7,
+            "observed": 0.7142857142857143
+          }
+        ],
+        "brier": 0.22829316549999995,
+        "ece": 0.176315,
+        "logLoss": 0.6485852138439574,
+        "n": 20
+      },
+      "players": {
+        "assists": {
+          "bias": -0.2899575,
+          "coverage90": 0.9138888888888889,
+          "mae": 1.3677230555555555,
+          "n": 360,
+          "rmse": 1.8945884920023603
+        },
+        "blocks": {
+          "bias": -0.048478888888888884,
+          "coverage90": 0.9666666666666667,
+          "mae": 0.5100377777777778,
+          "n": 360,
+          "rmse": 0.7336634018555255
+        },
+        "points": {
+          "bias": -1.1190969444444445,
+          "coverage90": 0.8194444444444444,
+          "mae": 4.689186944444445,
+          "n": 360,
+          "rmse": 6.3605289163782075
+        },
+        "pointsAssists": {
+          "bias": -1.4090544444444444,
+          "coverage90": 0.7916666666666666,
+          "mae": 5.227740555555555,
+          "n": 360,
+          "rmse": 7.020924085403573
+        },
+        "pointsRebounds": {
+          "bias": -0.7949894444444444,
+          "coverage90": 0.7722222222222223,
+          "mae": 5.7103705555555555,
+          "n": 360,
+          "rmse": 7.418741529209804
+        },
+        "pointsReboundsAssists": {
+          "bias": -1.0849469444444446,
+          "coverage90": 0.75,
+          "mae": 6.285955833333333,
+          "n": 360,
+          "rmse": 8.123153107703587
+        },
+        "rebounds": {
+          "bias": 0.3241075,
+          "coverage90": 0.875,
+          "mae": 1.9669397222222225,
+          "n": 360,
+          "rmse": 2.565617570429086
+        },
+        "reboundsAssists": {
+          "bias": 0.03414999999999999,
+          "coverage90": 0.8277777777777777,
+          "mae": 2.7400005555555556,
+          "n": 360,
+          "rmse": 3.504668698861246
+        },
+        "steals": {
+          "bias": -0.006555277777777777,
+          "coverage90": 0.9388888888888889,
+          "mae": 0.7519091666666666,
+          "n": 360,
+          "rmse": 0.9781729761113033
+        },
+        "threePointersMade": {
+          "bias": -0.09104166666666666,
+          "coverage90": 0.9444444444444444,
+          "mae": 0.9010088888888889,
+          "n": 360,
+          "rmse": 1.2755476384892708
+        },
+        "turnovers": {
+          "bias": -0.046610833333333344,
+          "coverage90": 0.9388888888888889,
+          "mae": 0.9321313888888889,
+          "n": 360,
+          "rmse": 1.2824480762393462
+        }
+      },
+      "sourceChecksums": {
+        "artifacts/engine-v15/nba/runs-15.1.1/nba_espn_401705061.json.summary.json": "ba290a379914d316e03ed2507a9ac522571971a37306e4564f8cad50e7b9e128",
+        "artifacts/engine-v15/nba/runs-15.1.1/nba_espn_401705086.json.summary.json": "f6b4ccf9c8e78cc394564538afa8cb3b4e9268f0bc52ff289b8eddf24b0ee605",
+        "artifacts/engine-v15/nba/runs-15.1.1/nba_espn_401705091.json.summary.json": "8380b8de158e8567ba35af27f17d7d02269c8512f73ae554c36e8808906581bc",
+        "artifacts/engine-v15/nba/runs-15.1.1/nba_espn_401705140.json.summary.json": "b651eb432b4d5207de323a32f19dd2cb945e4e76f37d763df7a1d646db8f56e1",
+        "artifacts/engine-v15/nba/runs-15.1.1/nba_espn_401705205.json.summary.json": "fba739e6295f37b7651a8ea24b229d6886f5e3cf63dc5a04c6b56c6a659123e5",
+        "artifacts/engine-v15/nba/runs-15.1.1/nba_espn_401705248.json.summary.json": "103f94bfc696031b9af30b3798edf94247225bb54b2877e48086b987ff9afae1",
+        "artifacts/engine-v15/nba/runs-15.1.1/nba_espn_401705272.json.summary.json": "27a7837e447245247481b27b3b6b457b91ee9b7c56a0b0e53e3ac543b64abf35",
+        "artifacts/engine-v15/nba/runs-15.1.1/nba_espn_401705281.json.summary.json": "7a58a515b100779d7ca97eab816f42186d0dc3bcd161ab24d0e799b59002a3e3",
+        "artifacts/engine-v15/nba/runs-15.1.1/nba_espn_401705294.json.summary.json": "4d7f358d618332e94b66b1537e9788b84dc9cc2546fce6e09bfb9e03bdb6cafe",
+        "artifacts/engine-v15/nba/runs-15.1.1/nba_espn_401705335.json.summary.json": "0b5359b47be7e76ca0e6d4eee39c9f430570378018677e7da09bb65d42d3c85e",
+        "artifacts/engine-v15/nba/runs-15.1.1/nba_espn_401705464.json.summary.json": "9d52dbb1e38aa63345bde237ecb2d44af6401237924e8d325e9ef4860608a72c",
+        "artifacts/engine-v15/nba/runs-15.1.1/nba_espn_401705473.json.summary.json": "9fec3c3bbc436bbd8cffb1c3fafffb54bfd41ef5ed23af76c54cdf5f4f3bac4c",
+        "artifacts/engine-v15/nba/runs-15.1.1/nba_espn_401705495.json.summary.json": "a1b4277f23f1c62c6ba2b501b62861537e955cda64d526b6e9bfd15ca9cda114",
+        "artifacts/engine-v15/nba/runs-15.1.1/nba_espn_401705500.json.summary.json": "9553445b02146992a15cdc5941c5532aacd9679ae18ca443958c0c7eed186619",
+        "artifacts/engine-v15/nba/runs-15.1.1/nba_espn_401705526.json.summary.json": "0cd5a18e042c55e9523d5c7fa0c360921673bbd300fba5b6583f04a5e61a5446",
+        "artifacts/engine-v15/nba/runs-15.1.1/nba_espn_401705529.json.summary.json": "a7f8e36f592f272efe7ff85213938998eedbe6c57a1657e491d8733414bd540d",
+        "artifacts/engine-v15/nba/runs-15.1.1/nba_espn_401705535.json.summary.json": "1e60a06fad5e82b02c9ae55ceb873091836bd2ff2514d6f4b24b9b85d4738a2f",
+        "artifacts/engine-v15/nba/runs-15.1.1/nba_espn_401705539.json.summary.json": "f78d0eee2e3d81e8b386332bc4b4b631e1abdf87d8a5775036c57da769f8738a",
+        "artifacts/engine-v15/nba/runs-15.1.1/nba_espn_401705598.json.summary.json": "3a3cbda013200fcf4f49f7e16ba74699799cf08c2de7d3a77ed9da942c662aa0",
+        "artifacts/engine-v15/nba/runs-15.1.1/nba_espn_401705617.json.summary.json": "b073053028f17f21d5e58ad1e5329cabd12e9fc0da875aa7d7f8c650250da7c3"
+      },
+      "teamScores": {
+        "bias": 1.3094899999999985,
+        "mae": 8.387015,
+        "n": 40,
+        "rmse": 11.292697350124104
+      },
+      "use": "Descriptive audit only. Different input/model versions are not pooled into a production calibrator."
+    },
+    "NFL": {
+      "calendarYears": [
+        2024
+      ],
+      "games": 100,
+      "moneyline": {
+        "bins": [
+          {
+            "meanPredicted": 0.14789999999999998,
+            "n": 14,
+            "observed": 0.07142857142857142
+          },
+          {
+            "meanPredicted": 0.29972777777777776,
+            "n": 18,
+            "observed": 0.4444444444444444
+          },
+          {
+            "meanPredicted": 0.5106823529411765,
+            "n": 34,
+            "observed": 0.47058823529411764
+          },
+          {
+            "meanPredicted": 0.7053904761904761,
+            "n": 21,
+            "observed": 0.7142857142857143
+          },
+          {
+            "meanPredicted": 0.8600923076923076,
+            "n": 13,
+            "observed": 0.8461538461538461
+          }
+        ],
+        "brier": 0.20261375970000003,
+        "ece": 0.054067000000000004,
+        "logLoss": 0.5840680982400095,
+        "n": 100
+      },
+      "players": {
+        "carries": {
+          "bias": -0.11498070276497695,
+          "coverage90": 0.8721198156682027,
+          "mae": 1.464941647465438,
+          "n": 1736,
+          "rmse": 3.0822723072373055
+        },
+        "completions": {
+          "bias": -0.0063539170506912365,
+          "coverage90": 0.9763824884792627,
+          "mae": 0.5471963133640553,
+          "n": 1736,
+          "rmse": 2.0910228335910346
+        },
+        "interceptions": {
+          "bias": 0.0007525921658986174,
+          "coverage90": 0.9942396313364056,
+          "mae": 0.07680443548387096,
+          "n": 1736,
+          "rmse": 0.29028218275994855
+        },
+        "passingAttempts": {
+          "bias": -0.004104089861751152,
+          "coverage90": 0.9688940092165899,
+          "mae": 0.7343716013824885,
+          "n": 1736,
+          "rmse": 2.910501145135534
+        },
+        "passingTouchdowns": {
+          "bias": -0.07156630184331797,
+          "coverage90": 0.9879032258064516,
+          "mae": 0.1156014400921659,
+          "n": 1736,
+          "rmse": 0.4389241992007381
+        },
+        "passingYards": {
+          "bias": -0.7511890552995392,
+          "coverage90": 0.9763824884792627,
+          "mae": 6.587227534562212,
+          "n": 1736,
+          "rmse": 25.431707524183025
+        },
+        "receivingTouchdowns": {
+          "bias": -0.08492379032258064,
+          "coverage90": 0.9539170506912442,
+          "mae": 0.22430961981566822,
+          "n": 1736,
+          "rmse": 0.434831665221719
+        },
+        "receivingYards": {
+          "bias": -3.757376728110599,
+          "coverage90": 0.8709677419354839,
+          "mae": 16.089991589861754,
+          "n": 1736,
+          "rmse": 24.584094728637314
+        },
+        "receptions": {
+          "bias": -0.29709781105990785,
+          "coverage90": 0.880184331797235,
+          "mae": 1.3150785714285715,
+          "n": 1736,
+          "rmse": 1.9171988705443652
+        },
+        "rushingTouchdowns": {
+          "bias": -0.0114198732718894,
+          "coverage90": 0.9850230414746544,
+          "mae": 0.13467632488479264,
+          "n": 1736,
+          "rmse": 0.32826177899236914
+        },
+        "rushingYards": {
+          "bias": -0.7837691820276497,
+          "coverage90": 0.875,
+          "mae": 8.401784965437788,
+          "n": 1736,
+          "rmse": 18.048774481944054
+        },
+        "targets": {
+          "bias": -0.2808748271889401,
+          "coverage90": 0.8582949308755761,
+          "mae": 1.6758411866359446,
+          "n": 1736,
+          "rmse": 2.429790550543476
+        }
+      },
+      "sourceChecksums": {
+        "artifacts/engine-v15/runs/2024_05_BUF_HOU.json.summary.json": "2632eacef3e658575bb83d0a6239e3be1007a1a1d385641500ca1b25ab31b4b8",
+        "artifacts/engine-v15/runs/2024_05_GB_LA.json.summary.json": "8158259035d621d5107ab94461046429cd9d4edbe0107a33660c4707d82efa2a",
+        "artifacts/engine-v15/runs/2024_05_NYG_SEA.json.summary.json": "3f6d92be26d6c7656a814ddd76a87786708c9475c4f55aa11144415f70f6ea30",
+        "artifacts/engine-v15/runs/2024_05_TB_ATL.json.summary.json": "4ea36728538bdd8f53366edd9b47174f4b889ca1c83a421ec28bb2613a3c7f24",
+        "artifacts/engine-v15/runs/2024_06_BUF_NYJ.json.summary.json": "55765a5a3a445a5332023183c616755d1d024a9632a9c8646dfc829aee62a6c8",
+        "artifacts/engine-v15/runs/2024_06_CIN_NYG.json.summary.json": "2663afa0a7b5a3834f8804f6a7780bb50616cc060c2567e2d743615dd56d5140",
+        "artifacts/engine-v15/runs/2024_06_CLE_PHI.json.summary.json": "9dad5fe8c41b23be33c16127473b6562d458e02ceeab2cfb1376d183291e120f",
+        "artifacts/engine-v15/runs/2024_06_DET_DAL.json.summary.json": "2a6db4c63b8d505362d012553b09237d232094afb557882a1526ee71286d9822",
+        "artifacts/engine-v15/runs/2024_06_HOU_NE.json.summary.json": "79b5eb490bb5d2204f9c7b1e24b27dd57096786d89980b768879da7fefac78b8",
+        "artifacts/engine-v15/runs/2024_06_IND_TEN.json.summary.json": "843eafb94b65cbfa4dc64f4feb5b0446f3d696ba456b1b9cb46951e4e4a31198",
+        "artifacts/engine-v15/runs/2024_06_JAX_CHI.json.summary.json": "56b1cada569b2569e1db6aa367d87306c009001473e127c657e480855dc8a79e",
+        "artifacts/engine-v15/runs/2024_06_PIT_LV.json.summary.json": "655635307ca4e71873a0b8c39b662fca47ca7ad59f6f542ade49af93c1bb7442",
+        "artifacts/engine-v15/runs/2024_06_SF_SEA.json.summary.json": "9628fed06c088a52062a4c838c657c5ebd8d9767fe7225b4b9535d3f8d5a447b",
+        "artifacts/engine-v15/runs/2024_06_TB_NO.json.summary.json": "9497333ff64bb48c05abcbf4ff340ea8a405846e720ac8208478bced6c9e9cc4",
+        "artifacts/engine-v15/runs/2024_07_CAR_WAS.json.summary.json": "f1956d2c43e341818894907f677e1b5e09d1f2f717b5108b5294a7a0fb8d2214",
+        "artifacts/engine-v15/runs/2024_07_DEN_NO.json.summary.json": "a9047fbd57c032ab5b44d619eccdcd2aa09661a024faff3f6427f8c1bafe0b4e",
+        "artifacts/engine-v15/runs/2024_07_HOU_GB.json.summary.json": "68074ecc80337ff4a45cbffdff62f108541553fbe0d883c1c667c2e2dbd70ace",
+        "artifacts/engine-v15/runs/2024_07_LAC_ARI.json.summary.json": "e616ca2626205a6fb7b85056e717b094f48188de3e3907bee387dfdf6ecc4b93",
+        "artifacts/engine-v15/runs/2024_07_MIA_IND.json.summary.json": "a9851de8b9953287b62c0760e7108db54f13c452e7a9236fd303d512daeaab9d",
+        "artifacts/engine-v15/runs/2024_07_NE_JAX.json.summary.json": "59c60da576779a9872201d49fc77080080f2f9e13f336a67b10d4a2bd03f5401",
+        "artifacts/engine-v15/runs/2024_07_SEA_ATL.json.summary.json": "36535653afa863330cd9d3273b7f16635fa5f8e0508e6605c542eb36593c536e",
+        "artifacts/engine-v15/runs/2024_08_ATL_TB.json.summary.json": "f2878e8115ad1565f2e8382e35337e05175e91eddaa722eacc712af0d1e3a8ef",
+        "artifacts/engine-v15/runs/2024_08_BUF_SEA.json.summary.json": "bb027c907e3554d32ca98e907a0671346d95984493ebfd8fc2d21a101da2c766",
+        "artifacts/engine-v15/runs/2024_08_CAR_DEN.json.summary.json": "eae1157eda4404d22509887f56379d65daec514583df75d47ec6c8581efa040b",
+        "artifacts/engine-v15/runs/2024_08_DAL_SF.json.summary.json": "8f6a3fbc975486c26b88357630026feea58a6d8f1c88957ad14675983a5b0668",
+        "artifacts/engine-v15/runs/2024_08_GB_JAX.json.summary.json": "54170323901198e745dc7ef06955caeda7b795745bcb0bf94e577a05330daef1",
+        "artifacts/engine-v15/runs/2024_08_IND_HOU.json.summary.json": "489b1d199285cd7905a49f0876e9208667e3c4348ebf13cb3879c8b3a2cf35d0",
+        "artifacts/engine-v15/runs/2024_08_MIN_LA.json.summary.json": "bb1d9fdf99612d3052950bc8e482cda0dce3916f58356b2d36fc15a826848612",
+        "artifacts/engine-v15/runs/2024_08_NO_LAC.json.summary.json": "be8c9becf9643d69e2ce0098b564f4d6ed0f34f80098f540d52d2d0a55d35528",
+        "artifacts/engine-v15/runs/2024_08_NYJ_NE.json.summary.json": "c332c9319468fbb10cfb32f0ef27c2dee049440556d3404f5c3909e4aa171b05",
+        "artifacts/engine-v15/runs/2024_08_TEN_DET.json.summary.json": "6b88eb4dbfbaad9444814d07508242b0dc0ade16d564d346e0f92b1f6da0186f",
+        "artifacts/engine-v15/runs/2024_09_IND_MIN.json.summary.json": "3486fd28434365f98e0cec5fe444f2e3f4e46de7b0182788b5265e71e91d6485",
+        "artifacts/engine-v15/runs/2024_09_JAX_PHI.json.summary.json": "51064774c718e4ee9784535c2303f8cebfafcbd6ca5f88a0c2356ed3e73d272f",
+        "artifacts/engine-v15/runs/2024_09_MIA_BUF.json.summary.json": "e69c9c0dab36995069ccfbeeca9518c406c8203e850b988769e199c368165319",
+        "artifacts/engine-v15/runs/2024_09_TB_KC.json.summary.json": "0639610e534014bf34da283109e331b003d53e675a1770b72a5da40dfe88f800",
+        "artifacts/engine-v15/runs/2024_09_WAS_NYG.json.summary.json": "3c380762870ff2a5a234c4833f7aa06da7827062398b07dfac9ee9fc27d785d4",
+        "artifacts/engine-v15/runs/2024_10_ATL_NO.json.summary.json": "65268868e636322c3e09c924dbf09c11b1852e68483ba46f019094f21138b2a7",
+        "artifacts/engine-v15/runs/2024_10_BUF_IND.json.summary.json": "27ba8c5153a079e08f6ef0b1354a0a30edf09fa164559b65cc040f2913150304",
+        "artifacts/engine-v15/runs/2024_10_MIA_LA.json.summary.json": "dae57d1c6d3aeacbdfc1e37db54a0f426bf138669585ccedb3ee21a923463e4e",
+        "artifacts/engine-v15/runs/2024_10_NE_CHI.json.summary.json": "a6ad13a03d277649981c5b6ea50eaa92881adfd5cfc927a30cc322aa6a68feab",
+        "artifacts/engine-v15/runs/2024_10_TEN_LAC.json.summary.json": "01aeeb86dc7d5509dc78bea159a7857529462f3aaf5ce6dd9c49047beb91f3a7",
+        "artifacts/engine-v15/runs/2024_11_HOU_DAL.json.summary.json": "923da818272e44fbff099e4183e091d91845ed454123b517cd30099e5edcb4d1",
+        "artifacts/engine-v15/runs/2024_11_IND_NYJ.json.summary.json": "12264a7800897b1fb21240e6da3483b3f06ce64408e4918dbab9517bf9510874",
+        "artifacts/engine-v15/runs/2024_11_JAX_DET.json.summary.json": "6fe737bcd21c7b7078e865231774e37e57f54b2b5e66fab63fabad6d8ef28ca0",
+        "artifacts/engine-v15/runs/2024_11_KC_BUF.json.summary.json": "1177f946fa3a4ca6afa44f880ee85ed5a1c7598b70b66094fea776a6c06a30a2",
+        "artifacts/engine-v15/runs/2024_11_MIN_TEN.json.summary.json": "c11bb6a3df62787c5f4b5cf950183706e326538c8192b994a8034f90d0387124",
+        "artifacts/engine-v15/runs/2024_11_SEA_SF.json.summary.json": "f071b9d043fae33f743a3783f0e6f58547f51c340c773d3e126c543458035788",
+        "artifacts/engine-v15/runs/2024_11_WAS_PHI.json.summary.json": "95fae3e40ebfa7f2a9048c3a3c748974d315a6db11558af26e5532b6177d6dca",
+        "artifacts/engine-v15/runs/2024_12_BAL_LAC.json.summary.json": "1b0b307a74586ab324f43748fdd3b375221ffeb157d64a8892e7428cb382cd00",
+        "artifacts/engine-v15/runs/2024_12_DAL_WAS.json.summary.json": "4a5e04abbd85c50d763fa7365770618630c945464f207537d9f0a51c87761f46",
+        "artifacts/engine-v15/runs/2024_12_DET_IND.json.summary.json": "fdee2f3e5f3b7adad6e249aa81c1c432042cd07af56727452b6965dd39758532",
+        "artifacts/engine-v15/runs/2024_12_KC_CAR.json.summary.json": "3f75132bba7ac0634add672add98ba5afcf4f6e473612b72f7000ea2c8fffa6c",
+        "artifacts/engine-v15/runs/2024_12_MIN_CHI.json.summary.json": "5154436d5389b9e5e08a2c0305c9fbee1ebda04effc1abdc13f86daffdce3302",
+        "artifacts/engine-v15/runs/2024_12_NE_MIA.json.summary.json": "7e6fd960768e57587de9579bbad5eb9a618ee3d0d435e25bbfa084c2344696ca",
+        "artifacts/engine-v15/runs/2024_12_PIT_CLE.json.summary.json": "9426e346691a1b708da5f037ae78115e43e5a578ccfa443d4676d0b99d78c453",
+        "artifacts/engine-v15/runs/2024_12_SF_GB.json.summary.json": "d31685fd451bc0113ecda9a929292cf9a7bf441d1429e779ee40c8630cd952e1",
+        "artifacts/engine-v15/runs/2024_12_TEN_HOU.json.summary.json": "3259758337a4c67a2f47e793dd580b109b36335448550218f20627f6838c8d00",
+        "artifacts/engine-v15/runs/2024_13_CHI_DET.json.summary.json": "799f94955f9391afbb0161d563c5f74c6d0b7412954a33927a71924a8a0619a2",
+        "artifacts/engine-v15/runs/2024_13_IND_NE.json.summary.json": "a0ef6f986931ed56bb1bc13d1f25888dd3a9d5b4aa71ad46229b85a2f01f367b",
+        "artifacts/engine-v15/runs/2024_13_LA_NO.json.summary.json": "b5e930168d0fcc4fd527e631775c9c0133f958ae3f29bbf3880dda0093fc61be",
+        "artifacts/engine-v15/runs/2024_13_NYG_DAL.json.summary.json": "ab85ca198cae237c075d8d2170d8035ed15beb3dfc9e4e61810f3765295a3e04",
+        "artifacts/engine-v15/runs/2024_13_PHI_BAL.json.summary.json": "05cec3066bde26c48b68af499832bc2158295e78d675efde68d79ba9841c14d6",
+        "artifacts/engine-v15/runs/2024_13_PIT_CIN.json.summary.json": "5fe60c89e091778c9a91dc15e21632452ad95edfa0bf55a1f04fa88b2ee679d4",
+        "artifacts/engine-v15/runs/2024_13_SEA_NYJ.json.summary.json": "4b087b14ee7a5d367298b7c05c1ae3caf6bc37ca61ab86a235068405e77f0e41",
+        "artifacts/engine-v15/runs/2024_13_SF_BUF.json.summary.json": "f0a89a2cfab81c1d5d7165192c3056b0e72e8157ea20967491ca96cc4e646412",
+        "artifacts/engine-v15/runs/2024_13_TB_CAR.json.summary.json": "87be25125ab26ca8a39b89df73a77c11c536ca2bdd02f8d809410b2d07d18119",
+        "artifacts/engine-v15/runs/2024_13_TEN_WAS.json.summary.json": "a60efe82d8714b2eddd81972fba9979e418f4acb9713389811ea4599e444cd4b",
+        "artifacts/engine-v15/runs/2024_14_CHI_SF.json.summary.json": "b3c51fba269aca5d9903923b24d45e8ddfa348b24dca1a302134fd1e40542a1c",
+        "artifacts/engine-v15/runs/2024_14_CLE_PIT.json.summary.json": "20550f43b5739ae53eceef9fe7b24717184ee6cfe7b949d7706bfd96ea719222",
+        "artifacts/engine-v15/runs/2024_14_GB_DET.json.summary.json": "817c9132a798552dd02293443fca9312899921470cdca1720386dd6f3be97880",
+        "artifacts/engine-v15/runs/2024_14_NO_NYG.json.summary.json": "5811728bde8245a018cb27006271645dda71350c6e1144225f8557a37979837b",
+        "artifacts/engine-v15/runs/2024_14_SEA_ARI.json.summary.json": "837a625f52c09ad3e60adb8efabe9f9e0bd6bbb8c543ccb47719a1c1190c96a4",
+        "artifacts/engine-v15/runs/2024_15_ATL_LV.json.summary.json": "e9b2a16f405f524918b962172c534d41844bee9fef15b8b09094a7aab1fb801f",
+        "artifacts/engine-v15/runs/2024_15_BAL_NYG.json.summary.json": "b9acd16ce1cb0295bc0d34133941200048ed046d1c7d35d45990b026c10a58b0",
+        "artifacts/engine-v15/runs/2024_15_BUF_DET.json.summary.json": "b5ab39271be452d37133e39945da39276c37eb7bc5285907e617accc294d2e85",
+        "artifacts/engine-v15/runs/2024_15_DAL_CAR.json.summary.json": "7744067579b9cca8c10c31a401fcedc24e33417dd2370de1d4098ade79a6faf3",
+        "artifacts/engine-v15/runs/2024_15_IND_DEN.json.summary.json": "7787e860d2cf1f5a80d805adfa3e93f1d2e5de1d9eba8d3664844ff69ac01fc9",
+        "artifacts/engine-v15/runs/2024_15_MIA_HOU.json.summary.json": "a9cfd539d5b68c43220886b45562517733571dbdd8048de5c7094f7eec8459d9",
+        "artifacts/engine-v15/runs/2024_15_NYJ_JAX.json.summary.json": "d22b2737ba9ca7efdaf2d691d8b1f64826ebb1becb58aede62af56dbf92cb160",
+        "artifacts/engine-v15/runs/2024_15_TB_LAC.json.summary.json": "7b59cb0068ec1adea2e54bd8a64785f2b0ac7530274e99f286127c4c63514cc6",
+        "artifacts/engine-v15/runs/2024_15_WAS_NO.json.summary.json": "0365634c112e04756223afe6d3393266c786fecf723b236f3a22f57ecd198f3f",
+        "artifacts/engine-v15/runs/2024_16_CLE_CIN.json.summary.json": "211b0fd2e8a9a29ad751f2b393bedee8982b640c23674f3a2191794723521eaa",
+        "artifacts/engine-v15/runs/2024_16_DEN_LAC.json.summary.json": "7f81fdc532647882987b4ef9004070881cf451df629e74ef1e9a6a0042de53b3",
+        "artifacts/engine-v15/runs/2024_16_DET_CHI.json.summary.json": "392c617850e4c590d566e93fe60b2da6a4fb110b334f33ffe24cb18ab2e87ccd",
+        "artifacts/engine-v15/runs/2024_16_HOU_KC.json.summary.json": "ce099e0d150ed9fe42be428ce5ea83ad88d3c2cf5bcab3c39a616b4840c04259",
+        "artifacts/engine-v15/runs/2024_16_NE_BUF.json.summary.json": "5dabf86eb02d77f4731f145e1bbbdc52a93a1687493de9dde16e63e964d4e114",
+        "artifacts/engine-v15/runs/2024_16_NO_GB.json.summary.json": "0e5e6893e6d21cbe528267fa3ead9773ca96bcaab6aa54721eacd8ced8a667c5",
+        "artifacts/engine-v15/runs/2024_16_PHI_WAS.json.summary.json": "cf4ce8e5aaf146d184ad033e958413df9c8307404fc2ad899427019c3b079a34",
+        "artifacts/engine-v15/runs/2024_16_TEN_IND.json.summary.json": "2c41161703e81d1f154719cbf6f35fac99a22f4b35b6a31c6d99b126c0257593",
+        "artifacts/engine-v15/runs/2024_17_ARI_LA.json.summary.json": "fa2993e3c544062264b3d2ff8f1bcb9d2cd89c649a93a5e39141a08e9b8392c7",
+        "artifacts/engine-v15/runs/2024_17_ATL_WAS.json.summary.json": "d029e6a46d074e9ee2b1ff86ea8ccbc0b0e6c86e72419a2903f36d24bbad6842",
+        "artifacts/engine-v15/runs/2024_17_BAL_HOU.json.summary.json": "c2b9fdacf7d8389504bdbf7320b08fb6bed9d2328dfba01fc20ee6e6f8666a14",
+        "artifacts/engine-v15/runs/2024_17_CAR_TB.json.summary.json": "c3f4b9058723c7d238b17426a4993c9fff4d616aec9c24ca17ec5fff4295c668",
+        "artifacts/engine-v15/runs/2024_17_DEN_CIN.json.summary.json": "61209614e1a7c35127df4079033673d1af392767275794dff9d8237e6fe4aa0d",
+        "artifacts/engine-v15/runs/2024_17_DET_SF.json.summary.json": "0c477018bc01bdd45c6a33425f62bda8caef8e8da9a78ef74a24b34606f8a200",
+        "artifacts/engine-v15/runs/2024_17_GB_MIN.json.summary.json": "4997ab12347c4557a9c146980d49db5b4939e67de282a238c18a19bd6499c4b3",
+        "artifacts/engine-v15/runs/2024_17_LV_NO.json.summary.json": "ddef8f2abcf72480aafeee1d05bad6665b4e46bbfab082099d5be3dd3a91e74a",
+        "artifacts/engine-v15/runs/2024_17_NYJ_BUF.json.summary.json": "999972d1ff7d581407bf0a4cee67367d78974b23b4162c99df426a1365fde95a",
+        "artifacts/engine-v15/runs/2024_17_SEA_CHI.json.summary.json": "3b39775d5d8bb3041ed175a6a8500616eb8dc31dd25d81a685c010f69011bb05",
+        "artifacts/engine-v15/runs/2024_17_TEN_JAX.json.summary.json": "e64c09f3e1bd3f1ef99325228fe265a30a53e1ebb869cda627ae6e2a555c8eef"
+      },
+      "teamScores": {
+        "bias": -5.2695245,
+        "mae": 8.435731500000001,
+        "n": 200,
+        "rmse": 10.58446090078517
+      },
+      "use": "Descriptive audit only. Different input/model versions are not pooled into a production calibrator."
+    }
+  },
+  "newMonteCarloRuns": 0,
+  "pairedCFBDiagnostics": {
+    "conditional-clock": {
+      "causalInterpretation": "Paired descriptive evidence only. Mean-score error and Brier loss measure different objects; no causal attribution from one game.",
+      "games": 24,
+      "incorrectWinnerDirections": 6,
+      "largestBrierRegressions": [
+        {
+          "actualHomeWin": 0,
+          "brierChange": 0.27019359,
+          "candidateProbability": 0.6872,
+          "gameId": "cfb:espn:401756944",
+          "referenceProbability": 0.4495
+        },
+        {
+          "actualHomeWin": 1,
+          "brierChange": 0.1741914000000001,
+          "candidateProbability": 0.4846,
+          "gameId": "cfb:espn:401760389",
+          "referenceProbability": 0.6976
+        },
+        {
+          "actualHomeWin": 0,
+          "brierChange": 0.16639227,
+          "candidateProbability": 0.6494,
+          "gameId": "cfb:espn:401757276",
+          "referenceProbability": 0.5053
+        },
+        {
+          "actualHomeWin": 0,
+          "brierChange": 0.12174591000000001,
+          "candidateProbability": 0.832,
+          "gameId": "cfb:espn:401752754",
+          "referenceProbability": 0.7553
+        },
+        {
+          "actualHomeWin": 0,
+          "brierChange": 0.0877675200000001,
+          "candidateProbability": 0.9061,
+          "gameId": "cfb:espn:401754556",
+          "referenceProbability": 0.8563
+        }
+      ],
+      "meanFavoriteProbability": 0.76695,
+      "meanProbabilityAssignedToActualWinner": 0.6760250000000001,
+      "meanSimulatedMarginVariance": 263.7103783495834,
+      "meanSimulatedScoreCovariance": -6.2055934666666674
+    },
+    "reference-v15": {
+      "causalInterpretation": "Paired descriptive evidence only. Mean-score error and Brier loss measure different objects; no causal attribution from one game.",
+      "games": 24,
+      "incorrectWinnerDirections": 6,
+      "largestBrierRegressions": [
+        {
+          "actualHomeWin": 1,
+          "brierChange": 0.0,
+          "candidateProbability": 0.9626,
+          "gameId": "cfb:espn:401756894",
+          "referenceProbability": 0.9626
+        },
+        {
+          "actualHomeWin": 1,
+          "brierChange": 0.0,
+          "candidateProbability": 0.6825,
+          "gameId": "cfb:espn:401756889",
+          "referenceProbability": 0.6825
+        },
+        {
+          "actualHomeWin": 1,
+          "brierChange": 0.0,
+          "candidateProbability": 0.8951,
+          "gameId": "cfb:espn:401752706",
+          "referenceProbability": 0.8951
+        },
+        {
+          "actualHomeWin": 1,
+          "brierChange": 0.0,
+          "candidateProbability": 0.8083,
+          "gameId": "cfb:espn:401757257",
+          "referenceProbability": 0.8083
+        },
+        {
+          "actualHomeWin": 1,
+          "brierChange": 0.0,
+          "candidateProbability": 0.7223,
+          "gameId": "cfb:espn:401752698",
+          "referenceProbability": 0.7223
+        }
+      ],
+      "meanFavoriteProbability": 0.7191166666666667,
+      "meanProbabilityAssignedToActualWinner": 0.6481583333333333,
+      "meanSimulatedMarginVariance": 56.04601140416667,
+      "meanSimulatedScoreCovariance": -2.3252227045833336
+    },
+    "repair-conversions": {
+      "causalInterpretation": "Paired descriptive evidence only. Mean-score error and Brier loss measure different objects; no causal attribution from one game.",
+      "games": 24,
+      "incorrectWinnerDirections": 5,
+      "largestBrierRegressions": [
+        {
+          "actualHomeWin": 0,
+          "brierChange": 0.25357475000000007,
+          "candidateProbability": 0.675,
+          "gameId": "cfb:espn:401756944",
+          "referenceProbability": 0.4495
+        },
+        {
+          "actualHomeWin": 1,
+          "brierChange": 0.16936872999999997,
+          "candidateProbability": 0.4893,
+          "gameId": "cfb:espn:401760389",
+          "referenceProbability": 0.6976
+        },
+        {
+          "actualHomeWin": 0,
+          "brierChange": 0.16730192000000005,
+          "candidateProbability": 0.6501,
+          "gameId": "cfb:espn:401757276",
+          "referenceProbability": 0.5053
+        },
+        {
+          "actualHomeWin": 0,
+          "brierChange": 0.13277187000000013,
+          "candidateProbability": 0.8386,
+          "gameId": "cfb:espn:401752754",
+          "referenceProbability": 0.7553
+        },
+        {
+          "actualHomeWin": 0,
+          "brierChange": 0.09103272000000007,
+          "candidateProbability": 0.9079,
+          "gameId": "cfb:espn:401754556",
+          "referenceProbability": 0.8563
+        }
+      ],
+      "meanFavoriteProbability": 0.7674124999999999,
+      "meanProbabilityAssignedToActualWinner": 0.6772208333333333,
+      "meanSimulatedMarginVariance": 270.3114642895833,
+      "meanSimulatedScoreCovariance": -5.662899556666665
+    },
+    "stronger-shrinkage": {
+      "causalInterpretation": "Paired descriptive evidence only. Mean-score error and Brier loss measure different objects; no causal attribution from one game.",
+      "games": 24,
+      "incorrectWinnerDirections": 5,
+      "largestBrierRegressions": [
+        {
+          "actualHomeWin": 0,
+          "brierChange": 0.32968239,
+          "candidateProbability": 0.7292,
+          "gameId": "cfb:espn:401756944",
+          "referenceProbability": 0.4495
+        },
+        {
+          "actualHomeWin": 0,
+          "brierChange": 0.2138969100000001,
+          "candidateProbability": 0.685,
+          "gameId": "cfb:espn:401757276",
+          "referenceProbability": 0.5053
+        },
+        {
+          "actualHomeWin": 1,
+          "brierChange": 0.09472191999999999,
+          "candidateProbability": 0.6099,
+          "gameId": "cfb:espn:401752818",
+          "referenceProbability": 0.7603
+        },
+        {
+          "actualHomeWin": 0,
+          "brierChange": 0.08012547000000003,
+          "candidateProbability": 0.8066,
+          "gameId": "cfb:espn:401752754",
+          "referenceProbability": 0.7553
+        },
+        {
+          "actualHomeWin": 0,
+          "brierChange": 0.07382961000000002,
+          "candidateProbability": 0.4665,
+          "gameId": "cfb:espn:401752755",
+          "referenceProbability": 0.3792
+        }
+      ],
+      "meanFavoriteProbability": 0.7566458333333334,
+      "meanProbabilityAssignedToActualWinner": 0.6568791666666667,
+      "meanSimulatedMarginVariance": 321.0456750675,
+      "meanSimulatedScoreCovariance": -18.87880819833333
+    }
+  },
+  "productionPromotions": [],
+  "resources": {
+    "cpuSeconds": 1.046406916,
+    "providerRequests": 0,
+    "simulationRuns": 0
+  },
+  "scope": "Retrospective development/validation archives only; no exposed final-test reuse"
+}

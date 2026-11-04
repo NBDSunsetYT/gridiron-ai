@@ -1,4 +1,5 @@
 import {after} from 'next/server';
+import {computeAllowed,assertComputeAllowed,deferWorker} from '../compute/policy';
 import {createHash,randomUUID} from 'node:crypto';
 import {cloudClient} from '../cloud/context';
 import {ApiError} from '../auth';
@@ -77,6 +78,7 @@ async function evidenceFor(job:any){
 }
 let running:Promise<void>|null=null;
 export async function drainAutomaticProps(maxGames=2){
+ if(!computeAllowed())return;
  if(running)return running;const task=(async()=>{const began=Date.now();for(let i=0;i<maxGames&&Date.now()-began<60000;i++){
   const lease=randomUUID(),job=await autoOperation({action:'claim',lease});if(!job)return;
   try{const value=await evidenceFor(job),identity=(v:any)=>hash([v.method,v.inputVersion,v.modelVersion??v.result?.modelVersion,v.secondaryEvidence?.inputVersion??null]),evidenceHash=identity(value);let ref;if(isResearchPointer(job.result_ref)){try{const previous=await readResearchObject(job.result_ref);if(identity(previous)===evidenceHash&&previous.triggerHash===value.triggerHash)ref=job.result_ref;}catch{/* New verified evidence can repair an unreadable current reference; old versions remain. */}}ref??=await saveSharedResearch(job.sport,value.gameId,value.method==='full_game_simulation'?'simulation':'matchup_report',value);await autoOperation({action:'finish',id:job.id,lease,inputHash:job.input_hash,evidenceHash,resultRef:ref});}
@@ -91,13 +93,13 @@ export async function automaticPropResearch(sport:Sport,board:any){
  if(!jobs.length)return{...board,items:board.items.map((r:any)=>attachAutomaticEvidence(r,null,null,injuries)),automatic:true,analysisComplete:false};
  await autoOperation({action:'enqueue',jobs});const stored=await autoOperation({action:'read',ids:jobs.map(j=>j.id)}),evidence=new Map<string,any>();
  await Promise.all(stored.map(async(j:any)=>{if(!isResearchPointer(j.result_ref))return;try{const id=j.result_ref._sharedResearchObject.id,cached=objectCache.get(id),value=cached&&cached.until>Date.now()?cached.value:await readResearchObject(j.result_ref);if(objectCache.size>=20)objectCache.delete(objectCache.keys().next().value!);objectCache.set(id,{until:Date.now()+30000,value});evidence.set(j.id,value);}catch{/* Immutable reference remains intact; automatic retry continues. */}}));
- after(async()=>{await drainAutomaticProps().catch(()=>{});});
+ if(computeAllowed()&&process.env.GRIDIRON_DEFER_AUTO_PROPS!=='0'){if(process.env.GRIDIRON_COMPUTE_ROLE==='worker')deferWorker(()=>drainAutomaticProps(1));else after(async()=>{await drainAutomaticProps().catch(()=>{});});}
  const items=board.items.map((r:any)=>{const id=jobId(sport,r.espnEventId),j=stored.find((j:any)=>j.id===id);return attachAutomaticEvidence(r,evidence.get(id),j,injuries);});
- after(async()=>{await Promise.allSettled(stored.map(async(j:any)=>{
+ const archive=async()=>{await Promise.allSettled(stored.map(async(j:any)=>{
   const estimates=items.filter((r:any)=>r.researchJobId===j.id&&r.state==='ready'&&!r.stale).map((r:any)=>({sport,eventId:r.eventId,gameId:r.modelGameId,playerId:r.player.id,modelPlayerId:r.modelPlayerId,market:r.market,statistic:r.statistic,threshold:r.threshold,side:r.side,method:r.method,rawProbability:r.rawProbability,empiricalProbability:r.empiricalProbability,posteriorProbability:r.posteriorProbability??null,estimateProbability:r.estimateProbability??null,calibratedProbability:r.calibratedProbability,simulations:r.simulations,hits:r.successfulSimulations??r.historicalHits,sampleSize:r.historicalSampleSize??null,interval95:r.calibratedInterval95??r.modelInterval95??r.monteCarloInterval95??r.historicalInterval95,priorEffectiveSampleSize:r.priorEffectiveSampleSize??null,distributionArtifactId:r.distributionArtifactId??null,modelVersion:r.modelVersion,inputVersion:r.inputVersion,calculatedAt:r.calculatedAt,sourceQuote:{provider:r.provider,book:r.book.key,americanOdds:r.americanOdds,observedAt:r.sourceUpdatedAt,current:r.marketCurrent!==false},assumptions:r.reason}));
   if(!estimates.length)return;const evidenceHash='selections:'+hash(estimates.map(({sourceQuote,...estimate}:any)=>({...estimate,sourceQuote:Object.fromEntries(Object.entries(sourceQuote).filter(([key])=>key!=='observedAt'))}))),snapshot={format:'automatic-prop-predictions-v12',sport,gameId:estimates[0].gameId,estimates};
   const check=await autoOperation({action:'snapshot',id:j.id,inputHash:j.input_hash,evidenceHash});if(!check?.needsObject)return;
   const ref=await saveSharedResearch(sport,snapshot.gameId,'matchup_report',snapshot);await autoOperation({action:'snapshot',id:j.id,inputHash:j.input_hash,evidenceHash,resultRef:ref});
- }));});
+ }));};if(computeAllowed()){if(process.env.GRIDIRON_COMPUTE_ROLE==='worker')deferWorker(archive);else after(archive);}
  return{...board,items,automatic:true,analysisScope:'Automatic matchup batches. Prices never determine model distributions. Empirical estimates remain distinct from complete-game simulations.',analysisComplete:items.every((r:any)=>r.state==='ready'||r.state==='source_unavailable'),researchQueue:{queued:stored.filter((j:any)=>['queued','running'].includes(j.status)).length,delayed:stored.filter((j:any)=>j.status==='delayed').length},persistence:{saved:true,status:'shared_immutable_research',message:'Completed distributions and versions are saved automatically; private personal records are unchanged.'}};
 }

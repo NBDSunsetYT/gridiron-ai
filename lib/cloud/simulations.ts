@@ -7,6 +7,7 @@ import {cloudSavePrediction} from './research';
 import {attestCloudResult,attestCloudInput,verifyCloudResult,verifiedCloudJob} from './attestation';
 import {simulationPayload} from '../simulation-input';
 import {backgroundSimulations,dispatchCloudSimulation,resumeCloudSimulation} from './async-simulations';
+import {assertComputeAllowed,computeAllowed} from '../compute/policy';
 import {compactApiEnabled,compactSimulationResult,compactSimulationJob} from './transport';
 
 export function cloudInjuryPayload(input:Record<string,any>,playerId:string,status:string){
@@ -16,6 +17,7 @@ export function cloudInjuryPayload(input:Record<string,any>,playerId:string,stat
 }
 
 export async function simulationService(action:'fit'|'simulate',payload:Record<string,any>){
+ assertComputeAllowed();
  const endpoint=process.env.SIMULATION_SERVICE_URL,token=process.env.SIMULATION_SERVICE_TOKEN;
  if(!endpoint||!token||token.length<32)throw new ApiError('The private quantitative service is not configured. No simulations or model evidence were invented.',503);
  const base=new URL(endpoint.endsWith('/')?endpoint:endpoint+'/');if(!['http:','https:'].includes(base.protocol))throw new ApiError('Invalid quantitative service configuration.',503);
@@ -56,6 +58,7 @@ export async function cloudSimulationHistory(ctx:CloudContext,id?:string|null){
 }
 export async function cloudJobHistory(ctx:CloudContext){return{jobs:unwrap(await records(ctx,'simulation_jobs',{limit:100,dataKind:'injury_resimulation'})),worker:{onInjurySave:true,recovery:'Owned queued jobs can be resumed after sign-in. Background server-wide cron needs an explicitly configured privileged worker; no user JWT is invented.'}};}
 export async function cloudProcessJobs(ctx:CloudContext,limit=1){
+ if(!computeAllowed())return{processed:0,jobs:[],message:'Private queued jobs remain durable; execution requires an authenticated external worker.'};
  const bounded=Math.max(1,Math.min(3,Math.trunc(limit)||1)),cutoff=new Date(Date.now()-20*60000).toISOString();
  const [queued,interrupted]=await Promise.all([records(ctx,'simulation_jobs',{limit:bounded,dataKind:'injury_resimulation',dataStatus:'queued',oldestFirst:true}),records(ctx,'simulation_jobs',{limit:bounded,dataKind:'injury_resimulation',dataStatus:'running',beforeUpdatedAt:cutoff,oldestFirst:true})]);
  const jobs=unwrap([...queued,...interrupted]).sort((a,b)=>Date.parse(a.createdAt)-Date.parse(b.createdAt));const results:any[]=[];

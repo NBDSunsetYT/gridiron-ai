@@ -12,14 +12,15 @@ export default function ProbabilityToHit({target,onResult,disabled=false,label='
   const generation=++seq.current;controller.current?.abort();const abort=new AbortController();controller.current=abort;busyRef.current=true;setBusy(true);setError('');setPhase('loading_research');
   try{
    let response=await fetch('/api/nfl/probability',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({target:JSON.parse(identity),simulations:count}),cache:'no-store',signal:abort.signal});
-   const started=Date.now();
+   const started=Date.now();let polls=0;
    for(;;){
     const body=await response.json();if(!response.ok)throw Error(body.error??'Research could not complete.');if(generation!==seq.current)return;
     setValue(body);setPhase(body.state??(body.status==='ready'?'ready':'source_unavailable'));
     if(body.status!=='pending'){if(body.status==='ready')resultRef.current?.(body);break;}
     if(!/^[a-f0-9]{64}$/.test(body.jobId??''))throw Error('The backend did not return a valid simulation request. Retry Analysis.');
     if(Date.now()-started>330000)throw Error('The backend has not finished within this connection window. Your request remains saved. Retry Analysis to retrieve its progress.');
-    await new Promise<void>((resolve,reject)=>{const stopped=()=>{clearTimeout(timer);reject(new DOMException('Request cancelled','AbortError'));};const timer=setTimeout(()=>{abort.signal.removeEventListener('abort',stopped);resolve();},3000);abort.signal.addEventListener('abort',stopped,{once:true});});
+    await new Promise<void>((resolve,reject)=>{const stopped=()=>{clearTimeout(timer);reject(new DOMException('Request cancelled','AbortError'));};const timer=setTimeout(()=>{abort.signal.removeEventListener('abort',stopped);resolve();},Math.min(60000,Math.max(10000,Number(body.retryAfterSeconds??10)*1000)*1.5**Math.min(polls++,4)));abort.signal.addEventListener('abort',stopped,{once:true});});
+    while(document.visibilityState!=='visible'&&!abort.signal.aborted)await new Promise(resolve=>setTimeout(resolve,10000));
     response=await fetch('/api/nfl/probability?jobId='+encodeURIComponent(body.jobId),{cache:'no-store',signal:abort.signal});
    }
   }catch(e){if(generation===seq.current&&!abort.signal.aborted){setError((e as Error).message);setPhase('data_delayed');}}

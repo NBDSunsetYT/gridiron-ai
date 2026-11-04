@@ -1,3 +1,4 @@
+import {computeAllowed} from '../compute/policy';
 import {randomUUID,timingSafeEqual} from 'node:crypto';
 import Decimal from 'decimal.js';
 import {after} from 'next/server';
@@ -102,7 +103,7 @@ export async function queuePrivatePropResearch(ctx:CloudContext,kind:ResearchKin
  await sharedWrite({action:'job_enqueue',id:quotaId,gameId:frozen.quotaKey,inputHash:sha(nonce),data:{simulations:values.simulations,purpose:'private_research',game}});
  const job:Job={id,kind,status:'queued',createdAt:now,updatedAt:now,input:frozen,inputProof:attestCloudInput(ctx,id,frozen),result:null,error:null};
  await saveRecord(ctx,KIND,job,{id,entityKey:gameId,source:'GRIDIRON private hypothetical research'});
- after(async()=>{await executePrivatePropResearch(ctx,id).catch(()=>{});});
+ if(computeAllowed())after(async()=>{await executePrivatePropResearch(ctx,id).catch(()=>{});});
  return safeOutput(ctx,id,job);
 }
 
@@ -151,6 +152,7 @@ function checkedEngine(input:Record<string,any>,engine:Record<string,any>){
 }
 
 export async function executePrivatePropResearch(ctx:CloudContext,id:string){
+ if(!computeAllowed())return;
  requireCloudUser(ctx);const stored=await record(ctx,id,KIND),original=stored.data as Job;verifyInput(ctx,id,original);if(original.status!=='queued')return;
  const lease=randomUUID(),job:Job={...original,status:'running',lease,updatedAt:new Date().toISOString(),error:null};if(!await cas(ctx,id,'queued',job))return;
  let quotaClaimed=false;
@@ -176,7 +178,7 @@ export async function readPrivatePropResearch(ctx:CloudContext,id:string){
  requireCloudUser(ctx);if(!/^[a-f0-9-]{36}$/i.test(id))throw new ApiError('Choose a valid private research record.',422);
  let job=(await record(ctx,id,KIND)).data as Job;verifyInput(ctx,id,job);
  if(job.status==='running'&&Date.now()-Date.parse(job.updatedAt)>6*60000){const queued={...job,status:'queued',lease:null,updatedAt:new Date().toISOString(),error:'The previous worker lease expired. Signed inputs remain available for retry.'};if(await cas(ctx,id,'running',queued,job.lease))job=queued;else job=(await record(ctx,id,KIND)).data as Job;}
- if(job.status==='queued')after(async()=>{await executePrivatePropResearch(ctx,id).catch(()=>{});});
+ if(computeAllowed()&&job.status==='queued')after(async()=>{await executePrivatePropResearch(ctx,id).catch(()=>{});});
  return safeOutput(ctx,id,job);
 }
 

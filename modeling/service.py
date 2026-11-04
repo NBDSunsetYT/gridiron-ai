@@ -90,6 +90,8 @@ async def body(request):
 
 
 def guarded(work):
+    if os.environ.get('VERCEL') == '1' or os.environ.get('GRIDIRON_COMPUTE_ROLE') == 'web':
+        raise HTTPException(409, 'Web hosting serves cached results. Use the bounded local or separately configured worker.', headers={'Retry-After':'30'})
     if not lock.acquire(blocking=False):
         raise HTTPException(429, "Another simulation/fit is running; retry after it completes")
     try:
@@ -220,6 +222,8 @@ def request_bound_environment():
 @app.post('/jobs', status_code=202)
 async def queue_job(request: Request, authorization: str | None = Header(default=None)):
     authorize(authorization)
+    if os.environ.get('VERCEL') == '1' or os.environ.get('GRIDIRON_COMPUTE_ROLE') == 'web':
+        raise HTTPException(409, 'Private saved jobs require a separately configured worker; web requests never execute them.')
     data = await body(request)
     if set(data) != {'jobId', 'accessToken'}:
         raise HTTPException(400, 'Supply only the saved job identifier and its current owner access token')

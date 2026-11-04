@@ -1,3 +1,5 @@
+import {computeAllowed} from '../compute/policy';
+import {enqueueCompute} from '../compute/queue';
 import {timingSafeEqual,createHash} from 'node:crypto';
 import {after} from 'next/server';
 import {ApiError,errorResponse,guardMutation,readJsonObject} from '../auth';
@@ -9,7 +11,7 @@ import {publicDashboard,publicGameDetail,analyzePublicGame,publicAssistant,refre
 import {publicRateLimit,sharedJob,putCache} from './store';
 import {signedRefreshAuthorized} from './refresh-auth';
 
-function json(value:unknown,status=200,publicCache=false){return Response.json(value,{status,headers:{'Cache-Control':publicCache?'public, max-age=0, s-maxage=20, stale-while-revalidate=40':'no-store','X-Content-Type-Options':'nosniff'}});}
+function json(value:unknown,status=200,publicCache=false){return Response.json(value,{status,headers:{'Cache-Control':publicCache?'public, max-age=0, s-maxage=20, stale-while-revalidate=40':'no-store','X-Content-Type-Options':'nosniff',...(publicCache?{'CDN-Cache-Control':'public, s-maxage=20, stale-while-revalidate=40','Vercel-CDN-Cache-Control':'public, s-maxage=20, stale-while-revalidate=40'}:{})}});}
 function exactFields(value:Record<string,any>,allowed:string[]){if(Object.keys(value).some(k=>!allowed.includes(k)))throw new ApiError('This action accepts only the game and supported research options.');}
 function configuredBearer(request:Request){
  const supplied=request.headers.get('authorization'),secrets=[process.env.GRIDIRON_PUBLIC_INGEST_TOKEN,process.env.CRON_SECRET].filter((v):v is string=>Boolean(v&&v.length>=32));
@@ -22,6 +24,7 @@ export async function handlePublicNfl(request:Request,parts:string[]=[]):Promise
   if(parts[0]==='refresh'&&parts.length===1){
    if(!['GET','POST'].includes(request.method))throw new ApiError('Method not supported.',405);
    if(!configuredBearer(request)&&!await signedRefreshAuthorized(request))throw new ApiError('Research refresh authorization required.',401);
+   if(!computeAllowed()){const job=await enqueueCompute({kind:'maintenance'});return json({status:'scheduled',jobId:job.id,message:'A shared refresh is queued. Web requests never execute background models or audits.'},202);}
    const queuedAt=new Date().toISOString();
    after(async()=>{
     let status:Record<string,any>;

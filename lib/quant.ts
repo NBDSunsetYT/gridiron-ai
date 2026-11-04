@@ -1,3 +1,4 @@
+import {assertComputeAllowed} from './compute/policy';
 import {randomUUID,createHash} from 'node:crypto';
 import {ApiError,requestOrigin} from './auth';
 export type QuantStorage={save:(job:Record<string,any>)=>Promise<void>;list:()=>Promise<Record<string,any>[]>;get:(id:string)=>Promise<Record<string,any>|null>};
@@ -8,6 +9,7 @@ export async function handleQuant(request:Request,_userId:string,storage:QuantSt
   const id=new URL(request.url).searchParams.get('id');if(id){const job=await storage.get(id);if(!job)throw new ApiError('Owned quantitative run not found.',404);return Response.json({job,configured});}
   return Response.json({jobs:await storage.list(),configured});
  }
+ assertComputeAllowed();
  if(request.headers.get('origin')&&request.headers.get('origin')!==requestOrigin(request))throw new ApiError('Cross-origin requests are not allowed.',403);
  if(!/^application\/json(?:;|$)/i.test(request.headers.get('content-type')||''))throw new ApiError('Use application/json.',415);
  if(!configured)throw new ApiError('Configure the private Python statistical service. No substitute model or output was generated.',503);

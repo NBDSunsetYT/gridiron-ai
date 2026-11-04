@@ -1,5 +1,7 @@
 import {randomUUID} from 'node:crypto';
 import {after} from 'next/server';
+import {computeAllowed,assertComputeAllowed,deferWorker} from '../compute/policy';
+import {enqueueCompute} from '../compute/queue';
 import {ApiError} from '../auth';
 import {sharedJob,latestJobs} from '../public-nfl/store';
 import {loadSchedule,publicGameDetail,analyzePublicGame,PUBLIC_PIPELINE_VERSION,evidenceHash} from '../public-nfl/service';
@@ -18,7 +20,7 @@ import type {PublicGame,PublicGameDetail} from '../public-nfl/types';
 const MAX_SCAN_AGE=90000;
 export const NFL_MARKET_PIPELINE_VERSION='nfl-event-contract-research-7.0.0';
 const safe=async<T>(work:()=>Promise<T>,fallback:T):Promise<T>=>{try{return await work();}catch{return fallback;}};
-function dispatch(id:string){after(async()=>{await executePropRun(id);});}
+async function dispatch(id:string){if(!computeAllowed()){await enqueueCompute({kind:'prop_scan',runId:id});return;}if(process.env.GRIDIRON_COMPUTE_ROLE==='worker')deferWorker(()=>executePropRun(id));else after(async()=>{await executePropRun(id);});}
 function selectedGames(games:PublicGame[]){return games.filter(game=>game.status!=='final'&&Date.parse(game.startTime)>Date.now()&&Date.parse(game.startTime)<Date.now()+7*86400000);}
 async function performance(){try{const module=await import('./model-lab');return await module.getPropPerformance();}catch{return{status:'unavailable',eligibleResolved:null,overall:null,message:'Historical model performance could not be verified right now. Existing observations remain preserved; unavailable metrics are not zero accuracy.'};}}
 
@@ -26,10 +28,10 @@ export async function startPropScan(trigger='user',provider:'DraftKings Predicti
  const configuration=provider==='DraftKings Predictions'?draftKingsConfigurationDiagnostic():null;
  if(configuration)throw new ApiError(configuration.message+' '+configuration.action,503);
  const current=await propRun();
- if(current&&current.data.provider===provider&&current.data.pipelineVersion===NFL_MARKET_PIPELINE_VERSION&&(['queued','running'].includes(current.status)||Date.now()-Date.parse(current.updated_at)<(current.status==='failed'?15000:MAX_SCAN_AGE))){if(current.status==='queued'||current.status==='running'&&Date.now()-Date.parse(current.updated_at)>4*60000)dispatch(current.id);return current;}
+ if(current&&current.data.provider===provider&&current.data.pipelineVersion===NFL_MARKET_PIPELINE_VERSION&&(['queued','running'].includes(current.status)||Date.now()-Date.parse(current.updated_at)<(current.status==='failed'?15000:MAX_SCAN_AGE))){if(current.status==='queued'||current.status==='running'&&Date.now()-Date.parse(current.updated_at)>4*60000)await dispatch(current.id);return current;}
  const schedule=await loadSchedule(),games=selectedGames(schedule.games);
  const run:PropRun=await propWrite({action:'run_enqueue',inputHash:sha({version:NFL_MARKET_PIPELINE_VERSION,provider,previousFailure:current?.status==='failed'?current.id:null,period:Math.floor(Date.now()/60000),games:games.map(game=>game.id)}),data:{trigger,provider,pipelineVersion:NFL_MARKET_PIPELINE_VERSION,phase:'discover',gameIds:games.map(game=>game.id),processedGames:[],failedGames:[],startedAt:new Date().toISOString(),previousRunId:current?.id??null}});
- dispatch(run.id);return run;
+ await dispatch(run.id);return run;
 }
 function header(run:PropRun|null,games:PublicGame[]):Omit<PropScan,'results'|'performance'|'totalResults'|'nextCursor'>{const result=run?.result??{};return{status:run?.status??'unavailable',message:run?.error??undefined,runId:run?.id??null,updatedAt:run?.updated_at??new Date().toISOString(),games,providers:result.providers??[],progress:result.progress??{completed:0,total:0,phase:'Ready to discover verified contracts',gamesComplete:0,gamesTotal:0},sources:result.sources??[],limitations:result.limitations??['No authorized live DraftKings Predictions feed is configured. Available alternatives are labeled by their actual provider.','Raw simulation estimates are not calibrated probabilities or proof of positive expected value.']};}
 export async function propDashboard(filter:PropFilters={}):Promise<PropScan>{
@@ -60,7 +62,7 @@ async function marketDashboard(filter:PropFilters):Promise<PropScan>{
  // Every await, including potentially slow historical metrics, precedes the
  // final quote-age check. A stale capture boolean cannot survive response time.
  const results=page.rows.map(row=>{const value=hydrateCurrent(row,market.get(row.contract.id)),hash=required.get(row.game.id),current=hash?byHash.get(hash):null;if(row.simulationId&&(!hash||!current||current.input_hash!==hash||current.id!==row.simulationId||current.status!=='completed'))return{...value,modelInputsCurrent:false,stale:true,status:'stale' as const,...value.rankingMetrics?{rankingMetrics:{...value.rankingMetrics,calibratedProbability:null,modelMarketDifference:null,historicalSupport:null,uncertaintyWidth:null,injuryChange:null}}:{},currentValuation:{breakEven:null,fairCents:null,netValueCents:null,entryCostCents:null,feesVerified:false,reason:'Current game inputs could not be verified or a newer simulation is pending. This immutable snapshot remains historical.'}};return{...value,modelInputsCurrent:Boolean(hash&&current?.id===row.simulationId&&current?.status==='completed')};});
- if(run&&!/preserve personal.record storage|storage capacity needs|storage review|required.*storage|daily.*budget|budget.*limit/i.test(run.error??'')&&!['queued','running'].includes(run.status)&&Date.now()-Date.parse(run.updated_at)>MAX_SCAN_AGE&&(filter.provider==='Kalshi'||draftKingsFeedConfigured()))after(async()=>{await startPropScan('automatic',filter.provider??'DraftKings Predictions').catch(()=>{});});
+ if(computeAllowed()&&run&&!/preserve personal.record storage|storage capacity needs|storage review|required.*storage|daily.*budget|budget.*limit/i.test(run.error??'')&&!['queued','running'].includes(run.status)&&Date.now()-Date.parse(run.updated_at)>MAX_SCAN_AGE&&(filter.provider==='Kalshi'||draftKingsFeedConfigured()))after(async()=>{await startPropScan('automatic',filter.provider??'DraftKings Predictions').catch(()=>{});});
  const paginationStable=Boolean(pageRun&&(!run||pageRun!==run.id||!['queued','running'].includes(run.status)));
  return{...header(run,games),...readUnavailable?{status:'failed' as const,message:'Saved research storage is temporarily unavailable. Existing contracts and snapshots are preserved; an empty response is not evidence that no markets exist.'}:{},resultSetId:pageRun,results,performance:report,totalResults:page.total,paginationStable,nextCursor:paginationStable&&page.nextCursor&&pageRun?pageRun+':'+page.nextCursor:null,primaryProvider:'DraftKings Predictions',marketScope:filter.scope??'player',ranking:filter.ranking??'coverage',rankingMeaning:filter.ranking==='disagreement'?'Absolute model minus fresh market ask, before fees and settlement exceptions. A disagreement is not proof of positive expected value.':filter.ranking==='uncertainty'?'Parameter-sensitivity interval width, not calibrated model certainty.':'Rankings use only verified available evidence; unsupported metrics are excluded rather than invented.'};
 }
@@ -98,6 +100,7 @@ export function attachApprovedPropCalibration(row:PropResearch,artifact:PropCali
 }
 async function checkpoint(run:PropRun,lease:string,data:Record<string,any>,status:PropRun['status'],result:Record<string,any>,error?:string){return propWrite({action:'run_checkpoint',id:run.id,lease,status,data,result,...error?{error}:{}});}
 export async function executePropRun(id:string,deadline=Date.now()+210000){
+ assertComputeAllowed();
  const lease=randomUUID(),run:PropRun|null=await propWrite({action:'run_claim',id,lease});if(!run)return;
  const data={...run.data},previous=run.result??{};
  try{

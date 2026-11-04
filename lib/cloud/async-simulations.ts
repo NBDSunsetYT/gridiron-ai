@@ -2,13 +2,15 @@ import {ApiError} from '../auth';
 import {type CloudContext,requireCloudUser} from './context';
 import {record} from './store';
 import {after} from 'next/server';
+import {computeAllowed} from '../compute/policy';
 
-export function backgroundSimulations(){return ['1','true'].includes(process.env.GRIDIRON_ASYNC_SIMULATIONS??'');}
+export function backgroundSimulations(){return !computeAllowed()||['1','true'].includes(process.env.GRIDIRON_ASYNC_SIMULATIONS??'');}
 type DispatchReceipt={accepted:boolean;scheduled?:boolean;message?:string};
 /** The input is already durable before dispatch. A cold or unavailable worker
  * leaves the job queued; no timeout is presented as a completed simulation. */
 export async function dispatchCloudSimulation(ctx:CloudContext,jobId:string):Promise<DispatchReceipt>{
  requireCloudUser(ctx);if(!ctx.accessToken)throw new ApiError('A verified account session is required to dispatch research.',401);
+ if(!computeAllowed())return{accepted:false,scheduled:false,message:'Saved in your private queue. A separately configured authenticated worker must execute it; page refreshes never start computation.'};
  const endpoint=process.env.SIMULATION_SERVICE_URL,secret=process.env.SIMULATION_SERVICE_TOKEN;
  if(!endpoint||!secret||secret.length<32)throw new ApiError('The private background simulation service is not configured.',503);
  const base=new URL(endpoint.endsWith('/')?endpoint:endpoint+'/');if(!['http:','https:'].includes(base.protocol))throw new ApiError('Invalid worker endpoint.',503);

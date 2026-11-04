@@ -1,3 +1,4 @@
+import {computeAllowed} from './compute/policy';
 import {createHash,randomUUID} from 'node:crypto';
 import {z} from 'zod';
 import {ApiError,guardMutation,readJsonObject,requestOrigin} from './auth';
@@ -20,13 +21,14 @@ export function pipelineDue(config:PipelineConfig,state:Record<string,any>|undef
 }
 export async function handlePipeline(request:Request,userId:string,storage:PipelineStorage){
  const preferences=await storage.preferences(),config=parsedConfig(preferences.research_pipeline),state=preferences.research_pipeline_state;
- if(request.method==='GET')return Response.json({config,runs:await storage.history(30),status:{...pipelineDue(config,state),lastStartedAt:state?.lastStartedAt??null,lastCompletedAt:state?.lastCompletedAt??null,execution:'Browser scheduling runs while this app is open and visible. A separate owner-authenticated operator scheduler is required while closed.',sources:'No licensed live injury/news/weather source is implied by enabling this pipeline.'}},{headers:{'Cache-Control':'private,no-store'}});
+ if(request.method==='GET')return Response.json({config,runs:await storage.history(30),status:{...pipelineDue(config,state),lastStartedAt:state?.lastStartedAt??null,lastCompletedAt:state?.lastCompletedAt??null,executionMode:computeAllowed()?'operator_or_local':'cache_only',execution:'Browser scheduling runs while this app is open and visible. A separate owner-authenticated operator scheduler is required while closed.',sources:'No licensed live injury/news/weather source is implied by enabling this pipeline.'}},{headers:{'Cache-Control':'private,no-store'}});
  guardMutation(request);const input=await readJsonObject(request);
  if(input.action==='configure'){
   const value=pipelineConfigSchema.parse(input.config);if(value.seasonTo>new Date().getUTCFullYear()+1)throw new ApiError('A future unannounced season is not supported.');
   await storage.setPreference('research_pipeline',value);return Response.json({config:value,message:'Your pipeline preferences were saved. No external scheduler or notification subscription was created.'});
  }
  if(input.action!=='run')throw new ApiError('Choose configure or run.');
+ if(!computeAllowed())return Response.json({skipped:true,reason:'external_worker_required',message:'Saved pipeline settings are preserved. This web server does not execute background data rebuilds or simulation jobs.'});
  const now=Date.now(),due=pipelineDue(config,state,now),last=Date.parse(state?.lastStartedAt||'');
  if(!config.enabled)return Response.json({skipped:true,...due,reason:'disabled'});
  if(active.has(userId))return Response.json({skipped:true,reason:'owned_run_in_progress'});

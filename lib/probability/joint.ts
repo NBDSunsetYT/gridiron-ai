@@ -4,6 +4,7 @@ import {getCache} from '@vercel/functions';
 import {footballWrite} from '../college-football/store';
 import {simulationParlay} from '../simulation-parlay';
 import {ApiError} from '../auth';
+import {assertComputeAllowed} from '../compute/policy';
 const cache=new Map<string,{until:number;value:any}>();
 /** All selected targets are evaluated on the same complete games. Prices never choose the seed or model inputs. */
 export async function alignedJoint(sport:'NFL'|'CFB',legs:any[],count:number){
@@ -18,6 +19,7 @@ export async function alignedJoint(sport:'NFL'|'CFB',legs:any[],count:number){
  // Runtime Cache contains only aggregate public statistical outputs, never a user's draft, identity or stake.
  try{const stored=await regional?.get(identity) as any;if(stored?.sourceHash===sourceHash&&stored.until>Date.now()&&stored.value?.simulations===count)return stored.value;}catch{}
  const endpoint=process.env.SIMULATION_SERVICE_URL,token=process.env.SIMULATION_SERVICE_TOKEN;if(!endpoint||!token||token.length<32)throw new ApiError('The private full-game worker is unavailable.',503);
+ assertComputeAllowed();
  const lease=randomUUID(),reservation=await footballWrite({action:'reserve_compute',inputHash:identity,simulations:count,lease});if(reservation.execute!==true)throw new ApiError(reservation.status==='running'?'This aligned research is already running. Results will be retrieved when it finishes.':'The old aligned result expired before durable recovery was available. Reopen saved research or retry after the daily reservation resets.',reservation.status==='running'?409:503);
  try{const response=await fetch(new URL(path,endpoint.endsWith('/')?endpoint:endpoint+'/'),{method:'POST',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify(payload),cache:'no-store',signal:AbortSignal.timeout(240000)});if(!response.ok)throw new ApiError('The complete-game worker could not verify these joint targets. Unsupported outcomes are withheld.',503);const result=(await response.json()).result;
  const sameFeatures=sport==='NFL'?typeof legs[0].modelFeatureVersion==='string'&&result?.baseFeatureVersion===legs[0].modelFeatureVersion&&legs.every(l=>l.modelFeatureVersion===legs[0].modelFeatureVersion)&&String(result.evidenceCutoff).slice(0,10)===String(legs[0].evidenceCutoff).slice(0,10):result?.inputDataVersion===(legs[0].modelDataVersion??legs[0].inputVersion);

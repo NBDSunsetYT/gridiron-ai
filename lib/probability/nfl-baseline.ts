@@ -4,6 +4,8 @@ import {ApiError} from '../auth';
 import {verifiedProbabilityInputs} from '../public-nfl/service';
 import {readProbabilitySimulation,saveProbabilitySimulation} from './simulation-storage';
 import {footballWrite} from '../college-football/store';
+import {computeAllowed} from '../compute/policy';
+import {enqueueCompute,queueMessage} from '../compute/queue';
 const memory=new Map<string,{until:number;value:any}>(),running=new Map<string,Promise<any>>();
 /** Temporary public evidence when shared PostgreSQL research admission is paused.
  * Uses the existing NFL engine and fenced daily budget; no user data enters this cache.
@@ -12,6 +14,7 @@ export async function nflProbabilityBaseline(gameId:string,count:number){
  if(![10000,50000,100000].includes(count))throw new ApiError('Unsupported complete-game count.');
  const inputs=await verifiedProbabilityInputs(gameId,count),key=createHash('sha256').update(JSON.stringify(['nfl-probability-baseline-10.2.1',inputs.inputHash])).digest('hex'),old=memory.get(key);if(old&&old.until>Date.now())return old.value;
  const durable=await readProbabilitySimulation('NFL',gameId,count,inputs.inputHash);if(durable)return{...durable,persistent:true};
+ if(!computeAllowed()){const job=await enqueueCompute({kind:'game',sport:'NFL',gameId,simulations:count,inputVersion:inputs.inputHash});throw new ApiError(queueMessage(job),409);}
  const regional=process.env.VERCEL==='1'?getCache({namespace:'gridiron-nfl-probability-v10-2'}):null;
  const validate=(value:any)=>{const r=value?.result;return value?.sourceHash===inputs.inputHash&&value.until>Date.now()&&r?.simulations===count&&r.home===inputs.game.home&&r.away===inputs.game.away&&Date.parse(r.eventStart)===Date.parse(inputs.game.startTime)&&Date.parse(inputs.game.startTime)>Date.now()&&[r.home,r.away].every(team=>Array.isArray(r.scoreDistributions?.[team]?.histogram)&&r.scoreDistributions[team].histogram.every((b:any)=>Number.isFinite(b.value)&&Number.isSafeInteger(b.count)&&b.count>=0)&&r.scoreDistributions[team].histogram.reduce((s:number,b:any)=>s+b.count,0)===count);};
  try{const stored=await regional?.get(key);if(validate(stored))return (stored as any).value;}catch{}

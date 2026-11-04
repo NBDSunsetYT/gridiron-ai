@@ -1,3 +1,4 @@
+import {assertComputeAllowed} from '@/lib/compute/policy';
 import {createHash,randomUUID} from 'node:crypto';
 import {NextResponse} from 'next/server';
 import {ApiError,errorResponse,rateLimit,requireUser,requestOrigin} from '@/lib/auth';
@@ -19,7 +20,7 @@ async function readInput(request:Request){
 function decode(row:any,detail=false){const data=JSON.parse(row.data);const result=row.result?JSON.parse(row.result):null;return {id:row.id,kind:row.kind,status:row.status,data,result:detail?result:result?{summary:result.summary,modelVersion:result.modelVersion,provenance:result.provenance}:null,error:row.error,createdAt:row.created_at,updatedAt:row.updated_at};}
 export async function GET(request:Request){try{const user=await requireUser(request);const id=new URL(request.url).searchParams.get('id');const db=getDb();const configured=Boolean(process.env.SIMULATION_SERVICE_URL&&process.env.SIMULATION_SERVICE_TOKEN);if(id){const row=db.prepare('SELECT * FROM simulation_jobs WHERE id=? AND user_id=?').get(id,user.id);if(!row)throw new ApiError('Simulation record not found.',404);return NextResponse.json({job:decode(row,true),service:{configured}},{headers:{'Cache-Control':'private, no-store'}});}const rows=db.prepare('SELECT * FROM simulation_jobs WHERE user_id=? ORDER BY created_at DESC LIMIT 60').all(user.id);return NextResponse.json({jobs:rows.map(row=>decode(row)),service:{configured,message:configured?'Quantitative service configured; availability is verified when a request runs.':'SIMULATION_SERVICE_URL and SIMULATION_SERVICE_TOKEN are not configured.'}},{headers:{'Cache-Control':'private, no-store'}});}catch(e){return errorResponse(e);}}
 export async function POST(request:Request){let jobId:string|undefined;let userId:string|undefined;try{
- const user=await requireUser(request);userId=user.id;const {input,hash,bytes}=await readInput(request);
+ const user=await requireUser(request);userId=user.id;assertComputeAllowed();const {input,hash,bytes}=await readInput(request);
  if(input.action==='simulate'&&input.modelJobId){
   if(typeof input.modelJobId!=='string'||!input.modelJobId.match(/^[a-f0-9-]{36}$/i))throw new ApiError('A valid owned fitted-model job ID is required.');
   const fitted=getDb().prepare('SELECT result FROM simulation_jobs WHERE id=? AND user_id=? AND kind=? AND status=?').get(input.modelJobId,user.id,'fit','completed') as {result:string|null}|undefined;

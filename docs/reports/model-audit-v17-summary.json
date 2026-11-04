@@ -1,0 +1,150 @@
+{
+  "version": "calibration-research-17",
+  "scope": "Archived development evidence; no exposed final tests used for fitting",
+  "games": 342,
+  "calibrationConfigurations": 36,
+  "newSimulations": 0,
+  "promotions": 0,
+  "stop": "Candidate grid exhausted without a qualifying improvement; sample and data-quality gates prevent promotion",
+  "leagues": {
+    "CFB": {
+      "games": 174,
+      "rollingHeldOutGames": 16,
+      "methods": {
+        "isotonic": {
+          "before": 0.24619126125,
+          "after": 0.2474488502980733,
+          "delta95": [
+            -0.05347831881963346,
+            0.07172140611657336
+          ]
+        },
+        "platt": {
+          "before": 0.24619126125,
+          "after": 0.24987602182799518,
+          "delta95": [
+            -0.015331500830368284,
+            0.027408051179511454
+          ]
+        },
+        "temperature": {
+          "before": 0.24619126125,
+          "after": 0.25242894478864986,
+          "delta95": [
+            -0.02547909161031341,
+            0.04646600975529466
+          ]
+        }
+      }
+    },
+    "NBA": {
+      "games": 44,
+      "rollingHeldOutGames": 16,
+      "methods": {
+        "isotonic": {
+          "before": 0.2290222125,
+          "after": 0.317793977803732,
+          "delta95": [
+            0.018159149262864906,
+            0.16818723629659774
+          ]
+        },
+        "platt": {
+          "before": 0.2290222125,
+          "after": 0.26413044180094536,
+          "delta95": [
+            -0.003152447394106826,
+            0.07532961628560995
+          ]
+        },
+        "temperature": {
+          "before": 0.2290222125,
+          "after": 0.23489304050655377,
+          "delta95": [
+            -0.018204477536000956,
+            0.03190070832502061
+          ]
+        }
+      }
+    },
+    "NFL": {
+      "games": 124,
+      "rollingHeldOutGames": 16,
+      "methods": {
+        "isotonic": {
+          "before": 0.27454718874999995,
+          "after": 0.30109072701223727,
+          "delta95": [
+            -0.071538967494814,
+            0.11285986399080561
+          ]
+        },
+        "platt": {
+          "before": 0.27454718874999995,
+          "after": 0.2718512679590057,
+          "delta95": [
+            -0.042482156267520686,
+            0.032356412082927534
+          ]
+        },
+        "temperature": {
+          "before": 0.27454718874999995,
+          "after": 0.30833080423186515,
+          "delta95": [
+            -0.014971767345615943,
+            0.0799381799254678
+          ]
+        }
+      }
+    }
+  },
+  "nbaMinutes": {
+    "conditional-clock": {
+      "errors": {
+        "bias": -2.3911742729306487,
+        "mae": 6.451844519015659,
+        "n": 447,
+        "rmse": 8.177132679439588
+      },
+      "coverage90": 0.22818791946308725,
+      "unmodeledActualParticipants": 67
+    },
+    "reference-v15": {
+      "errors": {
+        "bias": -2.3925510067114093,
+        "mae": 6.4514512304250555,
+        "n": 447,
+        "rmse": 8.177180769830347
+      },
+      "coverage90": 0.23042505592841164,
+      "unmodeledActualParticipants": 67
+    },
+    "repair-conversions": {
+      "errors": {
+        "bias": -2.392684787472036,
+        "mae": 6.45326644295302,
+        "n": 447,
+        "rmse": 8.17797342411193
+      },
+      "coverage90": 0.23042505592841164,
+      "unmodeledActualParticipants": 67
+    },
+    "stronger-shrinkage": {
+      "errors": {
+        "bias": -2.391680313199105,
+        "mae": 6.453263758389262,
+        "n": 447,
+        "rmse": 8.178833519035761
+      },
+      "coverage90": 0.22818791946308725,
+      "unmodeledActualParticipants": 67
+    }
+  },
+  "limitations": [
+    "Only 24 later development games per sport and 16 rolling held-out calibration outcomes.",
+    "Older model versions are descriptive comparisons and are not pooled into a production calibrator.",
+    "Original pregame lineup and injury publication coverage remains incomplete.",
+    "No verified historical executable player-prop lines were available.",
+    "No calibration improvement or new model promotion is established."
+  ]
+}

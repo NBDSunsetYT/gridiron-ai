@@ -4,13 +4,13 @@ import {cloudCreateConversation,cloudAppendMessage} from '../cloud/research';
 import {publicRateLimit} from '../public-nfl/store';
 import {collegeDashboard,collegeGameDetail,analyzeCollegeGame,collegePropScanner,collegeAssistant,collegeSavedResearch,collegeOwnedAnalysis,savePublishedCollegeAnalysis} from './service';
 
-const json=(value:unknown,status=200)=>Response.json(value,{status,headers:{'Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}});
+const json=(value:unknown,status=200,publicCache=false)=>Response.json(value,{status,headers:{'Cache-Control':'no-store','X-Content-Type-Options':'nosniff',...(publicCache?{'CDN-Cache-Control':'public, s-maxage=30','Vercel-CDN-Cache-Control':'public, s-maxage=30'}:{})}});
 function exact(body:Record<string,unknown>,keys:string[]){if(Object.keys(body).some(key=>!keys.includes(key)))throw new ApiError('This action accepts only the published college-football game and supported options.');}
 function hasSession(request:Request){return(request.headers.get('cookie')??'').split(';').some(value=>[ACCESS_COOKIE,REFRESH_COOKIE].some(name=>value.trim().startsWith(name+'=')));}
 export async function handleCollegeFootball(request:Request,parts:string[]=[]):Promise<Response>{
  let ctx:CloudContext|undefined;
  try{
-  if(!parts.length&&request.method==='GET')return json(await collegeDashboard({date:new URL(request.url).searchParams.get('date')??undefined}));
+  if(!parts.length&&request.method==='GET')return json(await collegeDashboard({date:new URL(request.url).searchParams.get('date')??undefined}),200,true);
   if(parts[0]==='games'&&parts.length>=2){const id=decodeURIComponent(parts[1]);if(parts.length===2&&request.method==='GET')return json(await collegeGameDetail(id));
    if(parts[2]==='analyze'&&parts.length===3&&request.method==='POST'){
     guardMutation(request);const body=await readJsonObject(request);exact(body,['simulations']);const count=body.simulations??10000;if(![10000,50000,100000].includes(count))throw new ApiError('Choose10,000,50,000or100,000 complete college-football games.');

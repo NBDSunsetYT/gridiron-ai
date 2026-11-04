@@ -45,3 +45,12 @@ docs/reports/*
 !docs/reports/v16-iterative-learning.json
 !docs/reports/v16-paired-analysis.json
 !docs/reports/v16-protocol.json
+
+# Quantitative engines execute on controlled local/Render workers, never Vercel.
+modeling/
+requirements.txt
+pyproject.toml
+.python-version
+scripts/*.py
+
+!docs/reports/model-audit-v17-summary.json
