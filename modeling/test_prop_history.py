@@ -32,6 +32,12 @@ class PropHistoryTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'Conflicting'):self.run_history(data,values)
     def test_histograms_keep_two_seasons_window_and_no_unknown_zeros(self):
         logs=[{'id':str(i),'values':{'receivingYards':i}} for i in range(20)];d=summarize(logs);self.assertEqual(d['receivingYards']['sampleSize'],20);self.assertNotIn('passingYards',d)
+    def test_compact_observations_preserve_real_order_metadata_and_bound_storage(self):
+        logs=[{'id':str(i),'season':2026,'week':i,'values':{'receivingYards':100-i}} for i in range(30)]
+        d=summarize(logs)['receivingYards'];self.assertEqual(len(d['recentGames']),24)
+        self.assertEqual(d['recentGames'][0],{'gameId':'6','value':94,'season':2026,'week':6})
+        self.assertEqual(d['recentGames'][-1]['value'],71)
+        self.assertNotIn('plays',d);self.assertNotIn('at',d['recentGames'][0])
 
 if __name__=='__main__':unittest.main()
 

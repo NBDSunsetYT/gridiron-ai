@@ -25,14 +25,18 @@ def finite(value):
 
 
 def summarize(logs):
-    """Compact histograms, retaining cohort game IDs for auditing, never plays."""
+    """Compact histograms and at most 24 paired observations, never plays."""
     output={}
     for stat in NFL_FIELDS:
-        samples=[(g['id'],g['values'][stat]) for g in logs if stat in g['values']][-24:]
+        games=[g for g in logs if stat in g['values']][-24:]
+        samples=[(g['id'],g['values'][stat]) for g in games]
         if not samples:continue
         histogram=Counter(value for _,value in samples)
         output[stat]={'histogram':[{'value':x,'count':n} for x,n in sorted(histogram.items())],
                       'sampleSize':len(samples),'historicalGameIds':[g for g,_ in samples],
+                      'recentGames':[{'gameId':g['id'],'value':g['values'][stat],
+                                      **{k:g[k] for k in ('season','week') if k in g},
+                                      **({'at':g['at'].isoformat() if hasattr(g['at'],'isoformat') else g['at']} if g.get('at') else {})} for g in games],
                       'coverage':'Published games with recorded player participation; zero-opportunity absences are not inferred.'}
     return output
 
@@ -103,6 +107,7 @@ def nfl_history(data, fetcher=None, now=None):
         td=[g for g in ordered[-24:] if 'touchdowns' in g['values']]
         if td:
             bins=Counter(g['values']['touchdowns'] for g in td);dist['touchdowns']={'histogram':[{'value':v,'count':n} for v,n in sorted(bins.items())],'sampleSize':len(td),'historicalGameIds':[g['id'] for g in td]}
+            dist['touchdowns']['recentGames']=[{'gameId':g['id'],'value':g['values']['touchdowns'],'season':g['season'],'week':g['week']} for g in td]
         if dist:players[pid]=dist
         recent=[g for g in ordered if g['season']==game['season']][-4:]
         usage[pid]={'currentSeasonGames':len([g for g in ordered if g['season']==game['season']]),'previousSeasonGames':len([g for g in ordered if g['season']<game['season']]),'recentGameLogs':recent,'position':record.get('position'),

@@ -1,9 +1,16 @@
 import Decimal from 'decimal.js';
 export const PROP_SORTS={probability:'Highest GRIDIRON AI probability',value:'Highest estimated net value after costs',difference:'Largest model–market difference',uncertainty:'Lowest quantified model uncertainty',updated:'Most recently updated',kickoff:'Kickoff time',player:'Player name'} as const;
 export type PropSort=keyof typeof PROP_SORTS;
-export type PropView={sort:PropSort;game:string;grouped:boolean};
+export type PropView={sort:PropSort;game:string;grouped:boolean;layout?:'cards'|'board';favorites?:string[];favoritesOnly?:boolean};
 export const DEFAULT_PROP_VIEW:PropView={sort:'probability',game:'all',grouped:false};
-export function validPropView(value:any):PropView|null{return value&&Object.hasOwn(PROP_SORTS,value.sort)&&typeof value.game==='string'&&value.game.length<180&&typeof value.grouped==='boolean'?{sort:value.sort,game:value.game,grouped:value.grouped}:null;}
+export function validPropView(value:any):PropView|null{
+ if(!value||!Object.hasOwn(PROP_SORTS,value.sort)||typeof value.game!=='string'||value.game.length>=180||typeof value.grouped!=='boolean')return null;
+ const result:PropView={sort:value.sort,game:value.game,grouped:value.grouped};
+ if(['cards','board'].includes(value.layout))result.layout=value.layout;
+ if(Array.isArray(value.favorites)&&value.favorites.length<=100&&value.favorites.every((s:any)=>typeof s==='string'&&s.length<=1200))result.favorites=[...new Set<string>(value.favorites)];
+ if(typeof value.favoritesOnly==='boolean')result.favoritesOnly=value.favoritesOnly;
+ return result;
+}
 export const estimatedProbability=(row:any):number|null=>{const p=row.calibratedProbability??row.estimateProbability??row.posteriorProbability??row.modelProbability??row.empiricalProbability;return typeof p==='number'&&Number.isFinite(p)&&p>=0&&p<=1?p:null;};
 export type QuotePrice={family:'sportsbook';americanOdds?:number;decimalOdds?:string|number}|{family:'event_contract';acquisitionCost:string;payout:string;entryFee:string|null;winningFee:string|null;settlementVerified:boolean};
 /** Event acquisition/payout/fees use the same currency and actual per-unit terms.
