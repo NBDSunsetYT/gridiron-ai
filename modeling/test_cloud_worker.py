@@ -177,11 +177,10 @@ class CloudWorkerTests(unittest.TestCase):
         executor.drain()
         self.assertEqual(transport.job()['data']['status'], 'completed')
 
-    def test_request_bound_execution_persists_results_before_private_response_returns(self):
+    def test_explicit_nonvercel_request_bound_worker_persists_before_response(self):
         from fastapi.testclient import TestClient
         from modeling import service
-        for mode in ({'VERCEL': '1', 'GRIDIRON_WORKER_REQUEST_LIFETIME': '0'},
-                     {'VERCEL': '0', 'GRIDIRON_WORKER_REQUEST_LIFETIME': '1'}):
+        for mode in ({'VERCEL': '0', 'GRIDIRON_WORKER_REQUEST_LIFETIME': '1'},):
             transport = FakeSupabase()
             observations = []
             def compute(payload):

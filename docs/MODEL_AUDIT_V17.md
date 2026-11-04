@@ -68,6 +68,6 @@ OPENBLAS_NUM_THREADS=1 python scripts/nba-minutes-audit-v17.py
 python -m unittest modeling.test_calibration_research
 ```
 
-The main sweep consumed 1.095 local CPU seconds and 1.096 wall seconds, with 120.6 MiB peak RSS. The legacy descriptive audit consumed 1.046 CPU seconds. These are local research-process measurements, not total session or billed hosting CPU. Provider requests and new simulation runs were zero.
+The main sweep consumed 1.124 local CPU seconds and 1.126 wall seconds, with 120.6 MiB peak RSS. The legacy descriptive audit consumed 0.770 CPU seconds. These are local research-process measurements, not total session or billed hosting CPU. Provider requests and new simulation runs were zero.
 
 Original forecasts, model artifacts, prior final-test reports and financial records were preserved.
