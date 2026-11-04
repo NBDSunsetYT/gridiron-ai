@@ -1,0 +1,40 @@
+{
+  "checkedAt": "2026-11-04T06:54:58.229Z",
+  "gameId": "cfb:espn:401752921",
+  "sport": "CFB",
+  "mode": "retrospective",
+  "forecastId": "8aff9c0ed5fb4600eeb4a0e9d66d3c71b2b1b6e2bd1a8e5554c48bf92811c748",
+  "evaluationId": "d9556a71f420e67ecdc086568fe8df17631a4ae5fbd66149a88500f24cedf393",
+  "simulations": 10000,
+  "players": 67,
+  "pendingPlayerStatistics": 505,
+  "predicted": {
+    "home": 43.2849,
+    "away": 65.6211
+  },
+  "actual": {
+    "home": 9,
+    "away": 27
+  },
+  "errors": {
+    "home": 34.2849,
+    "away": 38.6211,
+    "total": 72.906,
+    "margin": 4.336200000000002
+  },
+  "persistentReadBack": true,
+  "idempotentRetry": true,
+  "sourceCount": 1,
+  "sourceUrls": [
+    "https://site.api.espn.com/apis/site/v2/sports/football/college-football/summary?event=401752921"
+  ],
+  "prospectiveGames": 0,
+  "retrospectiveGames": 1,
+  "background": {
+    "status": "cached",
+    "message": "The bounded hourly learning audit already ran."
+  },
+  "status": "passed",
+  "seconds": 4.039,
+  "claim": "Mechanical persistence and historical comparison only; no prospective accuracy or model superiority claim."
+}

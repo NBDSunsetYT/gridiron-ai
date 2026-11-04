@@ -422,7 +422,7 @@ def combination_summary(contracts, joint, selected_outcomes, simulations):
                            'Push/void payouts, combined-product settlement rules and fees require independent verification.']}
 
 
-def simulate(model, home, away, simulations=10000, seed=1, event_start=None, contracts=None, scenario=None, postseason=False, parameter_uncertainty=None, representative_games=0, selected_outcomes=None, parameter_player_ids=None, **kwargs):
+def simulate(model, home, away, simulations=10000, seed=1, event_start=None, contracts=None, scenario=None, postseason=False, parameter_uncertainty=None, representative_games=0, selected_outcomes=None, parameter_player_ids=None, _evidence_factory=None, **kwargs):
     if not isinstance(simulations, int) or not 1 <= simulations <= 100000:
         raise ValueError("simulations must be an integer 1..100000")
     if not isinstance(seed, int) or abs(seed) > 2**53:
@@ -441,7 +441,7 @@ def simulate(model, home, away, simulations=10000, seed=1, event_start=None, con
     if any(not isinstance(i, str) or not i for i in ids) or len(set(ids)) != len(ids):
         raise ValueError("Contracts need distinct nonempty IDs")
     selected_outcomes = validate_selected_outcomes(contracts, selected_outcomes)
-    evidence = Evidence(model, home, away, scenario)
+    evidence = (_evidence_factory or Evidence)(model, home, away, scenario)
     if not isinstance(representative_games,int) or not 0<=representative_games<=3:raise ValueError('representativeGames must be0..3')
     known_players = {r[k] for r in evidence.rows for k in ("qb", "receiver", "runner") if r[k]}
     if parameter_player_ids is not None and (not isinstance(parameter_player_ids,list) or len(parameter_player_ids)>256 or

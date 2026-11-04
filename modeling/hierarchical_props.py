@@ -10,7 +10,7 @@ import hashlib,json,math
 import numpy as np
 from scipy.stats import t,nbinom,poisson,norm
 
-VERSION='hierarchical-player-cdf-12.1.0'
+VERSION='hierarchical-player-cdf-12.3.0'
 COUNTS={'passingAttempts','completions','interceptions','passingTouchdowns','carries','rushingTouchdowns','targets','receptions','receivingTouchdowns','touchdowns'}
 
 
@@ -129,7 +129,8 @@ def _pool_candidate(records,stat,position,current_season):
     return {'approved':bool(approved),'reason':'Supported chronological holdout improvement.' if approved else 'Holdout improvement over the empirical benchmark was not established.','base':base,'strength':strength,'window':window,'validation':validation,'calibrator':calibrator,'version':VERSION,'artifactId':hashlib.sha256(json.dumps([VERSION,stat,position,current_season,base,strength,window,validation],sort_keys=True).encode()).hexdigest()}
 
 
-def attach_models(players,catalog,records,season,sport='NFL'):
+def attach_models(players,catalog,records,season,sport='NFL',as_of=None):
+    from .history_regularization import publication_regularization
     positions={p['id']:p.get('position') for p in catalog};artifacts={}
     for pid,stats in players.items():
         for stat,distribution in stats.items():
@@ -152,8 +153,14 @@ def attach_models(players,catalog,records,season,sport='NFL'):
             if artifact.get('approved'):
                 # The deployment computes exact arbitrary thresholds from these
                 # actual observation counts and the validated parametric base CDF.
-                selected=sorted([r for r in records if r['player']==pid and r['stat']==stat],key=lambda r:(r['season'],r['week'],r['game']))[-artifact['window']:]
+                allowed=set(distribution.get('historicalGameIds',[]))
+                selected=sorted([r for r in records if r['player']==pid and r['stat']==stat and (not allowed or r['game'] in allowed)],key=lambda r:(r['season'],r['week'],r['game']))[-artifact['window']:]
                 if not selected:continue
                 bins=Counter(r['value'] for r in selected);distribution.update(histogram=[{'value':v,'count':n} for v,n in sorted(bins.items())],sampleSize=len(selected),historicalGameIds=[r['game'] for r in selected])
                 distribution['hierarchical']={**{k:artifact[k] for k in ('base','strength','window','validation','version','artifactId','calibrator')},'sport':sport,'statistic':stat,'position':pos}
+            else:
+                regularization_key='history:'+key
+                if regularization_key not in artifacts:artifacts[regularization_key]=publication_regularization(records,stat,pos,season,sport,as_of)
+                regularization=artifacts[regularization_key]
+                if regularization.get('approved'):distribution['regularization']=regularization
     return artifacts

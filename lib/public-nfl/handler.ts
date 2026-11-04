@@ -37,6 +37,7 @@ export async function handlePublicNfl(request:Request,parts:string[]=[]):Promise
       await Promise.allSettled([
        import('../player-props/model-lab').then(lab=>lab.refreshPropModelLab()),
        import('../player-props/game-performance').then(lab=>lab.refreshGameMarketAudit())
+       ,import('../learning/service').then(lab=>lab.refreshFootballLearning())
       ]);
      });
     }

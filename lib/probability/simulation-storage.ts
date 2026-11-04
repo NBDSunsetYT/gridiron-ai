@@ -18,5 +18,6 @@ export async function saveProbabilitySimulation(sport:'NFL'|'CFB',gameId:string,
  // The metadata is small and uses the existing operational reserve, separately
  // from bulk quote admission. Previous immutable result objects are retained.
  await putCache('analysis',simulationStorageKey(sport,gameId,count,inputHash),{sport,gameId,simulations:count,inputVersion:inputHash,reference},inputHash,Math.max(60000,Date.parse(payload.result.eventStart)-Date.now()));
+ if(payload.game)try{await(await import('../learning/store')).captureSimulation({...payload.game,sport},{id:payload.analysis?.id??payload.id??inputHash,createdAt:payload.analysis?.createdAt??payload.result.createdAt,inputVersion:inputHash,result:payload.result,research:payload.research},{resultReference:reference});}catch(error){await putCache('status','learning-capture:'+inputHash,{status:'pending',sport,gameId,message:error instanceof Error?error.message:'Learning snapshot archival pending.',reference},inputHash,86400000).catch(()=>{});}
  return value;
 }

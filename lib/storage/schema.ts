@@ -2,7 +2,7 @@ import {createHash} from 'node:crypto';
 import {canonicalJson} from '../cloud/attestation';
 
 export type Sport='NFL'|'CFB';
-export type ResearchKind='simulation'|'injury_snapshot'|'matchup_report'|'explanation'|'source_metadata';
+export type ResearchKind='simulation'|'injury_snapshot'|'matchup_report'|'explanation'|'source_metadata'|'actual_result'|'evaluation'|'learning_report'|'prediction_snapshot'|'model_artifact';
 export type ResearchDocument={_id:string;schemaVersion:1;sport:Sport;gameId:string;kind:ResearchKind;modelVersion:string|null;createdAt:string;sha256:string;bytes:number;payload:Record<string,any>};
 export class ResearchIntegrityError extends Error{constructor(){super('Research document integrity check failed.');}}
 const privateKey=/^(?:user|user_id|userId|owner_id|ownerId|account_id|accountId|email|password|authorization|cookie|api_?key|access_token|refresh_token|service_role_key|token|signature|resultProof|evidenceProof|bankroll|ledger|deposit|deposits|withdrawal|withdrawals|wager|wagers|settlement|settlements|accountBalance|balance|cashBalanceCents|pnl)$/i;
@@ -18,7 +18,7 @@ function statisticalSettlement(value:any,parent:any){
 function publicOnly(value:any,depth=0):boolean{if(depth>32)return false;if(value===undefined)return true;if(value===null||typeof value==='string'||typeof value==='boolean')return true;if(typeof value==='number')return Number.isFinite(value);if(Array.isArray(value))return value.length<=10000&&value.every(v=>v!==undefined&&publicOnly(v,depth+1));if(!value||typeof value!=='object')return false;return Object.entries(value).every(([k,v])=>(!privateKey.test(k)||k==='settlement'&&statisticalSettlement(v,value))&&publicOnly(v,depth+1));}
 /** This boundary accepts shared football evidence only. It never accepts a private account export. */
 export function researchDocument(sport:Sport,gameId:string,kind:ResearchKind,payload:Record<string,any>):ResearchDocument{
- if(!['NFL','CFB'].includes(sport)||!gameId||gameId.length>120||!['simulation','injury_snapshot','matchup_report','explanation','source_metadata'].includes(kind)||!publicOnly(payload))throw Error('Unsupported or private research payload.');
+ if(!['NFL','CFB'].includes(sport)||!gameId||gameId.length>120||!['simulation','injury_snapshot','matchup_report','explanation','source_metadata','actual_result','evaluation','learning_report','prediction_snapshot','model_artifact'].includes(kind)||!publicOnly(payload))throw Error('Unsupported or private research payload.');
  const result=payload.result?.result??payload.result??payload;
  if(kind==='simulation')validateCompactSimulation(result);
  const raw=canonicalJson(payload),bytes=Buffer.byteLength(raw);if(bytes>2_000_000)throw Error('Research document exceeds the bounded document size; use a dataset reference.');

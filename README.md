@@ -1,3 +1,5 @@
+Version 14.0: [original GAFIE candidate, Simulation vs. Reality, automatic evaluation, storage and remaining validation limits](docs/GAFIE_GALL_14.md).
+
 Version 12.1: [automatic probabilities, sorting, market comparison and limitations](docs/PROPS_V12_1.md).
 
 Version 12 automatic prop research: [operation, limitations and recovery](docs/AUTOMATIC_PROPS_V12.md).

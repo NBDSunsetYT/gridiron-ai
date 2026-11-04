@@ -126,7 +126,7 @@ async function participationAssets(season:number){
  const[rosters,snaps]=await Promise.all([read('rosters','roster',['gsis_id','pfr_id','team','season','week']),read('snap_counts','snap_counts',['pfr_player_id','game_id','team','season','offense_snaps','defense_snaps','st_snaps'])]);
  const value={expiresAt:Date.now()+TTL,rosters,snaps};participationCache.set(season,value);return value;
 }
-async function finalStatAsset(season:number):Promise<StatAsset>{
+export async function finalStatAsset(season:number):Promise<StatAsset>{
  const cached=statAssets.get(season);if(cached&&cached.expiresAt>Date.now())return cached.asset;
  if(!Number.isSafeInteger(season)||season<1999||season>new Date().getUTCFullYear()+1)throw new ApiError('Unsupported final-statistic season.');
  const url=`${NFLVERSE_RELEASE}/stats_player/stats_player_week_${season}.csv.gz`,result=await boundedFetch(url,12_000_000,15000),raw=await gunzip(result.body,{maxOutputLength:45_000_000}),rows=parseWarehouseCSV(raw.toString('utf8'));

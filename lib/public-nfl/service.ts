@@ -129,6 +129,7 @@ export async function executePublicJob(id:string){
   for(const team of [game.home.id,game.away.id])if(engine.result.scoreDistributions[team]?.histogram?.reduce((n:number,row:any)=>n+row.count,0)!==claimed.data.simulations)throw new ApiError('The engine score distribution did not reconcile every complete game.',502);
   const summary=evidenceBrief(game,context,engine.result,engine.research),result={...engine,summary};
   const completed=await sharedWrite({action:'job_complete',id,lease,gameId:game.id,result});
+  try{await(await import('../learning/store')).captureSimulation({...game,sport:'NFL'},{id,createdAt:engine.result.createdAt??completed.updated_at,inputVersion:claimed.input_hash,result:engine.result,research:engine.research});}catch(error){await putCache('status','learning-capture:'+id,{status:'pending',gameId:game.id,message:error instanceof Error?error.message:'Learning snapshot archival pending.'},claimed.input_hash,86400000).catch(()=>{});}
   await putCache('analysis',game.id,{jobId:id,inputHash:claimed.input_hash,summary:analysisSummary(completed)},claimed.input_hash,ANALYSIS_TTL).catch(()=>{});
   if(process.env.GRIDIRON_MONGODB_RESEARCH==='1')await(await import('../storage/outbox')).deliverResearchQueue(1).catch(()=>{});
   if(process.env.OPENAI_API_KEY)await publicAssistant(game.id).catch(()=>{});

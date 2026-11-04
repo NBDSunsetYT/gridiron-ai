@@ -15,7 +15,8 @@ def original(name):
 class PerformanceEquivalence(unittest.TestCase):
     def test_hierarchical_candidate_all_parameters_validation_and_calibration_unchanged(self):
         from .test_hierarchical_props import HierarchicalTests
-        records=HierarchicalTests().records();a=original('hierarchical_props').pool_candidate(records,'receptions','WR',2026);b=hierarchical_props.pool_candidate(records,'receptions','WR',2026)
+        records=HierarchicalTests().records();baseline=original('hierarchical_props');baseline.VERSION=hierarchical_props.VERSION
+        a=baseline.pool_candidate(records,'receptions','WR',2026);b=hierarchical_props.pool_candidate(records,'receptions','WR',2026)
         self.assertEqual(a,b)
     def test_exact_random_sequence_pools_and_generated_nfl_games(self):
         old=original('simulator');model=fit_csv(fixture_csv(),'SYNTHETIC MECHANICS','2024-02-01T00:00:00Z',100,{'recencyHalfLifeDays':90,'conditionalShrinkage':True})['model']

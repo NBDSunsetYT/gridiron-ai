@@ -11,6 +11,7 @@ import {verifiedCloudJob,verifyCloudResult} from './attestation';
 import {createAiProviderClient} from '../ai-provider';
 import {accountReportIntent,calculateAccountReport} from './account-reports';
 import {PROP_STATS} from '../player-props/market-types';
+import {learningTools,executeLearningTool} from '../learning/assistant';
 import {footballIntelligenceTools,isFootballIntelligenceTool,executeFootballIntelligenceTool} from '../college-football/assistant-tools';
 import {filterRecordedWagers,recordedWagerPerformance} from '../wager-performance';
 
@@ -35,6 +36,7 @@ const tools:ChatCompletionTool[]=[
  {type:'function',function:{name:'explain_nfl_contract',description:'Retrieve an exact saved NFL event-contract research snapshot, its shared-game distribution, settlement rules, current source checks and immutable captured price. Unknown fees or unsupported settlement withhold value. A large model-market disagreement is not proof of profit.',parameters:{type:'object',properties:{id:{type:'string'}},required:['id'],additionalProperties:false}}},
  {type:'function',function:{name:'analyze_all_nfl_markets',description:'Queue or reuse actual all-NFL contract discovery and backend game research only after the user explicitly requests analysis or scanning of NFL markets/contracts. No wager is placed. Reading existing research does not require another scan.',parameters:{type:'object',properties:{},additionalProperties:false}}},
  {type:'function',function:{name:'read_nfl_model_performance',description:'Retrieve actual cached prospective game-contract and player-contract audit metrics. Game targets are the selected side paying its full 100 cents; a partial tie payment is not a full hit. Never complement NO probabilities across partial ties or apply player accuracy/calibration to game markets. Pending or unavailable metrics remain unknown; no new model is trained or promoted.',parameters:{type:'object',properties:{category:{type:'string',enum:[...NFL_MARKET_CATEGORIES]}},additionalProperties:false}}},
+ ...learningTools,
  ...footballIntelligenceTools,
  ...additionalResearchTools,
 ];
@@ -106,6 +108,7 @@ export async function cloudAssistant(ctx:CloudContext,input:unknown):Promise<Res
    else if(name==='read_probability_history'){const filter=z.object({sport:z.enum(['NFL','CFB']).optional()}).strict().parse(args);let query=ctx.client.from('probability_history').select('id,data,proof,created_at').eq('user_id',requireCloudUser(ctx).id).order('created_at',{ascending:false}).limit(20);if(filter.sport)query=query.eq('sport',filter.sport);const response=await query;if(response.error)throw new ApiError('Probability history could not be retrieved.',503);data={snapshots:(response.data??[]).map(row=>{verifyCloudResult(ctx,row.id,{result:row.data,resultProof:row.proof});const {distribution,legs,...summary}=row.data;return{...summary,id:row.id,storedAt:row.created_at,historical:true};}),actualWagers:false,limit:20};}
    else if(name==='read_saved_combinations'){const filter=z.object({sport:z.enum(['NFL','CFB']).optional()}).strict().parse(args);let query=ctx.client.from('research_workspaces').select('id,sport,kind,revision,data,updated_at').eq('user_id',requireCloudUser(ctx).id).eq('kind','combination').order('updated_at',{ascending:false}).limit(20);if(filter.sport)query=query.eq('sport',filter.sport);const response=await query;if(response.error)throw new ApiError('Saved combinations could not be retrieved.',503);data={combinations:response.data??[],limit:20,actualWagers:false,warning:'These are user-editable research drafts. Any probability fields require independent verification with read_probability_history before being described as generated model outputs.'};}
    else if(name==='read_source_status')data={providers:providerStatuses(unwrap(await records(ctx,'markets',{limit:80})) as any),preferences:await preferences(ctx),backend:'Supabase PostgreSQL'};
+   else if(name==='read_simulation_reality')data=await executeLearningTool(args);
    else if(isFootballIntelligenceTool(name))data=await executeFootballIntelligenceTool(ctx,name,args,last.content,p.sport);
    else if(additionalResearchTools.some(t=>t.type==='function'&&t.function.name===name))data=await executeResearchTool(cloudToolRequest(ctx),name,args,last.content);
    else data={error:'Unsupported research tool.'};

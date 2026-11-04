@@ -22,7 +22,7 @@ def canonical(value):
 @lru_cache(maxsize=1)
 def code_environment():
     root = Path(__file__).parent
-    names = ['simulator.py', 'cfb_simulator.py', 'fit.py', 'cfb.py', 'storage_summary.py', 'artifact_archive.py', 'public_research.py', 'cfb_public_research.py', 'nflverse_adapter.py', 'prop_research.py', 'game_research.py']
+    names = ['simulator.py', 'cfb_simulator.py', 'fit.py', 'cfb.py', 'storage_summary.py', 'artifact_archive.py', 'public_research.py', 'cfb_public_research.py', 'nflverse_adapter.py', 'prop_research.py', 'game_research.py','gafie.py']
     files = {name: hashlib.sha256((root/name).read_bytes()).hexdigest() for name in names if (root/name).is_file()}
     versions = {}
     for name in ['numpy', 'scipy', 'scikit-learn', 'pyarrow', 'fastapi']:

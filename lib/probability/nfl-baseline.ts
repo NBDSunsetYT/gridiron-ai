@@ -23,7 +23,7 @@ export async function nflProbabilityBaseline(gameId:string,count:number){
  const value={id:key,result:Object.fromEntries(resultFields.filter(k=>r?.[k]!==undefined).map(k=>[k,r[k]])),research:Object.fromEntries(researchFields.filter(k=>payload.research?.[k]!==undefined).map(k=>[k,payload.research[k]])),inputVersion:inputs.inputHash,persistent:false};
  const until=Math.min(Date.now()+30*60000,Date.parse(inputs.game.startTime)),entry={until,sourceHash:inputs.inputHash,value,result:value.result};if(!validate(entry))throw new ApiError('The complete NFL games did not reconcile with the verified matchup.',502);
  if(memory.size>=8)memory.delete(memory.keys().next().value!);memory.set(key,{until,value});try{if(Buffer.byteLength(JSON.stringify(entry))<2_000_000)await regional?.set(key,entry,{ttl:Math.max(1,Math.floor((until-Date.now())/1000)),tags:['public-nfl-probability']});}catch{}
- await saveProbabilitySimulation('NFL',gameId,count,inputs.inputHash,value);
+ await saveProbabilitySimulation('NFL',gameId,count,inputs.inputHash,{...value,game:{id:gameId,sport:'NFL',season:inputs.game.season,week:inputs.game.week,startTime:inputs.game.startTime,home:{id:inputs.game.home,name:inputs.game.home},away:{id:inputs.game.away,name:inputs.game.away}}});
  await footballWrite({action:'complete_compute',id:reservation.id,lease}).catch(()=>{});return value;
  }catch(e){await footballWrite({action:'fail_compute',id:reservation.id,lease}).catch(()=>{});throw e;}})();running.set(key,task);try{return await task;}finally{running.delete(key);}
 }

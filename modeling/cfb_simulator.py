@@ -365,7 +365,7 @@ def simulate_cfb_overtime(evidence, rng, teams, scores, players, totals, log=Non
 
 def simulate_cfb(model, home, away, simulations=10000, seed=1, event_start=None,
                  contracts=None, scenario=None, parameter_uncertainty=None,
-                 representative_games=0, selected_outcomes=None):
+                 representative_games=0, selected_outcomes=None, _evidence_factory=None):
     if isinstance(simulations, bool) or not isinstance(simulations, int) or not 1 <= simulations <= 100000:
         raise ValueError('CFB simulations must be an integer 1..100000 complete games')
     if isinstance(seed, bool) or not isinstance(seed, int) or abs(seed) > 2**53:
@@ -374,7 +374,7 @@ def simulate_cfb(model, home, away, simulations=10000, seed=1, event_start=None,
         raise ValueError('The CFB event must begin after the historical evidence cutoff')
     if not isinstance(representative_games, int) or isinstance(representative_games, bool) or not 0 <= representative_games <= 3:
         raise ValueError('representativeGames must be 0..3')
-    evidence = CFBEvidence(model, home, away, scenario)
+    evidence = (_evidence_factory or CFBEvidence)(model, home, away, scenario)
     contracts = contracts or []
     if not isinstance(contracts, list) or len(contracts) > 32:
         raise ValueError('At most 32 exact CFB contract definitions are supported')

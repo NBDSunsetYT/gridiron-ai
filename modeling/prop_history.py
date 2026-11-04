@@ -9,7 +9,7 @@ import hashlib
 import json
 import math
 
-VERSION = 'observed-player-games-12.1.0'
+VERSION = 'observed-player-games-12.3.0'
 NFL_FIELDS = {'passingYards':'passing_yards','passingTouchdowns':'passing_tds',
               'passingAttempts':'attempts','completions':'completions','interceptions':'passing_interceptions',
               'rushingYards':'rushing_yards','carries':'carries','rushingTouchdowns':'rushing_tds',
@@ -113,7 +113,7 @@ def nfl_history(data, fetcher=None, now=None):
         usage[pid]={'currentSeasonGames':len([g for g in ordered if g['season']==game['season']]),'previousSeasonGames':len([g for g in ordered if g['season']<game['season']]),'recentGameLogs':recent,'position':record.get('position'),
                     'snapCounts':[{k:r.get(k) for k in ('game_id','week','offense_snaps','offense_pct')} for r in snap_rows if record.get('pfr_id') and r.get('pfr_player_id')==record.get('pfr_id') and r.get('game_id') not in unstarted and 0<_integer(r.get('week'))<game['week']][-4:],
                     'depthCharts':[{k:r.get(k) for k in ('dt','pos_abb','pos_rank')} for r in depth_rows if r.get('gsis_id')==pid and r.get('dt') and r['dt']<=now.isoformat()[:10]][-3:]}
-    artifacts=attach_models(players,catalog,records,game['season'])
+    artifacts=attach_models(players,catalog,records,game['season'],as_of=now.isoformat())
     fingerprint=hashlib.sha256(json.dumps([VERSION,game,players,withheld,usage,artifacts],sort_keys=True).encode()).hexdigest()
     return {'sport':'NFL','gameId':game['id'],'eventStart':game['startTime'],'method':'empirical_history',
             'modelVersion':VERSION,'inputVersion':fingerprint,'players':players,'playerCatalog':catalog,

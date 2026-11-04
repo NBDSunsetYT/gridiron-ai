@@ -8,7 +8,7 @@ import {readResearchObject,isResearchPointer} from '../public-nfl/objects';
 import {compareFreeProp} from '../free-prop-comparison';
 import {wilson} from '../model';
 import {probabilityCapacity} from './capacity';
-import {hierarchicalThreshold} from '../props/distribution';
+import {hierarchicalThreshold,regularizedHistoricalThreshold} from '../props/distribution';
 type Sport='NFL'|'CFB';
 const VERSION='automatic-props-12.1.0',JOB_NAMESPACE='automatic-props-12.0.0';
 const hash=(v:unknown)=>createHash('sha256').update(canonicalJson(v)).digest('hex');
@@ -24,6 +24,7 @@ export function empiricalComparison(row:any,evidence:any,playerId:string|null){
  if(!['Over','Under'].includes(row.side)||row.threshold===null||row.threshold===undefined||String(row.threshold).trim()===''||!Number.isFinite(Number(row.threshold))||row.period&&!['full','full_game','game'].includes(row.period))return{modelProbability:null,reasonCode:row.period?'market_period_unsupported':'exact_definition_unsupported',reason:row.period?'The source defines a partial-game market; full-game observations cannot establish that outcome.':'An exact numeric threshold and supported Over/Under predicate are required. No event-contract or touchdown settlement rule was inferred.'};
  const bins=d.histogram,n=d.sampleSize;if(!Number.isSafeInteger(n)||n<1||n>64||!Array.isArray(bins)||bins.some((b:any)=>!Number.isFinite(b.value)||!Number.isSafeInteger(b.count)||b.count<0)||bins.reduce((a:number,b:any)=>a+b.count,0)!==n)return null;
  const hierarchical=hierarchicalThreshold(d,Number(row.threshold),row.side,row.sport,row.statistic);if(hierarchical)return hierarchical;
+ const regularized=regularizedHistoricalThreshold(d,Number(row.threshold),row.side,row.sport,row.statistic);if(regularized)return regularized;
  const hits=bins.filter((b:any)=>row.side==='Over'?b.value>Number(row.threshold):b.value<Number(row.threshold)).reduce((a:number,b:any)=>a+b.count,0);
  return{modelProbability:null,rawProbability:null,empiricalProbability:hits/n,estimateProbability:hits/n,method:'empirical_history',methodLabel:'Historical participation-conditioned estimate',historicalHits:hits,historicalSampleSize:n,historicalInterval95:wilson(hits,n),simulations:null,successfulSimulations:null,monteCarloInterval95:null,monteCarloStandardError:null,calibratedProbability:null,expectedValue:null,state:'ready',reasonCode:null,modelUncertainty:null,reason:evidence.limitations?.join(' ')??'Historical player-game frequency; matchup and participation uncertainty are not fully quantified.'};
 }

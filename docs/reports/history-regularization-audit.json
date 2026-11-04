@@ -1,0 +1,1587 @@
+{
+  "protocol": "predeclared-jeffreys24-v1",
+  "sport": "NFL",
+  "testSeason": 2026,
+  "testThroughWeek": 8,
+  "createdAt": "2026-11-04T05:48:12.724146+00:00",
+  "sources": [
+    {
+      "id": "nflverse-player_stats",
+      "name": "nflverse player_stats",
+      "kind": "player_stats",
+      "url": "https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_2025.csv.gz",
+      "season": 2025,
+      "checkedAt": "2026-11-04T05:33:43.079806+00:00",
+      "sourceUpdatedAt": "2026-08-13T16:51:22+00:00",
+      "version": "c7401e321bdb369443f3280b9acd74ba6e16d82e710383bf1c01acabfebeac0b",
+      "etag": "\"0x8DEF95B1AD8390C\"",
+      "bytes": 1262421,
+      "status": "available",
+      "schemaVerified": true,
+      "access": "Public nflverse release asset; upstream attribution and source terms apply.",
+      "publicationAt": null,
+      "reliability": "retrieved_and_schema_checked; historical first-publication time unknown",
+      "lastCheckedAt": "2026-11-04T05:48:11.407342+00:00"
+    },
+    {
+      "id": "nflverse-player_stats",
+      "name": "nflverse player_stats",
+      "kind": "player_stats",
+      "url": "https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_2026.csv.gz",
+      "season": 2026,
+      "checkedAt": "2026-11-04T05:33:42.569053+00:00",
+      "sourceUpdatedAt": "2026-11-03T17:05:44+00:00",
+      "version": "325fdb333b09a952250a866f56ae21bd1e30b118aa0ddfd417660ebaee933f86",
+      "etag": "\"0x8DF39CCB309DDA4\"",
+      "bytes": 546309,
+      "status": "available",
+      "schemaVerified": true,
+      "access": "Public nflverse release asset; upstream attribution and source terms apply.",
+      "publicationAt": null,
+      "reliability": "retrieved_and_schema_checked; historical first-publication time unknown",
+      "lastCheckedAt": "2026-11-04T05:48:11.968088+00:00"
+    }
+  ],
+  "cohorts": {
+    "carries:QB": {
+      "version": "jeffreys-player-history-12.3.0",
+      "sport": "NFL",
+      "statistic": "carries",
+      "position": "QB",
+      "priorAlpha": 0.5,
+      "priorBeta": 0.5,
+      "window": 24,
+      "validation": {
+        "chronological": true,
+        "testSeason": 2026,
+        "thresholdsFromSeasons": [
+          2025
+        ],
+        "thresholds": [
+          1.5,
+          2.5,
+          3.5,
+          5.5
+        ],
+        "testPredictions": 1072,
+        "testGames": 121,
+        "brierScore": 0.18089915494331563,
+        "benchmarkBrier": 0.1854964669210523,
+        "logLoss": 0.5353741564743667,
+        "benchmarkLogLoss": 0.8717666370776581,
+        "pairedGameBootstrapBrierDifference95": [
+          -0.009679835544804767,
+          -0.0008791263744320628
+        ],
+        "familywiseAdjustedPValue": 0.22875424915016995,
+        "familySize": 52,
+        "familywiseAlpha": 0.025,
+        "limitedSampleTestPredictions": 100,
+        "calibrated": false,
+        "scope": "Retrospective player-stat thresholds against unsmoothed historical K/N; not historical market prices, source-first-publication evidence, prospective contract accuracy or a matchup model.",
+        "testWeeks": 8,
+        "weekBlockSize": 2,
+        "pairedWeekBlockBootstrapBrierDifference95": [
+          -0.008990464363068888,
+          -0.0009288182747101317
+        ],
+        "weekBlockAdjustedPValue": 0.1767646470705859
+      },
+      "approved": false,
+      "reason": "Smoothing did not pass the conservative publication gate.",
+      "artifactId": "449308bb414ec69065e3ca5e2e42c2b1e66f6078219469b4aab7ee1f87cc78bb"
+    },
+    "carries:RB": {
+      "version": "jeffreys-player-history-12.3.0",
+      "sport": "NFL",
+      "statistic": "carries",
+      "position": "RB",
+      "priorAlpha": 0.5,
+      "priorBeta": 0.5,
+      "window": 24,
+      "validation": {
+        "chronological": true,
+        "testSeason": 2026,
+        "thresholdsFromSeasons": [
+          2025
+        ],
+        "thresholds": [
+          2.5,
+          5.5,
+          10.5,
+          15.5
+        ],
+        "testPredictions": 2300,
+        "testGames": 121,
+        "brierScore": 0.13874653205855322,
+        "benchmarkBrier": 0.141451650219791,
+        "logLoss": 0.43193925703027325,
+        "benchmarkLogLoss": 0.8977417577560253,
+        "pairedGameBootstrapBrierDifference95": [
+          -0.00459372194641864,
+          -0.0008652650578967339
+        ],
+        "familywiseAdjustedPValue": 0.07278544291141771,
+        "familySize": 52,
+        "familywiseAlpha": 0.025,
+        "limitedSampleTestPredictions": 336,
+        "calibrated": false,
+        "scope": "Retrospective player-stat thresholds against unsmoothed historical K/N; not historical market prices, source-first-publication evidence, prospective contract accuracy or a matchup model.",
+        "testWeeks": 8,
+        "weekBlockSize": 2,
+        "pairedWeekBlockBootstrapBrierDifference95": [
+          -0.003515525304663414,
+          -0.0016404836913956168
+        ],
+        "weekBlockAdjustedPValue": 0.010397920415916816
+      },
+      "approved": false,
+      "reason": "Smoothing did not pass the conservative publication gate.",
+      "artifactId": "2599c2eba22310e222c12bc6c4adbb12444abcadfd8a4eaaa2487a5dccd84c4c"
+    },
+    "carries:TE": {
+      "version": "jeffreys-player-history-12.3.0",
+      "sport": "NFL",
+      "statistic": "carries",
+      "position": "TE",
+      "priorAlpha": 0.5,
+      "priorBeta": 0.5,
+      "window": 24,
+      "validation": {
+        "chronological": true,
+        "testSeason": 2026,
+        "thresholdsFromSeasons": [
+          2025
+        ],
+        "thresholds": [
+          0.5
+        ],
+        "testPredictions": 489,
+        "testGames": 121,
+        "brierScore": 0.04870679000073881,
+        "benchmarkBrier": 0.04584943088099308,
+        "logLoss": 0.19715531225148733,
+        "benchmarkLogLoss": 0.47651280653187394,
+        "pairedGameBootstrapBrierDifference95": [
+          0.0003321123140783948,
+          0.00486948897515993
+        ],
+        "familywiseAdjustedPValue": 1.0,
+        "familySize": 52,
+        "familywiseAlpha": 0.025,
+        "limitedSampleTestPredictions": 52,
+        "calibrated": false,
+        "scope": "Retrospective player-stat thresholds against unsmoothed historical K/N; not historical market prices, source-first-publication evidence, prospective contract accuracy or a matchup model.",
+        "testWeeks": 8,
+        "weekBlockSize": 2,
+        "pairedWeekBlockBootstrapBrierDifference95": [
+          0.0006487978568213552,
+          0.004398137836287293
+        ],
+        "weekBlockAdjustedPValue": 1.0
+      },
+      "approved": false,
+      "reason": "Smoothing did not pass the conservative publication gate.",
+      "artifactId": "9140b64d3122297383158d9fce642fd6141cc60a93aa6dfcb5f8bf943afc7df5"
+    },
+    "carries:WR": {
+      "version": "jeffreys-player-history-12.3.0",
+      "sport": "NFL",
+      "statistic": "carries",
+      "position": "WR",
+      "priorAlpha": 0.5,
+      "priorBeta": 0.5,
+      "window": 24,
+      "validation": {
+        "chronological": true,
+        "testSeason": 2026,
+        "thresholdsFromSeasons": [
+          2025
+        ],
+        "thresholds": [
+          0.5
+        ],
+        "testPredictions": 894,
+        "testGames": 121,
+        "brierScore": 0.10061323835981555,
+        "benchmarkBrier": 0.10127395942208255,
+        "logLoss": 0.3345763949471251,
+        "benchmarkLogLoss": 0.6906142991459705,
+        "pairedGameBootstrapBrierDifference95": [
+          -0.0038324056974114225,
+          0.00212584229696223
+        ],
+        "familywiseAdjustedPValue": 1.0,
+        "familySize": 52,
+        "familywiseAlpha": 0.025,
+        "limitedSampleTestPredictions": 138,
+        "calibrated": false,
+        "scope": "Retrospective player-stat thresholds against unsmoothed historical K/N; not historical market prices, source-first-publication evidence, prospective contract accuracy or a matchup model.",
+        "testWeeks": 8,
+        "weekBlockSize": 2,
+        "pairedWeekBlockBootstrapBrierDifference95": [
+          -0.003630446979973391,
+          0.0016833397621170624
+        ],
+        "weekBlockAdjustedPValue": 1.0
+      },
+      "approved": false,
+      "reason": "Smoothing did not pass the conservative publication gate.",
+      "artifactId": "7e9301ebdb02e258f0cece0c7d4aeb3e7cd6408d45efbbb8672edca87cf2865e"
+    },
+    "completions:QB": {
+      "version": "jeffreys-player-history-12.3.0",
+      "sport": "NFL",
+      "statistic": "completions",
+      "position": "QB",
+      "priorAlpha": 0.5,
+      "priorBeta": 0.5,
+      "window": 24,
+      "validation": {
+        "chronological": true,
+        "testSeason": 2026,
+        "thresholdsFromSeasons": [
+          2025
+        ],
+        "thresholds": [
+          10.5,
+          16.5,
+          20.5,
+          24.5
+        ],
+        "testPredictions": 1072,
+        "testGames": 121,
+        "brierScore": 0.17330376819956306,
+        "benchmarkBrier": 0.17871745777920164,
+        "logLoss": 0.5203891178897088,
+        "benchmarkLogLoss": 0.9749930527414888,
+        "pairedGameBootstrapBrierDifference95": [
+          -0.009089056895781539,
+          -0.0023172233682677065
+        ],
+        "familywiseAdjustedPValue": 0.010397920415916816,
+        "familySize": 52,
+        "familywiseAlpha": 0.025,
+        "limitedSampleTestPredictions": 100,
+        "calibrated": false,
+        "scope": "Retrospective player-stat thresholds against unsmoothed historical K/N; not historical market prices, source-first-publication evidence, prospective contract accuracy or a matchup model.",
+        "testWeeks": 8,
+        "weekBlockSize": 2,
+        "pairedWeekBlockBootstrapBrierDifference95": [
+          -0.007599970991430519,
+          -0.0038510320744634427
+        ],
+        "weekBlockAdjustedPValue": 0.010397920415916816
+      },
+      "approved": true,
+      "reason": "Predeclared smoothing improved chronological Brier and log loss.",
+      "artifactId": "dd0dec93ead819eb86857d16557ea72120bafb138cc3865abcebc40a636c62a0"
+    },
+    "interceptions:QB": {
+      "version": "jeffreys-player-history-12.3.0",
+      "sport": "NFL",
+      "statistic": "interceptions",
+      "position": "QB",
+      "priorAlpha": 0.5,
+      "priorBeta": 0.5,
+      "window": 24,
+      "validation": {
+        "chronological": true,
+        "testSeason": 2026,
+        "thresholdsFromSeasons": [
+          2025
+        ],
+        "thresholds": [
+          0.5,
+          1.5
+        ],
+        "testPredictions": 536,
+        "testGames": 121,
+        "brierScore": 0.18845730037756483,
+        "benchmarkBrier": 0.19359097087243898,
+        "logLoss": 0.5581976652311902,
+        "benchmarkLogLoss": 0.9632934597024045,
+        "pairedGameBootstrapBrierDifference95": [
+          -0.00924507506113126,
+          -0.0017232780879712095
+        ],
+        "familywiseAdjustedPValue": 0.020795840831833633,
+        "familySize": 52,
+        "familywiseAlpha": 0.025,
+        "limitedSampleTestPredictions": 50,
+        "calibrated": false,
+        "scope": "Retrospective player-stat thresholds against unsmoothed historical K/N; not historical market prices, source-first-publication evidence, prospective contract accuracy or a matchup model.",
+        "testWeeks": 8,
+        "weekBlockSize": 2,
+        "pairedWeekBlockBootstrapBrierDifference95": [
+          -0.009728384491416492,
+          -0.0017691219729521139
+        ],
+        "weekBlockAdjustedPValue": 0.010397920415916816
+      },
+      "approved": true,
+      "reason": "Predeclared smoothing improved chronological Brier and log loss.",
+      "artifactId": "77b2834659a6e9fc5e511df70ab228b42518d072fac6a27560cbbb460e5cf574"
+    },
+    "passingAttempts:QB": {
+      "version": "jeffreys-player-history-12.3.0",
+      "sport": "NFL",
+      "statistic": "passingAttempts",
+      "position": "QB",
+      "priorAlpha": 0.5,
+      "priorBeta": 0.5,
+      "window": 24,
+      "validation": {
+        "chronological": true,
+        "testSeason": 2026,
+        "thresholdsFromSeasons": [
+          2025
+        ],
+        "thresholds": [
+          16.5,
+          26.5,
+          31.5,
+          37.5
+        ],
+        "testPredictions": 1072,
+        "testGames": 121,
+        "brierScore": 0.17198525016015315,
+        "benchmarkBrier": 0.17646569443814036,
+        "logLoss": 0.5162935751022547,
+        "benchmarkLogLoss": 0.9177184505145894,
+        "pairedGameBootstrapBrierDifference95": [
+          -0.007700283028376224,
+          -0.0018576284337977168
+        ],
+        "familywiseAdjustedPValue": 0.020795840831833633,
+        "familySize": 52,
+        "familywiseAlpha": 0.025,
+        "limitedSampleTestPredictions": 100,
+        "calibrated": false,
+        "scope": "Retrospective player-stat thresholds against unsmoothed historical K/N; not historical market prices, source-first-publication evidence, prospective contract accuracy or a matchup model.",
+        "testWeeks": 8,
+        "weekBlockSize": 2,
+        "pairedWeekBlockBootstrapBrierDifference95": [
+          -0.007533360662752532,
+          -0.0016654016187376457
+        ],
+        "weekBlockAdjustedPValue": 0.03119376124775045
+      },
+      "approved": false,
+      "reason": "Smoothing did not pass the conservative publication gate.",
+      "artifactId": "644922c310d4894988fe4a492c2bce8111b03100930cbc284ab9ac739f6917ff"
+    },
+    "passingTouchdowns:QB": {
+      "version": "jeffreys-player-history-12.3.0",
+      "sport": "NFL",
+      "statistic": "passingTouchdowns",
+      "position": "QB",
+      "priorAlpha": 0.5,
+      "priorBeta": 0.5,
+      "window": 24,
+      "validation": {
+        "chronological": true,
+        "testSeason": 2026,
+        "thresholdsFromSeasons": [
+          2025
+        ],
+        "thresholds": [
+          0.5,
+          1.5,
+          2.5
+        ],
+        "testPredictions": 804,
+        "testGames": 121,
+        "brierScore": 0.18951715761990795,
+        "benchmarkBrier": 0.19410843854751245,
+        "logLoss": 0.5685933472533331,
+        "benchmarkLogLoss": 0.9949409039697453,
+        "pairedGameBootstrapBrierDifference95": [
+          -0.007934921790813284,
+          -0.0016911391516347936
+        ],
+        "familywiseAdjustedPValue": 0.03119376124775045,
+        "familySize": 52,
+        "familywiseAlpha": 0.025,
+        "limitedSampleTestPredictions": 75,
+        "calibrated": false,
+        "scope": "Retrospective player-stat thresholds against unsmoothed historical K/N; not historical market prices, source-first-publication evidence, prospective contract accuracy or a matchup model.",
+        "testWeeks": 8,
+        "weekBlockSize": 2,
+        "pairedWeekBlockBootstrapBrierDifference95": [
+          -0.006526479881274972,
+          -0.002565837035558527
+        ],
+        "weekBlockAdjustedPValue": 0.010397920415916816
+      },
+      "approved": false,
+      "reason": "Smoothing did not pass the conservative publication gate.",
+      "artifactId": "4cddee7b1334a82c680b40baebca59f5271aab75dc7eb62ed0adaa958eed0c81"
+    },
+    "passingYards:QB": {
+      "version": "jeffreys-player-history-12.3.0",
+      "sport": "NFL",
+      "statistic": "passingYards",
+      "position": "QB",
+      "priorAlpha": 0.5,
+      "priorBeta": 0.5,
+      "window": 24,
+      "validation": {
+        "chronological": true,
+        "testSeason": 2026,
+        "thresholdsFromSeasons": [
+          2025
+        ],
+        "thresholds": [
+          82.5,
+          173.5,
+          221.5,
+          271.5
+        ],
+        "testPredictions": 1072,
+        "testGames": 121,
+        "brierScore": 0.17474426037874344,
+        "benchmarkBrier": 0.17895466892145614,
+        "logLoss": 0.5216505055883579,
+        "benchmarkLogLoss": 0.9370259057117778,
+        "pairedGameBootstrapBrierDifference95": [
+          -0.00705329281077539,
+          -0.0017742459247343312
+        ],
+        "familywiseAdjustedPValue": 0.010397920415916816,
+        "familySize": 52,
+        "familywiseAlpha": 0.025,
+        "limitedSampleTestPredictions": 100,
+        "calibrated": false,
+        "scope": "Retrospective player-stat thresholds against unsmoothed historical K/N; not historical market prices, source-first-publication evidence, prospective contract accuracy or a matchup model.",
+        "testWeeks": 8,
+        "weekBlockSize": 2,
+        "pairedWeekBlockBootstrapBrierDifference95": [
+          -0.006281882073597165,
+          -0.0024034812008671947
+        ],
+        "weekBlockAdjustedPValue": 0.010397920415916816
+      },
+      "approved": true,
+      "reason": "Predeclared smoothing improved chronological Brier and log loss.",
+      "artifactId": "1e6b85b6b2103b0e5d2e495d1a9a4dfd101540db33c2bd6768148011e4895a94"
+    },
+    "receivingTouchdowns:QB": {
+      "version": "jeffreys-player-history-12.3.0",
+      "sport": "NFL",
+      "statistic": "receivingTouchdowns",
+      "position": "QB",
+      "priorAlpha": 0.5,
+      "priorBeta": 0.5,
+      "window": 24,
+      "validation": {
+        "chronological": true,
+        "testSeason": 2026,
+        "thresholdsFromSeasons": [
+          2025
+        ],
+        "thresholds": [
+          0.5
+        ],
+        "testPredictions": 268,
+        "testGames": 121,
+        "brierScore": 0.0047083866979309025,
+        "benchmarkBrier": 0.0010877102101431954,
+        "logLoss": 0.05151633967851263,
+        "benchmarkLogLoss": 0.006187419155237062,
+        "pairedGameBootstrapBrierDifference95": [
+          0.0027509365851940675,
+          0.004685936204281525
+        ],
+        "familywiseAdjustedPValue": 1.0,
+        "familySize": 52,
+        "familywiseAlpha": 0.025,
+        "limitedSampleTestPredictions": 25,
+        "calibrated": false,
+        "scope": "Retrospective player-stat thresholds against unsmoothed historical K/N; not historical market prices, source-first-publication evidence, prospective contract accuracy or a matchup model.",
+        "testWeeks": 8,
+        "weekBlockSize": 2,
+        "pairedWeekBlockBootstrapBrierDifference95": [
+          0.0028461321267676076,
+          0.004352411662204947
+        ],
+        "weekBlockAdjustedPValue": 1.0
+      },
+      "approved": false,
+      "reason": "Smoothing did not pass the conservative publication gate.",
+      "artifactId": "29493ca05896e8d8fb7e6f90e6b7bbd4504f6aa80d6f047be49fea50be16e6bf"
+    },
+    "receivingTouchdowns:RB": {
+      "version": "jeffreys-player-history-12.3.0",
+      "sport": "NFL",
+      "statistic": "receivingTouchdowns",
+      "position": "RB",
+      "priorAlpha": 0.5,
+      "priorBeta": 0.5,
+      "window": 24,
+      "validation": {
+        "chronological": true,
+        "testSeason": 2026,
+        "thresholdsFromSeasons": [
+          2025
+        ],
+        "thresholds": [
+          0.5
+        ],
+        "testPredictions": 575,
+        "testGames": 121,
+        "brierScore": 0.06703771362365613,
+        "benchmarkBrier": 0.06328772516264367,
+        "logLoss": 0.26970681912163863,
+        "benchmarkLogLoss": 0.6490972159100992,
+        "pairedGameBootstrapBrierDifference95": [
+          0.0011679086019546743,
+          0.005924255956439299
+        ],
+        "familywiseAdjustedPValue": 1.0,
+        "familySize": 52,
+        "familywiseAlpha": 0.025,
+        "limitedSampleTestPredictions": 84,
+        "calibrated": false,
+        "scope": "Retrospective player-stat thresholds against unsmoothed historical K/N; not historical market prices, source-first-publication evidence, prospective contract accuracy or a matchup model.",
+        "testWeeks": 8,
+        "weekBlockSize": 2,
+        "pairedWeekBlockBootstrapBrierDifference95": [
+          0.0030602422394056064,
+          0.0044942566303062285
+        ],
+        "weekBlockAdjustedPValue": 1.0
+      },
+      "approved": false,
+      "reason": "Smoothing did not pass the conservative publication gate.",
+      "artifactId": "ddd95b5ab8e87b11309ef072562c0bfab49adaf8eba32bda0ad5ca45696dda1d"
+    },
+    "receivingTouchdowns:TE": {
+      "version": "jeffreys-player-history-12.3.0",
+      "sport": "NFL",
+      "statistic": "receivingTouchdowns",
+      "position": "TE",
+      "priorAlpha": 0.5,
+      "priorBeta": 0.5,
+      "window": 24,
+      "validation": {
+        "chronological": true,
+        "testSeason": 2026,
+        "thresholdsFromSeasons": [
+          2025
+        ],
+        "thresholds": [
+          0.5
+        ],
+        "testPredictions": 489,
+        "testGames": 121,
+        "brierScore": 0.15809902072649595,
+        "benchmarkBrier": 0.15934041688088696,
+        "logLoss": 0.49716335532627326,
+        "benchmarkLogLoss": 0.8892028194149472,
+        "pairedGameBootstrapBrierDifference95": [
+          -0.005038211942604806,
+          0.001987600796178231
+        ],
+        "familywiseAdjustedPValue": 1.0,
+        "familySize": 52,
+        "familywiseAlpha": 0.025,
+        "limitedSampleTestPredictions": 52,
+        "calibrated": false,
+        "scope": "Retrospective player-stat thresholds against unsmoothed historical K/N; not historical market prices, source-first-publication evidence, prospective contract accuracy or a matchup model.",
+        "testWeeks": 8,
+        "weekBlockSize": 2,
+        "pairedWeekBlockBootstrapBrierDifference95": [
+          -0.005429892391056389,
+          0.0024595669575683417
+        ],
+        "weekBlockAdjustedPValue": 1.0
+      },
+      "approved": false,
+      "reason": "Smoothing did not pass the conservative publication gate.",
+      "artifactId": "9d0f370a9842ca166eacf53a07c5b8fa1587d8997f8c780fb8661fb0fa825056"
+    },
+    "receivingTouchdowns:WR": {
+      "version": "jeffreys-player-history-12.3.0",
+      "sport": "NFL",
+      "statistic": "receivingTouchdowns",
+      "position": "WR",
+      "priorAlpha": 0.5,
+      "priorBeta": 0.5,
+      "window": 24,
+      "validation": {
+        "chronological": true,
+        "testSeason": 2026,
+        "thresholdsFromSeasons": [
+          2025
+        ],
+        "thresholds": [
+          0.5
+        ],
+        "testPredictions": 894,
+        "testGames": 121,
+        "brierScore": 0.16662184010701106,
+        "benchmarkBrier": 0.16734198005351544,
+        "logLoss": 0.5144364037266825,
+        "benchmarkLogLoss": 0.8809773048922893,
+        "pairedGameBootstrapBrierDifference95": [
+          -0.003465909744967859,
+          0.0018074228315255664
+        ],
+        "familywiseAdjustedPValue": 1.0,
+        "familySize": 52,
+        "familywiseAlpha": 0.025,
+        "limitedSampleTestPredictions": 138,
+        "calibrated": false,
+        "scope": "Retrospective player-stat thresholds against unsmoothed historical K/N; not historical market prices, source-first-publication evidence, prospective contract accuracy or a matchup model.",
+        "testWeeks": 8,
+        "weekBlockSize": 2,
+        "pairedWeekBlockBootstrapBrierDifference95": [
+          -0.0015084896001949755,
+          0.0001538588392570506
+        ],
+        "weekBlockAdjustedPValue": 1.0
+      },
+      "approved": false,
+      "reason": "Smoothing did not pass the conservative publication gate.",
+      "artifactId": "07d8513c9abbceddeca99ea167861c03a96e9a9a807ce9343850fccbc78fa04b"
+    },
+    "receivingYards:QB": {
+      "version": "jeffreys-player-history-12.3.0",
+      "sport": "NFL",
+      "statistic": "receivingYards",
+      "position": "QB",
+      "priorAlpha": 0.5,
+      "priorBeta": 0.5,
+      "window": 24,
+      "validation": {
+        "chronological": true,
+        "testSeason": 2026,
+        "thresholdsFromSeasons": [
+          2025
+        ],
+        "thresholds": [
+          0.5
+        ],
+        "testPredictions": 268,
+        "testGames": 121,
+        "brierScore": 0.01285729664317561,
+        "benchmarkBrier": 0.009620987446881142,
+        "logLoss": 0.08313574626759478,
+        "benchmarkLogLoss": 0.16626191661736525,
+        "pairedGameBootstrapBrierDifference95": [
+          0.002150966941572302,
+          0.004388964336278817
+        ],
+        "familywiseAdjustedPValue": 1.0,
+        "familySize": 52,
+        "familywiseAlpha": 0.025,
+        "limitedSampleTestPredictions": 25,
+        "calibrated": false,
+        "scope": "Retrospective player-stat thresholds against unsmoothed historical K/N; not historical market prices, source-first-publication evidence, prospective contract accuracy or a matchup model.",
+        "testWeeks": 8,
+        "weekBlockSize": 2,
+        "pairedWeekBlockBootstrapBrierDifference95": [
+          0.0025871963253857274,
+          0.003900920713323493
+        ],
+        "weekBlockAdjustedPValue": 1.0
+      },
+      "approved": false,
+      "reason": "Smoothing did not pass the conservative publication gate.",
+      "artifactId": "57ccc965c1c513f0f86983bcc2cf63fe91d8c0ffa47d8f329c223d37c29c2c90"
+    },
+    "receivingYards:RB": {
+      "version": "jeffreys-player-history-12.3.0",
+      "sport": "NFL",
+      "statistic": "receivingYards",
+      "position": "RB",
+      "priorAlpha": 0.5,
+      "priorBeta": 0.5,
+      "window": 24,
+      "validation": {
+        "chronological": true,
+        "testSeason": 2026,
+        "thresholdsFromSeasons": [
+          2025
+        ],
+        "thresholds": [
+          0.5,
+          2.5,
+          10.5,
+          21.5
+        ],
+        "testPredictions": 2300,
+        "testGames": 121,
+        "brierScore": 0.19862470359717221,
+        "benchmarkBrier": 0.20695735005732607,
+        "logLoss": 0.5863336290229779,
+        "benchmarkLogLoss": 1.2145178614771364,
+        "pairedGameBootstrapBrierDifference95": [
+          -0.011886147281414069,
+          -0.004991231362206844
+        ],
+        "familywiseAdjustedPValue": 0.010397920415916816,
+        "familySize": 52,
+        "familywiseAlpha": 0.025,
+        "limitedSampleTestPredictions": 336,
+        "calibrated": false,
+        "scope": "Retrospective player-stat thresholds against unsmoothed historical K/N; not historical market prices, source-first-publication evidence, prospective contract accuracy or a matchup model.",
+        "testWeeks": 8,
+        "weekBlockSize": 2,
+        "pairedWeekBlockBootstrapBrierDifference95": [
+          -0.01103662461874053,
+          -0.00588888601186725
+        ],
+        "weekBlockAdjustedPValue": 0.010397920415916816
+      },
+      "approved": true,
+      "reason": "Predeclared smoothing improved chronological Brier and log loss.",
+      "artifactId": "c6fc8f92f639841bd3d0797054059e32ee7cfee55cc8684800ab4913ccaca4b0"
+    },
+    "receivingYards:TE": {
+      "version": "jeffreys-player-history-12.3.0",
+      "sport": "NFL",
+      "statistic": "receivingYards",
+      "position": "TE",
+      "priorAlpha": 0.5,
+      "priorBeta": 0.5,
+      "window": 24,
+      "validation": {
+        "chronological": true,
+        "testSeason": 2026,
+        "thresholdsFromSeasons": [
+          2025
+        ],
+        "thresholds": [
+          5.5,
+          14.5,
+          25.5,
+          42.5
+        ],
+        "testPredictions": 1956,
+        "testGames": 121,
+        "brierScore": 0.18012781400379643,
+        "benchmarkBrier": 0.18725445353020925,
+        "logLoss": 0.5380854313071249,
+        "benchmarkLogLoss": 1.0858291965327582,
+        "pairedGameBootstrapBrierDifference95": [
+          -0.010593343142045486,
+          -0.0040110277517050085
+        ],
+        "familywiseAdjustedPValue": 0.010397920415916816,
+        "familySize": 52,
+        "familywiseAlpha": 0.025,
+        "limitedSampleTestPredictions": 208,
+        "calibrated": false,
+        "scope": "Retrospective player-stat thresholds against unsmoothed historical K/N; not historical market prices, source-first-publication evidence, prospective contract accuracy or a matchup model.",
+        "testWeeks": 8,
+        "weekBlockSize": 2,
+        "pairedWeekBlockBootstrapBrierDifference95": [
+          -0.00885418984649042,
+          -0.005487828687097141
+        ],
+        "weekBlockAdjustedPValue": 0.010397920415916816
+      },
+      "approved": true,
+      "reason": "Predeclared smoothing improved chronological Brier and log loss.",
+      "artifactId": "207c177a4acbbc7ca90e16ef6b03ccc6bcfba94bef5233e6b405e471bdf9a6f3"
+    },
+    "receivingYards:WR": {
+      "version": "jeffreys-player-history-12.3.0",
+      "sport": "NFL",
+      "statistic": "receivingYards",
+      "position": "WR",
+      "priorAlpha": 0.5,
+      "priorBeta": 0.5,
+      "window": 24,
+      "validation": {
+        "chronological": true,
+        "testSeason": 2026,
+        "thresholdsFromSeasons": [
+          2025
+        ],
+        "thresholds": [
+          6.5,
+          19.5,
+          35.5,
+          60.5
+        ],
+        "testPredictions": 3576,
+        "testGames": 121,
+        "brierScore": 0.18215900966831894,
+        "benchmarkBrier": 0.1892628324605461,
+        "logLoss": 0.5468455513432366,
+        "benchmarkLogLoss": 1.1942418792156129,
+        "pairedGameBootstrapBrierDifference95": [
+          -0.009579482685784301,
+          -0.004870649811450736
+        ],
+        "familywiseAdjustedPValue": 0.010397920415916816,
+        "familySize": 52,
+        "familywiseAlpha": 0.025,
+        "limitedSampleTestPredictions": 552,
+        "calibrated": false,
+        "scope": "Retrospective player-stat thresholds against unsmoothed historical K/N; not historical market prices, source-first-publication evidence, prospective contract accuracy or a matchup model.",
+        "testWeeks": 8,
+        "weekBlockSize": 2,
+        "pairedWeekBlockBootstrapBrierDifference95": [
+          -0.010112410093405407,
+          -0.004073305959467882
+        ],
+        "weekBlockAdjustedPValue": 0.010397920415916816
+      },
+      "approved": true,
+      "reason": "Predeclared smoothing improved chronological Brier and log loss.",
+      "artifactId": "5841b1f9342981e6404941249e3c571ed4428c7ed3e6e9c4b21e39413eb1b795"
+    },
+    "receptions:QB": {
+      "version": "jeffreys-player-history-12.3.0",
+      "sport": "NFL",
+      "statistic": "receptions",
+      "position": "QB",
+      "priorAlpha": 0.5,
+      "priorBeta": 0.5,
+      "window": 24,
+      "validation": {
+        "chronological": true,
+        "testSeason": 2026,
+        "thresholdsFromSeasons": [
+          2025
+        ],
+        "thresholds": [
+          0.5
+        ],
+        "testPredictions": 268,
+        "testGames": 121,
+        "brierScore": 0.016567832827911726,
+        "benchmarkBrier": 0.01399492944226812,
+        "logLoss": 0.09538363657931874,
+        "benchmarkLogLoss": 0.2489367557769524,
+        "pairedGameBootstrapBrierDifference95": [
+          0.00020243235905733923,
+          0.004327103788146784
+        ],
+        "familywiseAdjustedPValue": 1.0,
+        "familySize": 52,
+        "familywiseAlpha": 0.025,
+        "limitedSampleTestPredictions": 25,
+        "calibrated": false,
+        "scope": "Retrospective player-stat thresholds against unsmoothed historical K/N; not historical market prices, source-first-publication evidence, prospective contract accuracy or a matchup model.",
+        "testWeeks": 8,
+        "weekBlockSize": 2,
+        "pairedWeekBlockBootstrapBrierDifference95": [
+          0.000230576414386527,
+          0.00401382853459827
+        ],
+        "weekBlockAdjustedPValue": 1.0
+      },
+      "approved": false,
+      "reason": "Smoothing did not pass the conservative publication gate.",
+      "artifactId": "595617a1e2ca5a7b4106acd2dd7c91f7b479ba86f63e625dba4326afb7833b27"
+    },
+    "receptions:RB": {
+      "version": "jeffreys-player-history-12.3.0",
+      "sport": "NFL",
+      "statistic": "receptions",
+      "position": "RB",
+      "priorAlpha": 0.5,
+      "priorBeta": 0.5,
+      "window": 24,
+      "validation": {
+        "chronological": true,
+        "testSeason": 2026,
+        "thresholdsFromSeasons": [
+          2025
+        ],
+        "thresholds": [
+          0.5,
+          1.5,
+          2.5,
+          3.5
+        ],
+        "testPredictions": 2300,
+        "testGames": 121,
+        "brierScore": 0.17269913763495898,
+        "benchmarkBrier": 0.17858365592267897,
+        "logLoss": 0.5241970786389392,
+        "benchmarkLogLoss": 1.1361492584430075,
+        "pairedGameBootstrapBrierDifference95": [
+          -0.008199450660232248,
+          -0.0035612602268524744
+        ],
+        "familywiseAdjustedPValue": 0.010397920415916816,
+        "familySize": 52,
+        "familywiseAlpha": 0.025,
+        "limitedSampleTestPredictions": 336,
+        "calibrated": false,
+        "scope": "Retrospective player-stat thresholds against unsmoothed historical K/N; not historical market prices, source-first-publication evidence, prospective contract accuracy or a matchup model.",
+        "testWeeks": 8,
+        "weekBlockSize": 2,
+        "pairedWeekBlockBootstrapBrierDifference95": [
+          -0.00799707325425408,
+          -0.004437980554785008
+        ],
+        "weekBlockAdjustedPValue": 0.010397920415916816
+      },
+      "approved": true,
+      "reason": "Predeclared smoothing improved chronological Brier and log loss.",
+      "artifactId": "eb839143ff557c1e3d2529ff94b88e8c64b1cccc7a0ecf6ee45be51ecfdf02c9"
+    },
+    "receptions:TE": {
+      "version": "jeffreys-player-history-12.3.0",
+      "sport": "NFL",
+      "statistic": "receptions",
+      "position": "TE",
+      "priorAlpha": 0.5,
+      "priorBeta": 0.5,
+      "window": 24,
+      "validation": {
+        "chronological": true,
+        "testSeason": 2026,
+        "thresholdsFromSeasons": [
+          2025
+        ],
+        "thresholds": [
+          1.5,
+          3.5,
+          4.5
+        ],
+        "testPredictions": 1467,
+        "testGames": 121,
+        "brierScore": 0.15588497019037478,
+        "benchmarkBrier": 0.15815635676341394,
+        "logLoss": 0.4726633666047314,
+        "benchmarkLogLoss": 0.7903194800016982,
+        "pairedGameBootstrapBrierDifference95": [
+          -0.005113523052282968,
+          0.00023381125130964999
+        ],
+        "familywiseAdjustedPValue": 1.0,
+        "familySize": 52,
+        "familywiseAlpha": 0.025,
+        "limitedSampleTestPredictions": 156,
+        "calibrated": false,
+        "scope": "Retrospective player-stat thresholds against unsmoothed historical K/N; not historical market prices, source-first-publication evidence, prospective contract accuracy or a matchup model.",
+        "testWeeks": 8,
+        "weekBlockSize": 2,
+        "pairedWeekBlockBootstrapBrierDifference95": [
+          -0.00591479221055379,
+          0.0004915057301942125
+        ],
+        "weekBlockAdjustedPValue": 1.0
+      },
+      "approved": false,
+      "reason": "Smoothing did not pass the conservative publication gate.",
+      "artifactId": "fa3cbfd791ef79e8e79e8ef454979debff1d824efc233d9c0196880f55e5742f"
+    },
+    "receptions:WR": {
+      "version": "jeffreys-player-history-12.3.0",
+      "sport": "NFL",
+      "statistic": "receptions",
+      "position": "WR",
+      "priorAlpha": 0.5,
+      "priorBeta": 0.5,
+      "window": 24,
+      "validation": {
+        "chronological": true,
+        "testSeason": 2026,
+        "thresholdsFromSeasons": [
+          2025
+        ],
+        "thresholds": [
+          1.5,
+          2.5,
+          3.5,
+          5.5
+        ],
+        "testPredictions": 3576,
+        "testGames": 121,
+        "brierScore": 0.16677716851513733,
+        "benchmarkBrier": 0.17187961980996827,
+        "logLoss": 0.5075039936476181,
+        "benchmarkLogLoss": 1.0599411627540924,
+        "pairedGameBootstrapBrierDifference95": [
+          -0.007341220362868217,
+          -0.0030868861228050366
+        ],
+        "familywiseAdjustedPValue": 0.010397920415916816,
+        "familySize": 52,
+        "familywiseAlpha": 0.025,
+        "limitedSampleTestPredictions": 552,
+        "calibrated": false,
+        "scope": "Retrospective player-stat thresholds against unsmoothed historical K/N; not historical market prices, source-first-publication evidence, prospective contract accuracy or a matchup model.",
+        "testWeeks": 8,
+        "weekBlockSize": 2,
+        "pairedWeekBlockBootstrapBrierDifference95": [
+          -0.007470200957166747,
+          -0.002895909493198204
+        ],
+        "weekBlockAdjustedPValue": 0.010397920415916816
+      },
+      "approved": true,
+      "reason": "Predeclared smoothing improved chronological Brier and log loss.",
+      "artifactId": "5ff0dbd0c8bf68abc341c6ee404cacb73e54b7dc7ddcef6b62cf5c8216ae9b0b"
+    },
+    "rushingTouchdowns:QB": {
+      "version": "jeffreys-player-history-12.3.0",
+      "sport": "NFL",
+      "statistic": "rushingTouchdowns",
+      "position": "QB",
+      "priorAlpha": 0.5,
+      "priorBeta": 0.5,
+      "window": 24,
+      "validation": {
+        "chronological": true,
+        "testSeason": 2026,
+        "thresholdsFromSeasons": [
+          2025
+        ],
+        "thresholds": [
+          0.5
+        ],
+        "testPredictions": 268,
+        "testGames": 121,
+        "brierScore": 0.11936951933891463,
+        "benchmarkBrier": 0.11986587257015467,
+        "logLoss": 0.4042768665355089,
+        "benchmarkLogLoss": 0.7840557907178048,
+        "pairedGameBootstrapBrierDifference95": [
+          -0.004785436361017322,
+          0.0027959807983347603
+        ],
+        "familywiseAdjustedPValue": 1.0,
+        "familySize": 52,
+        "familywiseAlpha": 0.025,
+        "limitedSampleTestPredictions": 25,
+        "calibrated": false,
+        "scope": "Retrospective player-stat thresholds against unsmoothed historical K/N; not historical market prices, source-first-publication evidence, prospective contract accuracy or a matchup model.",
+        "testWeeks": 8,
+        "weekBlockSize": 2,
+        "pairedWeekBlockBootstrapBrierDifference95": [
+          -0.00525164682298013,
+          0.003375807115362617
+        ],
+        "weekBlockAdjustedPValue": 1.0
+      },
+      "approved": false,
+      "reason": "Smoothing did not pass the conservative publication gate.",
+      "artifactId": "cad595b90027c955d0a4a86079e08b2cccb684298dae7a24f2b5be7923ce0469"
+    },
+    "rushingTouchdowns:RB": {
+      "version": "jeffreys-player-history-12.3.0",
+      "sport": "NFL",
+      "statistic": "rushingTouchdowns",
+      "position": "RB",
+      "priorAlpha": 0.5,
+      "priorBeta": 0.5,
+      "window": 24,
+      "validation": {
+        "chronological": true,
+        "testSeason": 2026,
+        "thresholdsFromSeasons": [
+          2025
+        ],
+        "thresholds": [
+          0.5,
+          1.5
+        ],
+        "testPredictions": 1150,
+        "testGames": 121,
+        "brierScore": 0.10824266648162227,
+        "benchmarkBrier": 0.10580005112105728,
+        "logLoss": 0.35510756611684985,
+        "benchmarkLogLoss": 0.5690756313162489,
+        "pairedGameBootstrapBrierDifference95": [
+          0.0006135415221058885,
+          0.004167760682638557
+        ],
+        "familywiseAdjustedPValue": 1.0,
+        "familySize": 52,
+        "familywiseAlpha": 0.025,
+        "limitedSampleTestPredictions": 168,
+        "calibrated": false,
+        "scope": "Retrospective player-stat thresholds against unsmoothed historical K/N; not historical market prices, source-first-publication evidence, prospective contract accuracy or a matchup model.",
+        "testWeeks": 8,
+        "weekBlockSize": 2,
+        "pairedWeekBlockBootstrapBrierDifference95": [
+          -0.0003190453292709444,
+          0.005192839022459216
+        ],
+        "weekBlockAdjustedPValue": 1.0
+      },
+      "approved": false,
+      "reason": "Smoothing did not pass the conservative publication gate.",
+      "artifactId": "57851954e2b5a5e33701a8f0a11f22ae6c3fd326c14604628f2c7aa7f6ee2300"
+    },
+    "rushingTouchdowns:TE": {
+      "version": "jeffreys-player-history-12.3.0",
+      "sport": "NFL",
+      "statistic": "rushingTouchdowns",
+      "position": "TE",
+      "priorAlpha": 0.5,
+      "priorBeta": 0.5,
+      "window": 24,
+      "validation": {
+        "chronological": true,
+        "testSeason": 2026,
+        "thresholdsFromSeasons": [
+          2025
+        ],
+        "thresholds": [
+          0.5
+        ],
+        "testPredictions": 489,
+        "testGames": 121,
+        "brierScore": 0.012760139074289424,
+        "benchmarkBrier": 0.009081400369970277,
+        "logLoss": 0.0794439244174209,
+        "benchmarkLogLoss": 0.10501519522568233,
+        "pairedGameBootstrapBrierDifference95": [
+          0.0012739865513220672,
+          0.005468764385378799
+        ],
+        "familywiseAdjustedPValue": 1.0,
+        "familySize": 52,
+        "familywiseAlpha": 0.025,
+        "limitedSampleTestPredictions": 52,
+        "calibrated": false,
+        "scope": "Retrospective player-stat thresholds against unsmoothed historical K/N; not historical market prices, source-first-publication evidence, prospective contract accuracy or a matchup model.",
+        "testWeeks": 8,
+        "weekBlockSize": 2,
+        "pairedWeekBlockBootstrapBrierDifference95": [
+          0.0014147109738417809,
+          0.005495143202331025
+        ],
+        "weekBlockAdjustedPValue": 1.0
+      },
+      "approved": false,
+      "reason": "Smoothing did not pass the conservative publication gate.",
+      "artifactId": "205af294a747d2712ed0ced92c1d33e3bb3979b1c36d73e3cf028b249ac27b7b"
+    },
+    "rushingTouchdowns:WR": {
+      "version": "jeffreys-player-history-12.3.0",
+      "sport": "NFL",
+      "statistic": "rushingTouchdowns",
+      "position": "WR",
+      "priorAlpha": 0.5,
+      "priorBeta": 0.5,
+      "window": 24,
+      "validation": {
+        "chronological": true,
+        "testSeason": 2026,
+        "thresholdsFromSeasons": [
+          2025
+        ],
+        "thresholds": [
+          0.5
+        ],
+        "testPredictions": 894,
+        "testGames": 121,
+        "brierScore": 0.01045939794803691,
+        "benchmarkBrier": 0.004681661303762344,
+        "logLoss": 0.07776920199914854,
+        "benchmarkLogLoss": 0.07782191171490828,
+        "pairedGameBootstrapBrierDifference95": [
+          0.004830287500732393,
+          0.006789020329913257
+        ],
+        "familywiseAdjustedPValue": 1.0,
+        "familySize": 52,
+        "familywiseAlpha": 0.025,
+        "limitedSampleTestPredictions": 138,
+        "calibrated": false,
+        "scope": "Retrospective player-stat thresholds against unsmoothed historical K/N; not historical market prices, source-first-publication evidence, prospective contract accuracy or a matchup model.",
+        "testWeeks": 8,
+        "weekBlockSize": 2,
+        "pairedWeekBlockBootstrapBrierDifference95": [
+          0.0041588957977874265,
+          0.007400232398370601
+        ],
+        "weekBlockAdjustedPValue": 1.0
+      },
+      "approved": false,
+      "reason": "Smoothing did not pass the conservative publication gate.",
+      "artifactId": "fc183f4c0eff7e7cf08803c8fb8c42d086a4c5e679eca7682fed64d8ae9ca6aa"
+    },
+    "rushingYards:QB": {
+      "version": "jeffreys-player-history-12.3.0",
+      "sport": "NFL",
+      "statistic": "rushingYards",
+      "position": "QB",
+      "priorAlpha": 0.5,
+      "priorBeta": 0.5,
+      "window": 24,
+      "validation": {
+        "chronological": true,
+        "testSeason": 2026,
+        "thresholdsFromSeasons": [
+          2025
+        ],
+        "thresholds": [
+          0.5,
+          5.5,
+          13.5,
+          28.5
+        ],
+        "testPredictions": 1072,
+        "testGames": 121,
+        "brierScore": 0.17244854876084928,
+        "benchmarkBrier": 0.17677662596842394,
+        "logLoss": 0.5194199015783716,
+        "benchmarkLogLoss": 0.9500077920989993,
+        "pairedGameBootstrapBrierDifference95": [
+          -0.007095306640092512,
+          -0.0017978574424028547
+        ],
+        "familywiseAdjustedPValue": 0.010397920415916816,
+        "familySize": 52,
+        "familywiseAlpha": 0.025,
+        "limitedSampleTestPredictions": 100,
+        "calibrated": false,
+        "scope": "Retrospective player-stat thresholds against unsmoothed historical K/N; not historical market prices, source-first-publication evidence, prospective contract accuracy or a matchup model.",
+        "testWeeks": 8,
+        "weekBlockSize": 2,
+        "pairedWeekBlockBootstrapBrierDifference95": [
+          -0.005573233548357345,
+          -0.0027563487815757347
+        ],
+        "weekBlockAdjustedPValue": 0.010397920415916816
+      },
+      "approved": true,
+      "reason": "Predeclared smoothing improved chronological Brier and log loss.",
+      "artifactId": "1f346fc0206aff685ceb2e3055d56a1a70f868ec34496e937f6735f7a5c86fc2"
+    },
+    "rushingYards:RB": {
+      "version": "jeffreys-player-history-12.3.0",
+      "sport": "NFL",
+      "statistic": "rushingYards",
+      "position": "RB",
+      "priorAlpha": 0.5,
+      "priorBeta": 0.5,
+      "window": 24,
+      "validation": {
+        "chronological": true,
+        "testSeason": 2026,
+        "thresholdsFromSeasons": [
+          2025
+        ],
+        "thresholds": [
+          5.5,
+          20.5,
+          38.5,
+          65.5
+        ],
+        "testPredictions": 2300,
+        "testGames": 121,
+        "brierScore": 0.14663349113342222,
+        "benchmarkBrier": 0.14934767438495175,
+        "logLoss": 0.4507405253318334,
+        "benchmarkLogLoss": 0.8747172888256751,
+        "pairedGameBootstrapBrierDifference95": [
+          -0.004354213997404943,
+          -0.0011633881840988727
+        ],
+        "familywiseAdjustedPValue": 0.010397920415916816,
+        "familySize": 52,
+        "familywiseAlpha": 0.025,
+        "limitedSampleTestPredictions": 336,
+        "calibrated": false,
+        "scope": "Retrospective player-stat thresholds against unsmoothed historical K/N; not historical market prices, source-first-publication evidence, prospective contract accuracy or a matchup model.",
+        "testWeeks": 8,
+        "weekBlockSize": 2,
+        "pairedWeekBlockBootstrapBrierDifference95": [
+          -0.003214040535258756,
+          -0.00230240903386043
+        ],
+        "weekBlockAdjustedPValue": 0.010397920415916816
+      },
+      "approved": true,
+      "reason": "Predeclared smoothing improved chronological Brier and log loss.",
+      "artifactId": "fe65c84058833dfc29b5e0ddbd1b5a72bffe0e147ab4250114ca0986b4307d80"
+    },
+    "rushingYards:TE": {
+      "version": "jeffreys-player-history-12.3.0",
+      "sport": "NFL",
+      "statistic": "rushingYards",
+      "position": "TE",
+      "priorAlpha": 0.5,
+      "priorBeta": 0.5,
+      "window": 24,
+      "validation": {
+        "chronological": true,
+        "testSeason": 2026,
+        "thresholdsFromSeasons": [
+          2025
+        ],
+        "thresholds": [
+          0.5
+        ],
+        "testPredictions": 489,
+        "testGames": 121,
+        "brierScore": 0.042969012263695275,
+        "benchmarkBrier": 0.040112325344514525,
+        "logLoss": 0.17431883794046316,
+        "benchmarkLogLoss": 0.38353774467376006,
+        "pairedGameBootstrapBrierDifference95": [
+          0.00034192619444732504,
+          0.004813802230313765
+        ],
+        "familywiseAdjustedPValue": 1.0,
+        "familySize": 52,
+        "familywiseAlpha": 0.025,
+        "limitedSampleTestPredictions": 52,
+        "calibrated": false,
+        "scope": "Retrospective player-stat thresholds against unsmoothed historical K/N; not historical market prices, source-first-publication evidence, prospective contract accuracy or a matchup model.",
+        "testWeeks": 8,
+        "weekBlockSize": 2,
+        "pairedWeekBlockBootstrapBrierDifference95": [
+          0.00042443145578421854,
+          0.004600874594451163
+        ],
+        "weekBlockAdjustedPValue": 1.0
+      },
+      "approved": false,
+      "reason": "Smoothing did not pass the conservative publication gate.",
+      "artifactId": "a7a5be71829a923bfd839deec3a3b5582dd958c4ed728ad7da991f67a861d21c"
+    },
+    "rushingYards:WR": {
+      "version": "jeffreys-player-history-12.3.0",
+      "sport": "NFL",
+      "statistic": "rushingYards",
+      "position": "WR",
+      "priorAlpha": 0.5,
+      "priorBeta": 0.5,
+      "window": 24,
+      "validation": {
+        "chronological": true,
+        "testSeason": 2026,
+        "thresholdsFromSeasons": [
+          2025
+        ],
+        "thresholds": [
+          0.5
+        ],
+        "testPredictions": 894,
+        "testGames": 121,
+        "brierScore": 0.08620017796649379,
+        "benchmarkBrier": 0.08574695309231711,
+        "logLoss": 0.29825338649599414,
+        "benchmarkLogLoss": 0.6093626147142411,
+        "pairedGameBootstrapBrierDifference95": [
+          -0.0024263977924806604,
+          0.003123347029485328
+        ],
+        "familywiseAdjustedPValue": 1.0,
+        "familySize": 52,
+        "familywiseAlpha": 0.025,
+        "limitedSampleTestPredictions": 138,
+        "calibrated": false,
+        "scope": "Retrospective player-stat thresholds against unsmoothed historical K/N; not historical market prices, source-first-publication evidence, prospective contract accuracy or a matchup model.",
+        "testWeeks": 8,
+        "weekBlockSize": 2,
+        "pairedWeekBlockBootstrapBrierDifference95": [
+          -0.0035922527221045443,
+          0.0033932506477260993
+        ],
+        "weekBlockAdjustedPValue": 1.0
+      },
+      "approved": false,
+      "reason": "Smoothing did not pass the conservative publication gate.",
+      "artifactId": "5c4fe014c5ac579f2912142fbd3cdd1f409625b84fa26fe74793d4f9f5f43cd5"
+    },
+    "targets:QB": {
+      "version": "jeffreys-player-history-12.3.0",
+      "sport": "NFL",
+      "statistic": "targets",
+      "position": "QB",
+      "priorAlpha": 0.5,
+      "priorBeta": 0.5,
+      "window": 24,
+      "validation": {
+        "chronological": true,
+        "testSeason": 2026,
+        "thresholdsFromSeasons": [
+          2025
+        ],
+        "thresholds": [
+          0.5
+        ],
+        "testPredictions": 268,
+        "testGames": 121,
+        "brierScore": 0.02029276350776563,
+        "benchmarkBrier": 0.017825565858479456,
+        "logLoss": 0.11106264861817867,
+        "benchmarkLogLoss": 0.3283223319233944,
+        "pairedGameBootstrapBrierDifference95": [
+          7.900650580909576e-05,
+          0.004251808478680159
+        ],
+        "familywiseAdjustedPValue": 1.0,
+        "familySize": 52,
+        "familywiseAlpha": 0.025,
+        "limitedSampleTestPredictions": 25,
+        "calibrated": false,
+        "scope": "Retrospective player-stat thresholds against unsmoothed historical K/N; not historical market prices, source-first-publication evidence, prospective contract accuracy or a matchup model.",
+        "testWeeks": 8,
+        "weekBlockSize": 2,
+        "pairedWeekBlockBootstrapBrierDifference95": [
+          0.00030658446596732234,
+          0.003883806147986958
+        ],
+        "weekBlockAdjustedPValue": 1.0
+      },
+      "approved": false,
+      "reason": "Smoothing did not pass the conservative publication gate.",
+      "artifactId": "eb0b1112b1a62d45b1841c7a07192114922f785a51816ba7f7bd26f466be5864"
+    },
+    "targets:RB": {
+      "version": "jeffreys-player-history-12.3.0",
+      "sport": "NFL",
+      "statistic": "targets",
+      "position": "RB",
+      "priorAlpha": 0.5,
+      "priorBeta": 0.5,
+      "window": 24,
+      "validation": {
+        "chronological": true,
+        "testSeason": 2026,
+        "thresholdsFromSeasons": [
+          2025
+        ],
+        "thresholds": [
+          0.5,
+          1.5,
+          2.5,
+          4.5
+        ],
+        "testPredictions": 2300,
+        "testGames": 121,
+        "brierScore": 0.16793321900681552,
+        "benchmarkBrier": 0.1738372722436441,
+        "logLoss": 0.5120818101720784,
+        "benchmarkLogLoss": 1.1556296755364506,
+        "pairedGameBootstrapBrierDifference95": [
+          -0.008072703136825248,
+          -0.003748621485767011
+        ],
+        "familywiseAdjustedPValue": 0.010397920415916816,
+        "familySize": 52,
+        "familywiseAlpha": 0.025,
+        "limitedSampleTestPredictions": 336,
+        "calibrated": false,
+        "scope": "Retrospective player-stat thresholds against unsmoothed historical K/N; not historical market prices, source-first-publication evidence, prospective contract accuracy or a matchup model.",
+        "testWeeks": 8,
+        "weekBlockSize": 2,
+        "pairedWeekBlockBootstrapBrierDifference95": [
+          -0.007759402323380258,
+          -0.004315906738812899
+        ],
+        "weekBlockAdjustedPValue": 0.010397920415916816
+      },
+      "approved": true,
+      "reason": "Predeclared smoothing improved chronological Brier and log loss.",
+      "artifactId": "9931a12f0118585ccd01778110d224cbc050d1380a0b335637223824040a7ea6"
+    },
+    "targets:TE": {
+      "version": "jeffreys-player-history-12.3.0",
+      "sport": "NFL",
+      "statistic": "targets",
+      "position": "TE",
+      "priorAlpha": 0.5,
+      "priorBeta": 0.5,
+      "window": 24,
+      "validation": {
+        "chronological": true,
+        "testSeason": 2026,
+        "thresholdsFromSeasons": [
+          2025
+        ],
+        "thresholds": [
+          1.5,
+          2.5,
+          4.5,
+          5.5
+        ],
+        "testPredictions": 1956,
+        "testGames": 121,
+        "brierScore": 0.15436330534891293,
+        "benchmarkBrier": 0.1580512676830231,
+        "logLoss": 0.4692389534309624,
+        "benchmarkLogLoss": 0.8735827979783448,
+        "pairedGameBootstrapBrierDifference95": [
+          -0.007165362040340207,
+          -0.0007448496100740567
+        ],
+        "familywiseAdjustedPValue": 0.2495500899820036,
+        "familySize": 52,
+        "familywiseAlpha": 0.025,
+        "limitedSampleTestPredictions": 208,
+        "calibrated": false,
+        "scope": "Retrospective player-stat thresholds against unsmoothed historical K/N; not historical market prices, source-first-publication evidence, prospective contract accuracy or a matchup model.",
+        "testWeeks": 8,
+        "weekBlockSize": 2,
+        "pairedWeekBlockBootstrapBrierDifference95": [
+          -0.0069752263837415725,
+          -0.0010210223201793272
+        ],
+        "weekBlockAdjustedPValue": 0.010397920415916816
+      },
+      "approved": false,
+      "reason": "Smoothing did not pass the conservative publication gate.",
+      "artifactId": "95b7d56d0293faf1dbc0e8599b754064af2209142fc7f72de28f74e65bd04251"
+    },
+    "targets:WR": {
+      "version": "jeffreys-player-history-12.3.0",
+      "sport": "NFL",
+      "statistic": "targets",
+      "position": "WR",
+      "priorAlpha": 0.5,
+      "priorBeta": 0.5,
+      "window": 24,
+      "validation": {
+        "chronological": true,
+        "testSeason": 2026,
+        "thresholdsFromSeasons": [
+          2025
+        ],
+        "thresholds": [
+          1.5,
+          3.5,
+          5.5,
+          7.5
+        ],
+        "testPredictions": 3576,
+        "testGames": 121,
+        "brierScore": 0.16414387723057736,
+        "benchmarkBrier": 0.1703279720291679,
+        "logLoss": 0.5025814713600882,
+        "benchmarkLogLoss": 1.1514390315722962,
+        "pairedGameBootstrapBrierDifference95": [
+          -0.008362652078320652,
+          -0.004215143511913477
+        ],
+        "familywiseAdjustedPValue": 0.010397920415916816,
+        "familySize": 52,
+        "familywiseAlpha": 0.025,
+        "limitedSampleTestPredictions": 552,
+        "calibrated": false,
+        "scope": "Retrospective player-stat thresholds against unsmoothed historical K/N; not historical market prices, source-first-publication evidence, prospective contract accuracy or a matchup model.",
+        "testWeeks": 8,
+        "weekBlockSize": 2,
+        "pairedWeekBlockBootstrapBrierDifference95": [
+          -0.008667718820918742,
+          -0.0035266554094356794
+        ],
+        "weekBlockAdjustedPValue": 0.010397920415916816
+      },
+      "approved": true,
+      "reason": "Predeclared smoothing improved chronological Brier and log loss.",
+      "artifactId": "041e366fefc2526875e756659fcbd559a3b01796d638926872371aa487919c09"
+    }
+  },
+  "cpuSeconds": 0.631632088,
+  "historicalFirstPublicationVerified": false,
+  "prospectiveAccuracyClaimed": false,
+  "personalRecordsChanged": false
+}

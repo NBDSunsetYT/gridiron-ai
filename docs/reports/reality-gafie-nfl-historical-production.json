@@ -1,0 +1,41 @@
+{
+  "checkedAt": "2026-11-04T06:54:52.043Z",
+  "gameId": "2025_13_KC_DAL",
+  "sport": "NFL",
+  "mode": "retrospective",
+  "forecastId": "55f17de1bdc8f6fd717a71d3413f23cc6c763db3c43433194560b8a037681c87",
+  "evaluationId": "ca135ba2fc74d13823d391270186ce32f7e6ba80d57c21953ab55c69ed5c2d3b",
+  "simulations": 10000,
+  "players": 260,
+  "pendingPlayerStatistics": 143,
+  "predicted": {
+    "home": 20.5678,
+    "away": 25.0748
+  },
+  "actual": {
+    "home": 31,
+    "away": 28
+  },
+  "errors": {
+    "home": 10.432200000000002,
+    "away": 2.9252000000000002,
+    "total": 13.357399999999998,
+    "margin": 7.507
+  },
+  "persistentReadBack": true,
+  "idempotentRetry": true,
+  "sourceCount": 2,
+  "sourceUrls": [
+    "https://raw.githubusercontent.com/nflverse/nfldata/master/data/games.csv",
+    "https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_2025.csv.gz"
+  ],
+  "prospectiveGames": 1,
+  "retrospectiveGames": 1,
+  "background": {
+    "status": "cached",
+    "message": "The bounded hourly learning audit already ran."
+  },
+  "status": "passed",
+  "seconds": 6.86,
+  "claim": "Mechanical persistence and historical comparison only; no prospective accuracy or model superiority claim."
+}
