@@ -10,7 +10,12 @@ const hash=(value:string|Uint8Array)=>createHash('sha256').update(value).digest(
 // Only public research may enter this cache. Auth, Wallet, user preferences and
 // conversations deliberately do not use it. Reuses existing cache/lease tables.
 const prohibited=/"(?:user_id|userId|access_token|refresh_token|authorization|password|api_?key|service_role_key|bankroll|deposits|withdrawals)"\s*:/i;
-export function packPublic(value:unknown){const raw=Buffer.from(JSON.stringify(value));if(raw.length>16_000_000||prohibited.test(raw.toString()))throw new Error('Public cache payload rejected');const compressed=gzipSync(raw,{level:1});if(compressed.length>500_000)throw new Error('Public cache payload bound exceeded');return{encoding:'gzip-base64-v1',body:compressed.toString('base64'),sha256:hash(raw),bytes:raw.length};}
+export function packPublic(value:unknown){const raw=Buffer.from(JSON.stringify(value));if(raw.length>16_000_000||prohibited.test(raw.toString()))throw new Error('Public cache payload rejected');let compressed=gzipSync(raw,{level:1});
+ // Large public boards repeat source/provenance and compact player histories.
+ // Try denser compression only at the storage boundary; preserve both limits,
+ // the complete response and its original checksum. No model is recalculated.
+ if(compressed.length>500_000)compressed=gzipSync(raw,{level:6});
+ if(compressed.length>500_000)throw new Error('Public cache payload bound exceeded');return{encoding:'gzip-base64-v1',body:compressed.toString('base64'),sha256:hash(raw),bytes:raw.length};}
 export function unpackPublic(value:any){if(value?.encoding!=='gzip-base64-v1'||typeof value.body!=='string'||value.body.length>700_000||!Number.isSafeInteger(value.bytes)||value.bytes<0||value.bytes>16_000_000)throw new Error('Invalid public cache envelope');const raw=gunzipSync(Buffer.from(value.body,'base64'),{maxOutputLength:16_000_000});if(raw.length!==value.bytes||hash(raw)!==value.sha256||prohibited.test(raw.toString()))throw new Error('Public cache integrity failed');return JSON.parse(raw.toString());}
 function remember(key:string,value:any,expires:number){const size=Buffer.byteLength(JSON.stringify(value));if(size>8_000_000)return;const old=memory.get(key);if(old){bytes-=old.bytes;memory.delete(key);}while(memory.size&&(memory.size>=40||bytes+size>16_000_000)){const first=memory.keys().next().value!;bytes-=memory.get(first)!.bytes;memory.delete(first);}memory.set(key,{value,expires,bytes:size});bytes+=size;}
 export function sharedMemoEnabled(){return process.env.GRIDIRON_CLOUD_ONLY==='1'&&Boolean(process.env.SUPABASE_URL&&process.env.SUPABASE_PUBLISHABLE_KEY&&process.env.GRIDIRON_PUBLIC_INGEST_TOKEN);}
