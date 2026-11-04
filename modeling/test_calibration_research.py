@@ -12,6 +12,9 @@ class CalibrationResearchTests(unittest.TestCase):
         folds=list(chronological_windows(rows));self.assertEqual(len(folds),2);self.assertTrue(all(r['phase']=='validation' for a,b in folds for r in a+b))
     def test_metrics_and_small_sample_guards(self):
         self.assertAlmostEqual(metrics([.5,.5],[0,1])['brier'],.25)
+        self.assertEqual(metrics([0,1],[0,1])['brier'],0)
+        self.assertEqual(metrics([0,1],[0,1])['ece'],0)
+        self.assertTrue(np.isfinite(metrics([0,1],[1,0])['logLoss']))
         with self.assertRaises(ValueError):fit('platt',[.5]*8,[1]*8)
         with self.assertRaises(ValueError):fit('isotonic',[1.1]*8,[0,1]*4)
 if __name__=='__main__':unittest.main()

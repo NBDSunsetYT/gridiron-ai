@@ -38,8 +38,9 @@ export async function cloudRunSimulation(ctx:CloudContext,input:any){
   verifyCloudResult(ctx,input.modelJobId,fitted);
   input={...input,model:fitted.result.model};delete input.modelJobId;
  }
- // Refuse to record a pretend pending run when the service is absent.
- if(!process.env.SIMULATION_SERVICE_URL||!process.env.SIMULATION_SERVICE_TOKEN)throw new ApiError('SIMULATION_SERVICE_URL and SIMULATION_SERVICE_TOKEN are not configured.',503);
+ // A cache-only web host needs the signing secret to preserve owned inputs,
+ // but no Python URL: it deliberately does not dispatch the private queue.
+ if(!process.env.SIMULATION_SERVICE_TOKEN||computeAllowed()&&!process.env.SIMULATION_SERVICE_URL)throw new ApiError('SIMULATION_SERVICE_URL and SIMULATION_SERVICE_TOKEN are not configured.',503);
  const {action,...payload}=input;simulationPayload(payload);
  const background=backgroundSimulations(),id=randomUUID(),now=new Date().toISOString(),job={id,kind:action,status:background?'queued':'running',data:{execution:background?'background':'request',inputHash:createHash('sha256').update(JSON.stringify(input)).digest('hex'),home:input.home??null,away:input.away??null,eventStart:input.eventStart??null,simulations:input.simulations??null,modelVersion:input.model?.version??null,source:input.source??input.model?.source??null,scenario:input.scenario??null,contracts:input.contracts??null,injuryEntityKeys:input.injuryEntityKeys??[]},result:null as any,error:null as string|null,createdAt:now,updatedAt:now};
  await saveRecord(ctx,'simulation_jobs',job,{id});
@@ -51,10 +52,10 @@ export async function cloudRunSimulation(ctx:CloudContext,input:any){
  }catch(error){job.status='failed';job.error=error instanceof ApiError?error.message:'Simulation failed.';job.updatedAt=new Date().toISOString();await updateRecord(ctx,id,job);throw error;}
 }
 export async function cloudSimulationHistory(ctx:CloudContext,id?:string|null){
- const configured=Boolean(process.env.SIMULATION_SERVICE_URL&&process.env.SIMULATION_SERVICE_TOKEN);
- const service={configured,background:backgroundSimulations(),compactTransport:compactApiEnabled(),maxRequestBytes:compactApiEnabled()?3_800_000:20*1024*1024};
+ const configured=Boolean(process.env.SIMULATION_SERVICE_TOKEN&&(process.env.SIMULATION_SERVICE_URL||!computeAllowed()));
+ const service={configured,executionMode:computeAllowed()?'direct_or_worker':'private_queue_only',workerExecutionVerified:false,background:backgroundSimulations(),compactTransport:compactApiEnabled(),maxRequestBytes:compactApiEnabled()?3_800_000:20*1024*1024};
  if(id){let job=(await record(ctx,id,'simulation_jobs')).data;job=await resumeCloudSimulation(ctx,job);return{job:compactSimulationJob(verifiedCloudJob(ctx,job)),service};}
- return{jobs:unwrap(await records(ctx,'simulation_jobs',{limit:60})).map(j=>verifiedCloudJob(ctx,j)).map(j=>({...j,result:j.result?{summary:j.result.summary,modelVersion:j.result.modelVersion,provenance:j.result.provenance,simulations:j.result.simulations,home:j.result.home,away:j.result.away}:null})),service:{...service,message:configured?'Service configured; requests verify actual availability.':'Private service not configured.'}};
+ return{jobs:unwrap(await records(ctx,'simulation_jobs',{limit:60})).map(j=>verifiedCloudJob(ctx,j)).map(j=>({...j,result:j.result?{summary:j.result.summary,modelVersion:j.result.modelVersion,provenance:j.result.provenance,simulations:j.result.simulations,home:j.result.home,away:j.result.away}:null})),service:{...service,message:!computeAllowed()?'Private inputs are saved for an authenticated external worker. This web server never runs models.':configured?'Service configured; requests verify actual availability.':'Private service not configured.'}};
 }
 export async function cloudJobHistory(ctx:CloudContext){return{jobs:unwrap(await records(ctx,'simulation_jobs',{limit:100,dataKind:'injury_resimulation'})),worker:{onInjurySave:true,recovery:'Owned queued jobs can be resumed after sign-in. Background server-wide cron needs an explicitly configured privileged worker; no user JWT is invented.'}};}
 export async function cloudProcessJobs(ctx:CloudContext,limit=1){

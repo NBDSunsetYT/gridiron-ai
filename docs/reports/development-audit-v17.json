@@ -839,7 +839,7 @@
   },
   "productionPromotions": [],
   "resources": {
-    "cpuSeconds": 1.046406916,
+    "cpuSeconds": 0.770394653,
     "providerRequests": 0,
     "simulationRuns": 0
   },

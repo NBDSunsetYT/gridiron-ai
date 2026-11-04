@@ -11220,7 +11220,7 @@
   "limitations": [
     "All results reuse development games and are exploratory.",
     "CFB/NFL injury, lineup, weather publication archives remain incomplete.",
-    "NBA minute/rotation causal errors cannot be established from these evaluations; actual minutes are absent.",
+    "NBA minute/rotation causal errors cannot be established from these evaluations; actual minute fields are absent from these evaluation rows; the separate minute audit uses original raw box-score records.",
     "No historical executable prop lines were available. Fixed diagnostic threshold grids are not historical betting markets.",
     "No claim of player-prop calibration improvement; game clustering is required for correlated observations."
   ],
@@ -11317,12 +11317,12 @@
     "sourceProtocolSha256": "ffc467910a0dcc16fdd2a9d20e37bf2f6fab91c9d776c08f1532a9aad72b32ad"
   },
   "resources": {
-    "cpuSeconds": 1.095467612,
+    "cpuSeconds": 1.123759002,
     "hostingCpuSeconds": 0,
-    "peakRssKiB": 123516,
+    "peakRssKiB": 123572,
     "providerRequests": 0,
     "simulationRuns": 0,
-    "wallSeconds": 1.0961644830022124
+    "wallSeconds": 1.1257320930017158
   },
   "sourceForecastsChanged": 0,
   "stop": "available_development_evidence_exhausted; insufficient independent windows for promotion"

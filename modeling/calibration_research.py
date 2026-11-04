@@ -8,10 +8,10 @@ import numpy as np
 def probabilities(values):
     p=np.asarray(values,dtype=float)
     if p.ndim!=1 or not len(p) or not np.isfinite(p).all() or np.any((p<0)|(p>1)):raise ValueError('Finite probabilities required')
-    return np.clip(p,1e-6,1-1e-6)
+    return p
 
 def sigmoid(x):return 1/(1+np.exp(-np.clip(x,-40,40)))
-def logit(p):p=probabilities(p);return np.log(p/(1-p))
+def logit(p):p=np.clip(probabilities(p),1e-6,1-1e-6);return np.log(p/(1-p))
 
 def fit(kind,p,y):
     p=probabilities(p);y=np.asarray(y,dtype=float)
@@ -62,9 +62,10 @@ def metrics(p,y):
     for low in np.arange(0,1,.2):
         at=(p>=low)&(p<low+.2+1e-12)
         # Disjoint fixed-width bins; a boundary belongs only to the next bin.
-        at=np.floor(p*5).astype(int)==int(round(low*5))
+        at=np.minimum(4,np.floor(p*5).astype(int))==int(round(low*5))
         if at.any():bins.append({'n':int(sum(at)),'meanPredicted':float(np.mean(p[at])),'observed':float(np.mean(y[at]))})
-    return {'n':len(p),'brier':float(np.mean((p-y)**2)),'logLoss':float(-np.mean(y*np.log(p)+(1-y)*np.log1p(-p))), 'ece':sum(b['n']*abs(b['meanPredicted']-b['observed']) for b in bins)/len(p),'bins':bins}
+    safe=np.clip(p,1e-12,1-1e-12)
+    return {'n':len(p),'brier':float(np.mean((p-y)**2)),'logLoss':float(-np.mean(y*np.log(safe)+(1-y)*np.log1p(-safe))), 'ece':sum(b['n']*abs(b['meanPredicted']-b['observed']) for b in bins)/len(p),'bins':bins}
 
 def paired_interval(before,after,seed=1701):
     delta=np.asarray(after)-np.asarray(before)
