@@ -1,0 +1,121 @@
+{
+  "startedAt": "2026-11-04T18:36:08.906Z",
+  "baseUrl": "https://gridiron-ai-gray.vercel.app",
+  "status": "passed",
+  "privateUserWrites": 0,
+  "financialWrites": 0,
+  "physicalIphoneTested": false,
+  "checks": [
+    {
+      "name": "Existing Supabase and private simulation service are reachable",
+      "status": "passed"
+    },
+    {
+      "name": "Real archived evaluation report is deployed",
+      "status": "passed",
+      "footballGames": 500,
+      "nbaGames": 40,
+      "strictPregameQualifiedGames": 0
+    },
+    {
+      "name": "Guest NBA schedule uses exact basketball identities",
+      "status": "passed",
+      "games": 25
+    },
+    {
+      "name": "Actual PropLine NBA sportsbook quotes are available without Predictions relabeling",
+      "status": "passed",
+      "quotes": 12962,
+      "draftKingsQuotes": 1820
+    },
+    {
+      "name": "Guest access does not expose saved personal research or Wallet",
+      "status": "passed"
+    },
+    {
+      "name": "HTTPS manifest and install icons are valid",
+      "status": "passed"
+    },
+    {
+      "name": "Production backend completes or retrieves 10000 coherent NBA games with immutable fitted inputs",
+      "status": "passed",
+      "gameId": "nba:espn:401909922",
+      "analysisId": "989e76b8bb189f394c3ec9a63575196b2c1f4d29d4d9d675f8e8b006784bc12c",
+      "simulations": 10000,
+      "modelVersion": "nba-possession-rotation-candidate-15.1.1",
+      "latencyMs": 36284.564753,
+      "inputReferenceStored": true,
+      "quality": {
+        "productionEligible": false,
+        "lineupsVerified": false,
+        "injuriesComplete": false,
+        "playerTeamPointsReconciled": true,
+        "minutesReconciled": true,
+        "combinedStatsShareOutcomes": true,
+        "regulationQuarters": 4,
+        "quarterSeconds": 720,
+        "overtimeSeconds": 300
+      }
+    },
+    {
+      "name": "A separate request restores exact distributions from persistent Supabase research storage",
+      "status": "passed",
+      "latencyMs": 1700.2857439999934
+    }
+  ],
+  "assistant": {
+    "provider": "openai",
+    "credentialConfigured": false,
+    "generationVerified": false,
+    "status": "missing_credentials"
+  },
+  "markets": {
+    "checkedAt": "2026-11-04T18:35:19.557132Z",
+    "total": 12962,
+    "categories": {
+      "player_points": 2935,
+      "player_rebounds": 2726,
+      "player_assists": 1856,
+      "player_threes": 2026,
+      "player_steals": 776,
+      "player_blocks": 382,
+      "player_turnovers": 0,
+      "player_points_rebounds_assists": 1728,
+      "player_double_double": 533
+    },
+    "books": {
+      "draftkings": 1820,
+      "fanduel": 1774,
+      "betmgm": 1013,
+      "hardrock": 8355
+    },
+    "identityCrosswalkStatus": "no_exact_ids",
+    "analysisAvailability": {
+      "status": "identity_mapping_unavailable",
+      "mappedEventQuotes": 0,
+      "mappedPlayerQuotes": 0,
+      "message": "Verified sportsbook prices are available. Quotes without an exact ESPN event and player crosswalk cannot be joined to this model. Independent game simulations remain available; unsupported price comparisons are withheld."
+    }
+  },
+  "liveNBA": {
+    "gameId": "nba:espn:401909922",
+    "analysisId": "989e76b8bb189f394c3ec9a63575196b2c1f4d29d4d9d675f8e8b006784bc12c",
+    "simulations": 10000,
+    "modelVersion": "nba-possession-rotation-candidate-15.1.1",
+    "latencyMs": 36284.564753,
+    "inputReferenceStored": true,
+    "quality": {
+      "productionEligible": false,
+      "lineupsVerified": false,
+      "injuriesComplete": false,
+      "playerTeamPointsReconciled": true,
+      "minutesReconciled": true,
+      "combinedStatsShareOutcomes": true,
+      "regulationQuarters": 4,
+      "quarterSeconds": 720,
+      "overtimeSeconds": 300
+    },
+    "retrievalMs": 1700.2857439999934
+  },
+  "finishedAt": "2026-11-04T18:36:51.196Z"
+}

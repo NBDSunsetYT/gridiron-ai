@@ -96,3 +96,21 @@ The documented NBA `/ids` endpoint returned NBA-native team IDs and null ESPN ev
 New NBA runs retain the immutable signed fitted-input object reference, configuration, seed and code version. Earlier local test runs without that new reference remain archived unchanged. Public archive links reopen saved distributions without another Monte Carlo run.
 
 Independent NBA player-threshold research remains available through the saved-distribution chart: select a player/statistic, enter a clearly labeled hypothetical threshold and choose over/under. Counts, K/N, Wilson95% sampling intervals, standard errors and pushes come directly from the coherent game distribution. This does not invent a market, imply a current quote, or bypass the missing provider crosswalk.
+
+## Production release
+
+Live: https://gridiron-ai-gray.vercel.app. Tested code commit `d85034a662d39638064c66a357971591db27eb15`; Vercel deployment `dpl_2TDamrZokxhF7q3LdrgHQ6Gb5ztE` is READY and assigned to the live alias. Render gateway commit `4049df71289fe697e5bd90f5e3ee1c06cbec8750` is live on the existing free service. Vercel Git-source access was unavailable, so authenticated source uploads were used without changing the project or disabling protection.
+
+Passed: 768 TypeScript tests, 218 Python tests, all13 local PostgreSQL/RLS/ledger/cache/learning regression scripts, 78 existing-flow browser checks on a production build, and all8 live production NBA browser checks across desktop and iPhone-sized Chromium. The actual production NBA workflow completed10,000 games in36.3seconds and restored exact distributions on a separate request in1.7seconds. These are observed end-to-end latencies, not isolated CPU benchmarks or promises for future runs.
+
+Production Supabase owner policies and the existing record constraints support the new private reference type; financial-table row hashes were unchanged. No schema migration/reset occurred. New shared NBA research survived process changes, reloads and separate requests. A real authenticated private NBA save across accounts was not executed because isolated confirmed QA credentials were unavailable.
+
+All8 production browser tests passed after making transport-sensitive requests through the browser; the initial API-only Playwright context could not traverse the environment proxy. An earlier local trace-output collision was corrected with separate artifact directories. The final test results are not fabricated or inferred from those failed attempts.
+
+### Remaining work
+
+The replacement football candidate requires further development and a new untouched evaluation period. NBA exact market identity linkage, verified lineups/causal injury adjustments, automated NBA postgame learning and durable background orchestration remain incomplete. Large live serverless runs may exceed duration limits;100,000-game production execution is not claimed. Live OpenAI generation needs a server credential. MongoDB/R2 application credentials remain unconfigured. Physical iPhone installation and authenticated NBA private save across production accounts remain unverified.
+
+The source ZIP and compact historical forecast export are in `artifacts/`. The compact export contains forecast distributions and evaluation summaries, without raw play-by-play caches or millions of simulated plays. Frozen game selection, source checksums, runtime manifest and aggregate metrics are committed to GitHub. See `reports/v15-release-verification.json` and `reports/v15-production-public.json` for machine-readable verification.
+
+The full changed-file inventory is `reports/v15-files-changed.json`. Actual production screenshots are in `docs/screenshots/v15-nba-desktop-chromium.png`, `v15-nba-iphone-chromium.png`, `v15-production-markets.png` and `v15-production-validation.png`.

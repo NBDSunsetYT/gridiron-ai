@@ -10,9 +10,8 @@ test('NBA guest navigation and candidate evidence fit desktop and iPhone',async(
  await page.goto('/#engine');await expect(page.getByRole('heading',{name:'Evidence before confidence.'})).toBeVisible();await expect(page.getByText('Strict pregame-qualified games',{exact:true})).toBeVisible();
  expect(errors).toEqual([]);
 });
-test('NBA private research denies guests and invalid requests cannot start work',async({request})=>{
- expect((await request.get('/api/nba?view=saved')).status()).toBe(401);
- expect((await request.post('/api/nba',{data:{action:'analyze',gameId:'cfb:espn:1',simulations:10000}})).status()).toBe(400);
+test('NBA private research denies guests and invalid requests cannot start work',async({page})=>{
+ await page.goto('/#nba');const status=await page.evaluate(async()=>{const saved=await fetch('/api/nba?view=saved'),invalid=await fetch('/api/nba',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'analyze',gameId:'cfb:espn:1',simulations:10000})});return [saved.status,invalid.status];});expect(status).toEqual([401,400]);
 });
 test('live NBA backend completes ten thousand real games and renders distributions',async({page},info)=>{
  test.skip(process.env.E2E_LIVE_NBA!=='1','Requires actual configured worker and persistent Supabase research storage.');test.setTimeout(300000);
@@ -23,7 +22,7 @@ test('live NBA backend completes ten thousand real games and renders distributio
  await expect(page.getByText('Home win · raw estimate',{exact:true})).toBeVisible();await expect(page.locator('.reality-table tbody tr').first()).toBeVisible();expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
  await page.evaluate(()=>{(document.activeElement as HTMLElement)?.blur();window.scrollTo(0,0);});await page.waitForTimeout(200);
  await page.screenshot({path:'docs/screenshots/v15-nba-'+info.project.name+'.png',fullPage:true});
- const repeat=await page.request.post('/api/nba',{data:{action:'analyze',gameId:value.analysis.game.id,simulations:10000}});expect(repeat.status()).toBe(200);const reopened=await repeat.json();expect(reopened.analysis.id).toBe(value.analysis.id);expect(reopened.analysis.result.players).toEqual(value.analysis.result.players);await page.reload();await expect(page.getByText('Home win · raw estimate',{exact:true})).toBeVisible();await expect(page.locator('.reality-table tbody tr').first()).toBeVisible();
+ const repeat=await page.evaluate(async gameId=>{const r=await fetch('/api/nba',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'analyze',gameId,simulations:10000})});return{status:r.status,data:await r.json()};},value.analysis.game.id);expect(repeat.status).toBe(200);const reopened=repeat.data;expect(reopened.analysis.id).toBe(value.analysis.id);expect(reopened.analysis.result.players).toEqual(value.analysis.result.players);await page.reload();await expect(page.getByText('Home win · raw estimate',{exact:true})).toBeVisible();await expect(page.locator('.reality-table tbody tr').first()).toBeVisible();
 });
 test('an archived public NBA analysis reopens after a full browser reload without another simulation',async({page})=>{
  test.setTimeout(120000);

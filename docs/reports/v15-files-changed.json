@@ -1,0 +1,326 @@
+{
+  "baseCommit": "c90673d378e467c6fcf6a0dfa267810bb925f9ba",
+  "selfHashExcluded": true,
+  "files": [
+    {
+      "path": ".env.example",
+      "sha256": "dcbb5c4dd8d4f8165b0a4459c76a728b663fac50f1b6c9939ce0c0a02c2ed567",
+      "bytes": 4047
+    },
+    {
+      "path": ".vercelignore",
+      "sha256": "86e5f283275145e4b1052c18fde4bbe6627b9cdaa169f19743b2f6cfa3b2eaf3",
+      "bytes": 667
+    },
+    {
+      "path": "README.md",
+      "sha256": "981de74801d853a9c095ee7a5831c23af1faa00d1ec890b739490ddb53fff2c0",
+      "bytes": 11613
+    },
+    {
+      "path": "app/api/engine/route.ts",
+      "sha256": "959c13ac716bcf9450ffddf7d9de844507594204fea5d39e52b1e9c50477dc70",
+      "bytes": 569
+    },
+    {
+      "path": "app/api/health/route.ts",
+      "sha256": "1ac1e3da683d5293f5aa91f1b2dc726db7e0223d3662b82dfb54565a4b634f0c",
+      "bytes": 3081
+    },
+    {
+      "path": "app/api/nba/route.ts",
+      "sha256": "8c43f3a2015ee6413dccd303da8ea158ee2a8cd0d15b85154903fb336c9faf66",
+      "bytes": 2895
+    },
+    {
+      "path": "app/globals.css",
+      "sha256": "7a622a432aebab629066471607e77d7fc4f96fd7fba9998bff64a74faf5768a8",
+      "bytes": 127389
+    },
+    {
+      "path": "components/BasketballResearch.tsx",
+      "sha256": "794aa7c7a410cb3ffa4a6ea895b4c127d271da7c38a9beec231611d107851fb9",
+      "bytes": 18490
+    },
+    {
+      "path": "components/EngineValidation.tsx",
+      "sha256": "495f95fd0ea4c087f609c382e310794d62846a507e36b267486911edb9b8f6db",
+      "bytes": 4872
+    },
+    {
+      "path": "components/FootballSportContext.tsx",
+      "sha256": "94d65a974f19ea9201ea5b1ce8db4a1991826d99094b6594c02daaa11a021a3a",
+      "bytes": 4950
+    },
+    {
+      "path": "components/Terminal.tsx",
+      "sha256": "e78c7876448fcfce53e4ab06f3067816af718506fb1644880887161f6a3258a3",
+      "bytes": 37294
+    },
+    {
+      "path": "docs/ENGINE_V15_REPORT.md",
+      "sha256": "4984d647b032f5c8e9fa9d897986954c42e2ee456fe94d624eb7f5274054ee62",
+      "bytes": 17032
+    },
+    {
+      "path": "docs/reports/v15-calibration.png",
+      "sha256": "bf703b9e94144fb889c544919ac0be5ae1caec85e57999935e41100d3f0f579e",
+      "bytes": 211370
+    },
+    {
+      "path": "docs/reports/v15-football-selection.json",
+      "sha256": "9c7d6aef2dcfbbfe6c0f8009633ce1427e62c597ead5c7df7e6891233bd595b9",
+      "bytes": 166190
+    },
+    {
+      "path": "docs/reports/v15-nba-selection.json",
+      "sha256": "c6453f8d35137ec98e37d26932cbea2cf5f349bb97944c45d616c5b1a832af88",
+      "bytes": 6659
+    },
+    {
+      "path": "docs/reports/v15-original-run-diagnostic.json",
+      "sha256": "9ef38c807bd0e94dd2b92baeae7ad0687d8c8cf91c468787d0848cb729acaa65",
+      "bytes": 3495
+    },
+    {
+      "path": "docs/reports/v15-overtime-optimization.json",
+      "sha256": "dce7607ae385497900a229e80638f8b5bcd26662c8bfdc5e62be824f1dea7c10",
+      "bytes": 936
+    },
+    {
+      "path": "docs/reports/v15-production-public.json",
+      "sha256": "ac5a68e33ee7c22b7d2440c52dddc3b903ed226e266801893969bab353becfc6",
+      "bytes": 3847
+    },
+    {
+      "path": "docs/reports/v15-release-verification.json",
+      "sha256": "4103c1a6ac59a6609aafb1abadd61259da0adafddaa2c4ff92a3bcf97345387b",
+      "bytes": 4268
+    },
+    {
+      "path": "docs/reports/v15-runtime-manifest.json",
+      "sha256": "e72eb0fe80dc2bd82ba75bfe91fad030129285350db6ccab7cdc694fc83845b1",
+      "bytes": 2854
+    },
+    {
+      "path": "docs/reports/v15-scale-benchmark.json",
+      "sha256": "3adcb14201d7d6b0cccf475791a2d7a33025e84a7c8a8a509c1502e111c0fa76",
+      "bytes": 14087
+    },
+    {
+      "path": "docs/reports/v15-validation.json",
+      "sha256": "b7f33ec6351c944484dbe056dfeaaccc542e7f493ff3d42ab5ad91584b0e1d9a",
+      "bytes": 305468
+    },
+    {
+      "path": "docs/screenshots/v15-nba-desktop-chromium.png",
+      "sha256": "a92bafe10b3663e1b257873ad7a9132270f7acd58e1b4d9dded2eadb74dec671",
+      "bytes": 207566
+    },
+    {
+      "path": "docs/screenshots/v15-nba-iphone-chromium.png",
+      "sha256": "1dacc97961be526870170756603ff094355fc602b5ed234c91e3a4fc9da0204f",
+      "bytes": 616136
+    },
+    {
+      "path": "docs/screenshots/v15-production-markets.png",
+      "sha256": "f1d479c9de5434f3769f6128ef9e526f9f800d44277cef3968bb61d156cea934",
+      "bytes": 116477
+    },
+    {
+      "path": "docs/screenshots/v15-production-validation.png",
+      "sha256": "37caf057f6b1a7bd09671ea0b647c8492cce5a7a1b4df70b7846c9c551f7aa4f",
+      "bytes": 103884
+    },
+    {
+      "path": "lib/cloud/assistant.ts",
+      "sha256": "3fd40a38cfa2cd7ca45e3788b4f7d74b806410ec7b5146103d395a9bd67707ba",
+      "bytes": 27282
+    },
+    {
+      "path": "lib/free-props-service.ts",
+      "sha256": "f7f9fcc7e0a45f4197334d60a4aa58b93b80e8357814fc0b1e0ec36665720e4d",
+      "bytes": 10033
+    },
+    {
+      "path": "lib/nba/assistant.ts",
+      "sha256": "1b6b3cfb8d0ce63d84a3ceecdb9966aa31a850409d1df609e0343577acb523c1",
+      "bytes": 3186
+    },
+    {
+      "path": "lib/nba/probability.ts",
+      "sha256": "c71d225c0b2c2c4b73acaf247062162b215c5fa794d71894a935d3fd5cc625b6",
+      "bytes": 1673
+    },
+    {
+      "path": "lib/nba/service.ts",
+      "sha256": "3fd775eb8e57b4f04027510ea3980b999c3af531a619d3b741e1646f133de673",
+      "bytes": 16490
+    },
+    {
+      "path": "lib/probability/automatic-props.ts",
+      "sha256": "ad1b6391a6f65e8b2e2eb2e076da92b8b0d9c29c41d63ae9ac5c0961b829a1a2",
+      "bytes": 18731
+    },
+    {
+      "path": "lib/probability/simulation-quality.ts",
+      "sha256": "18f629fdf6cf03fec77544b593b27aa9ff26b8dbfba855f5c8fd2067cf60d2d4",
+      "bytes": 1869
+    },
+    {
+      "path": "middleware.ts",
+      "sha256": "5f0b88b9af896ea4962b6a3c2b9f889fab83a49d9413075c96e719aed57fcaf3",
+      "bytes": 929
+    },
+    {
+      "path": "modeling/audit_storage.py",
+      "sha256": "7b75972e004c89882294eadb9a7c58bc4500fcef5cc38289e7ec491bfab41c30",
+      "bytes": 862
+    },
+    {
+      "path": "modeling/engine_v15_routes.py",
+      "sha256": "d0d871bb47ff051fab4c00f8e6e0fa348b4b71956cb79e673debb775bfddb02b",
+      "bytes": 6181
+    },
+    {
+      "path": "modeling/football_data_v15.py",
+      "sha256": "1b59b6d65db82f6ecd32403419dc41e58ceac319c6b106e8f3c2e653738aa37d",
+      "bytes": 13518
+    },
+    {
+      "path": "modeling/football_prop_feeds.py",
+      "sha256": "1ae35b82510600d88e6ecaa63d3dc313b46cca616757e16f3f9d5aeea237dc1e",
+      "bytes": 17749
+    },
+    {
+      "path": "modeling/football_v15.py",
+      "sha256": "7781fc3d59cd7e975e4fb2b7d2d462e70eb4d22c6efbb8f44d5a262a6a580ee9",
+      "bytes": 32277
+    },
+    {
+      "path": "modeling/football_v15_baseline.py",
+      "sha256": "ec99e52fd6dee9c9822c0fc4214e4a92a4d5637c4a572b2013fb385ae143f578",
+      "bytes": 29938
+    },
+    {
+      "path": "modeling/nba_v15.py",
+      "sha256": "6264c2124458b0ad7dc97ad936a828062542e5d1d33588b0bfd9799a82700dbe",
+      "bytes": 26629
+    },
+    {
+      "path": "modeling/nba_v15_baseline.py",
+      "sha256": "12807f1eaea86d49bd5f54ad04658cd9a41db784cecf34d79024a43039e2c769",
+      "bytes": 25560
+    },
+    {
+      "path": "modeling/requirements-research.txt",
+      "sha256": "4e6b6ed76477a40ffc634a83f132a29b1d425385e26b988c6f8cc2b8cb34be04",
+      "bytes": 39
+    },
+    {
+      "path": "modeling/service.py",
+      "sha256": "133d0507979a87e981213e54fde5a1c3deecb0ca10497346d2f25903f8679040",
+      "bytes": 13257
+    },
+    {
+      "path": "modeling/sports_data_gateway.py",
+      "sha256": "b59dc737cc082b799ce12caf1fe017ed1ea1e42c0b29fe6605362213879ad736",
+      "bytes": 6060
+    },
+    {
+      "path": "modeling/test_audit_storage.py",
+      "sha256": "2e1c9d7ba51424d9231f919aad924b02f68b8bcb37444ddd182db9d33f9aa9fe",
+      "bytes": 813
+    },
+    {
+      "path": "modeling/test_engine_v15_routes.py",
+      "sha256": "f8009fb322618edeccb1207a8ea76acadd703f8d5644608256b581e48c1169ff",
+      "bytes": 2754
+    },
+    {
+      "path": "modeling/test_engines_v15.py",
+      "sha256": "51eb7ccc6b7522b19c8c3fbf736eecbf4596d9f0b1f03cb9fa643ddc7a599e80",
+      "bytes": 5809
+    },
+    {
+      "path": "modeling/test_football_prop_feeds.py",
+      "sha256": "c7a2cdbb5663b19ea63663c4f154b5a9621441d53fbbcaff9b3587f7695216a2",
+      "bytes": 6836
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "42a5988c370aee6855d5a022912d6f806713b2200c1e7ff7c999a5f6a901f465",
+      "bytes": 203062
+    },
+    {
+      "path": "package.json",
+      "sha256": "4150a64bc511c67358c7f87d5a6283db8d92b61b0501124200aa21079f34b3bc",
+      "bytes": 2703
+    },
+    {
+      "path": "public/sw.js",
+      "sha256": "7d434d7df9a2e4e5a3258bf4710eb54aa9d500163eaaeeb6c2a78879293b04b0",
+      "bytes": 2361
+    },
+    {
+      "path": "scripts/backtest-engine-v15.py",
+      "sha256": "4eba1bf395ebd821bfc77c88b990916cf879a081d3bc3920a4f1b4f619abbea0",
+      "bytes": 16118
+    },
+    {
+      "path": "scripts/backtest-nba-v15.py",
+      "sha256": "f739bac633950497b4248253ddb72b7710cca10bee56eead2093f42d116f5dfe",
+      "bytes": 9057
+    },
+    {
+      "path": "scripts/benchmark-engines-v15.py",
+      "sha256": "857d0f3d5b678e3193949e13e50573dd850bb76ed7d851c85542b18e5d74a4bc",
+      "bytes": 3021
+    },
+    {
+      "path": "scripts/diagnose-football-run.py",
+      "sha256": "a42f84b8ff7c82dd2261cd6e11fad8136059b2a640d66193ddcfa2738a931a72",
+      "bytes": 4472
+    },
+    {
+      "path": "scripts/download-engine-v15-data.py",
+      "sha256": "f89ae8a4684f79bbaff2f75e005d7695b8945ba72b0b922b0ac061b1ffd5d8d2",
+      "bytes": 1279
+    },
+    {
+      "path": "scripts/report-engines-v15.py",
+      "sha256": "ac096d041d93912c4a529ecba06cc1ba1fc546b75c574ba4fd849815543f4a9b",
+      "bytes": 9129
+    },
+    {
+      "path": "scripts/verify-v15-production.mjs",
+      "sha256": "a8ef765eb06114ddda7b6fcd3bbb25e8a4322aeb2311d9eae8908f0c6811822a",
+      "bytes": 5446
+    },
+    {
+      "path": "tests/nba-route.test.ts",
+      "sha256": "354cee6c57ec0b04a4022ce8745d09dcd46e154430409d172a77a70d0a603e11",
+      "bytes": 2075
+    },
+    {
+      "path": "tests/nba.e2e.spec.ts",
+      "sha256": "d67c4f2a141fec38045dd221b2960929cd9adc4bf45f2cb71f62cb2f1f74b607",
+      "bytes": 5057
+    },
+    {
+      "path": "tests/nba.test.ts",
+      "sha256": "f1eedc11541a4cb88f0d0c07a76ba397f10037952cb8b6d14d32603f7bb8882f",
+      "bytes": 4179
+    },
+    {
+      "path": "tests/pwa.test.ts",
+      "sha256": "1e3b2b6d12877a10a646750cc81a700c7f0dbd095cd1968c7697544c9082628d",
+      "bytes": 5340
+    },
+    {
+      "path": "tests/simulation-quality.test.ts",
+      "sha256": "6a750bd74053e6dec665511bedc750d3d4c7f8c7abfc58200e6b0b78f204abc8",
+      "bytes": 1425
+    }
+  ]
+}

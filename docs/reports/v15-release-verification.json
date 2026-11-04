@@ -1,0 +1,90 @@
+{
+  "status": "passed_with_documented_model_and_feed_limitations",
+  "verifiedAt": "2026-11-04T18:43:40.106479+00:00",
+  "liveUrl": "https://gridiron-ai-gray.vercel.app",
+  "githubRepository": "https://github.com/NBDSunsetYT/gridiron-ai",
+  "sourceCommit": "d85034a662d39638064c66a357971591db27eb15",
+  "vercelDeployment": "dpl_2TDamrZokxhF7q3LdrgHQ6Gb5ztE",
+  "renderService": "srv-dbj680s9v7es7397nv2g",
+  "renderGatewayCommit": "4049df71289fe697e5bd90f5e3ee1c06cbec8750",
+  "renderDeploy": "dep-dblnghutlv9c73c9hpg0",
+  "supabaseProject": "qdtdjbapdipopncklsdb",
+  "tests": {
+    "typescript": {
+      "passed": 768,
+      "files": 106
+    },
+    "python": {
+      "passed": 218
+    },
+    "localPostgresRegression": "passed: all13 scripts including ledger/RLS/cache/learning",
+    "localProductionBuildRegressionBrowser": {
+      "passed": 78,
+      "viewports": [
+        "desktop Chromium",
+        "iPhone13 Chromium"
+      ]
+    },
+    "liveProductionBrowser": {
+      "passed": 8,
+      "viewports": [
+        "desktop Chromium",
+        "iPhone13 Chromium"
+      ],
+      "includes": "Real NBA Analyze Game, distributions, raw custom thresholds, reload/reopen, guest private-access denial"
+    },
+    "scale": {
+      "status": "passed",
+      "sports": [
+        "NFL",
+        "CFB",
+        "NBA"
+      ],
+      "counts": [
+        10000,
+        50000,
+        100000
+      ],
+      "scope": "local real historical inputs; not live100000-game hosting verification"
+    },
+    "productionPublicWorkflow": "passed; see v15-production-public.json"
+  },
+  "historicalAudit": {
+    "footballGames": 500,
+    "nbaGames": 40,
+    "forecastRuns": 570,
+    "completeSimulatedGames": 5700000,
+    "strictPregameQualifiedGames": 0,
+    "promotedModels": 0
+  },
+  "dataIntegrity": {
+    "financialTablesRowHashesUnchanged": true,
+    "existingResearchDeleted": 0,
+    "schemaMigrationsApplied": 0,
+    "newTablesCreated": 0,
+    "actualSharedResearchWritesAndSeparateRequestRetrieval": "passed",
+    "productionRLSOwnerRuleVerified": "auth.uid()=user_id",
+    "privateNbaSaveWithRealSignedInUser": "not run; no isolated confirmed production QA credentials available"
+  },
+  "monitoring": {
+    "vercelErrorLogScan": "No error/fatal entries found in15-minute deployment-scoped window after production verification",
+    "renderPlan": "existing free, one data-gateway instance",
+    "renderCpuAt1835Cores": 0.0058082035,
+    "renderMemoryAt1835Bytes": 167354370,
+    "billingSavingsMeasured": false,
+    "localHistoricalAuditUsedProductionCompute": false
+  },
+  "limitations": [
+    "No replacement full-game football model was promoted: final-test score errors did not beat the simple baseline.",
+    "NBA remains experimental and uncalibrated; verified current lineup, causal injury, rest/back-to-back and blowout effects remain incomplete.",
+    "Actual NBA PropLine prices are available, but the inspected responses use NBA-native identities without verified ESPN player/event crosswalks. Exact model-to-price joins remain withheld. Independent hypothetical-threshold probabilities work.",
+    "No verified historical prop lines/settlement fees were available for line-based historical win-rate or market-superiority claims.",
+    "100000-game runs passed locally; larger live serverless runs can reach configured duration limits and are not claimed production-tested.",
+    "NBA production automatic postgame learning/promotion and durable background orchestration are incomplete; existing NFL/CFB learning safeguards are preserved.",
+    "Live OpenAI generation remains unavailable because no OpenAI credential is configured. Stored NBA retrieval tools are implemented; no live LLM response is claimed.",
+    "MongoDB/R2 optional app credentials are not configured; no new paid resources were created.",
+    "Authenticated NBA save/reopen across real production accounts was not tested. Shared simulation persistence and guest denial were tested; local ownership/ledger regressions passed.",
+    "Vercel Git-source repository access was unavailable; the verified release used authorized content-addressed source uploads on the existing project.",
+    "Chromium iPhone viewport and PWA metadata were tested. Physical iPhone installation was not performed."
+  ]
+}
