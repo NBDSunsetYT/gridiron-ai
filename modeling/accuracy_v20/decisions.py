@@ -3,7 +3,7 @@ def review(league,sport,family):
     primary='rebounds' if sport=='NBA' else 'passingYards';candidate=league['phaseBenchmarks']['validation'].get(primary,{}).get(family);reasons=[]
     if not candidate:return {'status':'not_evaluated','reasons':['No later-window paired validation results'],'productionPromotion':False}
     if candidate['games']<200:reasons.append('Fewer than 200 independent matched validation games')
-    delta=candidate['pairedMAEDelta']
+    delta=candidate.get('primaryMAEDelta',candidate['pairedMAEDelta'])
     if not delta or delta['bootstrap95'][1]>=0:reasons.append('Game-clustered 95% interval does not establish lower MAE')
     if candidate['metrics']['mae']>.99*candidate['baseline']['mae']:reasons.append('Primary MAE improvement is less than predefined 1%')
     if len([w for w in league['walkForward'] if w['phase']=='validation'])<3:reasons.append('Fewer than three chronological validation windows')

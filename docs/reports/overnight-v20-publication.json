@@ -1,0 +1,20 @@
+{
+  "repository": "NBDSunsetYT/gridiron-ai",
+  "branch": "research/overnight-v20",
+  "productionBranch": "main",
+  "productionHeadAtStart": "3ac16f9710e330b2d486097483264293c5a59336",
+  "productionPromotions": 0,
+  "checkpoints": [
+    {
+      "remoteCommit": "8fbaa8653cdf4fd1b525529c107de480ab522f2a",
+      "localCommit": "bf2250d65554b1cb0a81381eed8c3093116b4501",
+      "tree": "555e180e467e1df6f622efc9f0c857a8bba55126"
+    },
+    {
+      "remoteCommit": "6a9d9f90c581c5d9a9d55661d6d56a7cce78c878",
+      "localCommit": "40c3ea9311322cc828eb6a1af42f3e793f266722",
+      "tree": "7994241add51b4040086fdfb4c2986fa958a2b6e"
+    }
+  ],
+  "method": "Committed file bytes uploaded using the authorized GitHub connector. Blob and full tree SHAs verified against local Git; research ref updated with an expected-head lease. Research artifacts remain private; only source, protocols and aggregate reports published."
+}

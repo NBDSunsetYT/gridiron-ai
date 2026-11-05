@@ -15,4 +15,10 @@ describe('V20 accuracy-first cached research boundary',()=>{
  it('preserves and exposes the quarantined CFB failure',()=>{
   const q=report.quarantined.find(q=>q.eventId==='cfb:espn:401643803');expect(q?.flags).toContain('extreme_expected_team_score');expect(q?.productionPublished).toBe(false);
  });
+ it('keeps the locked fresh confirmation separate and does not declare superiority',()=>{
+  expect(report.forwardConfirmation.noFurtherTuning).toBe(true);expect(report.forwardConfirmation.productionPromotion).toBe(false);
+  expect(report.forwardConfirmation.leagues.NBA.gradedGames).toBe(75);expect(report.forwardConfirmation.leagues.NFL.gradedGames).toBe(7);expect(report.forwardConfirmation.leagues.CFB.gradedGames).toBe(0);
+  expect(report.forwardConfirmation.leagues.NBA.primary.primaryMAEDelta?.bootstrap95[1]).toBeGreaterThan(0);expect(report.forwardConfirmation.leagues.NFL.primary.primaryMAEDelta?.bootstrap95[1]).toBeGreaterThan(0);
+  expect(report.forwardConfirmation.receipt.newSimulations).toBe(0);expect(report.independenceAudit.overlapWithSelectedV20Games).toEqual([]);
+ });
 });
