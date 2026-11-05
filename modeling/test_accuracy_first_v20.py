@@ -84,4 +84,35 @@ class NBAOutcomeTests(unittest.TestCase):
  def test_unmapped_nonzero_categories_are_not_fabricated_as_player_zeros(self):
   from .accuracy_v20.outcomes import normalize_nba_final
   d=nba_final_fixture();d['header']['competitions'][0]['competitors'][0]['score']='32';d['boxscore']['players'][0]['statistics'][0]['athletes'].append({'athlete':{'shortName':'UNMAPPED_SYNTHETIC'},'didNotPlay':False,'stats':['--','2','0-0','0-0','2-2','0','0','0','0','0','0','0','0']});box=normalize_nba_final(d,'nba:espn:99','1','2');self.assertNotIn('points',box['supportedStatisticsByTeam']['1']);self.assertIn('rebounds',box['supportedStatisticsByTeam']['1']);self.assertEqual(sum(p['stats']['points'] for p in box['players'].values() if p['team']=='1'),30)
+class MembershipTests(unittest.TestCase):
+ def fact(self,team='new',available='2024-01-01T10:00:00Z'):return {'sport':'NBA','playerId':'nba:espn:1','teamId':team,'eventIds':['g'],'availableAt':available,'source':'https://example.com/synthetic-transaction','sourceVersion':'fixture-v1','sourceVerified':True}
+ def test_exact_prior_transaction_resolves_team_without_assuming_active(self):
+  from .accuracy_v20.membership import resolve_membership
+  r=resolve_membership('NBA','g','1',{'old','new'},'2024-01-01T12:00:00Z',[self.fact()]);self.assertEqual(r['teamId'],'new');self.assertEqual(r['availability'],'unknown')
+ def test_future_or_wrong_player_fact_cannot_resolve(self):
+  from .accuracy_v20.membership import resolve_membership
+  self.assertEqual(resolve_membership('NBA','g','1',{'old','new'},'2024-01-01T12:00:00Z',[self.fact(available='2024-01-01T13:00:00Z')])['status'],'ambiguous');self.assertEqual(resolve_membership('NBA','g','2',{'old','new'},'2024-01-01T12:00:00Z',[self.fact()])['status'],'ambiguous')
+ def test_conflicting_ownership_is_withheld(self):
+  from .accuracy_v20.membership import resolve_membership
+  self.assertEqual(resolve_membership('NBA','g','1',{'old','new'},'2024-01-01T12:00:00Z',[self.fact('old'),self.fact('new')])['status'],'conflicting_sources')
+class HoldoutTests(unittest.TestCase):
+ def test_exposed_game_cannot_be_called_untouched(self):
+  from .accuracy_v20.holdouts import exposed,assert_untouched
+  notice={'excludeFromFutureUntouchedClaims':{'sport':'NBA','localDate':'2026-11-04','teamIds':['8','20']}};g={'id':'SYNTHETIC','sport':'NBA','at':'2026-11-05T00:30:00Z','home':'8','away':'20'};self.assertTrue(exposed(g,[notice]))
+  with self.assertRaises(ValueError):assert_untouched([g],set(),[notice])
+  g={**g,'at':'2026-02-01T00:30:00Z'};self.assertFalse(exposed(g,[notice]));self.assertFalse(assert_untouched([g],set(),[notice])['graded'])
+class ConditionalPersonnelTests(unittest.TestCase):
+ def test_known_out_does_not_suppress_a_supported_unweighted_backup_scenario(self):
+  from .test_engines_v15 import fixture
+  from .football_v15 import fit_football
+  from .reconstruction_v19.football_fit import enrich
+  from .accuracy_v20.personnel import conditional_quarterbacks
+  from .overnight_v20.football import participant_roles
+  rows=fixture()
+  for row in rows:
+   if row['kind'] in ('pass','sack') and row['clock']>=2800:row['qb']=row['o']+':qb1'
+  m=enrich(fit_football(rows,'NFL','2024-02-01T00:00:00Z','SYNTHETIC'),rows);m['forecastSeason']=2024;m['gameSeasons']={gid:2024 for h in m['histories'].values() for gid in h};m['qbContinuity']={'alpha':4,'beta':1,'byTeam':{}};team='fixture:0';last=max(m['histories'][team].values(),key=lambda h:h['at']);out=max(last['qb'],key=last['qb'].get);lineups={team:{'inactive':[out],'verified':False,'injuriesComplete':False}}
+  with self.assertRaisesRegex(ValueError,'starting quarterback'):participant_roles(m,team,lineups[team],'2024-02-02T00:00:00Z')
+  r=conditional_quarterbacks(m,['fixture:0','fixture:1'],lineups,'2024-02-02T00:00:00Z');self.assertEqual(r['status'],'conditional_scenarios_ready');self.assertFalse(r['unconditionalProbabilityAvailable']);self.assertEqual(r['simulationsStarted'],0)
+  for s in r['scenarios']:self.assertNotEqual(s['quarterbacks'][team],out);self.assertIsNone(s['availabilityWeight']);self.assertFalse(s['lineups'][team]['verified'])
 if __name__=='__main__':unittest.main()
