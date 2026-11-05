@@ -1,0 +1,9 @@
+import {test,expect} from '@playwright/test';
+test('accuracy-first research is mobile readable, evidence grounded and computation free',async({page,request},info)=>{
+ const requests:string[]=[],errors:string[]=[];page.on('request',r=>{if(r.method()!=='GET'||new URL(r.url()).pathname.startsWith('/api/'))requests.push(r.method()+' '+new URL(r.url()).pathname);});page.on('pageerror',e=>errors.push(e.message));
+ await page.goto('/research/v20');await expect(page.getByRole('heading',{name:'Evidence before more trials.'})).toBeVisible();await expect(page.getByRole('region',{name:'Point-in-time evidence'})).toContainText('300 unconditional forecasts withheld');await expect(page.getByRole('region',{name:'Point-in-time evidence'})).toContainText('141.4');
+ await page.getByRole('button',{name:'benchmarks',exact:true}).click();await expect(page.getByRole('region',{name:'Projection benchmark comparison'})).toContainText('No later validation results');await page.getByLabel('Research league').selectOption('NFL');await expect(page.getByRole('region',{name:'Projection benchmark comparison'})).toContainText('opponent adjusted rolling');
+ await page.getByLabel('Research league').selectOption('NBA');await page.getByRole('button',{name:'attribution',exact:true}).click();await expect(page.getByRole('region',{name:'Error attribution'})).toContainText('playing time fraction');await page.getByRole('button',{name:'distributions',exact:true}).click();await expect(page.getByRole('img',{name:'Raw moneyline reliability diagram'}).first()).toBeVisible();
+ expect(requests).toEqual([]);expect(errors).toEqual([]);expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
+ const r=await request.get('/api/engine?view=accuracyFirst');expect(r.status()).toBe(200);expect((await r.json()).reservedFinalOpened).toBe(false);await page.screenshot({path:`artifacts/overnight-v20/accuracy-first-${info.project.name}.png`,fullPage:true});
+});

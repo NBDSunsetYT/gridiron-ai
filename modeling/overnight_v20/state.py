@@ -20,7 +20,10 @@ def process_identity(pid):
     try:return {'pid':pid,'boot':Path('/proc/sys/kernel/random/boot_id').read_text().strip(),'startTicks':Path('/proc/'+str(pid)+'/stat').read_text().split()[21]}
     except (FileNotFoundError,ProcessLookupError):return None
 
-def alive(identity):return identity is not None and process_identity(identity['pid'])==identity
+def alive(identity):
+    if identity is None or process_identity(identity['pid'])!=identity:return False
+    try:return Path('/proc/'+str(identity['pid'])+'/stat').read_text().split()[2] not in ('Z','X')
+    except FileNotFoundError:return False
 
 class Campaign:
     def __init__(self,folder,maximum_seconds=36000,cpu_budget=36000):
@@ -41,11 +44,22 @@ class Campaign:
         for previous in state['sessions']:
             if previous['status']=='active':
                 if alive(previous['identity']):raise RuntimeError('Another live session exists')
-                previous['status']='interrupted';state['unobservedActiveUpperBoundSeconds']+=10
+                previous['status']='interrupted';gap=max(10.,(datetime.now(timezone.utc)-datetime.fromisoformat(previous['lastHeartbeatAt'])).total_seconds());state['unobservedActiveUpperBoundSeconds']+=gap;previous['unobservedIntervalReservedSeconds']=gap
+        for key,job in state['jobs'].items():
+            if job['status']=='running' and not alive(job['identity']):
+                job['status']='interrupted';state['interruptedCpuReservedSeconds']+=job['cpuReservation'];self.event('interrupted_job_reserved',job=key,cpuSeconds=job['cpuReservation'])
         self.session=digest({'started':now(),'identity':process_identity(os.getpid())})[:20];self.tick=time.monotonic();state['sessions'].append({'id':self.session,'identity':process_identity(os.getpid()),'startedAt':now(),'status':'active','lastHeartbeatAt':now()});state['status']='running';atomic(self.path/'state.json',state);self.event('session_started',session=self.session)
     def heartbeat(self):
-        t=time.monotonic();s=self.state();delta=t-self.tick;self.tick=t;s['measuredActiveSeconds']+=delta
-        session=next(x for x in s['sessions'] if x['id']==self.session);session['lastHeartbeatAt']=now();session['activeSeconds']=session.get('activeSeconds',0.)+delta;atomic(self.path/'state.json',s);return s
+        t=time.monotonic();s=self.state();delta=max(0.,t-self.tick);self.tick=t
+        # Suspension cannot be distinguished from a long scheduler pause using
+        # monotonic time alone. Do not report an unobserved gap as active work;
+        # reserve it conservatively against the campaign cap instead.
+        if delta>20:
+            observed=5.;unknown=delta-observed;s['unobservedActiveUpperBoundSeconds']+=unknown
+            self.event('heartbeat_gap',observedSeconds=observed,unobservedUpperBoundSeconds=unknown)
+        else:observed=delta
+        s['measuredActiveSeconds']+=observed
+        session=next(x for x in s['sessions'] if x['id']==self.session);session['lastHeartbeatAt']=now();session['activeSeconds']=session.get('activeSeconds',0.)+observed;atomic(self.path/'state.json',s);return s
     def may_start(self,cpu_reservation):
         s=self.state();used=s['measuredActiveSeconds']+s['unobservedActiveUpperBoundSeconds']+s.get('setupSafetyChargeSeconds',0);reserved=sum(j.get('cpuReservation',0) for j in s['jobs'].values() if j['status']=='running')
         if used+10>=self.maximum:return False,'maximum_cumulative_active_runtime'

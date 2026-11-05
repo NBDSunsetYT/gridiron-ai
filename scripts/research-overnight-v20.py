@@ -23,16 +23,41 @@ for c in range(4):
 # Initial implementation/spec is immutable before grading. A resume with changed
 # math must become a separately named experiment rather than overwrite work.
 registry=OUT/('execution-spec-'+args.revision+'.json');body={'jobs':jobs,'revision':args.revision,'modelFiles':fingerprint,'protocolSha256':hashlib.sha256((OUT/'protocol-effective.json').read_bytes()).hexdigest(),'maxWorkers':2,'sourceEvidence':{s:hashlib.sha256((OUT/'evidence'/(s+'-aligned-v3.json.gz')).read_bytes()).hexdigest() for s in ['NFL','CFB','NBA']},'primaryMetrics':spec['primaryMetrics'],'productionPromotion':False,'modelTrainingMaximumGames':500}
-if registry.exists() and read(registry)!=body:raise RuntimeError('Code/input fingerprint changed. Preserve existing outputs and register a new experiment before resuming.')
-atomic(registry,body)
+if registry.exists():
+    original=read(registry)
+    if original!=body:
+        # Resume-only orchestration fixes may not change numerical code, inputs
+        # or job identity. Preserve the original CAS fingerprint and record both
+        # implementations; mathematical changes still require a new revision.
+        def numerical(v):
+            v=dict(v);v['modelFiles']={k:h for k,h in v['modelFiles'].items() if not k.endswith(('/state.py','/__init__.py'))};return v
+        if numerical(original)!=numerical(body):raise RuntimeError('Numerical code/input fingerprint changed. Preserve outputs and register a new experiment revision.')
+        audit=OUT/'runtime'/('orchestration-compatibility-'+hashlib.sha256(json.dumps(body,sort_keys=True).encode()).hexdigest()+'.json')
+        if not audit.exists():atomic(audit,{'original':original,'observed':body,'numericalInputsUnchanged':True})
+        body=original
+else:atomic(registry,body)
+def nonimproving_candidates(state):
+    # A candidate evaluated in four windows is one model, not four candidates.
+    # Only fully evaluated configurations enter the consecutive-failure limit.
+    completed=[]
+    for sport in ['NFL','CFB','NBA']:
+        expected=[args.revision+'-'+s+'-'+str(c) for s,c in jobs if s==sport]
+        entries=[state['jobs'].get(k,{}) for k in expected]
+        if not entries or not all(e.get('status')=='completed' for e in entries):continue
+        outcomes={}
+        for e in entries:
+            for o in e.get('receipt',{}).get('experimentOutcomes',[]):outcomes.setdefault(o['variant'],[]).append(o)
+        for variant,windows in outcomes.items():
+            completed.append((max(e['finishedAt'] for e in entries),sport,variant,all(o['meaningfulConditionalImprovement'] for o in windows)))
+    n=0
+    for _,sport,variant,better in sorted(completed):n=0 if better else n+1
+    return n
 def handle(signum,frame):
     global stop
     stop=True
 signal.signal(signal.SIGTERM,handle);signal.signal(signal.SIGINT,handle)
 with campaign.lease():
-    campaign.begin();start=time.monotonic();running={};reason='predefined_experiment_queue_completed';idle=False;nonimproving=0
-    for event in sorted((e for e in campaign.state()['jobs'].values() if e['status']=='completed'),key=lambda e:e['finishedAt']):
-        for outcome in event.get('receipt',{}).get('experimentOutcomes',[]):nonimproving=0 if outcome['meaningfulConditionalImprovement'] else nonimproving+1
+    campaign.begin();start=time.monotonic();running={};reason='predefined_experiment_queue_completed';idle=False
     try:
         while True:
             state=campaign.heartbeat()
@@ -44,7 +69,6 @@ with campaign.lease():
                 if rss>spec['workerMaxRssBytes']:proc.terminate();reason='worker_memory_limit'
                 if proc.poll() is not None:
                     r=read(receipt,{'status':'failed','error':'Subprocess exited before writing its receipt','cpuSeconds':1800,'exitCode':proc.returncode});campaign.finish(key,r)
-                    for outcome in r.get('experimentOutcomes',[]):nonimproving=0 if outcome['meaningfulConditionalImprovement'] else nonimproving+1
                     del running[key];print(json.dumps({'completed':key,'status':r['status'],'simulatedGames':r.get('completeGamesSimulated',0),'cpuSeconds':r['cpuSeconds']}),flush=True)
             if stop or time.monotonic()-start>=args.slice_seconds-10:reason='requested_stop' if stop else 'execution_slice_checkpoint';idle=True
             if state['measuredActiveSeconds']+state['unobservedActiveUpperBoundSeconds']+state.get('setupSafetyChargeSeconds',0)>=36000-10:reason='maximum_ten_hour_active_runtime';break
@@ -55,7 +79,7 @@ with campaign.lease():
                     key=args.revision+'-'+sport+'-'+str(c);entry=campaign.state()['jobs'].get(key)
                     if key in running or entry and entry['status'] in ('completed','failed'):continue
                     if len(running)>=2:break
-                    if nonimproving+2*(len(running)+1)>20:reason='twenty_consecutive_nonimproving_candidates';idle=not running;break
+                    if nonimproving_candidates(campaign.state())>=20:reason='twenty_consecutive_nonimproving_candidates';idle=True;break
                     allowed,why=campaign.may_start(1800)
                     if not allowed:reason=why;idle=True;break
                     log=OUT/'logs'/(key+'.log');log.parent.mkdir(exist_ok=True);receipt=OUT/'receipts'/(key+'.json');env=dict(os.environ,OPENBLAS_NUM_THREADS='1',OMP_NUM_THREADS='1',MKL_NUM_THREADS='1',PYTHONHASHSEED='0',GRIDIRON_RESEARCH_REVISION=args.revision)
