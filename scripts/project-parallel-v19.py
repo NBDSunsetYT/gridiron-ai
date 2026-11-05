@@ -13,7 +13,10 @@ from modeling.reconstruction_v19.runtime import local_only
 OUT=ROOT/'artifacts/parallel-v19'
 
 def main():
-    local_only();resource.setrlimit(resource.RLIMIT_CPU,(180,182));start=time.process_time();p=json.load((OUT/'protocol.json').open());report={}
+    local_only()
+    if (OUT/'projection-results.json').exists():
+        print(json.dumps({'status':'immutable_projection_campaign_complete','newTrainingRuns':0}));return
+    resource.setrlimit(resource.RLIMIT_CPU,(180,182));start=time.process_time();p=json.load((OUT/'protocol.json').open());report={}
     for sport in ['NFL','CFB','NBA']:
         end=max(g['at'] for g in p['selection'][sport])[:10]+'T23:59:59+00:00';rows,games=build_dataset(sport,end);selected={g['id']:g for g in p['selection'][sport]};valid=[r for r in rows if r['gameId'] in selected];models=pickle.load((ROOT/'artifacts/structural-v18'/(sport+'-projection-models.pickle')).open('rb'));groups=defaultdict(list)
         for r in valid:groups[(r['player']=='__team__',r['stat'])].append(r)

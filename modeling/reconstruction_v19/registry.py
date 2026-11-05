@@ -53,7 +53,7 @@ class Registry:
         with self.locked():
             if self.state()[slot]['model']!=expected_champion:raise ValueError('Champion changed; re-evaluation required')
             reasons=promotion_reasons(result,gate)
-            if not allow_promotion:reasons.append('research_only_no_production_authorization')
+            if not allow_promotion:reasons.append('research_candidate_not_enabled_for_live_promotion')
             return self._append({'kind':'reject' if reasons else 'promote','slot':slot,'model':model,'previous':expected_champion,'result':result,'reasons':reasons})
     def rollback(self,slot,target,expected_champion):
         with self.locked():

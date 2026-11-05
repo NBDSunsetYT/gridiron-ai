@@ -46,7 +46,13 @@ def lineup_for(g,contexts,model):
     return result
 
 def main():
-    local_only();protocol=read(OUT/'protocol.json');plan=read(OUT/'compute-plan.json');projection=read(OUT/'projection-results.json');prior_cpu=projection['cpuSeconds'];budget=max(1,int(protocol['maxCpuSeconds']-prior_cpu));resource.setrlimit(resource.RLIMIT_CPU,(budget,budget+2));started=time.monotonic();cpu=time.process_time()
+    local_only()
+    if (OUT/'run-results.json').exists():
+        cached=read(OUT/'run-results.json')
+        for run in cached['runs']:
+            if sha(ROOT/run['forecastPath'])!=run['forecastSha256']:raise ValueError('Frozen forecast checksum changed')
+        print(json.dumps({'status':'immutable_campaign_complete','newRuns':0,'results':'artifacts/parallel-v19/run-results.json'}));return
+    protocol=read(OUT/'protocol.json');plan=read(OUT/'compute-plan.json');projection=read(OUT/'projection-results.json');prior_cpu=projection['cpuSeconds'];budget=max(1,int(protocol['maxCpuSeconds']-prior_cpu));resource.setrlimit(resource.RLIMIT_CPU,(budget,budget+2));started=time.monotonic();cpu=time.process_time()
     for item in protocol['sourceFiles']:
         if sha(ROOT/item['path'])!=item['sha256']:raise ValueError('Frozen source changed')
     evidence=read(OUT/'evidence.json.gz');contexts={s:{c['eventId']:c for c in cs} for s,cs in evidence['contexts'].items()};raw={s:archives(s) for s in ['NFL','CFB','NBA']};actual={s:{g['id']:g for g in packets(s)} for s in raw};selected={}

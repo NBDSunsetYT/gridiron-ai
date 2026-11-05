@@ -11,6 +11,7 @@ from .football_fit import component
 from .evidence import aware
 
 def estimate(rows,games,cutoff):
+    if any(aware(r['at'])>=aware(cutoff) for r in rows):raise ValueError('Future rows cannot enter the training holdout')
     middle=aware(cutoff)-timedelta(days=28);core_ids={gid for gid,g in games.items() if aware(g['lastObservedAt'])+timedelta(hours=6)<middle};test_ids={gid for gid,g in games.items() if aware(g['firstObservedAt'])>=middle and aware(g['lastObservedAt'])+timedelta(hours=6)<aware(cutoff)};core=[r for r in rows if r['game'] in core_ids and r['kind'] in ('pass','sack')];held=[r for r in rows if r['game'] in test_ids and r['kind'] in ('pass','sack')]
     if len(core)<1000 or len(held)<500:return {'sd':0.,'status':'insufficient_earlier_training_holdout','corePlays':len(core),'heldoutPlays':len(held)}
     teams=sorted({r[k] for r in core for k in ('o','d')});model=component(core,[0 if r['kind']=='sack' else 1 if r['int'] else 3 if r['complete'] else 2 for r in core],teams,middle.isoformat(),[r['qb'] for r in core]);x=numeric(*[np.array([r[k] for r in held]) for k in ('down','distance','field','clock','script','home')]);probs=Predictor(model).probabilities(x,np.array([r['o'] for r in held]),np.array([r['d'] for r in held]),np.array([r['qb'] for r in held]));ps=probs[:,model['classes'].index(3)];groups=defaultdict(lambda:np.zeros(3))

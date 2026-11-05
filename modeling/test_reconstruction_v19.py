@@ -107,4 +107,71 @@ class DataRepairTests(unittest.TestCase):
             for team,dist in b['teamDistributions'].items():
                 roles=b['participantAssumptions'][team];pool={roles['quarterback'],*roles['receivers'],*roles['runners']};adjust=b['teamStatisticAdjustments'].get(team,{}).get('rushingYards',{}).get('mean',0);self.assertAlmostEqual(dist['rushingYards']['mean'],sum(b['players'][p]['rushingYards']['mean'] for p in pool)+adjust)
 
+class PersonnelPreflightTests(unittest.TestCase):
+    def test_projected_vs_recent_starter_conflict_requires_unweighted_scenarios(self):
+        from .test_engines_v15 import fixture
+        from .football_v15 import fit_football
+        from .reconstruction_v19.personnel import availability_plan
+        rows=fixture();seen=set()
+        for row in rows:
+            if row.get('kind')=='pass' and row['game'] not in seen:seen.add(row['game']);row['qb']=row['o']+':qb1'
+        m=fit_football(rows,'NFL','2024-02-01T00:00:00Z','SYNTHETIC');plan=availability_plan(m,'fixture:0','2024-02-02T00:00:00Z',{'quarterback':'fixture:0:qb1','projectedSourceVerified':True,'availableAt':'2024-02-01T00:00:00Z','source':'https://example.com/SYNTHETIC'})
+        self.assertEqual(plan['status'],'unweighted_qb_scenarios');self.assertFalse(plan['publishUnconditionalProbability']);self.assertTrue(all(s['weight'] is None for s in plan['scenarios']));self.assertEqual(len(plan['scenarios']),2)
+
+class NCAAStatCreditTests(unittest.TestCase):
+    def test_observed_kneels_credit_ncaa_team_not_quarterback(self):
+        from .test_engines_v15 import fixture
+        from .football_v15 import fit_football
+        from .reconstruction_v19.football_fit import enrich
+        from .reconstruction_v19 import football_rules
+        from .iterative_learning import digest
+        rows=fixture('CFB');kneels=[]
+        for r in rows:
+            if r.get('kind')=='pass' and r.get('down')==1:
+                kneels.append({**r,'kind':'kneel','clock':60,'script':14,'yards':-1,'elapsed':40,'runner':r['qb']})
+        rows+=kneels;m=enrich(fit_football(rows,'CFB','2024-02-01T00:00:00Z','SYNTHETIC'),rows);m['version']=football_rules.VERSION;m['sha256']=digest({k:v for k,v in m.items() if k!='sha256'});f=football_rules.simulate_football(m,'cfb:fixture:0','cfb:fixture:1','2024-02-02T00:00:00Z',1000,19,representative_games=0)
+        self.assertGreater(sum(ss['carries']['mean'] for ss in f['teamStatisticAdjustments'].values()),0)
+        for team,ss in f['teamStatisticAdjustments'].items():self.assertAlmostEqual(ss['rushingYards']['mean'],-ss['carries']['mean'])
+        self.assertFalse(any(p.startswith('team-stat:') for p in f['players']))
+
+class OfficialOutcomeTests(unittest.TestCase):
+    def box(self):
+        return {'header':{'id':'1','competitions':[{'date':'2025-01-01T18:00:00Z','status':{'type':{'completed':True}},'competitors':[{'homeAway':'home','team':{'id':'a'},'score':'7'},{'homeAway':'away','team':{'id':'b'},'score':'0'}]}]},'boxscore':{'players':[{'team':{'id':t},'statistics':[{'name':'passing','labels':['C/ATT','YDS','TD','INT'],'athletes':[{'athlete':{'id':pid,'displayName':'SYNTHETIC'},'stats':['1/2','10','1','0']}]},{'name':'receiving','labels':['REC','YDS','TD'],'athletes':[{'athlete':{'id':pid,'displayName':'SYNTHETIC'},'stats':['1','10','1']}]}]} for t,pid in [('a','11'),('b','12')]]}}
+    def test_identity_and_final_state_required(self):
+        from .reconstruction_v19.outcomes import normalize_box
+        b=self.box();normalize_box(b,'CFB','cfb:espn:1','cfb:espn:a','cfb:espn:b')
+        with self.assertRaises(ValueError):normalize_box(b,'CFB','cfb:espn:2','cfb:espn:a','cfb:espn:b')
+        b['header']['competitions'][0]['status']['type']['completed']=False
+        with self.assertRaises(ValueError):normalize_box(b,'CFB','cfb:espn:1','cfb:espn:a','cfb:espn:b')
+    def test_complete_count_zero_is_not_health_and_missing_stat_withheld(self):
+        from .reconstruction_v19.outcomes import normalize_box,player_outcome
+        b=normalize_box(self.box(),'CFB','cfb:espn:1','cfb:espn:a','cfb:espn:b');zero,reason=player_outcome(b,'cfb:espn:absent','cfb:espn:a','receptions');self.assertEqual(zero,0);self.assertIn('not_DNP_or_injury',reason);self.assertIsNone(player_outcome(b,'cfb:espn:11','cfb:espn:a','targets')[0]);self.assertIsNone(player_outcome(b,'cfb:espn:11','cfb:espn:b','receptions')[0])
+
+class HeldoutTrainingTests(unittest.TestCase):
+    def test_future_training_rows_are_rejected_before_fitting(self):
+        from .reconstruction_v19.oof_variance import estimate
+        with self.assertRaises(ValueError):estimate([{'at':'2025-02-01T00:00:00Z'}],{},'2025-01-01T00:00:00Z')
+    def test_one_team_confirmation_does_not_confirm_both_lineups(self):
+        e=EvidenceTests().fact(kind='starting_lineup',value={'complete':True},team_id='a');c=reconstruct([e],'CFB','g',['a','b'],'2025-11-01T17:00:00Z');self.assertFalse(c['lineupConfirmed'])
+
+class ResearchBudgetTests(unittest.TestCase):
+    def test_completed_job_deduplicates_and_modified_output_is_rejected(self):
+        from pathlib import Path
+        from .reconstruction_v19.jobs import LocalCampaign
+        with tempfile.TemporaryDirectory() as d:
+            root=Path(d);script=root/'task.py';out=root/'SYNTHETIC.json';script.write_text('from pathlib import Path\nPath('+repr(str(out))+').write_text("SYNTHETIC")\n');runner=LocalCampaign(root/'jobs',5);first=runner.run('synthetic',script,[out],inputs=[],configuration={'kind':'SYNTHETIC'},cpu_limit=2,wall_limit=5);second=runner.run('synthetic',script,[out],inputs=[],configuration={'kind':'SYNTHETIC'},cpu_limit=2,wall_limit=5);self.assertFalse(first['cacheHit']);self.assertTrue(second['cacheHit']);self.assertEqual(first['cpuSeconds'],second['cpuSeconds']);out.write_text('CHANGED')
+            with self.assertRaises(ValueError):runner.run('synthetic',script,[out],inputs=[],configuration={'kind':'SYNTHETIC'},cpu_limit=2,wall_limit=5)
+    def test_changed_input_never_reuses_a_completed_forecast(self):
+        from pathlib import Path
+        from .reconstruction_v19.jobs import LocalCampaign
+        with tempfile.TemporaryDirectory() as d:
+            p=Path(d);source=p/'input';source.write_text('version1');out=p/'result';script=p/'task.py';script.write_text('from pathlib import Path\nPath('+repr(str(out))+').write_text("SYNTHETIC")\n');r=LocalCampaign(p/'jobs',5);r.run('synthetic',script,[out],inputs=[source],configuration={'seed':1},cpu_limit=2,wall_limit=5);source.write_text('version2')
+            with self.assertRaises(ValueError):r.run('synthetic',script,[out],inputs=[source],configuration={'seed':1},cpu_limit=2,wall_limit=5)
+    def test_interrupted_campaign_never_restarts_silently(self):
+        from pathlib import Path
+        from .reconstruction_v19.jobs import LocalCampaign
+        with tempfile.TemporaryDirectory() as d:
+            p=Path(d);(p/'prior.json').write_text('{"status":"running","cpuSeconds":null}');script=p/'task.py';script.write_text('pass');r=LocalCampaign(p,5)
+            with self.assertRaises(RuntimeError):r.run('synthetic',script,[p/'out'],inputs=[],configuration={'kind':'SYNTHETIC'},cpu_limit=2,wall_limit=5)
+
 if __name__=='__main__':unittest.main()

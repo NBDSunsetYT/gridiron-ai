@@ -51,6 +51,8 @@ def simulate_football(model,home,away,event_start,simulations=10000,seed=15001,l
     from .runtime import local_only
     local_only()
     teams=[home,away];roles=[participant_roles(model,t,(lineups or {}).get(t),event_start) for t in teams]
+    from .personnel import availability_plan
+    personnel_checks={t:availability_plan(model,t,event_start,(lineups or {}).get(t),r) for t,r in zip(teams,roles)}
     ids=sorted(set(p for r in roles for p in [r['quarterback'],*r['receivers'],*r['runners']]))
     if len(ids)>100:raise ValueError('Current skill roster exceeds bounded model capacity')
     team_actors={t:'team-stat:'+t for t in teams} if model['sport']=='CFB' else {}
@@ -192,6 +194,7 @@ def simulate_football(model,home,away,event_start,simulations=10000,seed=15001,l
         'monteCarloSE':math.sqrt(p*(1-p)/simulations),'monteCarloInterval95':wilson(wins,simulations),'calibratedProbability':None,
         'scoreDistributions':{t:histogram_summary(hist[i],simulations) for i,t in enumerate(teams)},
         'totalDistribution':histogram_summary(total_hist,simulations),'marginDistribution':histogram_summary(margin_hist,simulations),
+        'personnelPreflight':personnel_checks,'unconditionalForecastQualified':all(c['publishUnconditionalProbability'] for c in personnel_checks.values()),
         'players':{p:{s:histogram_summary(ph[p][s],simulations) for s in stats} for p in ids if p not in team_actors.values()},'teamStatisticAdjustments':{t:{s:histogram_summary(ph[p][s],simulations) for s in ('carries','rushingYards')} for t,p in team_actors.items()},'teamDistributions':{t:{s:histogram_summary(d,simulations) for s,d in ss.items()} for t,ss in team_hist.items()},
         'gameEnvironment':{k:v/simulations for k,v in env.items()},'convergence':convergence,'representativePlays':trace,
         'participantAssumptions':dict(zip(teams,roles)),'quality':{'productionEligible':False,'lineupsVerified':all(r['verified'] for r in roles),'injuriesComplete':all(r['injuriesComplete'] for r in roles),'allGamesAccountingReconciled':True},

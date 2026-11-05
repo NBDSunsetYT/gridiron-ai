@@ -39,6 +39,7 @@ class Evidence:
             if x:aware(x)
         if self.confidence in ('official_confirmed','provider_snapshot') and not self.published_at:raise ValueError('Verified evidence requires a publication/snapshot timestamp')
         if self.published_at and aware(self.published_at)>aware(self.retrieved_at):raise ValueError('Publication cannot follow retrieval')
+        if self.modified_at and aware(self.modified_at)>aware(self.retrieved_at):raise ValueError('Modification cannot follow retrieval')
         if self.modified_at and self.published_at and aware(self.modified_at)<aware(self.published_at):raise ValueError('Modification precedes publication')
         canonical(asdict(self))
     @property
@@ -63,7 +64,7 @@ def reconstruct(records,sport,event_id,team_ids,cutoff):
         (accepted if ok else rejected).append(r.json() if ok else {'id':r.id,'kind':r.kind,'reason':why})
     coverage={k:{'status':'available' if any(r['kind']==k for r in accepted) else 'missing','records':sum(r['kind']==k for r in accepted)} for k in KINDS}
     # An official report for one player does not establish a complete roster.
-    return {'sport':sport,'eventId':event_id,'cutoff':cutoff,'accepted':accepted,'rejected':rejected,'coverage':coverage,'injuriesComplete':False,'lineupConfirmed':any(r['kind']=='starting_lineup' and r['confidence']=='official_confirmed' and r['value'].get('complete') is True for r in accepted),'missingAvailabilityMeansHealthy':False,'sha256':sha256(canonical([r['id'] for r in accepted])).hexdigest()}
+    return {'sport':sport,'eventId':event_id,'cutoff':cutoff,'accepted':accepted,'rejected':rejected,'coverage':coverage,'injuriesComplete':False,'lineupConfirmed':all(any(r['kind']=='starting_lineup' and r['team_id']==team and r['confidence']=='official_confirmed' and r['value'].get('complete') is True for r in accepted) for team in team_ids),'missingAvailabilityMeansHealthy':False,'sha256':sha256(canonical([r['id'] for r in accepted])).hexdigest()}
 
 def scenario_weights(records,sport,event_id,team_ids,cutoff):
     context=reconstruct(records,sport,event_id,team_ids,cutoff)

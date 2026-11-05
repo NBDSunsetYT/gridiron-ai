@@ -1,2 +1,5 @@
+# Optional LOCAL source reconstruction and report generation, never runtime Vercel.
 -r requirements.txt
+eccodes==2.50.0
+pypdf==6.10.0
 matplotlib==3.10.8
