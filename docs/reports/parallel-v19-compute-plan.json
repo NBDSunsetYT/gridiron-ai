@@ -1,0 +1,14 @@
+{
+  "cutoffPolicy": "Use a conservative evidence cutoff one hour before first recorded event where a separately verified scheduled kickoff is absent. Original-publication completeness remains false.",
+  "fullGameSubsetPerWindow": 3,
+  "lateDocumentPolicy": "Reject any document revised after the cutoff, even if original publication was earlier.",
+  "nbaVariants": [
+    "frozen_reference",
+    "v18_joint_rotation",
+    "recency_usage_eb"
+  ],
+  "pointInTimeQualification": "Partial provider snapshots and official document facts do not establish complete lineups, complete injury coverage, or forecast-vintage statistics.",
+  "reason": "Add the actual preserved reference to NBA comparisons and bound total planned work to 81 complete-game forecast runs under the 1800-second CPU budget. Selection is still first eligible IDs in each locked window; no model validation result has been inspected.",
+  "simulationSchedule": "For each cohort and selected ordinal, execute each candidate tier in NFL/CFB/NBA round-robin order. Fit both football leagues concurrently before grading either.",
+  "sourceProtocolSha256": "c14e484d5780c9b15b73f80e14b681baa210731e3688227daf0ccca765d63648"
+}
