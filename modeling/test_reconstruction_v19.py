@@ -81,4 +81,30 @@ class BasketballReconstruction(unittest.TestCase):
         self.assertTrue(m['usageEvidence']['priorAndRecentGamesDisjoint']);self.assertTrue(f['quality']['minutesReconciled']);self.assertTrue(f['quality']['playerTeamPointsReconciled']);self.assertTrue(f['quality']['combinedStatsShareOutcomes']);self.assertTrue(all(v>0 for v in m['usageEvidence']['gammaPoissonPriorMinutes'].values()));self.assertIsNone(f['calibratedProbability'])
 
 
+
+class DataRepairTests(unittest.TestCase):
+    def test_missing_touchdown_stat_is_not_zero(self):
+        from .reconstruction_v19.stat_support import supported_value,UnsupportedStatistic
+        with self.assertRaises(UnsupportedStatistic):supported_value({'stats':{'passingYards':200}},'passingTouchdowns')
+        self.assertEqual(supported_value({'stats':{'passingTouchdowns':0}},'passingTouchdowns'),0)
+    def test_schedule_final_qb_weather_and_prices_cannot_leak(self):
+        from .reconstruction_v19.stat_support import safe_schedule_metadata
+        row={'game_id':'g','away_qb_id':'FINAL','away_coach':'FINAL','temp':32,'wind':10,'away_moneyline':-110};self.assertEqual(safe_schedule_metadata(row),{'game_id':'g'})
+    def test_ncaa_and_nfl_clock_statistical_owners_differ(self):
+        from .reconstruction_v19.stat_rules import clock_stop_owner
+        for kind in ['kneel','spike']:
+            self.assertEqual(clock_stop_owner('CFB',kind,'qb','a'),'team-stat:a');self.assertEqual(clock_stop_owner('NFL',kind,'qb','a'),'qb')
+    def test_accounting_patch_preserves_nfl_and_game_outcomes(self):
+        from .test_engines_v15 import fixture
+        from .football_v15 import fit_football
+        from .reconstruction_v19.football_fit import enrich
+        from .reconstruction_v19 import football,football_rules
+        from .iterative_learning import digest
+        for sport in ['NFL','CFB']:
+            rows=fixture(sport);m=enrich(fit_football(rows,sport,'2024-02-01T00:00:00Z','SYNTHETIC'),rows);prefix='cfb:fixture:' if sport=='CFB' else 'fixture:';args=(prefix+'0',prefix+'1','2024-02-02T00:00:00Z',1000,19);a=football.simulate_football(m,*args,representative_games=0);fixed=copy.deepcopy(m);fixed['version']=football_rules.VERSION;fixed['sha256']=digest({k:v for k,v in fixed.items() if k!='sha256'});b=football_rules.simulate_football(fixed,*args,representative_games=0)
+            self.assertEqual(a['scoreDistributions'],b['scoreDistributions']);self.assertEqual(a['marginDistribution'],b['marginDistribution'])
+            if sport=='NFL':self.assertEqual(a['players'],b['players'])
+            for team,dist in b['teamDistributions'].items():
+                roles=b['participantAssumptions'][team];pool={roles['quarterback'],*roles['receivers'],*roles['runners']};adjust=b['teamStatisticAdjustments'].get(team,{}).get('rushingYards',{}).get('mean',0);self.assertAlmostEqual(dist['rushingYards']['mean'],sum(b['players'][p]['rushingYards']['mean'] for p in pool)+adjust)
+
 if __name__=='__main__':unittest.main()
