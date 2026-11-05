@@ -1,6 +1,6 @@
 # GRIDIRON AI V20 — accuracy-first research checkpoint
 
-Recorded November 04, 2026, 11:13 PM Eastern (2026-11-05T04:13:57.632480+00:00).
+Recorded November 04, 2026, 11:17 PM Eastern (2026-11-05T04:17:07.075319+00:00).
 
 Production is unchanged. No model was promoted, no production database was queried or modified, and no paid resources or billing settings were changed. This is an implemented and executed research phase on `research/overnight-v20`, continuing V19.
 
@@ -204,7 +204,7 @@ The production build has an existing health-route JSON named-export warning; it 
 
 ## Recovery, exact resume commands and promotion decision
 
-Branch: `research/overnight-v20`; source checkpoint used to render this report: `40c3ea9311322cc828eb6a1af42f3e793f266722`. Public branch checkpoint mappings and verified tree hashes are maintained in `overnight-v20-publication.json` when published. Recovery branch `checkpoint/pre-v20-20261105` and all original forecasts remain available. Source and measured-result archives exclude credentials, raw vendor documents and unnecessary datasets.
+Branch: `research/overnight-v20`; source checkpoint used to render this report: `fd8ee031bb33696bd74b2e6eb027e3c563db994d`. Public branch checkpoint mappings and verified tree hashes are maintained in `overnight-v20-publication.json` when published. Recovery branch `checkpoint/pre-v20-20261105` and all original forecasts remain available. Source and measured-result archives exclude credentials, raw vendor documents and unnecessary datasets.
 
 From the original checkpoint workspace (source archives and hashes in the frozen protocols must match):
 
