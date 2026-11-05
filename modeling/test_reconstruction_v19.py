@@ -60,4 +60,25 @@ class StructuralMechanics(unittest.TestCase):
         for sport in ['NFL','CFB']:
             rows=fixture(sport);m=enrich(fit_football(rows,sport,'2024-02-01T00:00:00Z','SYNTHETIC'),rows,'team_eb_frailty');prefix='cfb:fixture:' if sport=='CFB' else 'fixture:';f=simulate_football(m,prefix+'0',prefix+'1','2024-02-02T00:00:00Z',1000,19,representative_games=0);self.assertTrue(f['quality']['allGamesAccountingReconciled']);self.assertEqual(f['sport'],sport);self.assertEqual(sum(v['count'] for v in f['totalDistribution']['histogram']),1000);self.assertIsNone(f['calibratedProbability'])
 
+
+class BasketballReconstruction(unittest.TestCase):
+    def test_recency_eb_priors_and_complete_basketball_accounting(self):
+        from datetime import datetime,timezone,timedelta
+        from .structural_v18.nba import fit_nba
+        from .reconstruction_v19.nba_fit import enrich
+        from .reconstruction_v19.nba import simulate_nba
+        games={}
+        for day in range(16):
+            for pair in range(5):
+                gid=f'SYNTHETIC:{day}:{pair}';date=(datetime(2024,1,1,tzinfo=timezone.utc)+timedelta(days=day)).isoformat();teams={};players=[]
+                for side in range(2):
+                    tid=str(2*pair+side);roster=[]
+                    for i in range(8):
+                        made=3+i%3;three=1+i%2;free=1+day%2;p={'athlete_id':int(tid)*10+i,'athlete_display_name':'SYNTHETIC '+tid+' '+str(i),'team_id':tid,'minutes':30.,'starter':i<5,'field_goals_made':made,'field_goals_attempted':10+i%2,'three_point_field_goals_made':three,'three_point_field_goals_attempted':4,'free_throws_made':free,'free_throws_attempted':2,'offensive_rebounds':1,'defensive_rebounds':3,'assists':3,'steals':1,'blocks':1,'turnovers':2,'fouls':3,'points':2*made+three+free};roster.append(p)
+                    players.extend(roster);t={k:sum(p[k] for p in roster) for k in roster[0] if isinstance(roster[0][k],(float,int)) and k not in ('athlete_id','starter')};t.update(team_score=t['points'],team_home_away='home' if side==0 else 'away',opponent_team_id=str(2*pair+1-side));teams[tid]=t
+                games[gid]={'id':gid,'sport':'NBA','at':date,'teams':teams,'players':players,'freeThrowTrips':{t:[2]*8 for t in teams},'stints':[60,120,180]}
+        m=fit_nba(games,'2024-02-01T00:00:00Z','SYNTHETIC','rotation_bootstrap');m['projectedMinutes']={t:{str(p['athlete_id']):30. for p in games['SYNTHETIC:15:0']['players'] if p['team_id']==t} for t in ['0','1']};m=enrich(m,games,'2024-02-01T00:00:00Z');f=simulate_nba(m,'0','1','2024-02-02T00:00:00Z',1000,19)
+        self.assertTrue(m['usageEvidence']['priorAndRecentGamesDisjoint']);self.assertTrue(f['quality']['minutesReconciled']);self.assertTrue(f['quality']['playerTeamPointsReconciled']);self.assertTrue(f['quality']['combinedStatsShareOutcomes']);self.assertTrue(all(v>0 for v in m['usageEvidence']['gammaPoissonPriorMinutes'].values()));self.assertIsNone(f['calibratedProbability'])
+
+
 if __name__=='__main__':unittest.main()

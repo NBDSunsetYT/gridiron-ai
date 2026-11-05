@@ -25,7 +25,7 @@ def component(rows,labels,teams,cutoff,participants=None,regression=False,field_
     fitted=(Ridge(alpha=100.,solver='lsqr') if regression else LogisticRegression(C=1.,max_iter=400,solver='lbfgs')).fit(design,labels,sample_weight=weights)
     co=np.atleast_2d(fitted.coef_);inter=np.atleast_1d(fitted.intercept_);classes=None if regression else [int(v) for v in fitted.classes_]
     if not regression and len(classes)==2:co=np.vstack((np.zeros(co.shape[1]),co[0]));inter=np.array([0.,inter[0]])
-    artifact={'coefficients':co.tolist(),'intercepts':inter.tolist(),'classes':classes,'teams':teams,'participants':list(pi),'trainingRows':len(rows),'regularization':100. if regression else 1.,'fieldTransform':field_transform,'timeWeightHalfLifeDays':180,'timeWeightSource':'Predeclared six-month decay; not a validated coaching/injury causal coefficient.'}
+    artifact={'coefficients':co.tolist(),'intercepts':inter.tolist(),'classes':classes,'teams':teams,'participants':list(pi),'trainingRows':len(rows),'regularization':100. if regression else 1.,'fieldTransform':field_transform,'fitConverged':bool(regression or np.max(fitted.n_iter_)<400),'timeWeightHalfLifeDays':180,'timeWeightSource':'Predeclared six-month decay; not a validated coaching/injury causal coefficient.'}
     if regression:
         residual=np.asarray(labels)-fitted.predict(design);artifact.update(residuals={str(z):residual[np.array([min(2,r['field']//20) for r in rows])==z].tolist() for z in range(3)},allResiduals=residual.tolist())
     return artifact
@@ -74,5 +74,5 @@ def enrich(model,rows,variant='team_eb'):
     x=base.numeric(*[np.array([r[k] for r in drops]) for k in ('down','distance','field','clock','script','home')]);out=base.Predictor(m['dropback']);prob=out.probabilities(x,np.array([r['o'] for r in drops]),np.array([r['d'] for r in drops]),np.array([r['qb'] for r in drops]));ci=m['dropback']['classes'].index(3);pc=prob[:,ci];groups=defaultdict(lambda:np.zeros(3))
     for r,p in zip(drops,pc):groups[(r['game'],r['o'])]+=np.array([int(r['kind']=='pass' and r['complete'])-p,p*(1-p),1])
     eligible=[v for v in groups.values() if v[2]>=15 and v[1]>1];variance=max(0.,float(np.var([v[0]/v[1] for v in eligible])-np.mean([1/v[1] for v in eligible]))) if len(eligible)>=30 else 0.
-    m.update(version=VERSION,variant=variant,completionFrailtySD=float(np.sqrt(min(variance,4.))),completionFrailtyEvidence={'teamGames':len(eligible),'excessLogitVariance':variance,'method':'Earlier-game residual variance minus Bernoulli measurement variance; 15-dropback minimum; numerical SD bound 2.'},productionEligible=False)
+    m.update(fitConverged=all(m[k].get('fitConverged',False) for k in ('play','dropback','passYards','rushYards','passTouchdown','rushTouchdown')),version=VERSION,variant=variant,completionFrailtySD=float(np.sqrt(min(variance,4.))),completionFrailtyEvidence={'teamGames':len(eligible),'excessLogitVariance':variance,'method':'Earlier-game residual variance minus Bernoulli measurement variance; 15-dropback minimum; numerical SD bound 2.'},productionEligible=False)
     m['sha256']=digest({k:v for k,v in m.items() if k!='sha256'});return m
