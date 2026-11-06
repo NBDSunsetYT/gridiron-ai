@@ -23,9 +23,9 @@ The shuffle intervals are exploratory, not multiplicity-adjusted promotion evide
 - NBA hierarchical steal predictions use player identity; 91.9% of input player identities are known to its encoder. Shuffling increases MAE, with an exploratory positive delta interval. This supports sensitivity to that input, not overall predictive superiority.
 - A market-shuffle control is unavailable because no verified historical market features exist in this cohort. No synthetic quotes were created.
 
-The r2 source guard additionally withholds uncertain availability at the unconditional research ingress. The original control result and r1 protocol remain preserved. The four control windows overlap the existing V24 confirmation data only as explicitly declared fixed-model diagnostics; none was reused to tune a model. The 79 sealed final-test games and other locked cohorts stay excluded.
+The r3 source guard additionally verifies exact team/player evidence coverage and withholds uncertain availability at the unconditional research ingress. The original control result and r1 protocol remain preserved. The four control windows overlap the existing V24 confirmation data only as explicitly declared fixed-model diagnostics; none was reused to tune a model. The 79 sealed final-test games and other locked cohorts stay excluded.
 
-Measured r2 controls: 15.181 CPU seconds, 15.187 wall seconds; no full-game simulations, production writes or promotions. Strict pregame evidence coverage remains zero.
+Measured r3 controls: 15.181 CPU seconds, 15.187 wall seconds; no full-game simulations, production writes or promotions. Strict pregame evidence coverage remains zero.
 
 ```bash
 OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 python scripts/controls-accuracy-v25.py

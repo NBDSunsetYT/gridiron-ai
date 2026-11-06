@@ -62,6 +62,12 @@ def forecast_lineage_guard(features, facts, cutoff, target_event, training_throu
         raise ValueError('Required historical evidence domains are incomplete')
     if any(r['kind'] in ('injury','lineup','participation') and r['availabilityStatus']!='confirmed' for r in audited):
         raise ValueError('Uncertain/projected participation requires separately validated scenarios; no unconditional forecast')
+    for row in features:
+        if row['player']=='__team__':continue
+        for kind in ('injury','lineup','participation'):
+            if not any(f['kind']==kind and f.get('teamId')==row['team'] and
+                       (f.get('playerId')==row['player'] or row['player'] in f.get('coveredPlayerIds',[])) for f in facts):
+                raise ValueError('Source does not establish this exact team/player evidence coverage')
     # Use the actual prediction cutoff for the historical embargo, rather than
     # silently admitting information that arrived between forecast and kickoff.
     check=[dict(r,at=cutoff) for r in features]

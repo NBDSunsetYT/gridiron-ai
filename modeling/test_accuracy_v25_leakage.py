@@ -38,11 +38,13 @@ class LeakageControls(unittest.TestCase):
     def test_research_ingress_cannot_skip_lineage_or_hide_an_outcome_alias(self):
         row={'gameId':'SYNTHETIC','team':'A','player':'p','stat':'rebounds','at':self.cutoff,'featureLastGame':'2024-01-01T00:00:00Z','sourceEditionVerified':True,'missingEvidence':[],'missingAvailability':False,'statisticsPublishedAt':'2024-01-09T00:00:00Z','injuryPublishedAt':'2024-01-09T00:00:00Z','lineupPublishedAt':'2024-01-09T00:00:00Z','participationPublishedAt':'2024-01-09T00:00:00Z'}
         with self.assertRaises(ValueError):forecast_lineage_guard([row],[],self.cutoff,'SYNTHETIC','2024-01-02T00:00:00Z')
-        facts=[self.fact(k)|{'status':'confirmed'} for k in ('injury','lineup','participation')]+[self.fact('historical_statistics')|{'eventId':'EARLIER','gameEndedAt':'2024-01-08T00:00:00Z'}]
+        facts=[self.fact(k)|{'status':'confirmed','teamId':'A','playerId':'p'} for k in ('injury','lineup','participation')]+[self.fact('historical_statistics')|{'eventId':'EARLIER','gameEndedAt':'2024-01-08T00:00:00Z'}]
         self.assertTrue(forecast_lineage_guard([row],facts,self.cutoff,'SYNTHETIC','2024-01-02T00:00:00Z')['jointMechanicsCertificateStillRequired'])
         with self.assertRaises(ValueError):forecast_lineage_guard([row|{'actualMinutes':32}],facts,self.cutoff,'SYNTHETIC','2024-01-02T00:00:00Z')
         uncertain=[dict(f,status='uncertain') if f['kind']=='injury' else f for f in facts]
         with self.assertRaises(ValueError):forecast_lineage_guard([row],uncertain,self.cutoff,'SYNTHETIC','2024-01-02T00:00:00Z')
+        wrong=[dict(f,playerId='unrelated') if f['kind']=='injury' else f for f in facts]
+        with self.assertRaises(ValueError):forecast_lineage_guard([row],wrong,self.cutoff,'SYNTHETIC','2024-01-02T00:00:00Z')
     def test_deterministic_shuffles_preserve_originals_and_reject_future_history(self):
         rows=[{'gameId':'SYNTHETIC-'+str(i),'team':'A','player':'p'+str(i),'stat':'rebounds','at':self.cutoff,'featureLastGame':'2024-01-01T00:00:00Z','x':[float(j+i) for j in range(26)]} for i in range(8)];before=copy.deepcopy(rows)
         for kind in ('player_identity','team_score_context'):

@@ -11,7 +11,7 @@ from modeling.accuracy_v25.evaluation import feature_guard
 from modeling.accuracy_v25.leakage import shuffle_control
 from modeling.overnight_v20.state import read,atomic,digest
 from modeling.iterative_learning import freeze_json
-OUT=ROOT/'artifacts/accuracy-v25/stage3-r2'
+OUT=ROOT/'artifacts/accuracy-v25/stage3-r3'
 CASES=[('NFL','completion-nfl-extension-r2',['passingYards']),('CFB','completion-cfb-extension-r1',['passingYards']),('NBA','completion-nba-clean-r1',['rebounds','steals'])]
 
 def payload(path):return json.loads(gzip.decompress(path.read_bytes()))
