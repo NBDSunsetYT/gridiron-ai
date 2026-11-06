@@ -16,10 +16,13 @@ from sklearn.linear_model import LogisticRegression, Ridge
 from scipy.sparse import csr_matrix, hstack
 
 from .fit import utc
-from .simulator import histogram_summary, wilson, STATS
+from .simulator import histogram_summary, wilson, STATS, is_late
+from .football_transitions_v18 import fit_transitions, starts as typed_starts, two_point_probability,position_priors,allocate_roles
 
-VERSION='football-possession-hurdle-candidate-15.1.0'
+LEGACY_VERSION='football-possession-hurdle-candidate-15.1.0'
+VERSION='football-market-candidate-18.0.0'
 KINDS=('pass','rush','punt','field_goal','kneel','penalty')
+_MARKET_KINDS=(*KINDS,'spike')
 NUMERIC=13
 
 
@@ -27,8 +30,8 @@ def numeric(down, distance, field, clock, diff, home):
     down,distance,field,clock,diff,home=np.broadcast_arrays(down,distance,field,clock,diff,home)
     half=np.where(clock>1800,clock-1800,clock)
     return np.stack([*(down==i for i in (1,2,3,4)),distance/10,field/100,
-        half/1800,np.clip(diff,-42,42)/21,(diff<0)*(half<=120),
-        (diff>0)*(half<=120),field<=20,home,clock/3600],axis=-1).astype(float)
+        half/1800,np.clip(diff,-42,42)/21,(diff<0)*is_late(half),
+        (diff>0)*is_late(half),field<=20,home,clock/3600],axis=-1).astype(float)
 
 
 def fit_component(rows, labels, teams, participants=None, regression=False,field_transform=None):
@@ -58,15 +61,15 @@ def fit_component(rows, labels, teams, participants=None, regression=False,field
     return artifact
 
 
-def fit_football(rows, sport, cutoff, source_version):
+def fit_football(rows, sport, cutoff, source_version, transition_evidence=None):
     cutoff=utc(cutoff)
     if sport not in ('NFL','CFB') or not rows or any(r['sport']!=sport or utc(r['at'])>=cutoff for r in rows):
         raise ValueError('Separate league evidence strictly before the fitting cutoff is required')
-    plays=[r for r in rows if r['kind'] in KINDS or r['kind']=='sack']
+    plays=[r for r in rows if r['kind'] in _MARKET_KINDS or r['kind']=='sack']
     if len(plays)<1000 or len({r['game'] for r in plays})<12:
         raise ValueError('At least twelve real games and 1,000 supported plays required')
     teams=sorted({r[k] for r in plays for k in ('o','d')})
-    choice=[KINDS.index('pass' if r['kind']=='sack' else r['kind']) for r in plays]
+    choice=[_MARKET_KINDS.index('pass' if r['kind']=='sack' else r['kind']) for r in plays]
     drops=[r for r in plays if r['kind'] in ('pass','sack')]
     outcome=[0 if r['kind']=='sack' else 1 if r['int'] else 3 if r['complete'] else 2 for r in drops]
     passing=[r for r in drops if r['kind']=='pass' and r['complete']]
@@ -90,14 +93,14 @@ def fit_football(rows, sport, cutoff, source_version):
         for role,condition in [('qb',r['kind'] in ('pass','sack')),('receiver',r['kind']=='pass'),('runner',r['kind'] in ('rush','kneel'))]:
             if condition and r.get(role):g[role][r[role]]+=1
     histories={t:{g:{k:dict(v) if isinstance(v,Counter) else v for k,v in h.items()} for g,h in hs.items()} for t,hs in histories.items()}
-    clock={kind:[r['elapsed'] for r in plays if r['kind']==kind] for kind in (*KINDS,'sack')}
+    clock={kind:[r['elapsed'] for r in plays if r['kind']==kind and r['elapsed']>0] for kind in (*_MARKET_KINDS,'sack')}
     starts=defaultdict(list);seen=set()
     for r in plays:
         key=(r['game'],r['o'],r.get('drive'))
         if key not in seen:starts[r['o']].append(r['field']);seen.add(key)
     evidence_cutoff=max(utc(r['at']) for r in rows)+timedelta(microseconds=1)
     model={'version':VERSION,'sport':sport,'asOf':evidence_cutoff.isoformat(),'fittingCutoff':cutoff.isoformat(),'sourceVersion':source_version,
-        'publicationAvailabilityVerified':False,'productionEligible':False,'trainingGames':len({r['game'] for r in plays}),
+        'kindOrder':list(_MARKET_KINDS),'publicationAvailabilityVerified':False,'productionEligible':False,'trainingGames':len({r['game'] for r in plays}),
         'trainingPlays':len(plays),'trainingGameIds':sorted({r['game'] for r in plays}),'teams':teams,
         'play':fit_component(plays,choice,teams),
         'dropback':fit_component(drops,outcome,teams,[r['qb'] for r in drops]),
@@ -106,6 +109,10 @@ def fit_football(rows, sport, cutoff, source_version):
         'passTouchdown':fit_component(passing,pass_td,teams,[r['receiver'] for r in passing],field_transform='log'),
         'rushTouchdown':fit_component(rushing,rush_td,teams,[r['runner'] for r in rushing],field_transform='log'),
         'clock':clock,'conversion':conversions,'histories':histories,'starts':dict(starts),
+        'transitions':fit_transitions(rows,cutoff.isoformat(),transition_evidence),
+        'positionPriors':position_priors(rows),
+        'liveClocks':[r['elapsed'] for r in plays if r['elapsed']>0 and (r['kind']=='spike' or r['kind']=='pass' and not r.get('complete') and not r.get('int') or r.get('outOfBounds') and (r['clock']<=300 or r['clock']>1800 and is_late(r['clock'],True)))],
+        'stoppedClocks':{k:[r['elapsed'] for r in plays if r['kind']==k and r['elapsed']>0 and (k=='spike' or k=='pass' and not r.get('complete') and not r.get('int') or r.get('outOfBounds') and (r['clock']<=300 or r['clock']>1800 and is_late(r['clock'],True)))] for k in _MARKET_KINDS},
         'sackYards':[r['yards'] for r in drops if r['kind']=='sack' and r['yards']<0],
         'puntNet':[r['puntNet'] for r in plays if r['kind']=='punt' and 0<r['puntNet']<100],
         'fumble':{'n':len(passing)+len(rushing),'lost':sum(r['fumble'] for r in passing+rushing)},
@@ -166,6 +173,7 @@ def participant_roles(model,team,lineup,event_start):
     for p in unavailable:receivers.pop(p,None);runners.pop(p,None)
     for p in qbs:
         if p!=qb:runners.pop(p,None)
+    receivers=allocate_roles(model,receivers,'receivers',current,team,latest);runners=allocate_roles(model,runners,'runners',current,team,latest)
     if not receivers or not runners:raise ValueError('Supported active receiver and rushing opportunity pools required')
     return {'quarterback':qb,'receivers':dict(receivers),'runners':dict(runners),'verified':verified,
         'injuriesComplete':bool(current.get('injuriesComplete')),'source':current.get('source'),
@@ -184,6 +192,12 @@ def _hist(v):
 
 
 def simulate_football(model,home,away,event_start,simulations=10000,seed=15001,lineups=None,batch_size=1000,contracts=None,representative_games=1):
+    if model.get('version')==LEGACY_VERSION:
+        from .football_v15_legacy import simulate_football as legacy
+        return legacy(model,home,away,event_start,simulations,seed,lineups,batch_size,contracts,representative_games)
+    if model.get('version')=='football-possession-candidate-15.0.0':
+        from .football_v15_baseline import simulate_football as legacy
+        return legacy(model,home,away,event_start,simulations,seed,lineups,batch_size,contracts,representative_games)
     if model.get('version')!=VERSION or home==away or not all(t in model['teams'] for t in (home,away)):
         raise ValueError('Exact fitted league and two distinct supported teams required')
     if utc(event_start)<=utc(model['asOf']):raise ValueError('Kickoff must follow every training observation')
@@ -195,7 +209,7 @@ def simulate_football(model,home,away,event_start,simulations=10000,seed=15001,l
     ids=sorted(set(p for r in roles for p in [r['quarterback'],*r['receivers'],*r['runners']]))
     if len(ids)>100:raise ValueError('Current skill roster exceeds bounded model capacity')
     idx={p:i for i,p in enumerate(ids)};stats=list(STATS);si={s:i for i,s in enumerate(stats)}
-    pred={k:Predictor(model[k]) for k in ('play','dropback','passYards','rushYards','passTouchdown','rushTouchdown')}
+    pred={k:Predictor(model[k]) for k in ('play','dropback','passYards','rushYards','passTouchdown','rushTouchdown') if k in model}
     for predictor in pred.values():predictor.bind(teams,ids)
     qbi=np.asarray([idx[r['quarterback']] for r in roles])
     opportunities={}
@@ -210,18 +224,42 @@ def simulate_football(model,home,away,event_start,simulations=10000,seed=15001,l
     for offset in range(0,simulations,batch_size):
         n=min(batch_size,simulations-offset);scores=np.zeros((n,2),dtype=np.int32);ps=np.zeros((n,len(ids),len(stats)),dtype=np.int32)
         clock=np.full(n,3600);off=rng.integers(0,2,n);first=off.copy();down=np.ones(n,dtype=int);distance=np.full(n,10);field=np.full(n,75);plays=np.zeros(n,dtype=int);drives=np.ones(n,dtype=int);done=np.zeros(n,dtype=bool)
-        for side in (0,1):
-            mask=off==side;field[mask]=rng.choice(model['starts'][teams[side]],mask.sum());distance[mask]=np.minimum(10,field[mask])
+        components={k:np.zeros((n,2),dtype=np.int32) for k in ('offensiveTouchdowns','returnTouchdowns','fieldGoals','tryPoints','safeties')}
         def add(mask,participants,name,values=1):
             loc=np.flatnonzero(mask)
             if len(loc):
                 who=participants[mask]
                 np.add.at(ps,(loc,who,np.full(len(loc),si[name])),np.broadcast_to(values,(n,))[mask])
-        def reset(mask):
+        def conversion_points(mask,sides):
+            if not mask.any():return
+            loc=np.flatnonzero(mask);own=sides[mask];diff=scores[loc,own]-scores[loc,1-own];two=rng.random(len(loc))<two_point_probability(model,diff,clock[mask]);points=np.zeros(len(loc),int)
+            for flag,key,value in [(False,'extra_point',1),(True,'two_point',2)]:
+                ix=np.flatnonzero(two==flag);c=model['conversion'][key];points[ix]=value*(rng.random(len(ix))<c['made']/c['n'])
+            scores[loc,own]+=points;components['tryPoints'][loc,own]+=points;env['twoPointAttempts']+=int(two.sum())
+        def return_touchdown(kind,mask,sides):
+            rate=model['transitions']['returnTouchdowns'][kind]['rate']
+            hit=np.zeros(n,bool)
+            if rate is not None and mask.any():hit[mask]=rng.random(mask.sum())<rate
+            loc=np.flatnonzero(hit);own=sides[hit];scores[loc,own]+=6;components['returnTouchdowns'][loc,own]+=1;env['returnTouchdowns_'+kind]+=int(hit.sum());conversion_points(hit,sides);return hit
+        def reset(mask,cause='post_score',count=True):
             for side in (0,1):
                 m=mask&(off==side)
-                if m.any():field[m]=rng.choice(model['starts'][teams[side]],m.sum())
-            down[mask]=1;distance[mask]=np.minimum(10,field[mask]);drives[mask]+=1
+                if m.any():
+                    exact=model.get('transitions',{}).get('starts',{}).get(cause,{}).get(teams[side],[])
+                    if exact or cause in ('kickoff','post_score'):field[m]=rng.choice(exact or typed_starts(model,teams[side],cause),m.sum())
+            down[mask]=1;distance[mask]=np.minimum(10,field[mask]);drives[mask]+=int(count)
+            if cause in ('kickoff','post_score'):
+                pending=mask.copy()
+                for _ in range(12):
+                    hit=return_touchdown('kickoff',pending,off)
+                    if not hit.any():break
+                    off[hit]=1-off[hit];drives[hit]+=1
+                    for side in (0,1):
+                        m=hit&(off==side)
+                        if m.any():field[m]=rng.choice(typed_starts(model,teams[side],'post_score'),m.sum())
+                    down[hit]=1;distance[hit]=np.minimum(10,field[hit]);pending=hit
+                else:raise ValueError('Consecutive kick-return score budget exhausted')
+        reset(np.ones(n,dtype=bool),'kickoff',False)
         iterations=0
         while not done.all():
             iterations+=1
@@ -231,16 +269,20 @@ def simulate_football(model,home,away,event_start,simulations=10000,seed=15001,l
             probs=pred['play'].fast(x,oi,probabilities=True);classes=model['play']['classes']
             half=np.where(clock>1800,clock-1800,clock)
             for col,kind in enumerate(classes):
-                if KINDS[kind]=='punt':probs[:,col]*=down==4
-                if KINDS[kind]=='field_goal':probs[:,col]*=((down==4)|(half<=10))&(field<=int(fgp.max()))
-                if KINDS[kind]=='kneel':probs[:,col]*=(half<=120)&(diff>=0)
+                if _MARKET_KINDS[kind]=='punt':probs[:,col]*=down==4
+                if _MARKET_KINDS[kind]=='field_goal':probs[:,col]*=((down==4)|(half<=10))&(field<=int(fgp.max()))
+                if _MARKET_KINDS[kind]=='kneel':probs[:,col]*=is_late(half)&(diff>=0)
+                if _MARKET_KINDS[kind]=='spike':probs[:,col]*=is_late(half)&(down<4)
             probs/=probs.sum(axis=1)[:,None];kind=np.asarray(classes)[_sample(rng,probs)]
+            spike_rate=model['transitions'].get('spikeDecision',{}).get('rate')
+            if model.get('migration') and spike_rate is not None:
+                split=active&(kind==_MARKET_KINDS.index('pass'))&is_late(half)&(down<4)&(rng.random(n)<spike_rate);kind[split]=_MARKET_KINDS.index('spike')
             qb=qbi[oi];receiver=np.empty(n,dtype=int);runner=np.empty(n,dtype=int)
             for side in (0,1):
                 m=oi==side
                 for key,target in [('receivers',receiver),('runners',runner)]:
                     choices,weights=opportunities[(side,key)];target[m]=rng.choice(choices,m.sum(),p=weights)
-            pass_mask=active&(kind==KINDS.index('pass'));run=active&(kind==KINDS.index('rush'));kneel=active&(kind==KINDS.index('kneel'));punt=active&(kind==KINDS.index('punt'));fg=active&(kind==KINDS.index('field_goal'));penalty=active&(kind==KINDS.index('penalty'))
+            pass_mask=active&(kind==_MARKET_KINDS.index('pass'));run=active&(kind==_MARKET_KINDS.index('rush'));kneel=active&(kind==_MARKET_KINDS.index('kneel'));punt=active&(kind==_MARKET_KINDS.index('punt'));fg=active&(kind==_MARKET_KINDS.index('field_goal'));penalty=active&(kind==_MARKET_KINDS.index('penalty'));spike=active&(kind==_MARKET_KINDS.index('spike'))
             outcome=np.full(n,-1)
             if pass_mask.any():
                 drops=pred['dropback'].fast(x[pass_mask],oi[pass_mask],qb[pass_mask],True)
@@ -254,62 +296,82 @@ def simulate_football(model,home,away,event_start,simulations=10000,seed=15001,l
                         zm=np.minimum(2,field[mask]//20)==z;res[zm]=rng.choice(residuals[name][str(z)],zm.sum())
                     yards[mask]=np.rint(mean+res).astype(int).clip(-99,99)
                     td_name='passTouchdown' if name=='passYards' else 'rushTouchdown'
-                    td_probs=pred[td_name].fast(x[mask],oi[mask],participant[mask],True)
-                    td=(np.asarray(model[td_name]['classes'])[_sample(rng,td_probs)]==1)
-                    sampled=yards[mask];sampled=np.minimum(sampled,field[mask]-1);sampled[td]=field[mask][td];yards[mask]=sampled
+                    if td_name in pred:
+                        td_probs=pred[td_name].fast(x[mask],oi[mask],participant[mask],True)
+                        td=(np.asarray(model[td_name]['classes'])[_sample(rng,td_probs)]==1)
+                        sampled=yards[mask];sampled=np.minimum(sampled,field[mask]-1);sampled[td]=field[mask][td];yards[mask]=sampled
             if sack.any():yards[sack]=rng.choice(sack_yards,sack.sum())
             if kneel.any():
                 pool=[r for r in model['clock'].get('kneel',[])];yards[kneel]=-1 # kneel yard is a rule-accounting approximation, explicitly disclosed.
             gain=np.minimum(yards,field);gain=np.maximum(gain,field-100)
             add(pass_mask&~sack,qb,'passingAttempts');add(complete,qb,'completions');add(complete,qb,'passingYards',gain);add(pass_mask&~sack,receiver,'targets');add(complete,receiver,'receptions');add(complete,receiver,'receivingYards',gain);add(interception,qb,'interceptions')
+            add(spike,qb,'passingAttempts')
             add(run,runner,'carries');add(run,runner,'rushingYards',gain);add(kneel,qb,'carries');add(kneel,qb,'rushingYards',gain)
             if model['sport']=='CFB':add(sack,qb,'carries');add(sack,qb,'rushingYards',gain)
             duration=np.zeros(n,dtype=int)
-            for k in KINDS:
-                km=active&(kind==KINDS.index(k))&~sack;pool=arrays.get(k)
+            for k in _MARKET_KINDS:
+                km=active&(kind==_MARKET_KINDS.index(k))&~sack;pool=arrays.get(k)
                 if km.any():
                     if pool is None:raise ValueError('No observed clock evidence for selected play type')
                     duration[km]=rng.choice(pool,km.sum())
             if sack.any():duration[sack]=rng.choice(arrays['sack'],sack.sum())
+            stopped=spike|(pass_mask&~sack&~complete&~interception)
+            for k,law in model['transitions'].get('outOfBounds',{}).items():
+                if law['rate'] is not None:
+                    mask=(pass_mask&~sack if k=='pass' else run if k=='rush' else sack);stopped|=mask&(rng.random(n)<law['rate'])&((clock<=300)|((clock>1800)&is_late(clock,True)))
+            live_pool=model.get('liveClocks') or []
+            for k in _MARKET_KINDS:
+                sm=stopped&(kind==_MARKET_KINDS.index(k));pool=model.get('stoppedClocks',{}).get(k) or live_pool
+                if sm.any() and pool:duration[sm]=rng.choice(pool,sm.sum())
+            for k,law in model['transitions']['clock'].items():
+                factor=law['twoMinuteTempoMultiplier'];mask=active&(kind==_MARKET_KINDS.index(k) if k in _MARKET_KINDS else sack)&~stopped&is_late(half)&(diff<0)
+                if k=='pass':mask&=~sack
+                if factor is not None:duration[mask]=np.maximum(1,np.ceil(duration[mask]*factor).astype(int))
             previous_clock=clock.copy();quarter_remaining=np.where(clock%900==0,900,clock%900);clock[active]-=np.minimum(quarter_remaining[active],duration[active]);plays[active]+=1
-            live=pass_mask|run|kneel;fumble=live&~sack&~interception&(rng.random(n)<model['fumble']['lost']/model['fumble']['n'])
+            live=pass_mask|run|kneel;fumble=(complete|run|kneel)&~interception&(rng.random(n)<model['fumble']['lost']/model['fumble']['n'])
             field[live]-=gain[live]
             touchdown=live&(field<=0)&~interception&~fumble;safety=live&(field>=100)&~interception
-            scores[ix[touchdown],oi[touchdown]]+=6;scores[ix[safety],di[safety]]+=2
-            conversion=model['conversion']['extra_point'];xp=touchdown&(rng.random(n)<conversion['made']/conversion['n']);scores[ix[xp],oi[xp]]+=1
+            scores[ix[touchdown],oi[touchdown]]+=6;scores[ix[safety],di[safety]]+=2;components['offensiveTouchdowns'][ix[touchdown],oi[touchdown]]+=1;components['safeties'][ix[safety],di[safety]]+=1
+            conversion_points(touchdown,oi)
             add(touchdown&complete,qb,'passingTouchdowns');add(touchdown&complete,receiver,'receivingTouchdowns');add(touchdown&run,runner,'rushingTouchdowns')
             changed=touchdown|safety|interception|fumble|punt|fg
             missed_fg=np.zeros(n,dtype=bool)
             if fg.any():
                 # Nearest observed kick-distance cohort; no unsupported fixed FG percentage.
                 for f in np.unique(field[fg]):
-                    m=fg&(field==f);delta=np.abs(fgp-f);nearest=np.sort(delta)[min(29,len(delta)-1)];values=fgm[delta<=nearest];made=m&(rng.random(n)<values.mean());scores[ix[made],oi[made]]+=3;missed_fg|=m&~made
+                    m=fg&(field==f);delta=np.abs(fgp-f);nearest=np.sort(delta)[min(29,len(delta)-1)];values=fgm[delta<=nearest];made=m&(rng.random(n)<values.mean());scores[ix[made],oi[made]]+=3;components['fieldGoals'][ix[made],oi[made]]+=1;missed_fg|=m&~made
             if punt.any():
                 net=100-field[punt]+rng.choice(punt_net,punt.sum())
                 field[punt]=np.where(net>=100,80,np.clip(net,1,99))
             turnover=interception|fumble
             field[turnover]=np.clip(100-field[turnover],1,99)
+            return_score=return_touchdown('interception',interception,di)|return_touchdown('fumble',fumble,di)|return_touchdown('punt',punt,di)
             field[missed_fg]=np.clip(100-field[missed_fg]-7,1,80)
             if penalty.any():
                 if not model['penalties']:raise ValueError('Enforced penalty evidence unavailable')
                 samples=rng.integers(0,len(model['penalties']),n);py=np.asarray([model['penalties'][v]['yards'] for v in samples]);pf=np.asarray([model['penalties'][v]['first'] for v in samples]);field[penalty]=np.clip(field[penalty]-py[penalty],1,99);distance[penalty]=np.maximum(1,distance[penalty]-py[penalty]);firstdown=penalty&pf;down[firstdown]=1;distance[firstdown]=np.minimum(10,field[firstdown])
             ordinary=live&~changed;firstdown=ordinary&(gain>=distance);down[firstdown]=1;distance[firstdown]=np.minimum(10,field[firstdown]);advance=ordinary&~firstdown;down[advance]+=1;distance[advance]=np.maximum(1,distance[advance]-gain[advance]);failed=ordinary&(down>4);changed|=failed;field[failed]=100-field[failed]
             off[changed]=di[changed];down[changed]=1;distance[changed]=np.minimum(10,field[changed]);drives[changed]+=1
-            reset(touchdown|safety|(fg&~missed_fg))
-            halftime=active&(previous_clock>1800)&(clock<=1800);off[halftime]=1-first[halftime];reset(halftime)
+            reset(turnover&~return_score,'post_turnover',False);reset(punt&~return_score,'post_punt',False)
+            reset(touchdown|safety|(fg&~missed_fg),'post_score')
+            # The return-scoring defense kicks to the previous offense.
+            off[return_score]=oi[return_score];reset(return_score,'post_score')
+            halftime=active&(previous_clock>1800)&(clock<=1800);off[halftime]=1-first[halftime];reset(halftime,'kickoff')
             if offset==0 and representative_games and iterations<=800:
                 for i in range(min(representative_games,n)):
-                    if active[i]:trace.append({'game':i,'play':int(plays[i]),'clock':int(clock[i]),'offense':teams[oi[i]],'down':int(down[i]),'kind':'sack' if sack[i] else KINDS[kind[i]],'yards':int(gain[i]),'passerId':ids[qb[i]] if pass_mask[i] else None,'receiverId':ids[receiver[i]] if pass_mask[i] else None,'rusherId':ids[runner[i]] if run[i] else None,'score':scores[i].tolist()})
+                    if active[i]:trace.append({'game':i,'play':int(plays[i]),'clock':int(clock[i]),'offense':teams[oi[i]],'down':int(down[i]),'kind':'sack' if sack[i] else _MARKET_KINDS[kind[i]],'complete':bool(complete[i]),'interception':bool(interception[i]),'fumbleLost':bool(fumble[i]),'yards':int(gain[i]),'passerId':ids[qb[i]] if pass_mask[i] else None,'receiverId':ids[receiver[i]] if pass_mask[i] else None,'rusherId':ids[runner[i]] if run[i] else None,'score':scores[i].tolist()})
             done=clock<=0
         # Sport-specific overtime, using fitted red-zone rates and actual
         # conversion evidence. OT drives use the same state transitions below.
         tied=np.flatnonzero(scores[:,0]==scores[:,1])
         if len(tied):
-            _overtime(model,rng,scores,ps,idx,si,tied,teams,roles,pred)
+            _overtime(model,rng,scores,ps,idx,si,tied,teams,roles,pred,components)
         # Internal accounting is checked for EVERY completed simulated game.
         if not np.array_equal(ps[:,:,si['passingYards']].sum(axis=1),ps[:,:,si['receivingYards']].sum(axis=1)) or not np.array_equal(ps[:,:,si['completions']].sum(axis=1),ps[:,:,si['receptions']].sum(axis=1)):
             raise AssertionError('Passing/receiving accounting did not reconcile')
         ps[:,:,si['touchdowns']]=ps[:,:,si['rushingTouchdowns']]+ps[:,:,si['receivingTouchdowns']]
+        expected=6*(components['offensiveTouchdowns']+components['returnTouchdowns'])+3*components['fieldGoals']+components['tryPoints']+2*components['safeties']
+        if not np.array_equal(scores,expected):raise AssertionError('Team score component accounting did not reconcile')
         for side in (0,1):hist[side].update(_hist(scores[:,side]))
         total_hist.update(_hist(scores.sum(axis=1)));margin_hist.update(_hist(scores[:,0]-scores[:,1]));wins+=int((scores[:,0]>scores[:,1]).sum());ties+=int((scores[:,0]==scores[:,1]).sum())
         for p,i in idx.items():
@@ -324,18 +386,19 @@ def simulate_football(model,home,away,event_start,simulations=10000,seed=15001,l
         'totalDistribution':histogram_summary(total_hist,simulations),'marginDistribution':histogram_summary(margin_hist,simulations),
         'players':{p:{s:histogram_summary(ph[p][s],simulations) for s in stats} for p in ids},
         'gameEnvironment':{k:v/simulations for k,v in env.items()},'convergence':convergence,'representativePlays':trace,
-        'participantAssumptions':dict(zip(teams,roles)),'quality':{'productionEligible':False,'lineupsVerified':all(r['verified'] for r in roles),'injuriesComplete':all(r['injuriesComplete'] for r in roles),'allGamesAccountingReconciled':True},
+        'participantAssumptions':dict(zip(teams,roles)),'quality':{'productionEligible':False,'lineupsVerified':all(r['verified'] for r in roles),'injuriesComplete':all(r['injuriesComplete'] for r in roles),'allGamesAccountingReconciled':True,'teamScoringComponentsReconciled':True,'transitionSource':model['transitions'].get('sourceVersion'),'unknownReturnRates':[k for k,v in model['transitions']['returnTouchdowns'].items() if v['rate'] is None],'typedRestartFallbacks':[(t,cause) for t in teams for cause in ('kickoff','post_score','post_turnover','post_punt') if not model['transitions']['starts'].get(cause,{}).get(t)]},
         'uncertainty':{'sampling':'Wilson 95%; conditional on fitted assumptions.','modelInterval':None,'model':'Parameter, roster, weather and structural uncertainty are not fully quantified.'},
         'limitations':['Experimental candidate; no calibration or accuracy improvement is implied.','Current QB allocation uses a supplied verified lineup or explicitly uncertain last-game starter inference.',
             'Remaining active usage is conditioned on historical opportunity shares; causal injury redistribution, OL/coverage impacts and weather adjustments are not independently fitted.',
             'Outcome regressions use ridge shrinkage and empirical residuals, not a validated mechanistic depth/YAC model.',
-            'Only observed standalone no-play penalties are modeled; live-ball penalties, laterals, defensive scores and rare special-teams events remain outside coverage.',
+            'Only observed standalone no-play penalties are modeled; live-ball penalties and laterals remain outside coverage. Return-touchdown rates are used only when source flags are complete; missing rates remain explicitly unknown.',
+            'Kick-return scores use observed rates; separate return clock and touchback/return decision laws remain incomplete. Typed kickoff spots are used where observed, with explicitly reported legacy fallback where missing.',
             'Kneel yardage is approximated as one lost yard. Overtime and return-position approximations require independent rules/distribution validation.',
             'Retrospectively collected source corrections do not establish original pregame publication availability.'],
         'createdAt':datetime.now(timezone.utc).isoformat()}
 
 
-def _overtime(model,rng,scores,ps,idx,si,tied,teams,roles,pred):
+def _overtime(model,rng,scores,ps,idx,si,tied,teams,roles,pred,components=None):
     """Paired NCAA 25-yard drives; NFL paired possessions then sudden death.
 
     Uses the same fitted play/outcome models and credits participants. Bounded
@@ -347,24 +410,27 @@ def _overtime(model,rng,scores,ps,idx,si,tied,teams,roles,pred):
     # from these arrays as from the original lists. Avoid rebuilding tens of
     # thousands of historical values for every single overtime snap.
     clock_pools={k:np.asarray(v) for k,v in model['clock'].items() if v}
-    start_pools={t:np.asarray(model['starts'][t]) for t in teams}
+    start_pools={t:np.asarray(typed_starts(model,t,'kickoff')) for t in teams}
     sack_pool=np.asarray(model['sackYards']);pass_residuals=np.asarray(model['passYards']['allResiduals']);rush_residuals=np.asarray(model['rushYards']['allResiduals']);fg_fields=np.asarray(model['fg']['fields']);fg_made=np.asarray(model['fg']['made'])
     for game in tied:
         nfl_clock=600;first=int(rng.integers(2))
         for period in range(1,31):
             for turn in (first,1-first):
                 if model['sport']=='CFB' and period>=3:
-                    scores[game,turn]+=2*int(rng.random()<two['made']/two['n']);continue
+                    points=2*int(rng.random()<two['made']/two['n']);scores[game,turn]+=points
+                    if components is not None:components['tryPoints'][game,turn]+=points
+                    continue
                 field=25 if model['sport']=='CFB' else int(rng.choice(start_pools[teams[turn]]));down=1;distance=min(10,field);elapsed=0
                 for _ in range(40):
                     x=numeric(np.array([down]),np.array([distance]),np.array([field]),np.array([min(600,max(1,nfl_clock))]),np.array([scores[game,turn]-scores[game,1-turn]]),np.array([turn==0]));off=np.array([teams[turn]]);defense=np.array([teams[1-turn]]);pr=pred['play'].probabilities(x,off,defense)[0]
                     for col,k in enumerate(model['play']['classes']):
-                        if KINDS[k] in ('kneel','penalty') or down<4 and KINDS[k] in ('punt','field_goal'):pr[col]=0
-                    pr/=pr.sum();kind=KINDS[int(rng.choice(model['play']['classes'],p=pr))];qb=roles[turn]['quarterback'];target=None;who=None;yards=0;touchdown=False
+                        if _MARKET_KINDS[k] in ('kneel','penalty') or down<4 and _MARKET_KINDS[k] in ('punt','field_goal'):pr[col]=0
+                    pr/=pr.sum();kind=_MARKET_KINDS[int(rng.choice(model['play']['classes'],p=pr))];qb=roles[turn]['quarterback'];target=None;who=None;yards=0;touchdown=False
                     clocks=clock_pools.get(kind,clock_pools['pass']);elapsed+=int(rng.choice(clocks))
                     if kind in ('punt','field_goal'):
                         if kind=='field_goal':
-                            dist=np.abs(fg_fields-field);nearest=np.sort(dist)[min(29,len(dist)-1)];success=fg_made[dist<=nearest].mean();scores[game,turn]+=3*int(rng.random()<success)
+                            dist=np.abs(fg_fields-field);nearest=np.sort(dist)[min(29,len(dist)-1)];success=fg_made[dist<=nearest].mean();made=int(rng.random()<success);scores[game,turn]+=3*made
+                            if components is not None:components['fieldGoals'][game,turn]+=made
                         break
                     if kind=='pass':
                         out=pred['dropback'].probabilities(x,off,defense,np.array([qb]))[0];o=int(rng.choice(model['dropback']['classes'],p=out))
@@ -376,18 +442,33 @@ def _overtime(model,rng,scores,ps,idx,si,tied,teams,roles,pred):
                             if o==1:ps[game,idx[qb],si['interceptions']]+=1;break
                             rc=roles[turn]['receivers'];w=np.array(list(rc.values()),float);target=str(rng.choice(list(rc),p=w/w.sum()));ps[game,idx[target],si['targets']]+=1
                             if o==3:
-                                mean=pred['passYards'].predict(x,off,defense,np.array([target]))[0,0];yards=int(round(mean+rng.choice(pass_residuals)));prob=pred['passTouchdown'].probabilities(x,off,defense,np.array([target]))[0];td=int(rng.choice(model['passTouchdown']['classes'],p=prob))==1;yards=field if td else min(field-1,max(field-100,yards));ps[game,idx[qb],si['completions']]+=1;ps[game,idx[qb],si['passingYards']]+=yards;ps[game,idx[target],si['receptions']]+=1;ps[game,idx[target],si['receivingYards']]+=yards
+                                mean=pred['passYards'].predict(x,off,defense,np.array([target]))[0,0];yards=int(round(mean+rng.choice(pass_residuals)))
+                                if 'passTouchdown' in pred:
+                                    prob=pred['passTouchdown'].probabilities(x,off,defense,np.array([target]))[0];td=int(rng.choice(model['passTouchdown']['classes'],p=prob))==1;yards=field if td else min(field-1,max(field-100,yards))
+                                else:yards=min(field,max(field-100,yards))
+                                ps[game,idx[qb],si['completions']]+=1;ps[game,idx[qb],si['passingYards']]+=yards;ps[game,idx[target],si['receptions']]+=1;ps[game,idx[target],si['receivingYards']]+=yards
                     else:
-                        rc=roles[turn]['runners'];w=np.array(list(rc.values()),float);who=str(rng.choice(list(rc),p=w/w.sum()));mean=pred['rushYards'].predict(x,off,defense,np.array([who]))[0,0];yards=int(round(mean+rng.choice(rush_residuals)));prob=pred['rushTouchdown'].probabilities(x,off,defense,np.array([who]))[0];td=int(rng.choice(model['rushTouchdown']['classes'],p=prob))==1;yards=field if td else min(field-1,max(field-100,yards));ps[game,idx[who],si['carries']]+=1;ps[game,idx[who],si['rushingYards']]+=yards
+                        rc=roles[turn]['runners'];w=np.array(list(rc.values()),float);who=str(rng.choice(list(rc),p=w/w.sum()));mean=pred['rushYards'].predict(x,off,defense,np.array([who]))[0,0];yards=int(round(mean+rng.choice(rush_residuals)))
+                        if 'rushTouchdown' in pred:
+                            prob=pred['rushTouchdown'].probabilities(x,off,defense,np.array([who]))[0];td=int(rng.choice(model['rushTouchdown']['classes'],p=prob))==1;yards=field if td else min(field-1,max(field-100,yards))
+                        else:yards=min(field,max(field-100,yards))
+                        ps[game,idx[who],si['carries']]+=1;ps[game,idx[who],si['rushingYards']]+=yards
                     field-=yards
                     if field<=0:
                         scores[game,turn]+=6
+                        if components is not None:components['offensiveTouchdowns'][game,turn]+=1
                         if target:ps[game,idx[qb],si['passingTouchdowns']]+=1;ps[game,idx[target],si['receivingTouchdowns']]+=1
                         elif who:ps[game,idx[who],si['rushingTouchdowns']]+=1
-                        c=two if model['sport']=='CFB' and period>=2 else xp;scores[game,turn]+=(2 if c is two else 1)*int(rng.random()<c['made']/c['n']);break
+                        c=two if model['sport']=='CFB' and period>=2 else xp;points=(2 if c is two else 1)*int(rng.random()<c['made']/c['n']);scores[game,turn]+=points
+                        if components is not None:components['tryPoints'][game,turn]+=points
+                        break
                     if yards>=distance:down=1;distance=min(10,field)
                     else:down+=1;distance=max(1,distance-yards)
-                    if down>4 or field>=100:break
+                    if field>=100:
+                        scores[game,1-turn]+=2
+                        if components is not None:components['safeties'][game,1-turn]+=1
+                        break
+                    if down>4:break
                     if model['sport']=='NFL' and elapsed>=nfl_clock:break
                 if model['sport']=='NFL':nfl_clock-=elapsed
                 if model['sport']=='NFL' and period>=2 and scores[game,0]!=scores[game,1]:break

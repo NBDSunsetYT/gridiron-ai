@@ -117,6 +117,10 @@ def fit_csv(raw, source, as_of, team_min_plays=100, options=None):
         if any(avail.get(player) == "inactive" for player in (p["qb"], p["receiver"], p["runner"]) if player):
             raise ValueError("Inactive player participates in a play; reconcile source data")
         games[game] = played.isoformat()
+        # Optional explicit timing fields retain old artifacts/required columns.
+        # Source absence never becomes a guessed physical snap duration.
+        if row.get('out_of_bounds') not in (None,''):p['outOfBounds']=bool(integer(row,'out_of_bounds',0,1))
+        if row.get('live_seconds') not in (None,''):p['liveSeconds']=integer(row,'live_seconds',1,90)
         for field in ('epa','success','air_yards','yards_after_catch'):
             value=row.get(field)
             if value not in (None,''):
@@ -164,13 +168,13 @@ def research_features(rows):
     return output
 
 
-def fit_shrinkage(rows):
+def fit_shrinkage(rows,current_opponent=False):
     """Select conditional-pool prior strength on strictly later historical games."""
     ordered=sorted({r['game'] for r in rows},key=lambda game:min(r['at'] for r in rows if r['game']==game))
     split=max(2,int(.8*len(ordered)))
     training=set(ordered[:split]);from collections import defaultdict
     detailed=defaultdict(Counter);background=defaultdict(Counter)
-    key=lambda r:(r['o'],r['d'],r['down'],0 if r['field']<=20 else 1 if r['field']<=50 else 2,0 if r['distance']<=3 else 1 if r['distance']<=7 else 2)
+    key=lambda r:(r['o'],*(() if current_opponent else (r['d'],)),r['down'],0 if r['field']<=20 else 1 if r['field']<=50 else 2,0 if r['distance']<=3 else 1 if r['distance']<=7 else 2)
     for r in rows:
         if r['game'] in training and r['kind'] not in ('extra_point','two_point'):
             detailed[key(r)][r['kind']]+=1;background[(r['o'],r['down'])][r['kind']]+=1
@@ -186,4 +190,4 @@ def fit_shrinkage(rows):
             total_loss-=math.log(max(probability,1e-12));n+=1
         if n:curve.append({'priorPlays':strength,'validationPlays':n,'logLoss':total_loss/n})
     if not curve:raise ValueError('Insufficient chronological evidence to fit conditional-pool shrinkage')
-    return {'priorPlays':min(curve,key=lambda r:r['logLoss'])['priorPlays'],'validation':curve,'trainingGames':len(training),'heldoutGames':len(ordered)-len(training),'method':'Chronological next-play-kind validation; regularization is not a fabricated injury adjustment'}
+    return {'priorPlays':min(curve,key=lambda r:r['logLoss'])['priorPlays'],'validation':curve,'trainingGames':len(training),'heldoutGames':len(ordered)-len(training),'keyPolicy':'current_matchup_offense_pool' if current_opponent else 'historical_opponent_pool','method':'Chronological next-play-kind validation; regularization is not a fabricated injury adjustment'}

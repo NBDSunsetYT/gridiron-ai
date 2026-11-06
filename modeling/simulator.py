@@ -17,12 +17,12 @@ from collections import Counter, defaultdict
 from datetime import datetime, timezone
 
 try:
-    from .fit import VERSION, ENHANCED_VERSION, utc
+    from .fit import VERSION, ENHANCED_VERSION, utc, fit_shrinkage
 except ImportError:
-    from fit import VERSION, ENHANCED_VERSION, utc
+    from fit import VERSION, ENHANCED_VERSION, utc, fit_shrinkage
 
 STATS = ("passingAttempts", "completions", "passingYards", "passingTouchdowns", "interceptions", "targets", "receptions", "receivingYards", "receivingTouchdowns", "carries", "rushingYards", "rushingTouchdowns", "touchdowns")
-ENGINE_VERSION = 'pbp-runtime-7.0.0'
+ENGINE_VERSION = 'pbp-runtime-18.0.0'
 DISTRIBUTION_ENCODING = 'exact_integer_frequency_v1'
 PARAMETER_SAMPLE_ENCODING = 'gzip_base64_int32le_shared_player_stats_v1'
 GAME_PARAMETER_SAMPLE_ENCODING = 'gzip_base64_int32le_shared_game_scores_v1'
@@ -69,6 +69,12 @@ def script_bucket(diff):
     return -1 if diff < -7 else 1 if diff > 7 else 0
 
 
+def is_late(clock, full_game=False):
+    """Final two minutes of a half, scalar or NumPy array compatible."""
+    remaining=(clock-1)%1800+1 if full_game else clock
+    return (clock==0)|(remaining<=120)
+
+
 class Evidence:
     def __init__(self, model, home, away, scenario=None, game_weights=None):
         if model.get("version") not in (VERSION,ENHANCED_VERSION) or not model.get("source") or not model.get("sha256"):
@@ -80,7 +86,16 @@ class Evidence:
         self.games, self.counts, self.rows = set(), Counter(), []
         self.backoff = Counter()
         self.options=model.get('modelOptions',{})
-        self.prior_strength=model.get('shrinkageFit',{}).get('priorPlays') if self.options.get('conditionalShrinkage') else None
+        if any(utc(r['at'])>=utc(model['asOf']) for r in model['rows']):
+            raise ValueError('Every fitted observation must precede the evidence cutoff')
+        fitted=model.get('shrinkageFit')
+        self.prior_strength=(fitted if fitted and fitted.get('keyPolicy')=='current_matchup_offense_pool' else fit_shrinkage(model['rows'],current_opponent=True))['priorPlays']
+        self.current_opponents={home:away,away:home}
+        self.actors=defaultdict(Counter)
+        self.stopped_clock=[]
+        ordinary=[r['elapsed'] for r in model['rows'] if r.get('elapsed',0)>0 and not is_late(r['clock'],True)]
+        hurry=[r['elapsed'] for r in model['rows'] if r.get('elapsed',0)>0 and is_late(r['clock'],True) and r.get('script',0)<0]
+        self.tempo_multiplier=(sum(hurry)/len(hurry))/(sum(ordinary)/len(ordinary)) if hurry and ordinary else None
         self.weighted_cdf={};self.row_weights={}
         self.conversion_pools={}
         self.sample_pools={}
@@ -89,6 +104,9 @@ class Evidence:
             if set(scenario) != {"playerId", "status"} or scenario["status"] not in ("active", "limited", "inactive"):
                 raise ValueError("Scenario requires playerId and active|limited|inactive status")
         for row in model["rows"]:
+            if row['kind'] not in ('extra_point','two_point'):
+                self.pools[('league',row['down'],zone(row['field']),distance_bucket(row['distance']))].append(row)
+                if row['kind']=='pass' and not row.get('complete') and not row.get('int') and row.get('elapsed',0)>0:self.stopped_clock.append(row['elapsed'])
             if row["o"] not in (home, away):
                 continue
             if scenario and row.get("availability", {}).get(scenario["playerId"]) != scenario["status"]:
@@ -99,13 +117,15 @@ class Evidence:
             if half_life:weight*=math.exp(-math.log(2)*(utc(model['asOf'])-utc(row['at'])).total_seconds()/(86400*half_life))
             if not math.isfinite(weight) or weight<=0:raise ValueError('Historical game weights must be finite and positive')
             self.row_weights[id(row)]=weight
+            for role in ('qb','receiver','runner'):
+                if row.get(role):self.actors[(row['o'],role)][row[role]]+=weight
             self.games.add(row["game"])
             if row["kind"] in ("extra_point", "two_point"):
                 self.conversions[row["o"]].append(row)
                 continue
             self.counts[row["o"]] += 1
-            team, down, z, d, s, late = row["o"], row["down"], zone(row["field"]), distance_bucket(row["distance"]), script_bucket(row["script"]), (row["clock"] <= 120 or 1800 < row["clock"] <= 1920)
-            for key in ((team, row["d"], down, z, d, s, late), (team, down, z, d, s, late),
+            team, down, z, d, s, late = row["o"], row["down"], zone(row["field"]), distance_bucket(row["distance"]), script_bucket(row["script"]), is_late(row['clock'],True)
+            for key in ((team, self.current_opponents[team], down, z, d, s, late), (team, down, z, d, s, late),
                         (team, down, z, d), (team, down)):
                 self.pools[key].append(row)
             if row["start"]:
@@ -122,7 +142,7 @@ class Evidence:
         if self.weighted:
             for pool in list(self.pools.values())+list(self.conversions.values())+list(self.start_rows.values()):
                 total=0.;cdf=[]
-                for row in pool:total+=self.row_weights[id(row)];cdf.append(total)
+                for row in pool:total+=self.row_weights.get(id(row),1.);cdf.append(total)
                 self.weighted_cdf[id(pool)]=(cdf,total)
 
     def draw(self,rng,pool):
@@ -130,25 +150,45 @@ class Evidence:
         cdf,total=self.weighted_cdf.get(id(pool),(None,None))
         if cdf is None:
             total=0.;cdf=[]
-            for row in pool:total+=self.row_weights[id(row)];cdf.append(total)
+            for row in pool:total+=self.row_weights.get(id(row),1.);cdf.append(total)
         return pool[min(len(pool)-1,bisect.bisect_right(cdf,rng.random()*total))]
 
     def sample(self, rng, team, defense, down, field, distance, diff, clock):
-        z, d, s, late = zone(field), distance_bucket(distance), script_bucket(diff), clock <= 120
+        z, d, s, late = zone(field), distance_bucket(distance), script_bucket(diff), is_late(clock)
         identity=(team,defense,down,z,d,s,late)
         selected=self.sample_pools.get(identity)
         if selected is None:
-            keys=(identity,(team,down,z,d,s,late),(team,down,z,d),(team,down))
+            if self.current_opponents.get(team)!=defense:raise ValueError('Current matchup defense differs from fitted evidence context')
+            keys=(identity,(team,down,z,d,s,late),(team,down,z,d),(team,down),('league',down,z,d))
             for depth,key in enumerate(keys):
                 pool=self.pools.get(key)
-                if pool and len(pool)>=3:
-                    parent=next((self.pools[k] for k in keys[depth+1:] if self.pools.get(k)),None) if self.prior_strength and depth<len(keys)-1 else None
+                if pool and (len(pool)>=3 or depth==len(keys)-1):
+                    parent=next((self.pools[k] for k in keys[depth+1:] if self.pools.get(k)),None) if depth<len(keys)-1 else None
                     selected=(depth,pool,parent);self.sample_pools[identity]=selected;break
             if selected is None:raise ValueError('No applicable historical play pool')
         depth,pool,parent=selected
         if parent and rng.random()>len(pool)/(len(pool)+self.prior_strength):pool=parent
         self.backoff[depth]+=1
-        return self.draw(rng,pool)
+        row=self.draw(rng,pool)
+        if row['o']!=team or row['d']!=defense:
+            # League outcome priors must never credit another team's actors.
+            row=row.copy();row['outcomeSourceOffense']=row['o'];row['outcomeSourceDefense']=row['d'];row['o']=team;row['d']=defense
+            for role in ('qb','receiver','runner'):
+                if row.get(role):
+                    weights=self.actors[(team,role)]
+                    if not weights:raise ValueError('League backoff has no supported current-team '+role)
+                    row[role]=rng.choices(list(weights),weights=list(weights.values()))[0]
+        return row
+
+    def clock_charge(self,rng,row,clock,diff,half):
+        stops=row['kind']=='spike' or row['kind']=='pass' and not row.get('complete') or row.get('outOfBounds') and clock<=(300 if half==2 else 120)
+        live=row.get('liveSeconds')
+        if stops:
+            return min(clock,int(live if live is not None else rng.choice(self.stopped_clock) if self.stopped_clock else row['elapsed']))
+        elapsed=row['elapsed']
+        if is_late(clock) and diff<0 and self.tempo_multiplier is not None:
+            elapsed=(live or 0)+max(0,elapsed-(live or 0))*self.tempo_multiplier
+        return min(clock,max(1,int(math.ceil(elapsed))))
 
     def start(self, rng, team):
         return self.draw(rng,self.start_rows[team])['field']
@@ -158,7 +198,7 @@ class Evidence:
         key=(team,script_bucket(diff),late)
         contextual=self.conversion_pools.get(key)
         if contextual is None:
-            contextual = [p for p in pool if script_bucket(p["script"]) == key[1] and (p["clock"] <= 120 or 1800 < p["clock"] <= 1920) == late]
+            contextual = [p for p in pool if script_bucket(p["script"]) == key[1] and is_late(p['clock'],True) == late]
             self.conversion_pools[key]=contextual
             if self.weighted:
                 total=0.;cdf=[]
@@ -209,7 +249,8 @@ def simulate_game(evidence, rng, teams, postseason=False, trace=False):
         p = evidence.sample(rng, teams[offense], teams[defense], down, field, distance,
                             scores[offense] - scores[defense], clock)
         plays += 1
-        clock -= min(clock, p["elapsed"])
+        charge=evidence.clock_charge(rng,p,clock,scores[offense]-scores[defense],half) if hasattr(evidence,'clock_charge') else min(clock,p['elapsed'])
+        clock -= charge
         totals["plays"] += 1
         kind, yards, possession_change, scored, safety = p["kind"], p["yards"], False, False, False
         old_field, old_down = field, down
