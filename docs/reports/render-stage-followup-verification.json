@@ -1,0 +1,256 @@
+{
+  "checkedAt": "2026-11-06T16:07:42.404Z",
+  "originalPrivateTablesUnchanged": true,
+  "tables": 11,
+  "qaAuthAccountsCreated": 2,
+  "qaLoginTestsRun": false,
+  "transactionTestsRolledBack": true,
+  "backupHashesUnchanged": true,
+  "render": {
+    "frontendSource": "3ac16f9710e330b2d486097483264293c5a59336",
+    "frontendDeploy": "dep-dbmv9rh5efls738m7oog",
+    "branch": "main",
+    "migrationCodeLive": false,
+    "gatewaySource": "3e31d0d851fc23682284bee6e44b9de15ec55e3c",
+    "gatewayDeploy": "dep-dbmv8ph5efls738m5ejg",
+    "authentication": {
+      "stagingCredentialHttp": 200,
+      "anonymousHttp": 401,
+      "originalPrimaryReplaced": false
+    }
+  },
+  "compute": {
+    "jobsClaimed": 0,
+    "simulationsStarted": 0,
+    "continuousWorkerActive": false,
+    "concurrency": 1,
+    "dailyJobLimit": 6,
+    "dailyTrialLimit": 100000,
+    "dailyWorstCaseSeconds": 1800
+  },
+  "tests": {
+    "vitest": {
+      "files": 114,
+      "tests": 791,
+      "passed": true
+    },
+    "python": {
+      "tests": 42,
+      "passed": true
+    },
+    "nodeHosting": {
+      "tests": 2,
+      "passed": true
+    },
+    "hostedQaAuthentication": "pending_allowlist_confirmation",
+    "supabaseRoleIsolation": "passed_rolled_back",
+    "physicalIphone": "not_tested",
+    "productionCutoverAuthorized": false
+  },
+  "unavailable": [
+    "OpenAI key missing",
+    "DraftKings Predictions authorized feed not configured",
+    "Hosted independent model probabilities unsupported in sampled boards",
+    "Atlas/R2 not configured",
+    "No continuous quantitative worker"
+  ],
+  "pendingManualSettings": [
+    "Render branch migration/render-stage-v24",
+    "Supabase staging exact redirect URLs"
+  ],
+  "productionAndBillingChanged": false,
+  "build": {
+    "exitCode": 0,
+    "wallSeconds": 58.103899174020626,
+    "cpuSeconds": 90.43380900000001,
+    "peakRssKiB": 1194708
+  },
+  "localStandalone": {
+    "checkedAt": "2026-11-06T16:04:43.287Z",
+    "scope": "Local prepared standalone build using synthetic configuration; no external data writes or model work",
+    "startupToHttpMs": 601.89619,
+    "rssKiB": 155040,
+    "computeMode": "cache_and_queue_only",
+    "checks": [
+      {
+        "path": "/",
+        "status": 200
+      },
+      {
+        "path": "/manifest.webmanifest",
+        "status": 200
+      },
+      {
+        "path": "/icon-192.png",
+        "status": 200
+      },
+      {
+        "path": "/icon-512.png",
+        "status": 200
+      },
+      {
+        "path": "/apple-touch-icon.png",
+        "status": 200
+      },
+      {
+        "path": "/sw.js",
+        "status": 200
+      },
+      {
+        "path": "/offline.html",
+        "status": 200
+      },
+      {
+        "path": "/api/cloud/ledger",
+        "status": 401,
+        "cacheControl": "private, no-store"
+      }
+    ],
+    "standaloneWarning": false,
+    "modelProcessesStarted": 0
+  },
+  "evidenceAuditBenchmark": {
+    "scope": "Synthetic 500-row shared-game integrity audit only; not hosted CPU savings or forecast accuracy",
+    "gamesSimulated": 0,
+    "probabilitiesNumericallyIdentical": true,
+    "beforeCpuMs": 118.249,
+    "afterCpuMs": 6.410799999999999,
+    "beforeWallMs": 112.36804739999998,
+    "afterWallMs": 5.963227200000006
+  },
+  "hostedMetrics": {
+    "sampledPeakCpuCores": 0.09886552,
+    "sampledPeakMemoryBytes": 270684160,
+    "p95LatencyAvailable": false,
+    "scope": "Small staging check window; no sustained load or billed CPU claim"
+  },
+  "propLineObservedInventory": [
+    {
+      "sport": "NFL",
+      "totalResults": 14169,
+      "marketCounts": {
+        "player_pass_yds": 1548,
+        "player_pass_tds": 364,
+        "player_pass_attempts": 88,
+        "player_pass_completions": 102,
+        "player_pass_interceptions": 170,
+        "player_rush_yds": 2798,
+        "player_rush_attempts": 168,
+        "player_rush_tds": 0,
+        "player_reception_yds": 5356,
+        "player_receptions": 1886,
+        "player_reception_tds": 0,
+        "player_anytime_td": 1689
+      },
+      "bookCounts": {
+        "draftkings": 1442,
+        "fanduel": 870,
+        "betmgm": 1037,
+        "hardrock": 10820
+      },
+      "directRowsSampled": 50,
+      "httpStatus": 200,
+      "quoteTimeVerified": false,
+      "feesVerified": false,
+      "dataFamily": "sportsbook_reference",
+      "draftKingsPredictionsEquivalent": false
+    },
+    {
+      "sport": "CFB",
+      "totalResults": 3412,
+      "marketCounts": {
+        "player_pass_yds": 172,
+        "player_pass_tds": 160,
+        "player_pass_attempts": 42,
+        "player_pass_completions": 46,
+        "player_pass_interceptions": 0,
+        "player_rush_yds": 346,
+        "player_rush_attempts": 0,
+        "player_rush_tds": 0,
+        "player_reception_yds": 568,
+        "player_receptions": 264,
+        "player_reception_tds": 0,
+        "player_anytime_td": 1814
+      },
+      "bookCounts": {
+        "draftkings": 763,
+        "fanduel": 1795,
+        "betmgm": 257,
+        "hardrock": 597
+      },
+      "directRowsSampled": 50,
+      "httpStatus": 200,
+      "quoteTimeVerified": false,
+      "feesVerified": false,
+      "dataFamily": "sportsbook_reference",
+      "draftKingsPredictionsEquivalent": false
+    },
+    {
+      "sport": "NBA",
+      "totalResults": 8536,
+      "marketCounts": {
+        "player_points": 1860,
+        "player_rebounds": 1776,
+        "player_assists": 1340,
+        "player_threes": 1196,
+        "player_steals": 482,
+        "player_blocks": 224,
+        "player_turnovers": 0,
+        "player_points_rebounds_assists": 1298,
+        "player_double_double": 360
+      },
+      "bookCounts": {
+        "draftkings": 1173,
+        "fanduel": 1105,
+        "betmgm": 690,
+        "hardrock": 5568
+      },
+      "directRowsSampled": 50,
+      "httpStatus": 200,
+      "quoteTimeVerified": false,
+      "feesVerified": false,
+      "dataFamily": "sportsbook_reference",
+      "draftKingsPredictionsEquivalent": false
+    }
+  ],
+  "frontendMobileProps": [
+    {
+      "sport": "NFL",
+      "httpStatus": 200,
+      "status": "available",
+      "provider": "PropLine",
+      "rows": 500,
+      "wallMs": 14403,
+      "errors": [],
+      "horizontalOverflow": false,
+      "providerVisible": 63
+    },
+    {
+      "sport": "CFB",
+      "httpStatus": 200,
+      "status": "available",
+      "provider": "PropLine",
+      "rows": 500,
+      "wallMs": 24634,
+      "errors": [],
+      "horizontalOverflow": false,
+      "providerVisible": 64
+    },
+    {
+      "sport": "NBA",
+      "httpStatus": 200,
+      "status": "available",
+      "provider": "PropLine",
+      "rows": 500,
+      "wallMs": 17843,
+      "errors": [],
+      "horizontalOverflow": false,
+      "providerVisible": 501
+    }
+  ],
+  "database": {
+    "bytes": 469259955,
+    "publicTablesWithoutRls": 0,
+    "originalPrivateTablesUnchanged": 11
+  }
+}

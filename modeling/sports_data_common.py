@@ -40,9 +40,20 @@ def require_render_runtime():
 
 
 def authorize_data_bridge(authorization):
+    """Accept a staging credential alongside the unchanged legacy credential.
+
+    The overlap is intentional: retiring a legacy credential is a separate,
+    explicitly coordinated operation after all clients have migrated.
+    Neither the accepted credential nor its slot is returned or logged.
+    """
     expected = os.environ.get('GRIDIRON_DATA_BRIDGE_TOKEN', '')
     if len(expected) < 32:
         raise HTTPException(503, 'The server-to-server data bridge is not configured.')
     actual = authorization or ''
-    if not hmac.compare_digest(actual.encode('utf-8'), ('Bearer ' + expected).encode('utf-8')):
+    staging = os.environ.get('GRIDIRON_DATA_BRIDGE_STAGING_TOKEN', '')
+    candidates = [expected] + ([staging] if len(staging) >= 32 else [])
+    matched = False
+    for token in candidates:
+        matched |= hmac.compare_digest(actual.encode('utf-8'), ('Bearer ' + token).encode('utf-8'))
+    if not matched:
         raise HTTPException(401, 'Unauthorized data bridge request.')

@@ -1,5 +1,10 @@
 # Render staging migration — V24 checkpoint
 
+**Follow-up:** see [the staging continuation report](RENDER_MIGRATION_FOLLOWUP.md)
+for the November 6 gateway repair, actual three-sport provider checks, worker
+preflight, updated measurements, and remaining branch/Auth gates. The acceptance
+table below records the earlier checkpoint; it is not the latest provider status.
+
 V24 research was checkpointed separately at `research/dynamic-v24`, commit
 `d4d5fd1c538b188939947942c8772f768f7a0fa5`. No research candidate was promoted.
 This compatibility branch starts from production commit

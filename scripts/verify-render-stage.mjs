@@ -28,3 +28,4 @@ for(const path of ['/manifest.webmanifest','/icon-192.png','/icon-512.png','/app
 }
 writeFileSync(out+'/'+(remote?'render':'local')+'-browser.json',JSON.stringify(rows,null,2));console.log(JSON.stringify(rows));
 if(rows.some(r=>r.httpStatus!==undefined&&(r.httpStatus!==200||r.horizontalOverflow||r.errors?.length)))process.exitCode=1;
+if(process.env.VERIFY_EXPECTED_COMMIT){const health=rows.find(r=>r.path==='/api/health')?.health;if(health?.deployment?.commit!==process.env.VERIFY_EXPECTED_COMMIT){console.error('The served source commit does not match the expected migration release.');process.exitCode=1;}}

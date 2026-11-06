@@ -15,7 +15,9 @@ export async function GET(request:Request){
  // Credential presence is configuration, never a credit, entitlement or live
  // generation check. Provider budget/status probes remain private operations.
  const assistantStatus={provider:supportedProvider?provider:'unsupported',credentialConfigured:assistantConfigured,generationVerified:false,status:!supportedProvider?'invalid_provider':assistantConfigured?'configured_unverified':'missing_credentials'};
- const base={application:'GRIDIRON AI',version,backend,cloudOnly:cloudOnlyDeployment(),configuration,assistantStatus,computeMode:computeAllowed()?'worker_or_local':'cache_and_queue_only',workerExecutionVerified:false};
+ const commit=process.env.RENDER_GIT_COMMIT,branch=process.env.RENDER_GIT_BRANCH;
+ const deployment={platform:process.env.RENDER==='true'?'render':process.env.VERCEL==='1'?'vercel':'local',commit:commit&&/^[a-f0-9]{40}$/.test(commit)?commit:null,branch:branch&&/^[A-Za-z0-9/._-]{1,150}$/.test(branch)?branch:null};
+ const base={application:'GRIDIRON AI',version,backend,cloudOnly:cloudOnlyDeployment(),configuration,assistantStatus,deployment,computeMode:computeAllowed()?'worker_or_local':'cache_and_queue_only',workerExecutionVerified:false};
  if(new URL(request.url).searchParams.get('check')!=='dependencies')return Response.json({...base,status:'ok'},{headers:{'Cache-Control':'no-store'}});
  const checks:{supabase:Check;simulations:Check}={supabase:'not_configured',simulations:'not_configured'};
  await Promise.all([

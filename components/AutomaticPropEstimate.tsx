@@ -3,7 +3,7 @@ import {useState,useEffect,useRef} from 'react';
 import {estimatedProbability} from '@/lib/props/view';
 import {X,Activity} from 'lucide-react';
 const pct=(v:number)=>(v*100).toFixed(1)+'%';
-const states:Record<string,string>={simulation_running:'Simulation running',calculating_probability:'Calculating',loading_research:'Loading research',resolving_player:'Resolving player',data_delayed:'Data delayed',source_unavailable:'Waiting for verified data'};
+const states:Record<string,string>={preparing_simulation:'Waiting for worker',simulation_failed:'Simulation failed',simulation_running:'Simulation running',calculating_probability:'Calculating',loading_research:'Loading research',resolving_player:'Resolving player',data_delayed:'Data delayed',source_unavailable:'Waiting for verified data'};
 export default function AutomaticPropEstimate({row}:{row:any}){
  const [open,setOpen]=useState(false),trigger=useRef<HTMLButtonElement>(null),panel=useRef<HTMLElement>(null);
  const empirical=row.method==='empirical_history',hierarchical=row.method==='hierarchical_distribution',regularized=row.method==='regularized_history',posterior=hierarchical||regularized,nonSimulation=empirical||posterior,p=estimatedProbability(row),ready=typeof p==='number',stale=row.stale||Date.parse(row.kickoff)<=Date.now(),interval=posterior?row.calibratedInterval95??row.modelInterval95:empirical?row.historicalInterval95:row.monteCarloInterval95;

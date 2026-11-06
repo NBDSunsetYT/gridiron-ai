@@ -13,8 +13,22 @@ import sys
 import time
 import urllib.request
 import urllib.error
+from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
+
+class NoRedirect(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        return None
+
+def validate_worker_config():
+    for name in ['SUPABASE_URL','SUPABASE_PUBLISHABLE_KEY','GRIDIRON_PUBLIC_INGEST_TOKEN','SIMULATION_SERVICE_TOKEN']:
+        if not os.environ.get(name):raise ValueError('Required worker setting missing: '+name)
+    url=urlsplit(os.environ['SUPABASE_URL'])
+    if url.scheme!='https' or not url.hostname or url.username or url.password or url.query or url.fragment or url.path not in ('','/'):
+        raise ValueError('Use the verified HTTPS Supabase project origin')
+    for name in ['GRIDIRON_PUBLIC_INGEST_TOKEN','SIMULATION_SERVICE_TOKEN']:
+        if len(os.environ[name])<32:raise ValueError('Worker capability is too short')
 
 def rpc(payload):
     base=os.environ['SUPABASE_URL'].rstrip('/')
@@ -22,7 +36,7 @@ def rpc(payload):
         data=json.dumps({'token':os.environ['GRIDIRON_PUBLIC_INGEST_TOKEN'],'payload':payload}).encode(),
         headers={'apikey':os.environ['SUPABASE_PUBLISHABLE_KEY'],'Content-Type':'application/json'},method='POST')
     # HTTP_PROXY/HTTPS_PROXY and CA trust remain inherited from the runtime.
-    with urllib.request.urlopen(req,timeout=20) as response:return json.load(response)
+    with urllib.request.build_opener(NoRedirect).open(req,timeout=20) as response:return json.load(response)
 
 def group_cpu(pgid):
     """Linux process-group CPU, including Python child and Node task; not billed CPU."""
@@ -42,13 +56,20 @@ def stop_group(pgid):
     try:os.killpg(pgid,signal.SIGKILL)
     except ProcessLookupError:pass
 
-def main():
-    p=argparse.ArgumentParser();p.add_argument('--max-jobs',type=int,default=2);p.add_argument('--cpu-seconds',type=float,default=300);p.add_argument('--wall-seconds',type=float,default=600);p.add_argument('--dry-run',action='store_true');p.add_argument('--refresh',action='store_true');a=p.parse_args()
+def main(argv=None):
+    p=argparse.ArgumentParser();p.add_argument('--max-jobs',type=int,default=2);p.add_argument('--cpu-seconds',type=float,default=300);p.add_argument('--wall-seconds',type=float,default=600);p.add_argument('--dry-run',action='store_true');p.add_argument('--refresh',action='store_true');p.add_argument('--preflight',action='store_true',help='Verify the durable queue without claiming or running a job');a=p.parse_args(argv)
     if os.environ.get('VERCEL') or os.environ.get('GRIDIRON_WORKER_REQUEST_LIFETIME')=='1':p.error('This worker cannot run on Vercel')
     if not 1<=a.max_jobs<=6 or not 1<=a.cpu_seconds<=1800 or not 1<=a.wall_seconds<=1800:p.error('Bounded worker budgets required')
     if a.dry_run:print(json.dumps({'execution':'disabled','maxJobs':a.max_jobs,'cpuSeconds':a.cpu_seconds,'wallSeconds':a.wall_seconds,'concurrency':1}));return
-    for name in ['SUPABASE_URL','SUPABASE_PUBLISHABLE_KEY','GRIDIRON_PUBLIC_INGEST_TOKEN','SIMULATION_SERVICE_TOKEN']:
-        if not os.environ.get(name):p.error('Missing required operator environment: '+name)
+    if os.environ.get('GRIDIRON_COMPUTE_ROLE')!='worker' or os.environ.get('RENDER_SERVICE_TYPE')=='web' or os.environ.get('RENDER_SERVICE_ID') in ('srv-dblsg9gn74is73cjc8lg','srv-dbj680s9v7es7397nv2g'):
+        p.error('An explicitly selected local/background worker is required; frontend and data-gateway execution are forbidden')
+    validate_worker_config()
+    if a.preflight:
+        if a.refresh:p.error('Preflight is read-only and cannot request refresh work')
+        status=rpc({'action':'status'})
+        if not isinstance(status,dict) or status.get('role')!='cache_and_queue_only' or status.get('concurrency')!=1:
+            raise ValueError('Unexpected queue policy; no work was claimed')
+        print(json.dumps({'queueConnectivity':'verified','execution':'preflight_only','jobsClaimed':0,'simulationsStarted':0,'connection':'Supabase durable queue; Python model service binds loopback per controlled claim','queuePolicy':status,'continuousWorkerActive':False}));return
     if a.refresh:
         import hashlib
         task={'kind':'maintenance'};identity=hashlib.sha256(json.dumps(['bounded-compute-1',task],sort_keys=True,separators=(',',':')).encode()).hexdigest()
