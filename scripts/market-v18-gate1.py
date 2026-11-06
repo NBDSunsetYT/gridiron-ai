@@ -9,7 +9,7 @@ ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT))
 from modeling.overnight_v20.state import read, atomic
 from modeling.market_gates_v18 import gate1
-from modeling.market_audit_report_v18 import audit_report
+from modeling.market_audit_report_v18 import audit_report,matched_coverage
 OUT=ROOT/'artifacts/market-v18'
 
 def tests():
@@ -34,6 +34,10 @@ def tests():
 def seal():
     protocol=read(OUT/'r5/audit-protocol.json');rows=[read(p) for p in (OUT/'r5/runs').glob('*.summary.json')]
     report=audit_report(rows,[r['gameId'] for r in protocol['selection']]);checks=read(OUT/'gate1-tests.json') or {}
+    import importlib.util
+    spec=importlib.util.spec_from_file_location('market_audit_grade_reader',ROOT/'scripts/market-v18-audit.py');reader=importlib.util.module_from_spec(spec);spec.loader.exec_module(reader)
+    report['originalObservationCoverage']=matched_coverage(rows,{r['gameId']:reader.actual(r).get('playerErrors',[]) for r in protocol['selection']})
+    report['playerMetricScope']='Matched original observations only; omitted roster/stat predictions are reported, never replaced with zero'
     audit={'gamesCompleted':len(rows),'simulatedCompleteGames':sum(r['simulations'] for r in rows),
            'allAccountingReconciled':all(r['accountingReconciled'] for r in rows)}
     decision=gate1(checks,audit)

@@ -9,6 +9,19 @@ import numpy as np
 VERSION = 'market-regression-report-18.0.0'
 
 
+def matched_coverage(rows, original_errors):
+    """Report omissions caused by supported-roster caps; never grade nulls as 0."""
+    counts=defaultdict(lambda: {'originalObservations':0,'matchedObservations':0,'omittedObservations':0})
+    for row in rows:
+        original={(p['id'],p['stat']) for p in original_errors[row['gameId']]}
+        current={(p['id'],p['stat']) for p in row['players']}
+        if current-original:raise ValueError('New grade has no original matched observation')
+        for pair in original:
+            key=row['sport']+':'+pair[1];counts[key]['originalObservations']+=1
+            counts[key]['matchedObservations' if pair in current else 'omittedObservations']+=1
+    return dict(sorted(counts.items()))
+
+
 def paired_mean_interval(deltas, seed=180018, replicates=2000):
     values = np.asarray(deltas, dtype=float)
     if not len(values):

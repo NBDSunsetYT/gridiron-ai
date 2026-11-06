@@ -131,5 +131,23 @@ class TransitionRepairs(unittest.TestCase):
         row={'gameId':'SYNTHETIC','sport':'NFL','baselineVersion':'synthetic','scoreErrors':[3.,-3.],'baselineScoreErrors':[1.,-1.],'brier':.3,'baselineBrier':.2,'logLoss':.8,'baselineLogLoss':.6,'players':[{'id':'synthetic','stat':'passingYards','error':4.,'oldError':2.,'covered90':False}],'simulations':10000,'accountingReconciled':True,'strictPregameQualified':False};r=audit_report([row],['SYNTHETIC']);m=r['leagues']['NFL']['gameMetrics'];self.assertEqual(m['teamScoreMAE']['pairedGameDelta']['difference'],2.);self.assertEqual(m['teamScoreMAE']['pairedGameDelta']['interval95'],[2.,2.]);self.assertIsNone(r['CLV']);self.assertFalse(r['productionPromotion']);self.assertEqual(r['leagues']['NFL']['playerMetrics']['passingYards']['pairedGameBlockMAEDelta95'],[2.,2.])
         with self.assertRaises(ValueError):audit_report([row,row],['SYNTHETIC'])
         with self.assertRaises(ValueError):audit_report([row],['missing'])
+    def test_cutoff_partitions_never_duplicate_or_split_a_model_fit(self):
+        import importlib.util
+        path=Path(__file__).resolve().parents[1]/'scripts/market-v18-workers.py';spec=importlib.util.spec_from_file_location('partition_fixture',path);m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
+        rows=[{'gameId':str(i),'sport':'CFB' if i<8 else 'NFL','fitCutoff':str(i//3)} for i in range(12)];protocol={'selection':rows};before=copy.deepcopy(protocol);parts=m.pending_partitions(protocol,{'0','1'})
+        self.assertEqual(protocol,before);self.assertEqual(sorted(set().union(*map(set,parts))),sorted(str(i) for i in range(2,12)));self.assertFalse(set(parts[0])&set(parts[1]))
+        for r in rows:
+            owned=[i for i,ids in enumerate(parts) if r['gameId'] in ids]
+            peers={p['gameId'] for p in rows if (p['sport'],p['fitCutoff'])==(r['sport'],r['fitCutoff'])}-{'0','1'}
+            if owned:self.assertTrue(peers<=set(parts[owned[0]]))
+        with self.assertRaises(ValueError):m.pending_partitions(protocol,set(),3)
+        with self.assertRaises(ValueError):m.pending_partitions(protocol,{'outside'})
+        ready={(r['sport'],r['fitCutoff']) for r in rows};split=m.pending_partitions(protocol,{'0','1'},prepared=ready)
+        self.assertEqual(sorted(map(len,split)),[5,5]);self.assertFalse(set(split[0])&set(split[1]));self.assertEqual(set(split[0])|set(split[1]),{str(i) for i in range(2,12)})
+    def test_capped_roster_omissions_are_reported_without_zero_predictions(self):
+        from .market_audit_report_v18 import matched_coverage
+        row={'gameId':'SYNTHETIC','sport':'NFL','players':[{'id':'p1','stat':'receptions'}]};original={'SYNTHETIC':[{'id':'p1','stat':'receptions'},{'id':'p2','stat':'receptions'}]};r=matched_coverage([row],original)
+        self.assertEqual(r['NFL:receptions'],{'originalObservations':2,'matchedObservations':1,'omittedObservations':1})
+        with self.assertRaises(ValueError):matched_coverage([row],{'SYNTHETIC':[]})
 
 if __name__=='__main__':unittest.main()
