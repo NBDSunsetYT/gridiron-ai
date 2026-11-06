@@ -1,0 +1,148 @@
+{
+  "games": [
+    {
+      "sport": "NBA",
+      "eventId": "401909288",
+      "eventAt": "2026-11-07T00:00Z",
+      "cutoff": "2026-11-06T23:46:36.121969+00:00",
+      "strictJointForecastQualified": false,
+      "conditionalNumericalReferenceCaptured": true,
+      "modelVersion": "rolling5-prospective-reference-26.0",
+      "blockers": [
+        "confirmed_or_supported_lineup_scenarios_missing",
+        "participant_restrictions_incomplete",
+        "model_bound_joint_mechanics_certificate_missing",
+        "independent_probability_validation_missing"
+      ],
+      "primaryProjectedQBSources": [],
+      "newIndependentOutcomesAvailable": 0
+    },
+    {
+      "sport": "NBA",
+      "eventId": "401909294",
+      "eventAt": "2026-11-07T03:00Z",
+      "cutoff": "2026-11-06T23:46:36.121969+00:00",
+      "strictJointForecastQualified": false,
+      "conditionalNumericalReferenceCaptured": true,
+      "modelVersion": "rolling5-prospective-reference-26.0",
+      "blockers": [
+        "confirmed_or_supported_lineup_scenarios_missing",
+        "participant_restrictions_incomplete",
+        "model_bound_joint_mechanics_certificate_missing",
+        "independent_probability_validation_missing"
+      ],
+      "primaryProjectedQBSources": [],
+      "newIndependentOutcomesAvailable": 0
+    },
+    {
+      "sport": "NFL",
+      "eventId": "401873045",
+      "eventAt": "2026-11-08T18:00Z",
+      "cutoff": "2026-11-06T23:46:36.121969+00:00",
+      "strictJointForecastQualified": false,
+      "conditionalNumericalReferenceCaptured": true,
+      "modelVersion": "rolling5-prospective-reference-26.0",
+      "blockers": [
+        "confirmed_or_supported_lineup_scenarios_missing",
+        "participant_restrictions_incomplete",
+        "model_bound_joint_mechanics_certificate_missing",
+        "independent_probability_validation_missing"
+      ],
+      "primaryProjectedQBSources": [
+        {
+          "capturedAt": "2026-11-06T23:42:13.645076+00:00",
+          "sourceVersion": "3d3ef065c59c66abcbb6d042982ddc6b20b7fcfeb2e10723fddcf164f770ed92",
+          "status": "projected_unofficial_depth_chart_not_confirmed_gameday_lineup",
+          "teamId": "12",
+          "url": "https://www.chiefs.com/team/depth-chart"
+        },
+        {
+          "capturedAt": "2026-11-06T23:42:13.962717+00:00",
+          "sourceVersion": "6e926267a564381d3eea8b06311b09c7dc55227599a24a4a883490e5a4fa7be1",
+          "status": "projected_unofficial_depth_chart_not_confirmed_gameday_lineup",
+          "teamId": "20",
+          "url": "https://www.newyorkjets.com/team/depth-chart"
+        }
+      ],
+      "newIndependentOutcomesAvailable": 0
+    },
+    {
+      "sport": "NFL",
+      "eventId": "401873050",
+      "eventAt": "2026-11-09T01:20Z",
+      "cutoff": "2026-11-06T23:46:36.121969+00:00",
+      "strictJointForecastQualified": false,
+      "conditionalNumericalReferenceCaptured": true,
+      "modelVersion": "rolling5-prospective-reference-26.0",
+      "blockers": [
+        "confirmed_or_supported_lineup_scenarios_missing",
+        "participant_restrictions_incomplete",
+        "model_bound_joint_mechanics_certificate_missing",
+        "independent_probability_validation_missing"
+      ],
+      "primaryProjectedQBSources": [
+        {
+          "capturedAt": "2026-11-06T23:42:14.336138+00:00",
+          "sourceVersion": "e621476292997a85ac5b014e49c74facccdc8ec8fd1681b725f7a2bcf7a11ec2",
+          "status": "projected_unofficial_depth_chart_not_confirmed_gameday_lineup",
+          "teamId": "3",
+          "url": "https://www.chicagobears.com/team/depth-chart"
+        },
+        {
+          "capturedAt": "2026-11-06T23:42:14.566312+00:00",
+          "sourceVersion": "4ceb542a13ee5929a5ebeff2f716a7f4ff5ceaa9be4406d0235a762397d12558",
+          "status": "projected_unofficial_depth_chart_not_confirmed_gameday_lineup",
+          "teamId": "27",
+          "url": "https://www.buccaneers.com/team/depth-chart"
+        }
+      ],
+      "newIndependentOutcomesAvailable": 0
+    },
+    {
+      "sport": "CFB",
+      "eventId": "401856740",
+      "eventAt": "2026-11-07T20:30Z",
+      "cutoff": "2026-11-06T23:46:36.121969+00:00",
+      "strictJointForecastQualified": false,
+      "conditionalNumericalReferenceCaptured": true,
+      "modelVersion": "rolling5-prospective-reference-26.0",
+      "blockers": [
+        "confirmed_or_supported_lineup_scenarios_missing",
+        "participant_restrictions_incomplete",
+        "model_bound_joint_mechanics_certificate_missing",
+        "independent_probability_validation_missing",
+        "cfb_administrative_clock_and_pace_uncertified"
+      ],
+      "primaryProjectedQBSources": [],
+      "newIndependentOutcomesAvailable": 0
+    },
+    {
+      "sport": "CFB",
+      "eventId": "401856743",
+      "eventAt": "2026-11-07T17:00Z",
+      "cutoff": "2026-11-06T23:46:36.121969+00:00",
+      "strictJointForecastQualified": false,
+      "conditionalNumericalReferenceCaptured": true,
+      "modelVersion": "rolling5-prospective-reference-26.0",
+      "blockers": [
+        "confirmed_or_supported_lineup_scenarios_missing",
+        "participant_restrictions_incomplete",
+        "model_bound_joint_mechanics_certificate_missing",
+        "independent_probability_validation_missing",
+        "cfb_administrative_clock_and_pace_uncertified"
+      ],
+      "primaryProjectedQBSources": [],
+      "newIndependentOutcomesAvailable": 0
+    }
+  ],
+  "newStrictFullGameForecasts": 0,
+  "newIndependentProspectiveOutcomes": 0,
+  "historicalDiagnosticGamesPerLeague": {
+    "NFL": 8,
+    "CFB": 8,
+    "NBA": 8
+  },
+  "verifiedHistoricalMarkets": 0,
+  "modelsPromoted": 0,
+  "protectedFinalAccess": false
+}

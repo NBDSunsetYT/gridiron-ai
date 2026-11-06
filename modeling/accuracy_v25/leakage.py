@@ -25,6 +25,8 @@ def source_fact_guard(fact, cutoff, target_event):
     if not fact.get('sourceVersion') or not str(fact.get('source','')).startswith('https://'):
         raise ValueError('Source and exact edition required')
     retrieved=aware(fact.get('retrievedAt'));receipt=fact.get('captureReceipt',{})
+    if fact.get('availableAt') and aware(fact['availableAt'])>=when:
+        raise ValueError('Explicit future availability cannot be overridden by a capture receipt')
     captured=False
     if receipt:
         body={k:v for k,v in receipt.items() if k!='sha256'}

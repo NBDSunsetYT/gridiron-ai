@@ -64,3 +64,18 @@ The [revision-2 snapshot](V26_PROSPECTIVE_R2.json.gz) includes all source change
 Strict full-game forecasts: **0**. Independently evaluated new prospective games: **0 pending final results**. New Monte Carlo games: **0**. Qualified moneyline/spread/total probabilities, final-score distributions and validated prediction intervals are withheld. No fake 10,000-game run or arbitrary probability fills these fields.
 
 Actual remaining blockers: complete verified lineups or supported scenarios; participation/usage restrictions; model-bound historical mechanics/pace certificates; independently validated probability and uncertainty evidence; and exact authorized market prices/settlement rules. CFB administrative clock/pace certification remains incomplete. The 79 sealed final games, locked cohorts, original forecasts and all financial records remain unchanged.
+
+## Postgame measurement and final verification
+
+The saved references now have an executable grader, `scripts/v26-grade.py`. It verifies both snapshot hashes and their actual pre-kickoff capture times, refuses to fetch final statistics until at least four hours after scheduled start, then requires the exact event/team identity and a final source status. It grades each original revision separately and reports withheld/missing rows. It never regenerates predictions, backdates a capture, updates a wager, fills unknown statistics with guesses, trains a model or promotes a winner.
+
+The pregame safety execution retrieved **zero final games** and graded **zero observations**; all six targets were correctly pending. Point errors can be measured after results become available. Probability, CRPS and interval metrics remain null where the saved forecast did not supply that distribution; the grader will not manufacture them after seeing the result. Changed revision coverage cannot be advertised as a paired improvement.
+
+```bash
+# After the games finish; a unique grade ID preserves every prior result edition.
+OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 python scripts/v26-grade.py --id postgame-r1
+```
+
+The final full checks passed **795 TypeScript tests**, **551 Python tests**, and typechecking. A final explicit-future-availability guard then passed **53 focused tests**. Software receipts identify the scope of each pass; none of these counts is a predictive-accuracy claim. See [software receipts](V26_SOFTWARE_CHECKS.json) and [per-game qualification](V26_QUALIFICATION.json).
+
+All three leagues progressed through real source recovery, numerical capture and the same structural diagnostic. Stopping reason: the current evidence cannot qualify a strict joint-game forecast, the structural diagnostic does not justify promotion, and genuine prospective target outcomes do not yet exist. There is no continuously running simulation campaign.

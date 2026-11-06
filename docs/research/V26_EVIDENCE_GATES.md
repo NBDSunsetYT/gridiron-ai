@@ -30,3 +30,5 @@ All 39 focused evidence/router tests passed after the targeted repairs. These te
 ## Research decision
 
 The V25 53-category registry and conditional winners remain unchanged. No challenger is accepted merely because a source became readable. No strict full-game forecast is claimed from these repairs alone. The next milestone is source-matched numerical reference capture for actual upcoming events, followed by grading after outcomes exist.
+
+Subsequent recovery completed: 59 historical final-game responses, 12 current rosters, four projected NFL QB depth charts and 33 current SEC status entries. Six prospective numerical-reference snapshots were frozen in two preserved revisions. The complete active lineups, usage restrictions, full-game mechanics/pace certificates and independent probability evidence remain missing. Detailed numerical results and source qualification are in `V26_NUMERICAL_RESULTS.md` and `V26_QUALIFICATION.json`.

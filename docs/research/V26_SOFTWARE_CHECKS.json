@@ -1,0 +1,50 @@
+{
+  "fullPythonTests": 551,
+  "typescriptTests": 795,
+  "finalFocusedTests": 53,
+  "typecheck": true,
+  "checks": {
+    "python": {
+      "command": "npm run test:python",
+      "exitCode": 0,
+      "cpuSeconds": 166.61783699999998,
+      "wallSeconds": 166.6759864760097,
+      "peakRssKiB": 290328
+    },
+    "typescript": {
+      "command": [
+        "npm",
+        "test"
+      ],
+      "exitCode": 0,
+      "cpuSeconds": 51.467619,
+      "wallSeconds": 49.2675506809901,
+      "peakRssKiB": 428624
+    },
+    "typecheck": {
+      "command": [
+        "npm",
+        "run",
+        "typecheck"
+      ],
+      "exitCode": 0,
+      "cpuSeconds": 6.841135999999995,
+      "wallSeconds": 3.691384467005264,
+      "peakRssKiB": 788196
+    },
+    "focused-final": {
+      "tests": 53,
+      "exitCode": 0,
+      "cpuSeconds": 1.393021,
+      "wallSeconds": 1.4178935879899655
+    }
+  },
+  "fullSuiteBeforeFinalFutureAvailabilityGuard": {
+    "modeling/accuracy_v25/leakage.py": "085b64fc7e40987370bd014649d27fcca6228b303d7e212d3f30e3526b209c92",
+    "modeling/test_evidence_recovery_v26.py": "282c21b39d10505afad20c5e79728960da35ffe18156b021676289e6d9ec3cbc"
+  },
+  "finalAvailabilityGuardSHA256": "7f4e61dc258daeed2d93a956e39a32b11f0a46dd182c6e5af80415d350a52867",
+  "predictiveAccuracyClaim": false,
+  "productionWrites": 0,
+  "MonteCarloGames": 0
+}
