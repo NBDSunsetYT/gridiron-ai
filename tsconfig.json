@@ -51,6 +51,7 @@
     ".next-pwa-qa",
     ".next-compact-qa",
     ".next-ci-check",
-    ".next-v5-qa"
+    ".next-v5-qa",
+    "artifacts"
   ]
 }
