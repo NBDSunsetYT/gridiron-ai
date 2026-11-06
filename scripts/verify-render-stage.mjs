@@ -17,7 +17,10 @@ try{
   const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),manifest=await page.locator('link[rel=manifest]').getAttribute('href');
   const worker=await page.evaluate(async()=>{await navigator.serviceWorker?.ready;return(await navigator.serviceWorker?.getRegistrations())?.map(r=>({scope:new URL(r.scope).pathname,state:r.active?.state}));});
   rows.push({name,base,httpStatus:response?.status(),wallMs:Date.now()-began,errors,horizontalOverflow:overflow,manifest,serviceWorker:worker,calls});
-  await page.goto(base+'/#wallet',{waitUntil:'networkidle'});rows.push({name,view:'wallet_guest',signInVisible:await page.getByRole('button',{name:/sign in/i}).count(),errors:[...errors]});await context.close();
+  await page.goto(base+'/#wallet',{waitUntil:'networkidle'});rows.push({name,view:'wallet_guest',signInVisible:await page.getByRole('button',{name:/sign in/i}).count(),errors:[...errors]});
+  const cached=await page.evaluate(async()=>{const urls=[];for(const key of await caches.keys())for(const request of await(await caches.open(key)).keys())urls.push(new URL(request.url).pathname);return urls;});
+  if(cached.some(path=>path.startsWith('/api/')||path.startsWith('/auth/')))throw Error('Private request entered the service-worker cache');
+  await context.setOffline(true);const fallback=await page.goto(base+'/offline-check',{waitUntil:'load'});rows.push({name,view:'offline_shell',status:fallback?.status(),offlineVisible:/offline/i.test(await page.locator('body').innerText()),privateApiCached:false,cachedAssetCount:cached.length});await context.setOffline(false);await context.close();
  }
 }finally{await browser.close();}
 for(const path of ['/manifest.webmanifest','/icon-192.png','/icon-512.png','/apple-touch-icon.png','/sw.js','/api/health','/api/cloud/ledger','/auth/error']){

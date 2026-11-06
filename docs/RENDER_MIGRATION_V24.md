@@ -53,6 +53,7 @@ and referencing source paths under `artifacts/render-migration-v24`.
 | Compute isolation | `GRIDIRON_COMPUTE_ROLE=web`, `GRIDIRON_ASYNC_SIMULATIONS=1`, `GRIDIRON_WORKER_REQUEST_LIFETIME=0` | Required web policy; enforced again at startup |
 | Shared cache/queue | `GRIDIRON_PUBLIC_INGEST_TOKEN` | Stable existing capability, never regenerate during migration |
 | Signed historical artifacts | `SIMULATION_SERVICE_TOKEN` | Preserve exactly; rotation can invalidate prior receipts |
+| Separate quantitative worker | `SIMULATION_SERVICE_URL` | No existing hosted quantitative worker was found; keep controlled local workers separate from this frontend |
 | Licensed-data gateway | `GRIDIRON_RENDER_DATA_URL`, `GRIDIRON_DATA_BRIDGE_TOKEN` | Existing gateway; token is write-only in Vercel and requires secure transfer |
 | Assistant | `AI_PROVIDER`, `OPENAI_API_KEY` or supported `AI_GATEWAY_API_KEY` | Existing configuration selects OpenAI, but no provider key was available in Vercel's stored settings |
 | Native registration encryption | `DEVICE_TOKEN_ENCRYPTION_KEY` | Preserve, no rotation |
@@ -94,10 +95,21 @@ Apple sign-in is only offered if Supabase reports it configured.
   links are preserved. Physical Safari installation is a separate device test.
 
 Two existing encrypted recovery archives were verified to exist in the private
-checkpoint table (latest 2026-10-31). This does **not** verify current full Auth,
-Storage/PITR backup coverage or a full restore. Fresh provider backup confirmation
-and a tested recovery path are required before a zero-data-loss cutover claim.
-Read-only per-table row digests are recorded for preservation checks.
+checkpoint table (latest 2026-10-31). A fresh repeatable-read export of 21 selected
+private row tables was additionally encrypted locally with AES-256-GCM and gzip,
+then decrypted and compared byte-for-byte. It contained 1,408,511 plaintext bytes,
+82,320 compressed bytes. The 600-mode key and encrypted archive are excluded from
+Git. This does **not** verify full Auth, Storage/PITR coverage, off-host recovery or
+a full database restore. Provider backup confirmation remains a cutover gate.
+The existing financial, conversation and research table counts and content
+digests matched across the staged deployment and rollback-only QA tests.
+
+The deployed Supabase QA transaction tested starting balance 100.00, deposit 50.00,
+withdrawal 20.00, a 10.00 wager and actual return 19.00: cash **139.00**, realized
+betting P/L **9.00**, exposure **0**. Research write/update/retrieval and cross-user
+RLS checks passed. The transaction rolled back, and both synthetic users and the
+test workspace were confirmed absent. These are real database role/RPC checks,
+not a claim that browser login or cross-device account persistence passed.
 
 ## Reproducible checks
 
@@ -121,6 +133,68 @@ The prepared local standalone server started in **207 ms**. These are measuremen
 not guaranteed availability or billing forecasts. CPU metrics were initially empty;
 no 70–90% savings claim is made. Existing instance price remains **$0/month**;
 sleep, build quotas, included usage and external-provider limits still apply.
+
+Render's current Free documentation confirms 15-minute idle sleep, ephemeral
+filesystems and **750 running instance hours per workspace/month**, shared across
+Free web services. The existing frontend and gateway both use that pool. No
+keep-alive service, paid worker, plan change or billing change was introduced.
+Bandwidth/build overages depend on the account's existing limits and payment
+configuration; $0 instance pricing is not a guarantee of zero total usage charges.
+
+## Executed staging acceptance results — 2026-11-06
+
+The corrected environment release **`dep-dbmo0f3m8hqs73b09q2g`** is live on source
+**`3ac16f9710e330b2d486097483264293c5a59336`**. The startup/package changes on this
+migration branch are locally verified and **not yet deployed**: the service still
+links to `main`, and the connected tool cannot edit that setting.
+
+| Check | Actual result |
+|---|---|
+| HTTPS homepage, API routes, deep links | Passed on the deployed Render URL |
+| Supabase deep readiness | HTTP 200, `reachable`, intended project |
+| Web compute policy | `cache_and_queue_only`; no simulation executed by these checks |
+| NFL schedule | HTTP 200, 59 games, nflverse source/version recorded |
+| CFB schedule | HTTP 200, 130 games, ESPN source; licensed enrichment unavailable |
+| NBA schedule | HTTP 200, 23 games, ESPN source |
+| Mobile/desktop NFL, CFB, NBA, simulations/reality navigation | 8 additional checks passed, no browser errors, overflow or write requests |
+| Manifest, 192/512 icons, Apple icon, service worker | HTTP 200; service worker activated |
+| Offline shell | Both browser sizes passed; seven public cached assets, no private API cache entries |
+| Auth provider discovery | Email/password available; Apple unconfigured |
+| Wallet guest access | HTTP 401, private/no-store |
+| Cross-origin mutation | HTTP 403 |
+| Guest logout | HTTP 200, Secure/HttpOnly cookie clearing |
+| Invalid password | HTTP 400, rejected by Auth |
+| Invalid confirmation callback | HTTP 303 to this Render origin's `/auth/error`, secure cookie clearing |
+| Successful account login, refresh, reopen, cross-device history | Not executed; disposable QA credentials and Auth allowlist verification required |
+| Production Supabase transaction/RLS test | Passed, completely rolled back; no synthetic users or workspace remain |
+| Local financial regression | Exact fees/payouts, legacy preservation, isolation, export/import and duplicate retry passed |
+| Hosting regression | 22 Vitest checks across five files and two Node hosting tests passed |
+| Local production standalone build | Passed, static and PWA assets served at their correct paths |
+| Original private record preservation | 11 table counts/content digests matched before and after staging checks |
+| Licensed data gateway | HTTP 200 `ready`; explicitly `providerAccessVerified=false`; 32.31-second cold request |
+| NFL/CFB PropLine prices | Unavailable on frontend until existing gateway bridge token is securely supplied |
+| DraftKings Predictions contracts | Zero authorized contracts verified; diagnostic `feed_not_configured` |
+| Conversational AI generation | Unavailable: `OPENAI_API_KEY` missing; no generation or purchase attempted |
+| Hosted simulation worker | No configured `SIMULATION_SERVICE_URL` or separate quantitative service found; controlled local runner retained |
+| MongoDB/R2 credentials | Absent from audited Vercel environment; no migration or deletion attempted |
+| Latest application error logs | Only the intentionally tested unconfigured Apple provider returned 503 in the inspected post-repair error window |
+| Physical iPhone installation | Not performed; Chromium iPhone-size checks only |
+| DNS/Vercel/production models/billing | Unchanged |
+
+Observed Render memory during the inspected window was at most **210,726,910
+bytes** (about 201 MiB), below the 512 MiB instance limit. Sampled CPU peaked at
+**0.06273 cores** in startup/request windows; this is not billed CPU seconds or a
+before/after savings measurement. Platform p95 HTTP latency was unavailable.
+Warm browser verification took **2.95 s** at iPhone size and **1.66 s** desktop;
+individual warm static/guest API probes took **52–144 ms**. Real schedule probes
+took **0.74–2.82 s**, and the deep Supabase check took **1.77 s**. These are small
+controlled samples, not sustained load or uptime validation.
+
+The new Render URL works for guest schedules, but **the migration is not complete
+and is not ready for production cutover**. Remaining critical gates are the
+reviewed startup branch deployment, gateway token, real account acceptance,
+authenticated private persistence, actual worker/AI/provider configuration and
+provider-level recovery confirmation.
 
 ## Cutover gate and rollback
 
