@@ -1,0 +1,83 @@
+{
+  "javascript": {
+    "existingSuite": {
+      "passed": 786,
+      "files": 113
+    },
+    "newReconstructionTests": {
+      "passed": 3,
+      "files": 1
+    }
+  },
+  "python": {
+    "targetedPassed": 59,
+    "durationSeconds": 13.188,
+    "includes": "v19 reconstruction/personnel/evidence isolation and v18/v15/compute-route regression modules",
+    "fullDiscoveryRun": false,
+    "additionalCacheFingerprintTests": 3
+  },
+  "browser": {
+    "desktopChromiumPassed": 1,
+    "iphone13ChromiumEmulationPassed": 1,
+    "durationSeconds": 23.4,
+    "physicalIphoneTested": false,
+    "mobileSafariTested": false,
+    "startsComputeRequests": 0,
+    "usesRealCommittedResearchReport": true,
+    "unrelatedAccountAndScheduleRequests": "isolated UI scaffolding"
+  },
+  "build": {
+    "productionBuildPassed": true,
+    "typecheckPassed": true,
+    "existingWarning": "Health route named package version import; not a build failure."
+  },
+  "productionBuildHttp": {
+    "target": "local optimized production build; not deployed production",
+    "checks": [
+      {
+        "view": "reconstruction",
+        "status": 200,
+        "headers": {
+          "x-content-type-options": "nosniff",
+          "cache-control": "private, no-store",
+          "cdn-cache-control": "public, s-maxage=300",
+          "vercel-cdn-cache-control": "public, s-maxage=300"
+        },
+        "startsCompute": false
+      },
+      {
+        "view": "dataQuality",
+        "status": 200,
+        "headers": {
+          "x-content-type-options": "nosniff",
+          "cache-control": "private, no-store",
+          "cdn-cache-control": "public, s-maxage=300",
+          "vercel-cdn-cache-control": "public, s-maxage=300"
+        },
+        "startsCompute": false
+      },
+      {
+        "view": "not-a-view",
+        "status": 400,
+        "headers": {
+          "x-content-type-options": "nosniff",
+          "cache-control": "private, no-store"
+        },
+        "startsCompute": false
+      }
+    ],
+    "interpretation": "Browser API policy stays private/no-store; Vercel/CDN-specific headers cache the nonpersonal audit for 300 seconds. Error responses have no shared-cache directive."
+  },
+  "deployment": {
+    "productionChanged": false,
+    "productionModelPromotions": 0,
+    "note": "Research branch only. No paid resources or deployment/billing changes."
+  },
+  "notRun": [
+    "Live database CRUD/account isolation against hosted Supabase this iteration",
+    "Live provider market pricing requests",
+    "Deployed production browser tests",
+    "Physical iPhone/Safari installation",
+    "Reserved final-test evaluation"
+  ]
+}

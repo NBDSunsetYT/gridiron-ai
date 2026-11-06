@@ -1,0 +1,8 @@
+"""Shared evidence assembly for historical research and confirmation batches."""
+from datetime import timedelta
+from .quality import aware,assess
+def quality_for(game,facts,source_version,player_id=None,team_id=None):
+    source='https://github.com/nflverse/nflverse-data' if game['sport']=='NFL' else 'https://github.com/sportsdataverse';cutoff=(aware(game['at'])-timedelta(minutes=30)).isoformat();components={k:{'eventId':game['id'],'source':source,'sourceVersion':source_version,'classification':'inferred' if k in ('identity','historical_statistics','participation') else 'unavailable','complete':False,'publishedAt':None,'retrievedAt':None,'reason':'Original publication or complete pregame evidence unavailable'} for k in ['identity','historical_statistics','injury','lineup','participation','weather']};eligible=[f for f in facts if f['eventId']==game['id'] and (not player_id or f['playerId']==player_id) and (not team_id or f['teamId']==team_id) and f['publishedAt'] and aware(f['publishedAt'])<=aware(cutoff)]
+    if eligible:
+        f=max(eligible,key=lambda r:r['publishedAt']);official=f['confidence']=='official_timestamped_report';components['injury']={'eventId':game['id'],'playerId':player_id,'source':f['source'],'sourceVersion':f['sourceVersion'],'classification':'confirmed' if official else 'inferred','complete':player_id is not None,'publishedAt':f['publishedAt'] if official else None,'providerUpdatedAt':None if official else f['publishedAt'],'retrievedAt':f['retrievedAt'],'observedStatuses':sorted({f['status'] for f in eligible}),'reason':'Confirmed report designation is not a confirmed starting lineup or active probability'}
+    q=assess(game['sport'],game['id'],cutoff,components,player_id);q['teamId']=team_id;return q

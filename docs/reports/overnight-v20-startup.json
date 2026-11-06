@@ -1,0 +1,52 @@
+{
+  "branch": "research/overnight-v20",
+  "baseLocalCommit": "6c19bd1b710c074ccf3d27020b6c10c0ab702d85",
+  "baseRemoteCommit": "389284c6d51248b1dbf9348fac6e4a16b0f0abcd",
+  "detachedPersistenceProbeCompletedSeconds": 29.014783075996093,
+  "persistentTenHourLifecycleGuaranteed": false,
+  "currentControllerPid": 103075,
+  "measuredControllerActiveSecondsAtCheckpoint": 285.52686786498816,
+  "sourceCoverage": {
+    "NFL": {
+      "statusRecords": 1418,
+      "gamesWithSomeReports": 62,
+      "fullyVerifiedPregameLineups": 0,
+      "completeHistoricalStatPublicationVerified": false
+    },
+    "CFB": {
+      "statusRecords": 96,
+      "gamesWithSomeReports": 5,
+      "fullyVerifiedPregameLineups": 0,
+      "completeHistoricalStatPublicationVerified": false
+    },
+    "NBA": {
+      "statusRecords": 621,
+      "gamesWithSomeReports": 75,
+      "fullyVerifiedPregameLineups": 0,
+      "completeHistoricalStatPublicationVerified": false
+    }
+  },
+  "workload": {
+    "playerProjectionGames": {
+      "NFL": 94,
+      "CFB": 300,
+      "NBA": 261
+    },
+    "plannedFullGameMatchups": {
+      "NFL": 48,
+      "CFB": 48,
+      "NBA": 48
+    },
+    "simulationsPerFullRun": 10000,
+    "variantsPerLeague": 3
+  },
+  "dataLimitations": [
+    "NFL 2025 injury publication time is absent.",
+    "CFB reports have incomplete conference coverage and unresolved player IDs.",
+    "NBA injury reports are distinct from confirmed starting lineups.",
+    "Corrected historical statistic archive versions do not establish original pregame publication."
+  ],
+  "productionModified": false,
+  "financialOperations": 0,
+  "resumeCommand": "OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 python scripts/research-overnight-v20.py --resume --revision r1 --slice-seconds 1800"
+}

@@ -1,0 +1,28 @@
+import React from 'react';
+import {notFound} from 'next/navigation';
+import snapshot from '../../../../docs/research/specialized-v24-results.json';
+import styles from '../research.module.css';
+
+type Head={sport:string;stat:string;fixedCandidateFamily?:string;winningFamily?:string|null;referenceMAE?:number[];candidateMAE?:number[];referenceRMSE?:number[];candidateRMSE?:number[];independentGames?:number[];observations?:number[];candidateCalibration?:number[];improvementEstablished:boolean;pairedUncertainty?:{CI95:number[];loss:string}[]};
+const report=snapshot as unknown as {asOf:string;heads:Head[];registeredMatchups:number;candidateWindowEvaluations:number;strictPregameForecasts:number;sourceQuality:{nbaSourceGamesRejected:number}};
+const label=(s:string)=>s.replace(/([a-z])([A-Z])/g,'$1 $2').replaceAll('_',' ');
+const pair=(v?:number[])=>v?.map(x=>x.toLocaleString('en-US',{maximumFractionDigits:4})).join(' / ')??'Unavailable';
+
+export default async function SpecializedModels({searchParams}:{searchParams:Promise<{sport?:string}>}){
+  if(process.env.GRIDIRON_RESEARCH_V24!=='1')notFound();
+  const query=await searchParams,sport=['NFL','CFB','NBA'].includes(query.sport??'')?query.sport!:'NFL';
+  const rows=report.heads.filter(r=>r.sport===sport);
+  return <main className={styles.terminal}>
+    <header className={styles.header}><a href="/research/v24" className={styles.brand}>G<span>AI</span></a><div><p className={styles.eyebrow}>V24 / SPECIALIZED MODEL RESEARCH</p><h1>Each statistic earns its model.</h1><p>Independent chronological comparisons, with explicit limits.</p></div></header>
+    <div className={styles.notice}><span className={styles.dot}/><div><strong>Conditional research. No production model promotion.</strong><p>Historical publication, injury and lineup gaps still block strict pregame qualification. A marginal improvement does not validate a complete-game forecast.</p></div></div>
+    <nav className={styles.sports} aria-label="Model research league">{['NFL','CFB','NBA'].map(s=><a key={s} href={'?sport='+s} aria-current={s===sport?'page':undefined}>{s}</a>)}</nav>
+    <section className={styles.metrics} aria-label="Research scope"><article><span>Registered matchups</span><strong>{report.registeredMatchups}</strong><small>Graded counts differ by statistic</small></article><article><span>Candidate/window evaluations</span><strong>{report.candidateWindowEvaluations}</strong><small>Marginal distributions, not simulated games</small></article><article><span>Strict pregame forecasts</span><strong>{report.strictPregameForecasts}</strong><small>Evidence and joint validation gate remains closed</small></article></section>
+    <section className={styles.panel}><div className={styles.sectionTitle}><div><p className={styles.eyebrow}>{sport} / FROZEN VALIDATION</p><h2>Expected values and probability heads</h2></div><span className={styles.pill}>Two chronological windows</span></div>
+      <p className={styles.muted}>Pairs show the earlier / later window. The numeric reference is a rolling historical baseline. Production champions remain unchanged. Moneyline and double/triple-double rows use probability objectives.</p>
+      <div className={styles.tableWrap}><table><caption>Per-statistic research candidates, sample counts and uncertainty</caption><thead><tr>{['Statistic','Fixed candidate','Reference MAE','Candidate MAE','Reference RMSE','Candidate RMSE','Games','Observations','Diagnostic CDF Brier','Paired 95% interval','Decision'].map(x=><th key={x} scope="col">{x}</th>)}</tr></thead><tbody>{rows.map(r=><tr key={r.stat}><th scope="row">{label(r.stat)}</th><td>{r.fixedCandidateFamily?label(r.fixedCandidateFamily):'Insufficient evidence'}</td><td>{pair(r.referenceMAE)}</td><td>{pair(r.candidateMAE)}</td><td>{pair(r.referenceRMSE)}</td><td>{pair(r.candidateRMSE)}</td><td>{pair(r.independentGames)}</td><td>{pair(r.observations)}</td><td>{pair(r.candidateCalibration)}</td><td>{r.pairedUncertainty?.map((c,i)=><small key={i}>{c.loss==='squared'?'ΔMSE':c.loss==='absolute'?'ΔMAE':'Δproper score'}: [{pair(c.CI95)}]</small>)??'Unavailable'}</td><td><span className={r.improvementEstablished?styles.retained:styles.review}>{r.improvementEstablished?'Conditional candidate supported':'Keep reference'}</span><small>Joint forecasting: not qualified</small></td></tr>)}</tbody></table></div>
+      <p className={styles.muted}>CDF Brier uses training-derived diagnostic thresholds; these are not verified historical prop lines. No approved probability calibrator is implied. Decisions use game-clustered, multiple-comparison-adjusted intervals across both windows; displayed 95% intervals are descriptive.</p>
+    </section>
+    <section className={styles.panel}><h2>What remains unresolved</h2><ul className={styles.blockers}><li>Timestamp-complete injuries, starting lineups and participation evidence.</li><li>CFB administrative timing, pace and a model-bound full-game certificate.</li><li>Independent joint probability calibration and production-reference comparisons.</li><li>{report.sourceQuality.nbaSourceGamesRejected} inconsistent NBA source games were excluded from the clean confirmation pipeline. Original records were preserved.</li></ul><p className={styles.warning}>The dashboard reads frozen aggregates. Opening it never trains a model, queues a job or runs a simulation.</p></section>
+    <footer className={styles.footer}><span>Research checkpoint · {report.asOf}</span><a href="https://github.com/NBDSunsetYT/gridiron-ai/tree/research/dynamic-v24/docs/research">Reproducible reports and source provenance</a></footer>
+  </main>;
+}

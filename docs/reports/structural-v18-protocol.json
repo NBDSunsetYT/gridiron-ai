@@ -1,0 +1,5031 @@
+{
+  "addendumBeforeEvaluation": {
+    "additionalBaseline": "rolling5 times opponent allowed rate relative to training league mean; shrink factor n/(n+8)",
+    "candidatePolicy": "All families evaluated, no choosing by validation to call results final",
+    "learnedMinutesFamily": "ridge_fixed_alpha20",
+    "nbaVariants": [
+      "frozen_v15",
+      "box_coverage",
+      "learned_minutes"
+    ],
+    "sourceCodeFreeze": "See git commit recorded before evaluation"
+  },
+  "cpuBudgetSeconds": 1800,
+  "eligiblePerWindow": {
+    "CFB": [
+      111,
+      102,
+      99
+    ],
+    "NBA": [
+      118,
+      84,
+      110
+    ],
+    "NFL": [
+      35,
+      10,
+      22
+    ]
+  },
+  "excludedPreviouslyEvaluated": [
+    "2024_05_BUF_HOU",
+    "2024_05_GB_LA",
+    "2024_05_NYG_SEA",
+    "2024_05_TB_ATL",
+    "2024_06_BUF_NYJ",
+    "2024_06_CIN_NYG",
+    "2024_06_CLE_PHI",
+    "2024_06_DET_DAL",
+    "2024_06_HOU_NE",
+    "2024_06_IND_TEN",
+    "2024_06_JAX_CHI",
+    "2024_06_PIT_LV",
+    "2024_06_SF_SEA",
+    "2024_06_TB_NO",
+    "2024_07_CAR_WAS",
+    "2024_07_DEN_NO",
+    "2024_07_HOU_GB",
+    "2024_07_LAC_ARI",
+    "2024_07_MIA_IND",
+    "2024_07_NE_JAX",
+    "2024_07_SEA_ATL",
+    "2024_08_ATL_TB",
+    "2024_08_BUF_SEA",
+    "2024_08_CAR_DEN",
+    "2024_08_DAL_SF",
+    "2024_08_GB_JAX",
+    "2024_08_IND_HOU",
+    "2024_08_MIN_LA",
+    "2024_08_NO_LAC",
+    "2024_08_NYJ_NE",
+    "2024_08_TEN_DET",
+    "2024_09_IND_MIN",
+    "2024_09_JAX_PHI",
+    "2024_09_MIA_BUF",
+    "2024_09_TB_KC",
+    "2024_09_WAS_NYG",
+    "2024_10_ATL_NO",
+    "2024_10_BUF_IND",
+    "2024_10_MIA_LA",
+    "2024_10_NE_CHI",
+    "2024_10_TEN_LAC",
+    "2024_11_HOU_DAL",
+    "2024_11_IND_NYJ",
+    "2024_11_JAX_DET",
+    "2024_11_KC_BUF",
+    "2024_11_MIN_TEN",
+    "2024_11_SEA_SF",
+    "2024_11_WAS_PHI",
+    "2024_12_BAL_LAC",
+    "2024_12_DAL_WAS",
+    "2024_12_DET_IND",
+    "2024_12_KC_CAR",
+    "2024_12_MIN_CHI",
+    "2024_12_NE_MIA",
+    "2024_12_PIT_CLE",
+    "2024_12_SF_GB",
+    "2024_12_TEN_HOU",
+    "2024_13_CHI_DET",
+    "2024_13_IND_NE",
+    "2024_13_LA_NO",
+    "2024_13_NYG_DAL",
+    "2024_13_PHI_BAL",
+    "2024_13_PIT_CIN",
+    "2024_13_SEA_NYJ",
+    "2024_13_SF_BUF",
+    "2024_13_TB_CAR",
+    "2024_13_TEN_WAS",
+    "2024_14_CHI_SF",
+    "2024_14_CLE_PIT",
+    "2024_14_GB_DET",
+    "2024_14_NO_NYG",
+    "2024_14_SEA_ARI",
+    "2024_15_ATL_LV",
+    "2024_15_BAL_NYG",
+    "2024_15_BUF_DET",
+    "2024_15_DAL_CAR",
+    "2024_15_IND_DEN",
+    "2024_15_MIA_HOU",
+    "2024_15_NYJ_JAX",
+    "2024_15_TB_LAC",
+    "2024_15_WAS_NO",
+    "2024_16_CLE_CIN",
+    "2024_16_DEN_LAC",
+    "2024_16_DET_CHI",
+    "2024_16_HOU_KC",
+    "2024_16_NE_BUF",
+    "2024_16_NO_GB",
+    "2024_16_PHI_WAS",
+    "2024_16_TEN_IND",
+    "2024_17_ARI_LA",
+    "2024_17_ATL_WAS",
+    "2024_17_BAL_HOU",
+    "2024_17_CAR_TB",
+    "2024_17_DEN_CIN",
+    "2024_17_DET_SF",
+    "2024_17_GB_MIN",
+    "2024_17_LV_NO",
+    "2024_17_NYJ_BUF",
+    "2024_17_SEA_CHI",
+    "2024_17_TEN_JAX",
+    "2025_01_CIN_CLE",
+    "2025_01_NYG_WAS",
+    "2025_01_PIT_NYJ",
+    "2025_01_TEN_DEN",
+    "2025_02_BUF_NYJ",
+    "2025_02_DEN_IND",
+    "2025_02_SF_NO",
+    "2025_02_WAS_GB",
+    "2025_05_DAL_NYJ",
+    "2025_05_DEN_PHI",
+    "2025_05_DET_CIN",
+    "2025_05_HOU_BAL",
+    "2025_05_LV_IND",
+    "2025_05_MIN_CLE",
+    "2025_05_NE_BUF",
+    "2025_05_SF_LA",
+    "2025_05_TB_SEA",
+    "2025_05_WAS_LAC",
+    "2025_06_ARI_IND",
+    "2025_06_BUF_ATL",
+    "2025_06_CHI_WAS",
+    "2025_06_CIN_GB",
+    "2025_06_DAL_CAR",
+    "2025_06_LAC_MIA",
+    "2025_06_LA_BAL",
+    "2025_06_NE_NO",
+    "2025_06_PHI_NYG",
+    "2025_06_TEN_LV",
+    "2025_07_CAR_NYJ",
+    "2025_07_GB_ARI",
+    "2025_07_HOU_SEA",
+    "2025_07_IND_LAC",
+    "2025_07_LA_JAX",
+    "2025_07_LV_KC",
+    "2025_07_NO_CHI",
+    "2025_07_NYG_DEN",
+    "2025_07_TB_DET",
+    "2025_07_WAS_DAL",
+    "2025_08_BUF_CAR",
+    "2025_08_CHI_BAL",
+    "2025_08_MIA_ATL",
+    "2025_08_MIN_LAC",
+    "2025_08_NYG_PHI",
+    "2025_08_SF_HOU",
+    "2025_08_TEN_IND",
+    "2025_08_WAS_KC",
+    "2025_09_ARI_DAL",
+    "2025_09_BAL_MIA",
+    "2025_09_CAR_GB",
+    "2025_09_CHI_CIN",
+    "2025_09_DEN_HOU",
+    "2025_09_JAX_LV",
+    "2025_09_KC_BUF",
+    "2025_09_NO_LA",
+    "2025_09_SEA_WAS",
+    "2025_09_SF_NYG",
+    "2025_10_CLE_NYJ",
+    "2025_10_DET_WAS",
+    "2025_10_JAX_HOU",
+    "2025_10_LV_DEN",
+    "2025_10_NO_CAR",
+    "2025_10_NYG_CHI",
+    "2025_10_PIT_LAC",
+    "2025_11_CAR_ATL",
+    "2025_11_CHI_MIN",
+    "2025_11_DAL_LV",
+    "2025_11_NYJ_NE",
+    "2025_11_TB_BUF",
+    "2025_11_WAS_MIA",
+    "2025_12_ATL_NO",
+    "2025_12_BUF_HOU",
+    "2025_12_CLE_LV",
+    "2025_12_JAX_ARI",
+    "2025_12_NYG_DET",
+    "2025_12_SEA_TEN",
+    "2025_12_TB_LA",
+    "2025_13_ARI_TB",
+    "2025_13_ATL_NYJ",
+    "2025_13_BUF_PIT",
+    "2025_13_CHI_PHI",
+    "2025_13_CIN_BAL",
+    "2025_13_KC_DAL",
+    "2025_13_LV_LAC",
+    "2025_13_NO_MIA",
+    "2025_14_PHI_LAC",
+    "2025_14_PIT_BAL",
+    "2025_14_SEA_ATL",
+    "2025_14_TEN_CLE",
+    "2025_15_BUF_NE",
+    "2025_15_CLE_CHI",
+    "2025_15_DET_LA",
+    "2025_15_GB_DEN",
+    "2025_15_IND_SEA",
+    "2025_15_LAC_KC",
+    "2025_15_MIA_PIT",
+    "2025_15_MIN_DAL",
+    "2025_15_TEN_SF",
+    "2025_16_BUF_CLE",
+    "2025_16_CIN_MIA",
+    "2025_16_GB_CHI",
+    "2025_16_KC_TEN",
+    "2025_16_LA_SEA",
+    "2025_16_MIN_NYG",
+    "2025_16_NE_BAL",
+    "2025_16_PIT_DET",
+    "2025_16_SF_IND",
+    "2025_16_TB_CAR",
+    "2025_17_CHI_SF",
+    "2025_17_DEN_KC",
+    "2025_17_HOU_LAC",
+    "2025_17_JAX_IND",
+    "2025_17_LA_ATL",
+    "2025_17_PIT_CLE",
+    "2025_17_SEA_CAR",
+    "2025_17_TB_MIA",
+    "2025_18_DAL_NYG",
+    "2025_18_DET_CHI",
+    "2025_18_GB_MIN",
+    "2025_18_IND_HOU",
+    "2025_18_MIA_NE",
+    "2025_18_NO_ATL",
+    "2025_18_TEN_JAX",
+    "2025_19_LA_CAR",
+    "2025_19_SF_PHI",
+    "2025_20_BUF_DEN",
+    "2025_20_HOU_NE",
+    "2025_20_LA_CHI",
+    "2025_20_SF_SEA",
+    "2025_21_LA_SEA",
+    "2025_21_NE_DEN",
+    "2025_22_SEA_NE",
+    "cfb:espn:401628379",
+    "cfb:espn:401628380",
+    "cfb:espn:401628381",
+    "cfb:espn:401628382",
+    "cfb:espn:401628385",
+    "cfb:espn:401628388",
+    "cfb:espn:401628389",
+    "cfb:espn:401628390",
+    "cfb:espn:401628392",
+    "cfb:espn:401628402",
+    "cfb:espn:401628403",
+    "cfb:espn:401628404",
+    "cfb:espn:401628411",
+    "cfb:espn:401628418",
+    "cfb:espn:401628428",
+    "cfb:espn:401628436",
+    "cfb:espn:401628442",
+    "cfb:espn:401628443",
+    "cfb:espn:401628444",
+    "cfb:espn:401628445",
+    "cfb:espn:401628506",
+    "cfb:espn:401628519",
+    "cfb:espn:401628524",
+    "cfb:espn:401628525",
+    "cfb:espn:401628534",
+    "cfb:espn:401628538",
+    "cfb:espn:401628541",
+    "cfb:espn:401628547",
+    "cfb:espn:401628549",
+    "cfb:espn:401628551",
+    "cfb:espn:401628556",
+    "cfb:espn:401628557",
+    "cfb:espn:401628558",
+    "cfb:espn:401628561",
+    "cfb:espn:401628565",
+    "cfb:espn:401628572",
+    "cfb:espn:401628983",
+    "cfb:espn:401628985",
+    "cfb:espn:401629036",
+    "cfb:espn:401629037",
+    "cfb:espn:401629038",
+    "cfb:espn:401629044",
+    "cfb:espn:401629046",
+    "cfb:espn:401634188",
+    "cfb:espn:401634768",
+    "cfb:espn:401634773",
+    "cfb:espn:401634779",
+    "cfb:espn:401635516",
+    "cfb:espn:401635517",
+    "cfb:espn:401635518",
+    "cfb:espn:401635571",
+    "cfb:espn:401635573",
+    "cfb:espn:401635575",
+    "cfb:espn:401635600",
+    "cfb:espn:401635601",
+    "cfb:espn:401635606",
+    "cfb:espn:401635608",
+    "cfb:espn:401635609",
+    "cfb:espn:401635621",
+    "cfb:espn:401635622",
+    "cfb:espn:401635624",
+    "cfb:espn:401636887",
+    "cfb:espn:401636890",
+    "cfb:espn:401636892",
+    "cfb:espn:401636896",
+    "cfb:espn:401636899",
+    "cfb:espn:401636900",
+    "cfb:espn:401636902",
+    "cfb:espn:401636903",
+    "cfb:espn:401636907",
+    "cfb:espn:401636915",
+    "cfb:espn:401636920",
+    "cfb:espn:401636923",
+    "cfb:espn:401636927",
+    "cfb:espn:401636929",
+    "cfb:espn:401636930",
+    "cfb:espn:401636941",
+    "cfb:espn:401636945",
+    "cfb:espn:401640982",
+    "cfb:espn:401640983",
+    "cfb:espn:401640996",
+    "cfb:espn:401641004",
+    "cfb:espn:401641006",
+    "cfb:espn:401641014",
+    "cfb:espn:401641020",
+    "cfb:espn:401641031",
+    "cfb:espn:401641036",
+    "cfb:espn:401641038",
+    "cfb:espn:401643734",
+    "cfb:espn:401643738",
+    "cfb:espn:401643739",
+    "cfb:espn:401643741",
+    "cfb:espn:401643749",
+    "cfb:espn:401643751",
+    "cfb:espn:401643752",
+    "cfb:espn:401643755",
+    "cfb:espn:401643757",
+    "cfb:espn:401643760",
+    "cfb:espn:401643761",
+    "cfb:espn:401643762",
+    "cfb:espn:401643771",
+    "cfb:espn:401643773",
+    "cfb:espn:401643799",
+    "cfb:espn:401643801",
+    "cfb:espn:401643808",
+    "cfb:espn:401643814",
+    "cfb:espn:401643815",
+    "cfb:espn:401643817",
+    "cfb:espn:401643819",
+    "cfb:espn:401643821",
+    "cfb:espn:401643822",
+    "cfb:espn:401643827",
+    "cfb:espn:401643830",
+    "cfb:espn:401643834",
+    "cfb:espn:401643835",
+    "cfb:espn:401643841",
+    "cfb:espn:401643848",
+    "cfb:espn:401644686",
+    "cfb:espn:401644742",
+    "cfb:espn:401644743",
+    "cfb:espn:401644746",
+    "cfb:espn:401644750",
+    "cfb:espn:401644752",
+    "cfb:espn:401644760",
+    "cfb:espn:401644762",
+    "cfb:espn:401644764",
+    "cfb:espn:401644767",
+    "cfb:espn:401644772",
+    "cfb:espn:401644779",
+    "cfb:espn:401645341",
+    "cfb:espn:401645355",
+    "cfb:espn:401645356",
+    "cfb:espn:401645363",
+    "cfb:espn:401645370",
+    "cfb:espn:401645373",
+    "cfb:espn:401645375",
+    "cfb:espn:401645380",
+    "cfb:espn:401645381",
+    "cfb:espn:401673462",
+    "cfb:espn:401673466",
+    "cfb:espn:401677081",
+    "cfb:espn:401677085",
+    "cfb:espn:401677093",
+    "cfb:espn:401677094",
+    "cfb:espn:401677095",
+    "cfb:espn:401677098",
+    "cfb:espn:401677100",
+    "cfb:espn:401677101",
+    "cfb:espn:401677176",
+    "cfb:espn:401729786",
+    "cfb:espn:401752683",
+    "cfb:espn:401752698",
+    "cfb:espn:401752706",
+    "cfb:espn:401752736",
+    "cfb:espn:401752739",
+    "cfb:espn:401752743",
+    "cfb:espn:401752744",
+    "cfb:espn:401752751",
+    "cfb:espn:401752754",
+    "cfb:espn:401752755",
+    "cfb:espn:401752757",
+    "cfb:espn:401752762",
+    "cfb:espn:401752765",
+    "cfb:espn:401752766",
+    "cfb:espn:401752772",
+    "cfb:espn:401752776",
+    "cfb:espn:401752778",
+    "cfb:espn:401752780",
+    "cfb:espn:401752782",
+    "cfb:espn:401752783",
+    "cfb:espn:401752784",
+    "cfb:espn:401752787",
+    "cfb:espn:401752789",
+    "cfb:espn:401752790",
+    "cfb:espn:401752818",
+    "cfb:espn:401752856",
+    "cfb:espn:401752861",
+    "cfb:espn:401752880",
+    "cfb:espn:401752888",
+    "cfb:espn:401752889",
+    "cfb:espn:401752891",
+    "cfb:espn:401752892",
+    "cfb:espn:401752895",
+    "cfb:espn:401752897",
+    "cfb:espn:401752900",
+    "cfb:espn:401752904",
+    "cfb:espn:401752907",
+    "cfb:espn:401752909",
+    "cfb:espn:401752910",
+    "cfb:espn:401752912",
+    "cfb:espn:401752913",
+    "cfb:espn:401752915",
+    "cfb:espn:401752917",
+    "cfb:espn:401752920",
+    "cfb:espn:401752922",
+    "cfb:espn:401752924",
+    "cfb:espn:401752945",
+    "cfb:espn:401752946",
+    "cfb:espn:401752954",
+    "cfb:espn:401754550",
+    "cfb:espn:401754556",
+    "cfb:espn:401754557",
+    "cfb:espn:401754559",
+    "cfb:espn:401754560",
+    "cfb:espn:401754587",
+    "cfb:espn:401754590",
+    "cfb:espn:401754592",
+    "cfb:espn:401754594",
+    "cfb:espn:401754602",
+    "cfb:espn:401754603",
+    "cfb:espn:401754606",
+    "cfb:espn:401754609",
+    "cfb:espn:401754610",
+    "cfb:espn:401754611",
+    "cfb:espn:401754613",
+    "cfb:espn:401754614",
+    "cfb:espn:401756889",
+    "cfb:espn:401756894",
+    "cfb:espn:401756912",
+    "cfb:espn:401756919",
+    "cfb:espn:401756922",
+    "cfb:espn:401756926",
+    "cfb:espn:401756933",
+    "cfb:espn:401756936",
+    "cfb:espn:401756937",
+    "cfb:espn:401756940",
+    "cfb:espn:401756941",
+    "cfb:espn:401756943",
+    "cfb:espn:401756944",
+    "cfb:espn:401756949",
+    "cfb:espn:401756950",
+    "cfb:espn:401756951",
+    "cfb:espn:401756952",
+    "cfb:espn:401756953",
+    "cfb:espn:401756955",
+    "cfb:espn:401756958",
+    "cfb:espn:401756959",
+    "cfb:espn:401756960",
+    "cfb:espn:401756961",
+    "cfb:espn:401756962",
+    "cfb:espn:401756967",
+    "cfb:espn:401756968",
+    "cfb:espn:401757172",
+    "cfb:espn:401757173",
+    "cfb:espn:401757257",
+    "cfb:espn:401757276",
+    "cfb:espn:401757280",
+    "cfb:espn:401757293",
+    "cfb:espn:401757296",
+    "cfb:espn:401757305",
+    "cfb:espn:401757307",
+    "cfb:espn:401757309",
+    "cfb:espn:401757310",
+    "cfb:espn:401757311",
+    "cfb:espn:401757315",
+    "cfb:espn:401760384",
+    "cfb:espn:401760385",
+    "cfb:espn:401760386",
+    "cfb:espn:401760389",
+    "cfb:espn:401760392",
+    "cfb:espn:401760395",
+    "cfb:espn:401760400",
+    "cfb:espn:401760408",
+    "cfb:espn:401760410",
+    "cfb:espn:401760411",
+    "cfb:espn:401760412",
+    "cfb:espn:401760414",
+    "cfb:espn:401760416",
+    "cfb:espn:401760419",
+    "cfb:espn:401760422",
+    "cfb:espn:401760424",
+    "cfb:espn:401760426",
+    "cfb:espn:401761608",
+    "cfb:espn:401761620",
+    "cfb:espn:401761640",
+    "cfb:espn:401761646",
+    "cfb:espn:401761648",
+    "cfb:espn:401761650",
+    "cfb:espn:401761653",
+    "cfb:espn:401761655",
+    "cfb:espn:401761656",
+    "cfb:espn:401761661",
+    "cfb:espn:401761662",
+    "cfb:espn:401761666",
+    "cfb:espn:401762441",
+    "cfb:espn:401762484",
+    "cfb:espn:401762495",
+    "cfb:espn:401762500",
+    "cfb:espn:401762502",
+    "cfb:espn:401762506",
+    "cfb:espn:401762508",
+    "cfb:espn:401762513",
+    "cfb:espn:401762516",
+    "cfb:espn:401762520",
+    "cfb:espn:401762842",
+    "cfb:espn:401762846",
+    "cfb:espn:401762853",
+    "cfb:espn:401762859",
+    "cfb:espn:401762861",
+    "cfb:espn:401762866",
+    "cfb:espn:401762868",
+    "cfb:espn:401762874",
+    "cfb:espn:401762875",
+    "cfb:espn:401767096",
+    "cfb:espn:401767133",
+    "cfb:espn:401767449",
+    "cfb:espn:401767513",
+    "cfb:espn:401769070",
+    "cfb:espn:401769071",
+    "cfb:espn:401769073",
+    "cfb:espn:401769074",
+    "cfb:espn:401769076",
+    "cfb:espn:401777328",
+    "cfb:espn:401777329",
+    "cfb:espn:401777351",
+    "cfb:espn:401778303",
+    "cfb:espn:401778304",
+    "cfb:espn:401778309",
+    "cfb:espn:401778311",
+    "cfb:espn:401778316",
+    "cfb:espn:401778318",
+    "cfb:espn:401778319",
+    "cfb:espn:401778323",
+    "cfb:espn:401778325",
+    "cfb:espn:401778327",
+    "cfb:espn:401778328",
+    "cfb:espn:401778329",
+    "cfb:espn:401778332",
+    "cfb:espn:401778333",
+    "cfb:espn:401778334",
+    "cfb:espn:401779843",
+    "cfb:espn:401838053",
+    "cfb:espn:401858509",
+    "nba:espn:401705061",
+    "nba:espn:401705086",
+    "nba:espn:401705091",
+    "nba:espn:401705140",
+    "nba:espn:401705205",
+    "nba:espn:401705248",
+    "nba:espn:401705272",
+    "nba:espn:401705281",
+    "nba:espn:401705294",
+    "nba:espn:401705335",
+    "nba:espn:401705464",
+    "nba:espn:401705473",
+    "nba:espn:401705495",
+    "nba:espn:401705500",
+    "nba:espn:401705526",
+    "nba:espn:401705529",
+    "nba:espn:401705535",
+    "nba:espn:401705539",
+    "nba:espn:401705598",
+    "nba:espn:401705617",
+    "nba:espn:401705663",
+    "nba:espn:401705693",
+    "nba:espn:401705712",
+    "nba:espn:401705714",
+    "nba:espn:401705730",
+    "nba:espn:401705738",
+    "nba:espn:401705756",
+    "nba:espn:401705762",
+    "nba:espn:401705763",
+    "nba:espn:401705765",
+    "nba:espn:401766462",
+    "nba:espn:401766463",
+    "nba:espn:401767820",
+    "nba:espn:401767822",
+    "nba:espn:401767823",
+    "nba:espn:401767910",
+    "nba:espn:401767912",
+    "nba:espn:401768029",
+    "nba:espn:401768042",
+    "nba:espn:401768044",
+    "nba:espn:401810323",
+    "nba:espn:401810332",
+    "nba:espn:401810365",
+    "nba:espn:401810369",
+    "nba:espn:401810396",
+    "nba:espn:401810408",
+    "nba:espn:401810411",
+    "nba:espn:401810412",
+    "nba:espn:401810561",
+    "nba:espn:401810568",
+    "nba:espn:401810572",
+    "nba:espn:401810574",
+    "nba:espn:401810599",
+    "nba:espn:401810629",
+    "nba:espn:401810631",
+    "nba:espn:401810633",
+    "nba:espn:401810725",
+    "nba:espn:401810751",
+    "nba:espn:401810753",
+    "nba:espn:401810782",
+    "nba:espn:401810784",
+    "nba:espn:401810788",
+    "nba:espn:401810789",
+    "nba:espn:401810791",
+    "nba:espn:401810981",
+    "nba:espn:401811001",
+    "nba:espn:401811006",
+    "nba:espn:401811008",
+    "nba:espn:401811014",
+    "nba:espn:401811024",
+    "nba:espn:401811026",
+    "nba:espn:401811049",
+    "nba:espn:401811051",
+    "nba:espn:401869187",
+    "nba:espn:401869191",
+    "nba:espn:401869369",
+    "nba:espn:401869378",
+    "nba:espn:401869387",
+    "nba:espn:401869391",
+    "nba:espn:401869395"
+  ],
+  "families": [
+    "rolling5",
+    "ridge",
+    "hierarchical",
+    "boosted",
+    "hybrid"
+  ],
+  "fullGameSubsetPerWindow": 3,
+  "historicalPublicationVerified": false,
+  "originalForecastsModified": false,
+  "primaryMetrics": {
+    "CFB": "passingAttempts, targets, carries and yardage MAE",
+    "NBA": "minutes MAE; then points/rebounds/assists MAE",
+    "NFL": "passingAttempts, targets, carries and yardage MAE"
+  },
+  "promotionGate": {
+    "brierAndLogLossMustNotRegress": true,
+    "independentWindows": 3,
+    "maximumImportantCategoryMAERegression": 0.03,
+    "minimumGames": 200,
+    "pairedGameBootstrapUpperBelow": 0,
+    "verifiedPregameInjuriesAndLineupsRequired": true
+  },
+  "prospectiveFinal": {
+    "gamesPerLeague": 30,
+    "historicalBackfillForbidden": true,
+    "requiresSnapshotsBeforeKickoff": true,
+    "start": "2026-11-05",
+    "status": "reserved_not_observed"
+  },
+  "seed": 18018,
+  "selection": {
+    "CFB": [
+      {
+        "at": "2025-09-19T23:37:51+00:00",
+        "away": "cfb:espn:202",
+        "cohort": 0,
+        "home": "cfb:espn:197",
+        "id": "cfb:espn:401756900",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-20T00:00:00+00:00",
+        "away": "cfb:espn:2459",
+        "cohort": 0,
+        "home": "cfb:espn:344",
+        "id": "cfb:espn:401752712",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-20T00:00:00+00:00",
+        "away": "cfb:espn:2247",
+        "cohort": 0,
+        "home": "cfb:espn:238",
+        "id": "cfb:espn:401752716",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-20T00:00:00+00:00",
+        "away": "cfb:espn:204",
+        "cohort": 0,
+        "home": "cfb:espn:2483",
+        "id": "cfb:espn:401752841",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-20T00:00:00+00:00",
+        "away": "cfb:espn:120",
+        "cohort": 0,
+        "home": "cfb:espn:275",
+        "id": "cfb:espn:401752845",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-20T00:00:00+00:00",
+        "away": "cfb:espn:2567",
+        "cohort": 0,
+        "home": "cfb:espn:2628",
+        "id": "cfb:espn:401754636",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-20T00:00:00+00:00",
+        "away": "cfb:espn:2641",
+        "cohort": 0,
+        "home": "cfb:espn:254",
+        "id": "cfb:espn:401756901",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-20T00:00:00+00:00",
+        "away": "cfb:espn:2050",
+        "cohort": 0,
+        "home": "cfb:espn:41",
+        "id": "cfb:espn:401757169",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-20T00:00:00+00:00",
+        "away": "cfb:espn:93",
+        "cohort": 0,
+        "home": "cfb:espn:55",
+        "id": "cfb:espn:401757260",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-20T00:00:00+00:00",
+        "away": "cfb:espn:256",
+        "cohort": 0,
+        "home": "cfb:espn:2335",
+        "id": "cfb:espn:401757262",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-20T00:00:00+00:00",
+        "away": "cfb:espn:276",
+        "cohort": 0,
+        "home": "cfb:espn:2393",
+        "id": "cfb:espn:401757264",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-20T00:00:00+00:00",
+        "away": "cfb:espn:2630",
+        "cohort": 0,
+        "home": "cfb:espn:2623",
+        "id": "cfb:espn:401757265",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-20T00:00:00+00:00",
+        "away": "cfb:espn:2433",
+        "cohort": 0,
+        "home": "cfb:espn:2638",
+        "id": "cfb:espn:401757267",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-20T00:00:00+00:00",
+        "away": "cfb:espn:2440",
+        "cohort": 0,
+        "home": "cfb:espn:98",
+        "id": "cfb:espn:401757268",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-20T00:00:00+00:00",
+        "away": "cfb:espn:2636",
+        "cohort": 0,
+        "home": "cfb:espn:36",
+        "id": "cfb:espn:401760373",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-20T00:00:00+00:00",
+        "away": "cfb:espn:70",
+        "cohort": 0,
+        "home": "cfb:espn:23",
+        "id": "cfb:espn:401760375",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-20T00:00:00+00:00",
+        "away": "cfb:espn:2439",
+        "cohort": 0,
+        "home": "cfb:espn:193",
+        "id": "cfb:espn:401760376",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-20T00:00:00+00:00",
+        "away": "cfb:espn:311",
+        "cohort": 0,
+        "home": "cfb:espn:290",
+        "id": "cfb:espn:401761609",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-20T00:00:00+00:00",
+        "away": "cfb:espn:309",
+        "cohort": 0,
+        "home": "cfb:espn:2199",
+        "id": "cfb:espn:401761610",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-20T00:00:00+00:00",
+        "away": "cfb:espn:324",
+        "cohort": 0,
+        "home": "cfb:espn:6",
+        "id": "cfb:espn:401761611",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-20T00:00:00+00:00",
+        "away": "cfb:espn:2447",
+        "cohort": 0,
+        "home": "cfb:espn:326",
+        "id": "cfb:espn:401761612",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-20T00:00:00+00:00",
+        "away": "cfb:espn:249",
+        "cohort": 0,
+        "home": "cfb:espn:349",
+        "id": "cfb:espn:401762469",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-20T04:00:41+00:00",
+        "away": "cfb:espn:2751",
+        "cohort": 0,
+        "home": "cfb:espn:38",
+        "id": "cfb:espn:401756897",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-20T04:11:31+00:00",
+        "away": "cfb:espn:278",
+        "cohort": 0,
+        "home": "cfb:espn:62",
+        "id": "cfb:espn:401760374",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-20T16:05:19+00:00",
+        "away": "cfb:espn:189",
+        "cohort": 0,
+        "home": "cfb:espn:97",
+        "id": "cfb:espn:401754642",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-20T16:08:47+00:00",
+        "away": "cfb:espn:183",
+        "cohort": 0,
+        "home": "cfb:espn:228",
+        "id": "cfb:espn:401754537",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-20T19:33:03+00:00",
+        "away": "cfb:espn:2653",
+        "cohort": 0,
+        "home": "cfb:espn:2084",
+        "id": "cfb:espn:401761613",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-20T19:37:36+00:00",
+        "away": "cfb:espn:2655",
+        "cohort": 0,
+        "home": "cfb:espn:145",
+        "id": "cfb:espn:401752711",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-20T19:41:10+00:00",
+        "away": "cfb:espn:130",
+        "cohort": 0,
+        "home": "cfb:espn:158",
+        "id": "cfb:espn:401752846",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-20T19:41:50+00:00",
+        "away": "cfb:espn:2509",
+        "cohort": 0,
+        "home": "cfb:espn:87",
+        "id": "cfb:espn:401752848",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-20T19:46:22+00:00",
+        "away": "cfb:espn:153",
+        "cohort": 0,
+        "home": "cfb:espn:2116",
+        "id": "cfb:espn:401754640",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-20T19:46:45+00:00",
+        "away": "cfb:espn:2",
+        "cohort": 0,
+        "home": "cfb:espn:201",
+        "id": "cfb:espn:401752714",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-20T20:05:43+00:00",
+        "away": "cfb:espn:152",
+        "cohort": 0,
+        "home": "cfb:espn:150",
+        "id": "cfb:espn:401754538",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-20T21:05:25+00:00",
+        "away": "cfb:espn:218",
+        "cohort": 0,
+        "home": "cfb:espn:59",
+        "id": "cfb:espn:401754542",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-20T22:03:57+00:00",
+        "away": "cfb:espn:48",
+        "cohort": 0,
+        "home": "cfb:espn:2229",
+        "id": "cfb:espn:401757259",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-20T23:04:45+00:00",
+        "away": "cfb:espn:68",
+        "cohort": 0,
+        "home": "cfb:espn:2005",
+        "id": "cfb:espn:401760372",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-20T23:35:31+00:00",
+        "away": "cfb:espn:2572",
+        "cohort": 0,
+        "home": "cfb:espn:2348",
+        "id": "cfb:espn:401757263",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-20T23:36:27+00:00",
+        "away": "cfb:espn:24",
+        "cohort": 0,
+        "home": "cfb:espn:258",
+        "id": "cfb:espn:401754539",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-20T23:38:49+00:00",
+        "away": "cfb:espn:9",
+        "cohort": 0,
+        "home": "cfb:espn:239",
+        "id": "cfb:espn:401756896",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-20T23:45:43+00:00",
+        "away": "cfb:espn:57",
+        "cohort": 0,
+        "home": "cfb:espn:2390",
+        "id": "cfb:espn:401752709",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-20T23:56:33+00:00",
+        "away": "cfb:espn:2545",
+        "cohort": 0,
+        "home": "cfb:espn:99",
+        "id": "cfb:espn:401752710",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-26T04:00:05+00:00",
+        "away": "cfb:espn:248",
+        "cohort": 0,
+        "home": "cfb:espn:204",
+        "id": "cfb:espn:401752939",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-26T04:05:20+00:00",
+        "away": "cfb:espn:2628",
+        "cohort": 0,
+        "home": "cfb:espn:9",
+        "id": "cfb:espn:401756902",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-26T23:07:19+00:00",
+        "away": "cfb:espn:52",
+        "cohort": 0,
+        "home": "cfb:espn:258",
+        "id": "cfb:espn:401754543",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-27T00:00:00+00:00",
+        "away": "cfb:espn:328",
+        "cohort": 0,
+        "home": "cfb:espn:238",
+        "id": "cfb:espn:401752725",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-27T00:00:00+00:00",
+        "away": "cfb:espn:30",
+        "cohort": 0,
+        "home": "cfb:espn:356",
+        "id": "cfb:espn:401752850",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-27T00:00:00+00:00",
+        "away": "cfb:espn:265",
+        "cohort": 0,
+        "home": "cfb:espn:36",
+        "id": "cfb:espn:401752950",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-27T00:00:00+00:00",
+        "away": "cfb:espn:59",
+        "cohort": 0,
+        "home": "cfb:espn:154",
+        "id": "cfb:espn:401754546",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-27T00:00:00+00:00",
+        "away": "cfb:espn:97",
+        "cohort": 0,
+        "home": "cfb:espn:221",
+        "id": "cfb:espn:401754547",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-27T00:00:00+00:00",
+        "away": "cfb:espn:23",
+        "cohort": 0,
+        "home": "cfb:espn:24",
+        "id": "cfb:espn:401754549",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-27T00:00:00+00:00",
+        "away": "cfb:espn:12",
+        "cohort": 0,
+        "home": "cfb:espn:66",
+        "id": "cfb:espn:401756904",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-27T00:00:00+00:00",
+        "away": "cfb:espn:55",
+        "cohort": 0,
+        "home": "cfb:espn:2572",
+        "id": "cfb:espn:401757269",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-27T00:00:00+00:00",
+        "away": "cfb:espn:2348",
+        "cohort": 0,
+        "home": "cfb:espn:2638",
+        "id": "cfb:espn:401757272",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-27T00:00:00+00:00",
+        "away": "cfb:espn:166",
+        "cohort": 0,
+        "home": "cfb:espn:167",
+        "id": "cfb:espn:401757274",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-27T00:00:00+00:00",
+        "away": "cfb:espn:62",
+        "cohort": 0,
+        "home": "cfb:espn:2005",
+        "id": "cfb:espn:401760378",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-27T00:00:00+00:00",
+        "away": "cfb:espn:21",
+        "cohort": 0,
+        "home": "cfb:espn:2459",
+        "id": "cfb:espn:401760380",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-27T00:00:00+00:00",
+        "away": "cfb:espn:276",
+        "cohort": 0,
+        "home": "cfb:espn:309",
+        "id": "cfb:espn:401761615",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-27T00:00:00+00:00",
+        "away": "cfb:espn:235",
+        "cohort": 0,
+        "home": "cfb:espn:2226",
+        "id": "cfb:espn:401762472",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-27T00:00:00+00:00",
+        "away": "cfb:espn:2655",
+        "cohort": 0,
+        "home": "cfb:espn:202",
+        "id": "cfb:espn:401762474",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-27T00:00:00+00:00",
+        "away": "cfb:espn:189",
+        "cohort": 0,
+        "home": "cfb:espn:195",
+        "id": "cfb:espn:401762825",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-27T00:00:00+00:00",
+        "away": "cfb:espn:2815",
+        "cohort": 0,
+        "home": "cfb:espn:193",
+        "id": "cfb:espn:401762827",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-27T00:00:00+00:00",
+        "away": "cfb:espn:233",
+        "cohort": 0,
+        "home": "cfb:espn:2449",
+        "id": "cfb:espn:401767510",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-27T04:00:29+00:00",
+        "away": "cfb:espn:13",
+        "cohort": 0,
+        "home": "cfb:espn:16",
+        "id": "cfb:espn:401767073",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-27T16:02:19+00:00",
+        "away": "cfb:espn:164",
+        "cohort": 0,
+        "home": "cfb:espn:135",
+        "id": "cfb:espn:401752849",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-27T16:02:42+00:00",
+        "away": "cfb:espn:2132",
+        "cohort": 0,
+        "home": "cfb:espn:2305",
+        "id": "cfb:espn:401756905",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-27T16:04:12+00:00",
+        "away": "cfb:espn:150",
+        "cohort": 0,
+        "home": "cfb:espn:183",
+        "id": "cfb:espn:401754545",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-27T16:07:52+00:00",
+        "away": "cfb:espn:87",
+        "cohort": 0,
+        "home": "cfb:espn:8",
+        "id": "cfb:espn:401752717",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-27T16:08:15+00:00",
+        "away": "cfb:espn:6",
+        "cohort": 0,
+        "home": "cfb:espn:249",
+        "id": "cfb:espn:401761617",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-27T17:03:07+00:00",
+        "away": "cfb:espn:2199",
+        "cohort": 0,
+        "home": "cfb:espn:2117",
+        "id": "cfb:espn:401762826",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-27T17:34:08+00:00",
+        "away": "cfb:espn:290",
+        "cohort": 0,
+        "home": "cfb:espn:256",
+        "id": "cfb:espn:401761614",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-27T19:03:51+00:00",
+        "away": "cfb:espn:2032",
+        "cohort": 0,
+        "home": "cfb:espn:2433",
+        "id": "cfb:espn:401761616",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-27T19:36:41+00:00",
+        "away": "cfb:espn:254",
+        "cohort": 0,
+        "home": "cfb:espn:277",
+        "id": "cfb:espn:401756908",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-27T19:37:09+00:00",
+        "away": "cfb:espn:25",
+        "cohort": 0,
+        "home": "cfb:espn:103",
+        "id": "cfb:espn:401754544",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-27T19:37:10+00:00",
+        "away": "cfb:espn:239",
+        "cohort": 0,
+        "home": "cfb:espn:197",
+        "id": "cfb:espn:401756907",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-27T19:38:12+00:00",
+        "away": "cfb:espn:242",
+        "cohort": 0,
+        "home": "cfb:espn:2426",
+        "id": "cfb:espn:401762473",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-27T19:42:02+00:00",
+        "away": "cfb:espn:2",
+        "cohort": 0,
+        "home": "cfb:espn:245",
+        "id": "cfb:espn:401752724",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-27T19:44:52+00:00",
+        "away": "cfb:espn:99",
+        "cohort": 0,
+        "home": "cfb:espn:145",
+        "id": "cfb:espn:401752719",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-27T22:06:49+00:00",
+        "away": "cfb:espn:2393",
+        "cohort": 0,
+        "home": "cfb:espn:338",
+        "id": "cfb:espn:401757270",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-27T23:52:48+00:00",
+        "away": "cfb:espn:2483",
+        "cohort": 0,
+        "home": "cfb:espn:213",
+        "id": "cfb:espn:401752854",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-09-27T23:56:11+00:00",
+        "away": "cfb:espn:96",
+        "cohort": 0,
+        "home": "cfb:espn:2579",
+        "id": "cfb:espn:401752722",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-15T00:00:00+00:00",
+        "away": "cfb:espn:48",
+        "cohort": 1,
+        "home": "cfb:espn:55",
+        "id": "cfb:espn:401757283",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-15T23:01:50+00:00",
+        "away": "cfb:espn:2638",
+        "cohort": 1,
+        "home": "cfb:espn:2534",
+        "id": "cfb:espn:401757284",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-16T23:36:47+00:00",
+        "away": "cfb:espn:202",
+        "cohort": 1,
+        "home": "cfb:espn:151",
+        "id": "cfb:espn:401762486",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-17T00:00:00+00:00",
+        "away": "cfb:espn:158",
+        "cohort": 1,
+        "home": "cfb:espn:135",
+        "id": "cfb:espn:401752872",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-17T00:00:00+00:00",
+        "away": "cfb:espn:23",
+        "cohort": 1,
+        "home": "cfb:espn:328",
+        "id": "cfb:espn:401760396",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-17T04:00:26+00:00",
+        "away": "cfb:espn:153",
+        "cohort": 1,
+        "home": "cfb:espn:25",
+        "id": "cfb:espn:401754371",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-17T23:06:39+00:00",
+        "away": "cfb:espn:97",
+        "cohort": 1,
+        "home": "cfb:espn:2390",
+        "id": "cfb:espn:401754564",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-18T00:00:00+00:00",
+        "away": "cfb:espn:2633",
+        "cohort": 1,
+        "home": "cfb:espn:333",
+        "id": "cfb:espn:401752738",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-18T00:00:00+00:00",
+        "away": "cfb:espn:145",
+        "cohort": 1,
+        "home": "cfb:espn:61",
+        "id": "cfb:espn:401752742",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-18T00:00:00+00:00",
+        "away": "cfb:espn:127",
+        "cohort": 1,
+        "home": "cfb:espn:84",
+        "id": "cfb:espn:401752878",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-18T00:00:00+00:00",
+        "away": "cfb:espn:120",
+        "cohort": 1,
+        "home": "cfb:espn:26",
+        "id": "cfb:espn:401752879",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-18T00:00:00+00:00",
+        "away": "cfb:espn:2567",
+        "cohort": 1,
+        "home": "cfb:espn:228",
+        "id": "cfb:espn:401754565",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-18T00:00:00+00:00",
+        "away": "cfb:espn:221",
+        "cohort": 1,
+        "home": "cfb:espn:183",
+        "id": "cfb:espn:401754568",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-18T00:00:00+00:00",
+        "away": "cfb:espn:2641",
+        "cohort": 1,
+        "home": "cfb:espn:9",
+        "id": "cfb:espn:401756923",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-18T00:00:00+00:00",
+        "away": "cfb:espn:12",
+        "cohort": 1,
+        "home": "cfb:espn:248",
+        "id": "cfb:espn:401756925",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-18T00:00:00+00:00",
+        "away": "cfb:espn:2439",
+        "cohort": 1,
+        "home": "cfb:espn:68",
+        "id": "cfb:espn:401760393",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-18T00:00:00+00:00",
+        "away": "cfb:espn:324",
+        "cohort": 1,
+        "home": "cfb:espn:2026",
+        "id": "cfb:espn:401761629",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-18T00:00:00+00:00",
+        "away": "cfb:espn:2247",
+        "cohort": 1,
+        "home": "cfb:espn:290",
+        "id": "cfb:espn:401761630",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-18T00:00:00+00:00",
+        "away": "cfb:espn:295",
+        "cohort": 1,
+        "home": "cfb:espn:256",
+        "id": "cfb:espn:401761631",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-18T00:00:00+00:00",
+        "away": "cfb:espn:326",
+        "cohort": 1,
+        "home": "cfb:espn:276",
+        "id": "cfb:espn:401761632",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-18T00:00:00+00:00",
+        "away": "cfb:espn:2572",
+        "cohort": 1,
+        "home": "cfb:espn:309",
+        "id": "cfb:espn:401761668",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-18T00:00:00+00:00",
+        "away": "cfb:espn:349",
+        "cohort": 1,
+        "home": "cfb:espn:2655",
+        "id": "cfb:espn:401762488",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-18T00:00:00+00:00",
+        "away": "cfb:espn:2636",
+        "cohort": 1,
+        "home": "cfb:espn:249",
+        "id": "cfb:espn:401762491",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-18T00:00:00+00:00",
+        "away": "cfb:espn:2006",
+        "cohort": 1,
+        "home": "cfb:espn:2050",
+        "id": "cfb:espn:401762838",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-18T00:00:00+00:00",
+        "away": "cfb:espn:2117",
+        "cohort": 1,
+        "home": "cfb:espn:189",
+        "id": "cfb:espn:401762839",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-18T00:00:00+00:00",
+        "away": "cfb:espn:2084",
+        "cohort": 1,
+        "home": "cfb:espn:113",
+        "id": "cfb:espn:401762840",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-18T00:00:00+00:00",
+        "away": "cfb:espn:2199",
+        "cohort": 1,
+        "home": "cfb:espn:193",
+        "id": "cfb:espn:401762841",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-18T00:00:00+00:00",
+        "away": "cfb:espn:2459",
+        "cohort": 1,
+        "home": "cfb:espn:195",
+        "id": "cfb:espn:401762843",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-18T04:01:20+00:00",
+        "away": "cfb:espn:52",
+        "cohort": 1,
+        "home": "cfb:espn:24",
+        "id": "cfb:espn:401754567",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-18T16:04:11+00:00",
+        "away": "cfb:espn:41",
+        "cohort": 1,
+        "home": "cfb:espn:103",
+        "id": "cfb:espn:401754569",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-18T16:07:56+00:00",
+        "away": "cfb:espn:99",
+        "cohort": 1,
+        "home": "cfb:espn:238",
+        "id": "cfb:espn:401752745",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-18T16:10:36+00:00",
+        "away": "cfb:espn:59",
+        "cohort": 1,
+        "home": "cfb:espn:150",
+        "id": "cfb:espn:401754566",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-18T17:02:26+00:00",
+        "away": "cfb:espn:277",
+        "cohort": 1,
+        "home": "cfb:espn:2116",
+        "id": "cfb:espn:401756928",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-18T19:34:42+00:00",
+        "away": "cfb:espn:218",
+        "cohort": 1,
+        "home": "cfb:espn:2429",
+        "id": "cfb:espn:401762489",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-18T22:40:37+00:00",
+        "away": "cfb:espn:2483",
+        "cohort": 1,
+        "home": "cfb:espn:164",
+        "id": "cfb:espn:401752876",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-18T23:17:15+00:00",
+        "away": "cfb:espn:213",
+        "cohort": 1,
+        "home": "cfb:espn:2294",
+        "id": "cfb:espn:401752875",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-18T23:41:02+00:00",
+        "away": "cfb:espn:2226",
+        "cohort": 1,
+        "home": "cfb:espn:58",
+        "id": "cfb:espn:401762490",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-19T00:06:35+00:00",
+        "away": "cfb:espn:254",
+        "cohort": 1,
+        "home": "cfb:espn:252",
+        "id": "cfb:espn:401756924",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-21T23:30:05+00:00",
+        "away": "cfb:espn:98",
+        "cohort": 1,
+        "home": "cfb:espn:2348",
+        "id": "cfb:espn:401757286",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-23T01:00:33+00:00",
+        "away": "cfb:espn:2623",
+        "cohort": 1,
+        "home": "cfb:espn:166",
+        "id": "cfb:espn:401757288",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-23T23:36:35+00:00",
+        "away": "cfb:espn:6",
+        "cohort": 1,
+        "home": "cfb:espn:2247",
+        "id": "cfb:espn:401761634",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-24T23:03:43+00:00",
+        "away": "cfb:espn:249",
+        "cohort": 1,
+        "home": "cfb:espn:2429",
+        "id": "cfb:espn:401762492",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-25T02:01:36+00:00",
+        "away": "cfb:espn:68",
+        "cohort": 1,
+        "home": "cfb:espn:2440",
+        "id": "cfb:espn:401760397",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-25T15:59:41+00:00",
+        "away": "cfb:espn:164",
+        "cohort": 1,
+        "home": "cfb:espn:2509",
+        "id": "cfb:espn:401752884",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-25T16:00:37+00:00",
+        "away": "cfb:espn:195",
+        "cohort": 1,
+        "home": "cfb:espn:2199",
+        "id": "cfb:espn:401762848",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-25T16:01:52+00:00",
+        "away": "cfb:espn:58",
+        "cohort": 1,
+        "home": "cfb:espn:235",
+        "id": "cfb:espn:401762494",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-25T16:02:37+00:00",
+        "away": "cfb:espn:258",
+        "cohort": 1,
+        "home": "cfb:espn:153",
+        "id": "cfb:espn:401754573",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-25T16:02:43+00:00",
+        "away": "cfb:espn:77",
+        "cohort": 1,
+        "home": "cfb:espn:158",
+        "id": "cfb:espn:401752883",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-25T16:07:53+00:00",
+        "away": "cfb:espn:145",
+        "cohort": 1,
+        "home": "cfb:espn:201",
+        "id": "cfb:espn:401752750",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-25T16:08:40+00:00",
+        "away": "cfb:espn:2026",
+        "cohort": 1,
+        "home": "cfb:espn:295",
+        "id": "cfb:espn:401761635",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-25T16:08:41+00:00",
+        "away": "cfb:espn:2567",
+        "cohort": 1,
+        "home": "cfb:espn:154",
+        "id": "cfb:espn:401752942",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-25T16:09:02+00:00",
+        "away": "cfb:espn:183",
+        "cohort": 1,
+        "home": "cfb:espn:59",
+        "id": "cfb:espn:401754571",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-25T16:10:58+00:00",
+        "away": "cfb:espn:26",
+        "cohort": 1,
+        "home": "cfb:espn:84",
+        "id": "cfb:espn:401752885",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-25T16:44:58+00:00",
+        "away": "cfb:espn:2",
+        "cohort": 1,
+        "home": "cfb:espn:8",
+        "id": "cfb:espn:401752746",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-25T17:00:18+00:00",
+        "away": "cfb:espn:2006",
+        "cohort": 1,
+        "home": "cfb:espn:2084",
+        "id": "cfb:espn:401762844",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-25T19:29:16+00:00",
+        "away": "cfb:espn:2433",
+        "cohort": 1,
+        "home": "cfb:espn:2572",
+        "id": "cfb:espn:401761637",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-25T19:32:54+00:00",
+        "away": "cfb:espn:2050",
+        "cohort": 1,
+        "home": "cfb:espn:2459",
+        "id": "cfb:espn:401762845",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-25T19:33:11+00:00",
+        "away": "cfb:espn:113",
+        "cohort": 1,
+        "home": "cfb:espn:2117",
+        "id": "cfb:espn:401762847",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-25T19:34:11+00:00",
+        "away": "cfb:espn:152",
+        "cohort": 1,
+        "home": "cfb:espn:221",
+        "id": "cfb:espn:401754574",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-25T19:36:18+00:00",
+        "away": "cfb:espn:2226",
+        "cohort": 1,
+        "home": "cfb:espn:2426",
+        "id": "cfb:espn:401762493",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-25T19:38:00+00:00",
+        "away": "cfb:espn:2649",
+        "cohort": 1,
+        "home": "cfb:espn:265",
+        "id": "cfb:espn:401752952",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-25T19:40:18+00:00",
+        "away": "cfb:espn:142",
+        "cohort": 1,
+        "home": "cfb:espn:238",
+        "id": "cfb:espn:401752752",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-25T20:17:48+00:00",
+        "away": "cfb:espn:251",
+        "cohort": 1,
+        "home": "cfb:espn:344",
+        "id": "cfb:espn:401752749",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-25T22:03:00+00:00",
+        "away": "cfb:espn:2628",
+        "cohort": 1,
+        "home": "cfb:espn:277",
+        "id": "cfb:espn:401756935",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-25T23:03:18+00:00",
+        "away": "cfb:espn:309",
+        "cohort": 1,
+        "home": "cfb:espn:2653",
+        "id": "cfb:espn:401761638",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-25T23:10:36+00:00",
+        "away": "cfb:espn:275",
+        "cohort": 1,
+        "home": "cfb:espn:2483",
+        "id": "cfb:espn:401752886",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-25T23:33:35+00:00",
+        "away": "cfb:espn:103",
+        "cohort": 1,
+        "home": "cfb:espn:97",
+        "id": "cfb:espn:401754570",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-25T23:43:33+00:00",
+        "away": "cfb:espn:130",
+        "cohort": 1,
+        "home": "cfb:espn:127",
+        "id": "cfb:espn:401752881",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-25T23:49:32+00:00",
+        "away": "cfb:espn:245",
+        "cohort": 1,
+        "home": "cfb:espn:99",
+        "id": "cfb:espn:401752748",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-25T23:53:38+00:00",
+        "away": "cfb:espn:2633",
+        "cohort": 1,
+        "home": "cfb:espn:96",
+        "id": "cfb:espn:401752747",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-26T00:02:47+00:00",
+        "away": "cfb:espn:2449",
+        "cohort": 1,
+        "home": "cfb:espn:2571",
+        "id": "cfb:espn:401767512",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-26T00:05:40+00:00",
+        "away": "cfb:espn:248",
+        "cohort": 1,
+        "home": "cfb:espn:9",
+        "id": "cfb:espn:401756929",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-26T02:24:45+00:00",
+        "away": "cfb:espn:38",
+        "cohort": 1,
+        "home": "cfb:espn:254",
+        "id": "cfb:espn:401756934",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-29T00:03:21+00:00",
+        "away": "cfb:espn:256",
+        "cohort": 1,
+        "home": "cfb:espn:326",
+        "id": "cfb:espn:401761639",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-29T00:03:52+00:00",
+        "away": "cfb:espn:2638",
+        "cohort": 1,
+        "home": "cfb:espn:338",
+        "id": "cfb:espn:401757289",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-29T23:33:09+00:00",
+        "away": "cfb:espn:55",
+        "cohort": 1,
+        "home": "cfb:espn:2393",
+        "id": "cfb:espn:401757292",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-30T00:03:09+00:00",
+        "away": "cfb:espn:2229",
+        "cohort": 1,
+        "home": "cfb:espn:2623",
+        "id": "cfb:espn:401757291",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-30T23:34:33+00:00",
+        "away": "cfb:espn:2655",
+        "cohort": 1,
+        "home": "cfb:espn:2636",
+        "id": "cfb:espn:401762443",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-31T23:04:34+00:00",
+        "away": "cfb:espn:235",
+        "cohort": 1,
+        "home": "cfb:espn:242",
+        "id": "cfb:espn:401762497",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-10-31T23:35:56+00:00",
+        "away": "cfb:espn:153",
+        "cohort": 1,
+        "home": "cfb:espn:183",
+        "id": "cfb:espn:401754575",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-15T00:34:36+00:00",
+        "away": "cfb:espn:228",
+        "cohort": 2,
+        "home": "cfb:espn:97",
+        "id": "cfb:espn:401754591",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-15T16:59:31+00:00",
+        "away": "cfb:espn:2636",
+        "cohort": 2,
+        "home": "cfb:espn:2429",
+        "id": "cfb:espn:401762507",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-15T17:02:54+00:00",
+        "away": "cfb:espn:2005",
+        "cohort": 2,
+        "home": "cfb:espn:41",
+        "id": "cfb:espn:401757174",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-15T17:03:34+00:00",
+        "away": "cfb:espn:58",
+        "cohort": 2,
+        "home": "cfb:espn:2426",
+        "id": "cfb:espn:401762510",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-15T17:05:18+00:00",
+        "away": "cfb:espn:87",
+        "cohort": 2,
+        "home": "cfb:espn:221",
+        "id": "cfb:espn:401754597",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-15T17:08:17+00:00",
+        "away": "cfb:espn:130",
+        "cohort": 2,
+        "home": "cfb:espn:77",
+        "id": "cfb:espn:401752905",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-15T17:45:44+00:00",
+        "away": "cfb:espn:8",
+        "cohort": 2,
+        "home": "cfb:espn:99",
+        "id": "cfb:espn:401752768",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-15T18:01:06+00:00",
+        "away": "cfb:espn:277",
+        "cohort": 2,
+        "home": "cfb:espn:9",
+        "id": "cfb:espn:401756948",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-15T19:00:30+00:00",
+        "away": "cfb:espn:276",
+        "cohort": 2,
+        "home": "cfb:espn:2247",
+        "id": "cfb:espn:401761651",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-15T20:02:31+00:00",
+        "away": "cfb:espn:2638",
+        "cohort": 2,
+        "home": "cfb:espn:2623",
+        "id": "cfb:espn:401757304",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-15T20:18:52+00:00",
+        "away": "cfb:espn:153",
+        "cohort": 2,
+        "home": "cfb:espn:154",
+        "id": "cfb:espn:401754596",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-15T20:30:23+00:00",
+        "away": "cfb:espn:326",
+        "cohort": 2,
+        "home": "cfb:espn:2572",
+        "id": "cfb:espn:401761654",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-15T20:30:35+00:00",
+        "away": "cfb:espn:2026",
+        "cohort": 2,
+        "home": "cfb:espn:256",
+        "id": "cfb:espn:401761652",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-15T20:32:34+00:00",
+        "away": "cfb:espn:2393",
+        "cohort": 2,
+        "home": "cfb:espn:98",
+        "id": "cfb:espn:401757303",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-15T20:33:38+00:00",
+        "away": "cfb:espn:120",
+        "cohort": 2,
+        "home": "cfb:espn:356",
+        "id": "cfb:espn:401752906",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-15T20:33:42+00:00",
+        "away": "cfb:espn:258",
+        "cohort": 2,
+        "home": "cfb:espn:150",
+        "id": "cfb:espn:401754593",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-15T20:34:23+00:00",
+        "away": "cfb:espn:23",
+        "cohort": 2,
+        "home": "cfb:espn:2440",
+        "id": "cfb:espn:401760413",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-15T20:38:47+00:00",
+        "away": "cfb:espn:213",
+        "cohort": 2,
+        "home": "cfb:espn:127",
+        "id": "cfb:espn:401752903",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-15T20:39:57+00:00",
+        "away": "cfb:espn:152",
+        "cohort": 2,
+        "home": "cfb:espn:2390",
+        "id": "cfb:espn:401754595",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-15T21:00:42+00:00",
+        "away": "cfb:espn:2226",
+        "cohort": 2,
+        "home": "cfb:espn:2655",
+        "id": "cfb:espn:401762509",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-15T22:02:26+00:00",
+        "away": "cfb:espn:2335",
+        "cohort": 2,
+        "home": "cfb:espn:2229",
+        "id": "cfb:espn:401757301",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-16T00:09:23+00:00",
+        "away": "cfb:espn:57",
+        "cohort": 2,
+        "home": "cfb:espn:145",
+        "id": "cfb:espn:401752769",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-16T00:10:47+00:00",
+        "away": "cfb:espn:2509",
+        "cohort": 2,
+        "home": "cfb:espn:264",
+        "id": "cfb:espn:401752902",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-16T00:53:24+00:00",
+        "away": "cfb:espn:344",
+        "cohort": 2,
+        "home": "cfb:espn:142",
+        "id": "cfb:espn:401752770",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-16T01:03:25+00:00",
+        "away": "cfb:espn:338",
+        "cohort": 2,
+        "home": "cfb:espn:55",
+        "id": "cfb:espn:401757302",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-16T03:08:04+00:00",
+        "away": "cfb:espn:2348",
+        "cohort": 2,
+        "home": "cfb:espn:265",
+        "id": "cfb:espn:401752953",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-19T00:00:35+00:00",
+        "away": "cfb:espn:2006",
+        "cohort": 2,
+        "home": "cfb:espn:189",
+        "id": "cfb:espn:401762862",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-19T00:06:03+00:00",
+        "away": "cfb:espn:2711",
+        "cohort": 2,
+        "home": "cfb:espn:2459",
+        "id": "cfb:espn:401762864",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-22T01:05:43+00:00",
+        "away": "cfb:espn:52",
+        "cohort": 2,
+        "home": "cfb:espn:152",
+        "id": "cfb:espn:401754598",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-22T03:35:42+00:00",
+        "away": "cfb:espn:62",
+        "cohort": 2,
+        "home": "cfb:espn:2439",
+        "id": "cfb:espn:401760418",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-22T17:02:38+00:00",
+        "away": "cfb:espn:202",
+        "cohort": 2,
+        "home": "cfb:espn:349",
+        "id": "cfb:espn:401762512",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-22T18:06:13+00:00",
+        "away": "cfb:espn:295",
+        "cohort": 2,
+        "home": "cfb:espn:290",
+        "id": "cfb:espn:401761657",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-22T19:02:33+00:00",
+        "away": "cfb:espn:2050",
+        "cohort": 2,
+        "home": "cfb:espn:2649",
+        "id": "cfb:espn:401762867",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-22T20:00:23+00:00",
+        "away": "cfb:espn:2534",
+        "cohort": 2,
+        "home": "cfb:espn:2393",
+        "id": "cfb:espn:401757308",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-22T20:02:26+00:00",
+        "away": "cfb:espn:41",
+        "cohort": 2,
+        "home": "cfb:espn:2226",
+        "id": "cfb:espn:401757175",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-22T20:03:05+00:00",
+        "away": "cfb:espn:58",
+        "cohort": 2,
+        "home": "cfb:espn:5",
+        "id": "cfb:espn:401762511",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-22T20:30:10+00:00",
+        "away": "cfb:espn:2572",
+        "cohort": 2,
+        "home": "cfb:espn:6",
+        "id": "cfb:espn:401761658",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-22T20:32:41+00:00",
+        "away": "cfb:espn:183",
+        "cohort": 2,
+        "home": "cfb:espn:87",
+        "id": "cfb:espn:401754604",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-22T20:34:35+00:00",
+        "away": "cfb:espn:150",
+        "cohort": 2,
+        "home": "cfb:espn:153",
+        "id": "cfb:espn:401754600",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-22T20:43:43+00:00",
+        "away": "cfb:espn:30",
+        "cohort": 2,
+        "home": "cfb:espn:2483",
+        "id": "cfb:espn:401752911",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-22T20:49:32+00:00",
+        "away": "cfb:espn:2655",
+        "cohort": 2,
+        "home": "cfb:espn:218",
+        "id": "cfb:espn:401762515",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-22T20:59:16+00:00",
+        "away": "cfb:espn:130",
+        "cohort": 2,
+        "home": "cfb:espn:120",
+        "id": "cfb:espn:401752914",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-22T21:01:59+00:00",
+        "away": "cfb:espn:2247",
+        "cohort": 2,
+        "home": "cfb:espn:2653",
+        "id": "cfb:espn:401761660",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-22T21:02:59+00:00",
+        "away": "cfb:espn:2628",
+        "cohort": 2,
+        "home": "cfb:espn:248",
+        "id": "cfb:espn:401756957",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-22T21:03:46+00:00",
+        "away": "cfb:espn:16",
+        "cohort": 2,
+        "home": "cfb:espn:302",
+        "id": "cfb:espn:401767134",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-22T21:18:14+00:00",
+        "away": "cfb:espn:324",
+        "cohort": 2,
+        "home": "cfb:espn:2579",
+        "id": "cfb:espn:401752779",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-22T22:00:34+00:00",
+        "away": "cfb:espn:2433",
+        "cohort": 2,
+        "home": "cfb:espn:326",
+        "id": "cfb:espn:401761659",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-23T00:06:54+00:00",
+        "away": "cfb:espn:158",
+        "cohort": 2,
+        "home": "cfb:espn:213",
+        "id": "cfb:espn:401752908",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-23T00:08:29+00:00",
+        "away": "cfb:espn:221",
+        "cohort": 2,
+        "home": "cfb:espn:59",
+        "id": "cfb:espn:401754601",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-23T00:35:20+00:00",
+        "away": "cfb:espn:249",
+        "cohort": 2,
+        "home": "cfb:espn:242",
+        "id": "cfb:espn:401762514",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-23T00:35:36+00:00",
+        "away": "cfb:espn:25",
+        "cohort": 2,
+        "home": "cfb:espn:24",
+        "id": "cfb:espn:401754599",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-23T00:53:54+00:00",
+        "away": "cfb:espn:98",
+        "cohort": 2,
+        "home": "cfb:espn:99",
+        "id": "cfb:espn:401752777",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-23T01:03:28+00:00",
+        "away": "cfb:espn:9",
+        "cohort": 2,
+        "home": "cfb:espn:38",
+        "id": "cfb:espn:401756956",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-23T03:30:44+00:00",
+        "away": "cfb:espn:328",
+        "cohort": 2,
+        "home": "cfb:espn:278",
+        "id": "cfb:espn:401760417",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-23T03:34:41+00:00",
+        "away": "cfb:espn:23",
+        "cohort": 2,
+        "home": "cfb:espn:21",
+        "id": "cfb:espn:401760420",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-28T17:00:22+00:00",
+        "away": "cfb:espn:2309",
+        "cohort": 2,
+        "home": "cfb:espn:2459",
+        "id": "cfb:espn:401762871",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-28T17:02:29+00:00",
+        "away": "cfb:espn:254",
+        "cohort": 2,
+        "home": "cfb:espn:2305",
+        "id": "cfb:espn:401756964",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-28T17:04:07+00:00",
+        "away": "cfb:espn:195",
+        "cohort": 2,
+        "home": "cfb:espn:2084",
+        "id": "cfb:espn:401762870",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-28T17:07:13+00:00",
+        "away": "cfb:espn:145",
+        "cohort": 2,
+        "home": "cfb:espn:344",
+        "id": "cfb:espn:401752788",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-28T17:08:49+00:00",
+        "away": "cfb:espn:2294",
+        "cohort": 2,
+        "home": "cfb:espn:158",
+        "id": "cfb:espn:401752916",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-28T20:04:37+00:00",
+        "away": "cfb:espn:2005",
+        "cohort": 2,
+        "home": "cfb:espn:36",
+        "id": "cfb:espn:401760421",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-28T20:33:24+00:00",
+        "away": "cfb:espn:218",
+        "cohort": 2,
+        "home": "cfb:espn:249",
+        "id": "cfb:espn:401762442",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-29T00:43:03+00:00",
+        "away": "cfb:espn:245",
+        "cohort": 2,
+        "home": "cfb:espn:251",
+        "id": "cfb:espn:401752792",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-29T17:01:01+00:00",
+        "away": "cfb:espn:151",
+        "cohort": 2,
+        "home": "cfb:espn:2226",
+        "id": "cfb:espn:401762519",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-29T17:01:18+00:00",
+        "away": "cfb:espn:2649",
+        "cohort": 2,
+        "home": "cfb:espn:2117",
+        "id": "cfb:espn:401762872",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-29T17:04:03+00:00",
+        "away": "cfb:espn:66",
+        "cohort": 2,
+        "home": "cfb:espn:197",
+        "id": "cfb:espn:401756966",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-29T17:13:16+00:00",
+        "away": "cfb:espn:194",
+        "cohort": 2,
+        "home": "cfb:espn:130",
+        "id": "cfb:espn:401752921",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-29T18:33:29+00:00",
+        "away": "cfb:espn:290",
+        "cohort": 2,
+        "home": "cfb:espn:276",
+        "id": "cfb:espn:401761663",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-29T19:00:37+00:00",
+        "away": "cfb:espn:2247",
+        "cohort": 2,
+        "home": "cfb:espn:295",
+        "id": "cfb:espn:401761664",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-29T19:00:42+00:00",
+        "away": "cfb:espn:2348",
+        "cohort": 2,
+        "home": "cfb:espn:2623",
+        "id": "cfb:espn:401757314",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-29T19:59:11+00:00",
+        "away": "cfb:espn:5",
+        "cohort": 2,
+        "home": "cfb:espn:202",
+        "id": "cfb:espn:401762517",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-29T20:02:49+00:00",
+        "away": "cfb:espn:2433",
+        "cohort": 2,
+        "home": "cfb:espn:309",
+        "id": "cfb:espn:401761665",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-29T20:35:34+00:00",
+        "away": "cfb:espn:275",
+        "cohort": 2,
+        "home": "cfb:espn:135",
+        "id": "cfb:espn:401752918",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-29T20:39:20+00:00",
+        "away": "cfb:espn:338",
+        "cohort": 2,
+        "home": "cfb:espn:2335",
+        "id": "cfb:espn:401757313",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-29T21:34:07+00:00",
+        "away": "cfb:espn:52",
+        "cohort": 2,
+        "home": "cfb:espn:57",
+        "id": "cfb:espn:401752785",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-30T00:05:21+00:00",
+        "away": "cfb:espn:120",
+        "cohort": 2,
+        "home": "cfb:espn:127",
+        "id": "cfb:espn:401752923",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-30T00:33:48+00:00",
+        "away": "cfb:espn:2429",
+        "cohort": 2,
+        "home": "cfb:espn:2655",
+        "id": "cfb:espn:401762518",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-30T00:47:16+00:00",
+        "away": "cfb:espn:26",
+        "cohort": 2,
+        "home": "cfb:espn:30",
+        "id": "cfb:espn:401752919",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-30T02:07:13+00:00",
+        "away": "cfb:espn:2439",
+        "cohort": 2,
+        "home": "cfb:espn:2440",
+        "id": "cfb:espn:401760425",
+        "sport": "CFB"
+      },
+      {
+        "at": "2025-11-30T03:35:27+00:00",
+        "away": "cfb:espn:278",
+        "cohort": 2,
+        "home": "cfb:espn:23",
+        "id": "cfb:espn:401760423",
+        "sport": "CFB"
+      }
+    ],
+    "NBA": [
+      {
+        "at": "2025-11-15T00:00:00+00:00",
+        "away": "14",
+        "cohort": 0,
+        "home": "18",
+        "id": "nba:espn:401809781",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-15T01:00:00+00:00",
+        "away": "23",
+        "cohort": 0,
+        "home": "16",
+        "id": "nba:espn:401809786",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-15T01:00:00+00:00",
+        "away": "13",
+        "cohort": 0,
+        "home": "3",
+        "id": "nba:espn:401809787",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-15T01:30:00+00:00",
+        "away": "12",
+        "cohort": 0,
+        "home": "6",
+        "id": "nba:espn:401809788",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-15T22:00:00+00:00",
+        "away": "29",
+        "cohort": 0,
+        "home": "5",
+        "id": "nba:espn:401810083",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-16T00:00:00+00:00",
+        "away": "28",
+        "cohort": 0,
+        "home": "11",
+        "id": "nba:espn:401810085",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-16T01:00:00+00:00",
+        "away": "13",
+        "cohort": 0,
+        "home": "15",
+        "id": "nba:espn:401810086",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-16T01:00:00+00:00",
+        "away": "7",
+        "cohort": 0,
+        "home": "16",
+        "id": "nba:espn:401810087",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-16T20:30:00+00:00",
+        "away": "12",
+        "cohort": 0,
+        "home": "2",
+        "id": "nba:espn:401810088",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-16T21:00:00+00:00",
+        "away": "23",
+        "cohort": 0,
+        "home": "24",
+        "id": "nba:espn:401810089",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-16T23:00:00+00:00",
+        "away": "17",
+        "cohort": 0,
+        "home": "27",
+        "id": "nba:espn:401810090",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-17T00:00:00+00:00",
+        "away": "19",
+        "cohort": 0,
+        "home": "10",
+        "id": "nba:espn:401810091",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-17T00:00:00+00:00",
+        "away": "9",
+        "cohort": 0,
+        "home": "3",
+        "id": "nba:espn:401810092",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-17T01:00:00+00:00",
+        "away": "1",
+        "cohort": 0,
+        "home": "21",
+        "id": "nba:espn:401810094",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-18T00:00:00+00:00",
+        "away": "15",
+        "cohort": 0,
+        "home": "5",
+        "id": "nba:espn:401810096",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-18T00:00:00+00:00",
+        "away": "11",
+        "cohort": 0,
+        "home": "8",
+        "id": "nba:espn:401810097",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-18T00:00:00+00:00",
+        "away": "12",
+        "cohort": 0,
+        "home": "20",
+        "id": "nba:espn:401810098",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-18T00:30:00+00:00",
+        "away": "18",
+        "cohort": 0,
+        "home": "14",
+        "id": "nba:espn:401810099",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-18T00:30:00+00:00",
+        "away": "30",
+        "cohort": 0,
+        "home": "28",
+        "id": "nba:espn:401810100",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-18T01:00:00+00:00",
+        "away": "6",
+        "cohort": 0,
+        "home": "16",
+        "id": "nba:espn:401810101",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-18T01:00:00+00:00",
+        "away": "25",
+        "cohort": 0,
+        "home": "3",
+        "id": "nba:espn:401810102",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-18T02:00:00+00:00",
+        "away": "4",
+        "cohort": 0,
+        "home": "7",
+        "id": "nba:espn:401810103",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-19T00:00:00+00:00",
+        "away": "9",
+        "cohort": 0,
+        "home": "19",
+        "id": "nba:espn:401810104",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-19T00:30:00+00:00",
+        "away": "2",
+        "cohort": 0,
+        "home": "17",
+        "id": "nba:espn:401810105",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-19T00:30:00+00:00",
+        "away": "8",
+        "cohort": 0,
+        "home": "1",
+        "id": "nba:espn:401810106",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-19T01:00:00+00:00",
+        "away": "29",
+        "cohort": 0,
+        "home": "24",
+        "id": "nba:espn:401810107",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-19T03:30:00+00:00",
+        "away": "26",
+        "cohort": 0,
+        "home": "13",
+        "id": "nba:espn:401810108",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-20T01:00:00+00:00",
+        "away": "27",
+        "cohort": 0,
+        "home": "16",
+        "id": "nba:espn:401810114",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-20T01:00:00+00:00",
+        "away": "7",
+        "cohort": 0,
+        "home": "3",
+        "id": "nba:espn:401810115",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-20T02:30:00+00:00",
+        "away": "18",
+        "cohort": 0,
+        "home": "6",
+        "id": "nba:espn:401810117",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-20T03:00:00+00:00",
+        "away": "4",
+        "cohort": 0,
+        "home": "22",
+        "id": "nba:espn:401810118",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-21T01:00:00+00:00",
+        "away": "23",
+        "cohort": 0,
+        "home": "29",
+        "id": "nba:espn:401810120",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-21T01:00:00+00:00",
+        "away": "20",
+        "cohort": 0,
+        "home": "15",
+        "id": "nba:espn:401810121",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-22T00:00:00+00:00",
+        "away": "11",
+        "cohort": 0,
+        "home": "5",
+        "id": "nba:espn:401809790",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-22T00:30:00+00:00",
+        "away": "17",
+        "cohort": 0,
+        "home": "2",
+        "id": "nba:espn:401809791",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-22T00:30:00+00:00",
+        "away": "27",
+        "cohort": 0,
+        "home": "28",
+        "id": "nba:espn:401809792",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-22T01:00:00+00:00",
+        "away": "14",
+        "cohort": 0,
+        "home": "4",
+        "id": "nba:espn:401809793",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-22T01:30:00+00:00",
+        "away": "3",
+        "cohort": 0,
+        "home": "6",
+        "id": "nba:espn:401809794",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-22T02:00:00+00:00",
+        "away": "16",
+        "cohort": 0,
+        "home": "21",
+        "id": "nba:espn:401809795",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-22T02:30:00+00:00",
+        "away": "7",
+        "cohort": 0,
+        "home": "10",
+        "id": "nba:espn:401809796",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-22T03:00:00+00:00",
+        "away": "25",
+        "cohort": 0,
+        "home": "26",
+        "id": "nba:espn:401809797",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-22T03:00:00+00:00",
+        "away": "22",
+        "cohort": 0,
+        "home": "9",
+        "id": "nba:espn:401809798",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-22T22:00:00+00:00",
+        "away": "18",
+        "cohort": 0,
+        "home": "19",
+        "id": "nba:espn:401810124",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-23T00:00:00+00:00",
+        "away": "1",
+        "cohort": 0,
+        "home": "3",
+        "id": "nba:espn:401810125",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-23T01:00:00+00:00",
+        "away": "27",
+        "cohort": 0,
+        "home": "4",
+        "id": "nba:espn:401810126",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-23T03:00:00+00:00",
+        "away": "23",
+        "cohort": 0,
+        "home": "7",
+        "id": "nba:espn:401810129",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-23T18:00:00+00:00",
+        "away": "14",
+        "cohort": 0,
+        "home": "20",
+        "id": "nba:espn:401810130",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-23T23:00:00+00:00",
+        "away": "19",
+        "cohort": 0,
+        "home": "2",
+        "id": "nba:espn:401810132",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-23T23:00:00+00:00",
+        "away": "12",
+        "cohort": 0,
+        "home": "5",
+        "id": "nba:espn:401810133",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-23T23:00:00+00:00",
+        "away": "17",
+        "cohort": 0,
+        "home": "28",
+        "id": "nba:espn:401810134",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-24T00:00:00+00:00",
+        "away": "22",
+        "cohort": 0,
+        "home": "25",
+        "id": "nba:espn:401810135",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-24T01:00:00+00:00",
+        "away": "24",
+        "cohort": 0,
+        "home": "21",
+        "id": "nba:espn:401810136",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-25T00:00:00+00:00",
+        "away": "8",
+        "cohort": 0,
+        "home": "11",
+        "id": "nba:espn:401810138",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-25T00:00:00+00:00",
+        "away": "5",
+        "cohort": 0,
+        "home": "28",
+        "id": "nba:espn:401810139",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-25T01:00:00+00:00",
+        "away": "7",
+        "cohort": 0,
+        "home": "29",
+        "id": "nba:espn:401810142",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-25T01:00:00+00:00",
+        "away": "4",
+        "cohort": 0,
+        "home": "3",
+        "id": "nba:espn:401810144",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-26T01:00:00+00:00",
+        "away": "19",
+        "cohort": 0,
+        "home": "20",
+        "id": "nba:espn:401809800",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-26T04:00:00+00:00",
+        "away": "12",
+        "cohort": 0,
+        "home": "13",
+        "id": "nba:espn:401809801",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-26T22:00:00+00:00",
+        "away": "8",
+        "cohort": 0,
+        "home": "2",
+        "id": "nba:espn:401809802",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-27T00:00:00+00:00",
+        "away": "18",
+        "cohort": 0,
+        "home": "30",
+        "id": "nba:espn:401809803",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-27T00:30:00+00:00",
+        "away": "11",
+        "cohort": 0,
+        "home": "28",
+        "id": "nba:espn:401809805",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-27T00:30:00+00:00",
+        "away": "16",
+        "cohort": 0,
+        "home": "25",
+        "id": "nba:espn:401809806",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-27T01:00:00+00:00",
+        "away": "29",
+        "cohort": 0,
+        "home": "3",
+        "id": "nba:espn:401809807",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-29T00:30:00+00:00",
+        "away": "5",
+        "cohort": 0,
+        "home": "1",
+        "id": "nba:espn:401809811",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-29T00:30:00+00:00",
+        "away": "20",
+        "cohort": 0,
+        "home": "17",
+        "id": "nba:espn:401809812",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-29T00:30:00+00:00",
+        "away": "4",
+        "cohort": 0,
+        "home": "30",
+        "id": "nba:espn:401809813",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-29T00:30:00+00:00",
+        "away": "27",
+        "cohort": 0,
+        "home": "11",
+        "id": "nba:espn:401809815",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-29T00:30:00+00:00",
+        "away": "15",
+        "cohort": 0,
+        "home": "18",
+        "id": "nba:espn:401809816",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-29T03:00:00+00:00",
+        "away": "6",
+        "cohort": 0,
+        "home": "13",
+        "id": "nba:espn:401809820",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-29T03:00:00+00:00",
+        "away": "29",
+        "cohort": 0,
+        "home": "12",
+        "id": "nba:espn:401809821",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-29T22:00:00+00:00",
+        "away": "2",
+        "cohort": 0,
+        "home": "16",
+        "id": "nba:espn:401810148",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-29T23:00:00+00:00",
+        "away": "28",
+        "cohort": 0,
+        "home": "30",
+        "id": "nba:espn:401810149",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-30T01:30:00+00:00",
+        "away": "3",
+        "cohort": 0,
+        "home": "9",
+        "id": "nba:espn:401810153",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-30T02:00:00+00:00",
+        "away": "7",
+        "cohort": 0,
+        "home": "21",
+        "id": "nba:espn:401810154",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-30T03:00:00+00:00",
+        "away": "6",
+        "cohort": 0,
+        "home": "12",
+        "id": "nba:espn:401810155",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-30T20:00:00+00:00",
+        "away": "10",
+        "cohort": 0,
+        "home": "26",
+        "id": "nba:espn:401810156",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-30T23:00:00+00:00",
+        "away": "2",
+        "cohort": 0,
+        "home": "5",
+        "id": "nba:espn:401810157",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-30T23:00:00+00:00",
+        "away": "28",
+        "cohort": 0,
+        "home": "18",
+        "id": "nba:espn:401810158",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-30T23:00:00+00:00",
+        "away": "1",
+        "cohort": 0,
+        "home": "20",
+        "id": "nba:espn:401810159",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-11-30T23:00:00+00:00",
+        "away": "25",
+        "cohort": 0,
+        "home": "22",
+        "id": "nba:espn:401810160",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-01T00:00:00+00:00",
+        "away": "24",
+        "cohort": 1,
+        "home": "16",
+        "id": "nba:espn:401810161",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-01T02:00:00+00:00",
+        "away": "29",
+        "cohort": 1,
+        "home": "23",
+        "id": "nba:espn:401810162",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-01T02:30:00+00:00",
+        "away": "3",
+        "cohort": 1,
+        "home": "13",
+        "id": "nba:espn:401810163",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-02T00:00:00+00:00",
+        "away": "1",
+        "cohort": 1,
+        "home": "8",
+        "id": "nba:espn:401810164",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-02T00:00:00+00:00",
+        "away": "5",
+        "cohort": 1,
+        "home": "11",
+        "id": "nba:espn:401810165",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-02T00:00:00+00:00",
+        "away": "15",
+        "cohort": 1,
+        "home": "27",
+        "id": "nba:espn:401810166",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-02T00:30:00+00:00",
+        "away": "30",
+        "cohort": 1,
+        "home": "17",
+        "id": "nba:espn:401810167",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-02T00:30:00+00:00",
+        "away": "12",
+        "cohort": 1,
+        "home": "14",
+        "id": "nba:espn:401810168",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-02T02:00:00+00:00",
+        "away": "6",
+        "cohort": 1,
+        "home": "7",
+        "id": "nba:espn:401810170",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-02T02:00:00+00:00",
+        "away": "10",
+        "cohort": 1,
+        "home": "26",
+        "id": "nba:espn:401810171",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-02T03:00:00+00:00",
+        "away": "21",
+        "cohort": 1,
+        "home": "13",
+        "id": "nba:espn:401810172",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-03T00:00:00+00:00",
+        "away": "27",
+        "cohort": 1,
+        "home": "20",
+        "id": "nba:espn:401810173",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-03T00:30:00+00:00",
+        "away": "22",
+        "cohort": 1,
+        "home": "28",
+        "id": "nba:espn:401810174",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-03T01:00:00+00:00",
+        "away": "18",
+        "cohort": 1,
+        "home": "2",
+        "id": "nba:espn:401810175",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-03T01:00:00+00:00",
+        "away": "16",
+        "cohort": 1,
+        "home": "3",
+        "id": "nba:espn:401810176",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-03T01:00:00+00:00",
+        "away": "29",
+        "cohort": 1,
+        "home": "24",
+        "id": "nba:espn:401810177",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-03T04:00:00+00:00",
+        "away": "25",
+        "cohort": 1,
+        "home": "9",
+        "id": "nba:espn:401810178",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-04T00:00:00+00:00",
+        "away": "22",
+        "cohort": 1,
+        "home": "5",
+        "id": "nba:espn:401810179",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-04T00:00:00+00:00",
+        "away": "24",
+        "cohort": 1,
+        "home": "19",
+        "id": "nba:espn:401810181",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-04T00:30:00+00:00",
+        "away": "12",
+        "cohort": 1,
+        "home": "1",
+        "id": "nba:espn:401810182",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-04T00:30:00+00:00",
+        "away": "30",
+        "cohort": 1,
+        "home": "18",
+        "id": "nba:espn:401810183",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-04T01:00:00+00:00",
+        "away": "23",
+        "cohort": 1,
+        "home": "10",
+        "id": "nba:espn:401810185",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-04T01:00:00+00:00",
+        "away": "8",
+        "cohort": 1,
+        "home": "15",
+        "id": "nba:espn:401810186",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-04T01:30:00+00:00",
+        "away": "14",
+        "cohort": 1,
+        "home": "6",
+        "id": "nba:espn:401810187",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-05T00:00:00+00:00",
+        "away": "9",
+        "cohort": 1,
+        "home": "20",
+        "id": "nba:espn:401810188",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-05T00:00:00+00:00",
+        "away": "2",
+        "cohort": 1,
+        "home": "27",
+        "id": "nba:espn:401810189",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-05T00:30:00+00:00",
+        "away": "26",
+        "cohort": 1,
+        "home": "17",
+        "id": "nba:espn:401810190",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-05T00:30:00+00:00",
+        "away": "13",
+        "cohort": 1,
+        "home": "28",
+        "id": "nba:espn:401810191",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-05T01:00:00+00:00",
+        "away": "16",
+        "cohort": 1,
+        "home": "3",
+        "id": "nba:espn:401810192",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-06T00:00:00+00:00",
+        "away": "13",
+        "cohort": 1,
+        "home": "2",
+        "id": "nba:espn:401810193",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-06T00:00:00+00:00",
+        "away": "14",
+        "cohort": 1,
+        "home": "19",
+        "id": "nba:espn:401810194",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-06T00:30:00+00:00",
+        "away": "7",
+        "cohort": 1,
+        "home": "1",
+        "id": "nba:espn:401810195",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-06T00:30:00+00:00",
+        "away": "24",
+        "cohort": 1,
+        "home": "5",
+        "id": "nba:espn:401810196",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-06T00:30:00+00:00",
+        "away": "22",
+        "cohort": 1,
+        "home": "8",
+        "id": "nba:espn:401810197",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-06T00:30:00+00:00",
+        "away": "26",
+        "cohort": 1,
+        "home": "18",
+        "id": "nba:espn:401810198",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-06T00:30:00+00:00",
+        "away": "30",
+        "cohort": 1,
+        "home": "28",
+        "id": "nba:espn:401810199",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-06T01:00:00+00:00",
+        "away": "11",
+        "cohort": 1,
+        "home": "4",
+        "id": "nba:espn:401810200",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-06T01:00:00+00:00",
+        "away": "12",
+        "cohort": 1,
+        "home": "29",
+        "id": "nba:espn:401810202",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-06T01:00:00+00:00",
+        "away": "20",
+        "cohort": 1,
+        "home": "15",
+        "id": "nba:espn:401810203",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-06T02:30:00+00:00",
+        "away": "6",
+        "cohort": 1,
+        "home": "25",
+        "id": "nba:espn:401810204",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-06T22:00:00+00:00",
+        "away": "3",
+        "cohort": 1,
+        "home": "17",
+        "id": "nba:espn:401810205",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-07T00:00:00+00:00",
+        "away": "1",
+        "cohort": 1,
+        "home": "27",
+        "id": "nba:espn:401810206",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-07T00:30:00+00:00",
+        "away": "9",
+        "cohort": 1,
+        "home": "5",
+        "id": "nba:espn:401810207",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-07T00:30:00+00:00",
+        "away": "15",
+        "cohort": 1,
+        "home": "8",
+        "id": "nba:espn:401810208",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-07T01:00:00+00:00",
+        "away": "12",
+        "cohort": 1,
+        "home": "16",
+        "id": "nba:espn:401810210",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-07T01:30:00+00:00",
+        "away": "10",
+        "cohort": 1,
+        "home": "6",
+        "id": "nba:espn:401810211",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-07T17:00:00+00:00",
+        "away": "19",
+        "cohort": 1,
+        "home": "18",
+        "id": "nba:espn:401810212",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-07T20:30:00+00:00",
+        "away": "2",
+        "cohort": 1,
+        "home": "28",
+        "id": "nba:espn:401810213",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-07T23:00:00+00:00",
+        "away": "7",
+        "cohort": 1,
+        "home": "30",
+        "id": "nba:espn:401810214",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-07T23:00:00+00:00",
+        "away": "22",
+        "cohort": 1,
+        "home": "29",
+        "id": "nba:espn:401810215",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-08T00:00:00+00:00",
+        "away": "9",
+        "cohort": 1,
+        "home": "4",
+        "id": "nba:espn:401810216",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-08T00:30:00+00:00",
+        "away": "13",
+        "cohort": 1,
+        "home": "20",
+        "id": "nba:espn:401810217",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-09T00:00:00+00:00",
+        "away": "23",
+        "cohort": 1,
+        "home": "11",
+        "id": "nba:espn:401810219",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-09T00:30:00+00:00",
+        "away": "21",
+        "cohort": 1,
+        "home": "16",
+        "id": "nba:espn:401810220",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-09T01:00:00+00:00",
+        "away": "24",
+        "cohort": 1,
+        "home": "3",
+        "id": "nba:espn:401810221",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-09T23:00:00+00:00",
+        "away": "14",
+        "cohort": 1,
+        "home": "19",
+        "id": "nba:espn:401809833",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-10T01:30:00+00:00",
+        "away": "18",
+        "cohort": 1,
+        "home": "28",
+        "id": "nba:espn:401809834",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-11T00:30:00+00:00",
+        "away": "21",
+        "cohort": 1,
+        "home": "25",
+        "id": "nba:espn:401809835",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-11T03:00:00+00:00",
+        "away": "24",
+        "cohort": 1,
+        "home": "13",
+        "id": "nba:espn:401809836",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-12T01:00:00+00:00",
+        "away": "12",
+        "cohort": 1,
+        "home": "10",
+        "id": "nba:espn:401836746",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-12T01:00:00+00:00",
+        "away": "2",
+        "cohort": 1,
+        "home": "15",
+        "id": "nba:espn:401836747",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-12T01:00:00+00:00",
+        "away": "22",
+        "cohort": 1,
+        "home": "3",
+        "id": "nba:espn:401836748",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-12T03:00:00+00:00",
+        "away": "7",
+        "cohort": 1,
+        "home": "23",
+        "id": "nba:espn:401836749",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-13T00:00:00+00:00",
+        "away": "4",
+        "cohort": 1,
+        "home": "30",
+        "id": "nba:espn:401836750",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-13T00:00:00+00:00",
+        "away": "1",
+        "cohort": 1,
+        "home": "8",
+        "id": "nba:espn:401836751",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-13T00:00:00+00:00",
+        "away": "11",
+        "cohort": 1,
+        "home": "20",
+        "id": "nba:espn:401836752",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-13T00:00:00+00:00",
+        "away": "5",
+        "cohort": 1,
+        "home": "27",
+        "id": "nba:espn:401836753",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-13T01:00:00+00:00",
+        "away": "26",
+        "cohort": 1,
+        "home": "29",
+        "id": "nba:espn:401836754",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-13T01:30:00+00:00",
+        "away": "17",
+        "cohort": 1,
+        "home": "6",
+        "id": "nba:espn:401836795",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-13T03:00:00+00:00",
+        "away": "16",
+        "cohort": 1,
+        "home": "9",
+        "id": "nba:espn:401836796",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-13T22:30:00+00:00",
+        "away": "18",
+        "cohort": 1,
+        "home": "19",
+        "id": "nba:espn:401809837",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-14T02:00:00+00:00",
+        "away": "24",
+        "cohort": 1,
+        "home": "25",
+        "id": "nba:espn:401809838",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-14T20:00:00+00:00",
+        "away": "27",
+        "cohort": 1,
+        "home": "11",
+        "id": "nba:espn:401836797",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-14T20:30:00+00:00",
+        "away": "30",
+        "cohort": 1,
+        "home": "5",
+        "id": "nba:espn:401836799",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-14T23:00:00+00:00",
+        "away": "20",
+        "cohort": 1,
+        "home": "1",
+        "id": "nba:espn:401836798",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-14T23:00:00+00:00",
+        "away": "15",
+        "cohort": 1,
+        "home": "17",
+        "id": "nba:espn:401836800",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-15T00:00:00+00:00",
+        "away": "23",
+        "cohort": 1,
+        "home": "16",
+        "id": "nba:espn:401836801",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-15T00:00:00+00:00",
+        "away": "3",
+        "cohort": 1,
+        "home": "4",
+        "id": "nba:espn:401836804",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-15T01:00:00+00:00",
+        "away": "13",
+        "cohort": 1,
+        "home": "21",
+        "id": "nba:espn:401839699",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-15T02:00:00+00:00",
+        "away": "9",
+        "cohort": 1,
+        "home": "22",
+        "id": "nba:espn:401836802",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-16T00:30:00+00:00",
+        "away": "28",
+        "cohort": 2,
+        "home": "14",
+        "id": "nba:espn:401839023",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-16T02:00:00+00:00",
+        "away": "6",
+        "cohort": 2,
+        "home": "26",
+        "id": "nba:espn:401836805",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-16T02:30:00+00:00",
+        "away": "10",
+        "cohort": 2,
+        "home": "7",
+        "id": "nba:espn:401836806",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-16T03:30:00+00:00",
+        "away": "29",
+        "cohort": 2,
+        "home": "12",
+        "id": "nba:espn:401836807",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-18T01:00:00+00:00",
+        "away": "5",
+        "cohort": 2,
+        "home": "4",
+        "id": "nba:espn:401810222",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-18T01:00:00+00:00",
+        "away": "29",
+        "cohort": 2,
+        "home": "16",
+        "id": "nba:espn:401810223",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-19T00:00:00+00:00",
+        "away": "18",
+        "cohort": 2,
+        "home": "11",
+        "id": "nba:espn:401810227",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-19T01:00:00+00:00",
+        "away": "12",
+        "cohort": 2,
+        "home": "25",
+        "id": "nba:espn:401810224",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-19T01:00:00+00:00",
+        "away": "28",
+        "cohort": 2,
+        "home": "15",
+        "id": "nba:espn:401810229",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-19T01:30:00+00:00",
+        "away": "8",
+        "cohort": 2,
+        "home": "6",
+        "id": "nba:espn:401810231",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-19T02:00:00+00:00",
+        "away": "19",
+        "cohort": 2,
+        "home": "7",
+        "id": "nba:espn:401810232",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-19T02:00:00+00:00",
+        "away": "9",
+        "cohort": 2,
+        "home": "21",
+        "id": "nba:espn:401810233",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-19T03:00:00+00:00",
+        "away": "23",
+        "cohort": 2,
+        "home": "22",
+        "id": "nba:espn:401810235",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-20T00:00:00+00:00",
+        "away": "20",
+        "cohort": 2,
+        "home": "18",
+        "id": "nba:espn:401810237",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-20T00:30:00+00:00",
+        "away": "24",
+        "cohort": 2,
+        "home": "1",
+        "id": "nba:espn:401810238",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-20T00:30:00+00:00",
+        "away": "4",
+        "cohort": 2,
+        "home": "5",
+        "id": "nba:espn:401810239",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-20T02:30:00+00:00",
+        "away": "25",
+        "cohort": 2,
+        "home": "16",
+        "id": "nba:espn:401810240",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-20T22:00:00+00:00",
+        "away": "10",
+        "cohort": 2,
+        "home": "7",
+        "id": "nba:espn:401810241",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-21T00:00:00+00:00",
+        "away": "6",
+        "cohort": 2,
+        "home": "20",
+        "id": "nba:espn:401810242",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-21T00:00:00+00:00",
+        "away": "2",
+        "cohort": 2,
+        "home": "28",
+        "id": "nba:espn:401810243",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-21T00:30:00+00:00",
+        "away": "30",
+        "cohort": 2,
+        "home": "8",
+        "id": "nba:espn:401810245",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-21T01:00:00+00:00",
+        "away": "27",
+        "cohort": 2,
+        "home": "29",
+        "id": "nba:espn:401810246",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-21T03:00:00+00:00",
+        "away": "22",
+        "cohort": 2,
+        "home": "23",
+        "id": "nba:espn:401810249",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-21T03:30:00+00:00",
+        "away": "13",
+        "cohort": 2,
+        "home": "12",
+        "id": "nba:espn:401810250",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-21T20:30:00+00:00",
+        "away": "4",
+        "cohort": 2,
+        "home": "1",
+        "id": "nba:espn:401810251",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-21T23:00:00+00:00",
+        "away": "28",
+        "cohort": 2,
+        "home": "17",
+        "id": "nba:espn:401810252",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-21T23:00:00+00:00",
+        "away": "14",
+        "cohort": 2,
+        "home": "18",
+        "id": "nba:espn:401810253",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-22T00:00:00+00:00",
+        "away": "15",
+        "cohort": 2,
+        "home": "16",
+        "id": "nba:espn:401810255",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-22T03:00:00+00:00",
+        "away": "10",
+        "cohort": 2,
+        "home": "23",
+        "id": "nba:espn:401810256",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-23T00:00:00+00:00",
+        "away": "30",
+        "cohort": 2,
+        "home": "5",
+        "id": "nba:espn:401810257",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-23T00:30:00+00:00",
+        "away": "11",
+        "cohort": 2,
+        "home": "2",
+        "id": "nba:espn:401810258",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-23T01:00:00+00:00",
+        "away": "6",
+        "cohort": 2,
+        "home": "3",
+        "id": "nba:espn:401810259",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-23T02:00:00+00:00",
+        "away": "26",
+        "cohort": 2,
+        "home": "7",
+        "id": "nba:espn:401810260",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-23T02:30:00+00:00",
+        "away": "29",
+        "cohort": 2,
+        "home": "25",
+        "id": "nba:espn:401810261",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-23T03:00:00+00:00",
+        "away": "19",
+        "cohort": 2,
+        "home": "9",
+        "id": "nba:espn:401810262",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-23T03:00:00+00:00",
+        "away": "8",
+        "cohort": 2,
+        "home": "22",
+        "id": "nba:espn:401810263",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-24T00:00:00+00:00",
+        "away": "27",
+        "cohort": 2,
+        "home": "30",
+        "id": "nba:espn:401810264",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-24T00:30:00+00:00",
+        "away": "3",
+        "cohort": 2,
+        "home": "5",
+        "id": "nba:espn:401810267",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-24T00:30:00+00:00",
+        "away": "28",
+        "cohort": 2,
+        "home": "14",
+        "id": "nba:espn:401810269",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-24T01:00:00+00:00",
+        "away": "7",
+        "cohort": 2,
+        "home": "6",
+        "id": "nba:espn:401810270",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-24T01:00:00+00:00",
+        "away": "18",
+        "cohort": 2,
+        "home": "16",
+        "id": "nba:espn:401810271",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-24T01:30:00+00:00",
+        "away": "25",
+        "cohort": 2,
+        "home": "24",
+        "id": "nba:espn:401810272",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-24T02:00:00+00:00",
+        "away": "13",
+        "cohort": 2,
+        "home": "21",
+        "id": "nba:espn:401810273",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-24T02:00:00+00:00",
+        "away": "29",
+        "cohort": 2,
+        "home": "26",
+        "id": "nba:espn:401810274",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-24T03:00:00+00:00",
+        "away": "19",
+        "cohort": 2,
+        "home": "22",
+        "id": "nba:espn:401810275",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-24T03:30:00+00:00",
+        "away": "10",
+        "cohort": 2,
+        "home": "12",
+        "id": "nba:espn:401810277",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-25T17:00:00+00:00",
+        "away": "5",
+        "cohort": 2,
+        "home": "18",
+        "id": "nba:espn:401809238",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-25T22:17:00+00:00",
+        "away": "6",
+        "cohort": 2,
+        "home": "9",
+        "id": "nba:espn:401809240",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-26T01:00:00+00:00",
+        "away": "10",
+        "cohort": 2,
+        "home": "13",
+        "id": "nba:espn:401809241",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-26T03:30:00+00:00",
+        "away": "16",
+        "cohort": 2,
+        "home": "7",
+        "id": "nba:espn:401809242",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-27T00:00:00+00:00",
+        "away": "14",
+        "cohort": 2,
+        "home": "1",
+        "id": "nba:espn:401810278",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-27T00:00:00+00:00",
+        "away": "28",
+        "cohort": 2,
+        "home": "27",
+        "id": "nba:espn:401810280",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-27T00:30:00+00:00",
+        "away": "20",
+        "cohort": 2,
+        "home": "4",
+        "id": "nba:espn:401810282",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-27T01:00:00+00:00",
+        "away": "15",
+        "cohort": 2,
+        "home": "29",
+        "id": "nba:espn:401810283",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-27T01:00:00+00:00",
+        "away": "21",
+        "cohort": 2,
+        "home": "3",
+        "id": "nba:espn:401810284",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-27T02:30:00+00:00",
+        "away": "8",
+        "cohort": 2,
+        "home": "26",
+        "id": "nba:espn:401810285",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-27T03:00:00+00:00",
+        "away": "12",
+        "cohort": 2,
+        "home": "22",
+        "id": "nba:espn:401810286",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-28T00:00:00+00:00",
+        "away": "7",
+        "cohort": 2,
+        "home": "19",
+        "id": "nba:espn:401810288",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-28T00:00:00+00:00",
+        "away": "21",
+        "cohort": 2,
+        "home": "3",
+        "id": "nba:espn:401810289",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-28T01:00:00+00:00",
+        "away": "5",
+        "cohort": 2,
+        "home": "10",
+        "id": "nba:espn:401810293",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-28T20:30:00+00:00",
+        "away": "9",
+        "cohort": 2,
+        "home": "28",
+        "id": "nba:espn:401810296",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-28T23:00:00+00:00",
+        "away": "29",
+        "cohort": 2,
+        "home": "27",
+        "id": "nba:espn:401810298",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-28T23:00:00+00:00",
+        "away": "2",
+        "cohort": 2,
+        "home": "22",
+        "id": "nba:espn:401810299",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-29T02:00:00+00:00",
+        "away": "8",
+        "cohort": 2,
+        "home": "12",
+        "id": "nba:espn:401810300",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-29T02:30:00+00:00",
+        "away": "23",
+        "cohort": 2,
+        "home": "13",
+        "id": "nba:espn:401810301",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-30T00:00:00+00:00",
+        "away": "15",
+        "cohort": 2,
+        "home": "30",
+        "id": "nba:espn:401810302",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-30T00:00:00+00:00",
+        "away": "21",
+        "cohort": 2,
+        "home": "27",
+        "id": "nba:espn:401810303",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-30T00:30:00+00:00",
+        "away": "9",
+        "cohort": 2,
+        "home": "17",
+        "id": "nba:espn:401810304",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-30T00:30:00+00:00",
+        "away": "7",
+        "cohort": 2,
+        "home": "14",
+        "id": "nba:espn:401810305",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-30T01:00:00+00:00",
+        "away": "16",
+        "cohort": 2,
+        "home": "4",
+        "id": "nba:espn:401810307",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-30T01:00:00+00:00",
+        "away": "11",
+        "cohort": 2,
+        "home": "10",
+        "id": "nba:espn:401810308",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-30T01:00:00+00:00",
+        "away": "1",
+        "cohort": 2,
+        "home": "25",
+        "id": "nba:espn:401810310",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-30T01:00:00+00:00",
+        "away": "5",
+        "cohort": 2,
+        "home": "24",
+        "id": "nba:espn:401810311",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-30T03:30:00+00:00",
+        "away": "6",
+        "cohort": 2,
+        "home": "22",
+        "id": "nba:espn:401810312",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-31T01:00:00+00:00",
+        "away": "20",
+        "cohort": 2,
+        "home": "29",
+        "id": "nba:espn:401810313",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-31T02:00:00+00:00",
+        "away": "2",
+        "cohort": 2,
+        "home": "26",
+        "id": "nba:espn:401810314",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-31T03:30:00+00:00",
+        "away": "8",
+        "cohort": 2,
+        "home": "13",
+        "id": "nba:espn:401810315",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-31T04:00:00+00:00",
+        "away": "23",
+        "cohort": 2,
+        "home": "12",
+        "id": "nba:espn:401810316",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-31T20:00:00+00:00",
+        "away": "19",
+        "cohort": 2,
+        "home": "11",
+        "id": "nba:espn:401810319",
+        "sport": "NBA"
+      },
+      {
+        "at": "2025-12-31T20:30:00+00:00",
+        "away": "21",
+        "cohort": 2,
+        "home": "5",
+        "id": "nba:espn:401810320",
+        "sport": "NBA"
+      }
+    ],
+    "NFL": [
+      {
+        "at": "2025-09-19T00:15:44.623000+00:00",
+        "away": "MIA",
+        "cohort": 0,
+        "home": "BUF",
+        "id": "2025_03_MIA_BUF",
+        "sport": "NFL"
+      },
+      {
+        "at": "2025-09-21T17:02:23.163000+00:00",
+        "away": "HOU",
+        "cohort": 0,
+        "home": "JAX",
+        "id": "2025_03_HOU_JAX",
+        "sport": "NFL"
+      },
+      {
+        "at": "2025-09-21T17:02:29.900000+00:00",
+        "away": "GB",
+        "cohort": 0,
+        "home": "CLE",
+        "id": "2025_03_GB_CLE",
+        "sport": "NFL"
+      },
+      {
+        "at": "2025-09-21T17:02:31.787000+00:00",
+        "away": "NYJ",
+        "cohort": 0,
+        "home": "TB",
+        "id": "2025_03_NYJ_TB",
+        "sport": "NFL"
+      },
+      {
+        "at": "2025-09-21T17:02:46.127000+00:00",
+        "away": "LV",
+        "cohort": 0,
+        "home": "WAS",
+        "id": "2025_03_LV_WAS",
+        "sport": "NFL"
+      },
+      {
+        "at": "2025-09-21T17:02:52.317000+00:00",
+        "away": "IND",
+        "cohort": 0,
+        "home": "TEN",
+        "id": "2025_03_IND_TEN",
+        "sport": "NFL"
+      },
+      {
+        "at": "2025-09-21T17:03:31.790000+00:00",
+        "away": "CIN",
+        "cohort": 0,
+        "home": "MIN",
+        "id": "2025_03_CIN_MIN",
+        "sport": "NFL"
+      },
+      {
+        "at": "2025-09-21T20:05:28.223000+00:00",
+        "away": "NO",
+        "cohort": 0,
+        "home": "SEA",
+        "id": "2025_03_NO_SEA",
+        "sport": "NFL"
+      },
+      {
+        "at": "2025-09-21T20:25:27.640000+00:00",
+        "away": "DAL",
+        "cohort": 0,
+        "home": "CHI",
+        "id": "2025_03_DAL_CHI",
+        "sport": "NFL"
+      },
+      {
+        "at": "2025-09-21T20:25:32.147000+00:00",
+        "away": "ARI",
+        "cohort": 0,
+        "home": "SF",
+        "id": "2025_03_ARI_SF",
+        "sport": "NFL"
+      },
+      {
+        "at": "2025-09-22T00:23:24.937000+00:00",
+        "away": "KC",
+        "cohort": 0,
+        "home": "NYG",
+        "id": "2025_03_KC_NYG",
+        "sport": "NFL"
+      },
+      {
+        "at": "2025-09-23T00:16:00.570000+00:00",
+        "away": "DET",
+        "cohort": 0,
+        "home": "BAL",
+        "id": "2025_03_DET_BAL",
+        "sport": "NFL"
+      },
+      {
+        "at": "2025-09-26T00:15:34.120000+00:00",
+        "away": "SEA",
+        "cohort": 0,
+        "home": "ARI",
+        "id": "2025_04_SEA_ARI",
+        "sport": "NFL"
+      },
+      {
+        "at": "2025-09-28T17:02:20.013000+00:00",
+        "away": "CLE",
+        "cohort": 0,
+        "home": "DET",
+        "id": "2025_04_CLE_DET",
+        "sport": "NFL"
+      },
+      {
+        "at": "2025-09-28T17:02:32.687000+00:00",
+        "away": "WAS",
+        "cohort": 0,
+        "home": "ATL",
+        "id": "2025_04_WAS_ATL",
+        "sport": "NFL"
+      },
+      {
+        "at": "2025-09-28T17:02:35.050000+00:00",
+        "away": "NO",
+        "cohort": 0,
+        "home": "BUF",
+        "id": "2025_04_NO_BUF",
+        "sport": "NFL"
+      },
+      {
+        "at": "2025-09-28T17:02:50.200000+00:00",
+        "away": "CAR",
+        "cohort": 0,
+        "home": "NE",
+        "id": "2025_04_CAR_NE",
+        "sport": "NFL"
+      },
+      {
+        "at": "2025-09-28T17:02:56.003000+00:00",
+        "away": "TEN",
+        "cohort": 0,
+        "home": "HOU",
+        "id": "2025_04_TEN_HOU",
+        "sport": "NFL"
+      },
+      {
+        "at": "2025-09-28T20:05:13.420000+00:00",
+        "away": "JAX",
+        "cohort": 0,
+        "home": "SF",
+        "id": "2025_04_JAX_SF",
+        "sport": "NFL"
+      },
+      {
+        "at": "2025-09-28T20:05:16.337000+00:00",
+        "away": "IND",
+        "cohort": 0,
+        "home": "LA",
+        "id": "2025_04_IND_LA",
+        "sport": "NFL"
+      },
+      {
+        "at": "2025-09-28T20:25:22.037000+00:00",
+        "away": "CHI",
+        "cohort": 0,
+        "home": "LV",
+        "id": "2025_04_CHI_LV",
+        "sport": "NFL"
+      },
+      {
+        "at": "2025-09-28T20:26:00.437000+00:00",
+        "away": "BAL",
+        "cohort": 0,
+        "home": "KC",
+        "id": "2025_04_BAL_KC",
+        "sport": "NFL"
+      },
+      {
+        "at": "2025-09-29T00:22:42+00:00",
+        "away": "GB",
+        "cohort": 0,
+        "home": "DAL",
+        "id": "2025_04_GB_DAL",
+        "sport": "NFL"
+      },
+      {
+        "at": "2025-09-30T00:15:45.970000+00:00",
+        "away": "CIN",
+        "cohort": 0,
+        "home": "DEN",
+        "id": "2025_04_CIN_DEN",
+        "sport": "NFL"
+      },
+      {
+        "at": "2025-10-17T00:16:01.150000+00:00",
+        "away": "PIT",
+        "cohort": 1,
+        "home": "CIN",
+        "id": "2025_07_PIT_CIN",
+        "sport": "NFL"
+      },
+      {
+        "at": "2025-10-19T17:02:25.113000+00:00",
+        "away": "MIA",
+        "cohort": 1,
+        "home": "CLE",
+        "id": "2025_07_MIA_CLE",
+        "sport": "NFL"
+      },
+      {
+        "at": "2025-10-19T17:02:37.520000+00:00",
+        "away": "PHI",
+        "cohort": 1,
+        "home": "MIN",
+        "id": "2025_07_PHI_MIN",
+        "sport": "NFL"
+      },
+      {
+        "at": "2025-10-19T17:03:22.353000+00:00",
+        "away": "NE",
+        "cohort": 1,
+        "home": "TEN",
+        "id": "2025_07_NE_TEN",
+        "sport": "NFL"
+      },
+      {
+        "at": "2025-10-20T00:22:58.720000+00:00",
+        "away": "ATL",
+        "cohort": 1,
+        "home": "SF",
+        "id": "2025_07_ATL_SF",
+        "sport": "NFL"
+      },
+      {
+        "at": "2025-10-26T17:02:47+00:00",
+        "away": "CLE",
+        "cohort": 1,
+        "home": "NE",
+        "id": "2025_08_CLE_NE",
+        "sport": "NFL"
+      },
+      {
+        "at": "2025-10-26T17:02:51.533000+00:00",
+        "away": "NYJ",
+        "cohort": 1,
+        "home": "CIN",
+        "id": "2025_08_NYJ_CIN",
+        "sport": "NFL"
+      },
+      {
+        "at": "2025-10-26T20:05:39.690000+00:00",
+        "away": "TB",
+        "cohort": 1,
+        "home": "NO",
+        "id": "2025_08_TB_NO",
+        "sport": "NFL"
+      },
+      {
+        "at": "2025-10-26T20:25:24.687000+00:00",
+        "away": "DAL",
+        "cohort": 1,
+        "home": "DEN",
+        "id": "2025_08_DAL_DEN",
+        "sport": "NFL"
+      },
+      {
+        "at": "2025-10-27T00:22:35.027000+00:00",
+        "away": "GB",
+        "cohort": 1,
+        "home": "PIT",
+        "id": "2025_08_GB_PIT",
+        "sport": "NFL"
+      },
+      {
+        "at": "2025-11-16T18:02:44.117000+00:00",
+        "away": "CIN",
+        "cohort": 2,
+        "home": "PIT",
+        "id": "2025_11_CIN_PIT",
+        "sport": "NFL"
+      },
+      {
+        "at": "2025-11-16T18:02:46.963000+00:00",
+        "away": "LAC",
+        "cohort": 2,
+        "home": "JAX",
+        "id": "2025_11_LAC_JAX",
+        "sport": "NFL"
+      },
+      {
+        "at": "2025-11-16T18:02:52.307000+00:00",
+        "away": "GB",
+        "cohort": 2,
+        "home": "NYG",
+        "id": "2025_11_GB_NYG",
+        "sport": "NFL"
+      },
+      {
+        "at": "2025-11-16T18:02:55.207000+00:00",
+        "away": "HOU",
+        "cohort": 2,
+        "home": "TEN",
+        "id": "2025_11_HOU_TEN",
+        "sport": "NFL"
+      },
+      {
+        "at": "2025-11-16T21:05:26.317000+00:00",
+        "away": "SF",
+        "cohort": 2,
+        "home": "ARI",
+        "id": "2025_11_SF_ARI",
+        "sport": "NFL"
+      },
+      {
+        "at": "2025-11-16T21:05:30.027000+00:00",
+        "away": "SEA",
+        "cohort": 2,
+        "home": "LA",
+        "id": "2025_11_SEA_LA",
+        "sport": "NFL"
+      },
+      {
+        "at": "2025-11-16T21:25:19.137000+00:00",
+        "away": "BAL",
+        "cohort": 2,
+        "home": "CLE",
+        "id": "2025_11_BAL_CLE",
+        "sport": "NFL"
+      },
+      {
+        "at": "2025-11-16T21:25:20.620000+00:00",
+        "away": "KC",
+        "cohort": 2,
+        "home": "DEN",
+        "id": "2025_11_KC_DEN",
+        "sport": "NFL"
+      },
+      {
+        "at": "2025-11-17T01:22:47.683000+00:00",
+        "away": "DET",
+        "cohort": 2,
+        "home": "PHI",
+        "id": "2025_11_DET_PHI",
+        "sport": "NFL"
+      },
+      {
+        "at": "2025-11-23T18:02:37.413000+00:00",
+        "away": "NYJ",
+        "cohort": 2,
+        "home": "BAL",
+        "id": "2025_12_NYJ_BAL",
+        "sport": "NFL"
+      },
+      {
+        "at": "2025-11-23T18:02:37.783000+00:00",
+        "away": "PIT",
+        "cohort": 2,
+        "home": "CHI",
+        "id": "2025_12_PIT_CHI",
+        "sport": "NFL"
+      },
+      {
+        "at": "2025-11-23T18:02:46.737000+00:00",
+        "away": "IND",
+        "cohort": 2,
+        "home": "KC",
+        "id": "2025_12_IND_KC",
+        "sport": "NFL"
+      },
+      {
+        "at": "2025-11-23T18:02:53.693000+00:00",
+        "away": "MIN",
+        "cohort": 2,
+        "home": "GB",
+        "id": "2025_12_MIN_GB",
+        "sport": "NFL"
+      },
+      {
+        "at": "2025-11-23T18:02:55.093000+00:00",
+        "away": "NE",
+        "cohort": 2,
+        "home": "CIN",
+        "id": "2025_12_NE_CIN",
+        "sport": "NFL"
+      },
+      {
+        "at": "2025-11-23T21:26:23+00:00",
+        "away": "PHI",
+        "cohort": 2,
+        "home": "DAL",
+        "id": "2025_12_PHI_DAL",
+        "sport": "NFL"
+      },
+      {
+        "at": "2025-11-25T01:15:58.757000+00:00",
+        "away": "CAR",
+        "cohort": 2,
+        "home": "SF",
+        "id": "2025_12_CAR_SF",
+        "sport": "NFL"
+      },
+      {
+        "at": "2025-11-27T18:03:14.830000+00:00",
+        "away": "GB",
+        "cohort": 2,
+        "home": "DET",
+        "id": "2025_13_GB_DET",
+        "sport": "NFL"
+      },
+      {
+        "at": "2025-11-30T18:02:18.420000+00:00",
+        "away": "SF",
+        "cohort": 2,
+        "home": "CLE",
+        "id": "2025_13_SF_CLE",
+        "sport": "NFL"
+      },
+      {
+        "at": "2025-11-30T18:02:29.897000+00:00",
+        "away": "HOU",
+        "cohort": 2,
+        "home": "IND",
+        "id": "2025_13_HOU_IND",
+        "sport": "NFL"
+      },
+      {
+        "at": "2025-11-30T18:02:32.737000+00:00",
+        "away": "JAX",
+        "cohort": 2,
+        "home": "TEN",
+        "id": "2025_13_JAX_TEN",
+        "sport": "NFL"
+      },
+      {
+        "at": "2025-11-30T18:02:51.307000+00:00",
+        "away": "LA",
+        "cohort": 2,
+        "home": "CAR",
+        "id": "2025_13_LA_CAR",
+        "sport": "NFL"
+      },
+      {
+        "at": "2025-11-30T21:05:24.893000+00:00",
+        "away": "MIN",
+        "cohort": 2,
+        "home": "SEA",
+        "id": "2025_13_MIN_SEA",
+        "sport": "NFL"
+      }
+    ]
+  },
+  "simulations": 10000,
+  "sourceFiles": [
+    {
+      "path": "artifacts/learning-v16/datasets/NFL-repaired.pickle",
+      "sha256": "f46359a41ec8dcd76b94d7f44996c1de7e2da5c4ef682c79adc45b48a2db9b34"
+    },
+    {
+      "path": "artifacts/learning-v16/datasets/CFB-repaired.pickle",
+      "sha256": "078cb8badcb8c50da51e09d3ade0ed0648cca8e1989fabf082eb44fba6142f72"
+    },
+    {
+      "path": "artifacts/learning-v16/datasets/NBA-repaired.pickle",
+      "sha256": "7a7969f0fecd0c70aeade1587ad2994a67675fb5a4110fed291766a523327b7c"
+    },
+    {
+      "path": "artifacts/engine-v15/nba/owned-dataset.cache",
+      "sha256": "3c7b14fe58ff1d1a2fa3feb85d445b2366423cd3d5c857d0e87a038938e24e7e"
+    }
+  ],
+  "structuralHypotheses": [
+    "Pace-evidence filters must not discard valid NBA rotation/player box scores.",
+    "Past non-participation belongs in opportunity estimation; appearance-conditioned means bias workload.",
+    "Opportunity/efficiency factorization and opponent-adjusted regression may outperform play-resampling means."
+  ],
+  "trainEnd": "2025-07-01",
+  "version": "structural-v18",
+  "wallBudgetSeconds": 3000
+}

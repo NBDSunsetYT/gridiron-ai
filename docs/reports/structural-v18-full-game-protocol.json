@@ -1,0 +1,23 @@
+{
+  "additionalProjectionEvidence": "Football opportunity extension follows inspection of the projection-level validation report; this is explicitly a development experiment, not untouched final testing. No extra family is selected from a final test.",
+  "budgets": {
+    "CFB": 600,
+    "NBA": 500,
+    "NFL": 500,
+    "totalProtocol": 1800
+  },
+  "footballHypothesis": "Fixed ridge forecasts of passing volume, team play budgets, target and carry counts can replace pooled opportunity shares; the conditional play/state model and shared scoring outcomes remain intact.",
+  "footballVariants": [
+    "frozen_v15",
+    "learned_allocation"
+  ],
+  "initialTrials": 10000,
+  "nbaVariants": [
+    "frozen_v15",
+    "box_coverage",
+    "learned_minutes"
+  ],
+  "promotion": "No automatic promotion. Preregistered accuracy/reliability gates and genuine pregame publication evidence required.",
+  "sampling": "First three preselected game IDs per league/window; no outcome-dependent replacement",
+  "sourceProtocolSha256": "04f1172e46e59b5fb85804ba916362a765ecfae45aee0657e679b72cb330362f"
+}
