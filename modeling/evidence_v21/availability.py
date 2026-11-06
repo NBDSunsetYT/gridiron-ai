@@ -7,7 +7,7 @@ from .io import canonical_article
 from .tiers import timestamped_fact
 from ..accuracy_v20.quality import aware
 NFL_HEADINGS={'CARDINALS':'ARI','FALCONS':'ATL','RAVENS':'BAL','BILLS':'BUF','PANTHERS':'CAR','BEARS':'CHI','BENGALS':'CIN','BROWNS':'CLE','COWBOYS':'DAL','BRONCOS':'DEN','LIONS':'DET','PACKERS':'GB','TEXANS':'HOU','COLTS':'IND','JAGUARS':'JAX','CHIEFS':'KC','RAIDERS':'LV','CHARGERS':'LAC','RAMS':'LA','DOLPHINS':'MIA','VIKINGS':'MIN','PATRIOTS':'NE','SAINTS':'NO','GIANTS':'NYG','JETS':'NYJ','EAGLES':'PHI','STEELERS':'PIT','49ERS':'SF','SEAHAWKS':'SEA','BUCCANEERS':'TB','TITANS':'TEN','COMMANDERS':'WAS'}
-def nfl_article_statuses(article):
+def nfl_article_statuses(article,*,errors=None):
     """Parse explicit publisher injury sections, never absence as healthy."""
     team=None;rows=[]
     for line in article.get('articleBody','').splitlines():
@@ -20,7 +20,10 @@ def nfl_article_statuses(article):
         entries=re.sub(r'\)\s+(?=[A-Z/]{1,4}\s+[A-Z])', '), ',m[2])
         for item in re.split(r',\s*(?![^()]*\))',entries):
             match=re.fullmatch(r'(?:([A-Z/]{1,4})\s+)?([^()]+?)(?:\s*\(([^()]*)\))?',item.strip())
-            if not match:raise ValueError('Unresolved explicit injury item; do not guess a player identity')
+            if not match:
+                if errors is None:raise ValueError('Unresolved explicit injury item; do not guess a player identity')
+                errors.append({'teamId':team,'status':m[1].lower(),'rawItem':item.strip(),'reason':'Unresolved publisher text; no player identity guessed'})
+                continue
             rows.append({'teamId':team,'position':match[1],'playerName':match[2].strip(),'status':m[1].lower(),'injury':match[3] or 'unspecified'})
     return rows
 class Tables(HTMLParser):

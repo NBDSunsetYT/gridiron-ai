@@ -46,5 +46,13 @@ class ReportRecovery(unittest.TestCase):
     def test_pre_cutoff_receipt_cannot_override_future_publisher_timestamp(self):
         with self.assertRaises(ValueError):source_fact_guard(self.fact()|{'publishedAt':'2026-11-07T00:00:00Z'},'2026-11-06T21:00:00Z','FUTURE')
 
+    def test_one_malformed_nfl_item_is_explicitly_withheld_not_a_feed_wide_outage(self):
+        from .evidence_v21.availability import nfl_article_statuses
+        article={'articleBody':'PACKERS\nOUT: TE Example One (concussion, OL Example Two (knee), OL Example Three (ankle)'}
+        with self.assertRaises(ValueError):nfl_article_statuses(article)
+        errors=[];rows=nfl_article_statuses(article,errors=errors)
+        self.assertEqual([r['playerName'] for r in rows],['Example Two','Example Three']);self.assertEqual(len(errors),1)
+        self.assertEqual(errors[0]['teamId'],'GB');self.assertIn('no player identity guessed',errors[0]['reason'])
+
 
 if __name__=='__main__':unittest.main()
