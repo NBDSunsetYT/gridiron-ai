@@ -15,7 +15,7 @@ from .dynamic_v24.registry import FOOTBALL, NBA
 from .dynamic_v24.completion.data import EXTRA_FOOT, EXTRA_NBA
 from .overnight_v20.state import digest, read
 
-VERSION = 'objective-router-25.2'
+VERSION = 'objective-router-25.3'
 
 
 def request_guard(request):
@@ -31,6 +31,9 @@ def request_guard(request):
     if aware(request['cutoff']) > aware(request['eventAt']):
         raise ValueError('Pregame request cutoff cannot follow event start')
     mode = objective(request['output'])
+    if mode in (AccuracyMode.PROBABILITY,AccuracyMode.MARKET):
+        if not request.get('settlementVersion') or request.get('period')!='full_game' or request.get('overtimeIncluded') is not True or request.get('product') not in ('independent_threshold','sportsbook','event_contract'):
+            raise ValueError('Versioned full-game settlement/product and overtime semantics required')
     if request['output']=='quantile' and not 0<float(request.get('quantile',0))<1:
         raise ValueError('Explicit quantile in (0,1) required')
     if mode in (AccuracyMode.PROBABILITY, AccuracyMode.MARKET) and request['stat'] not in ('moneyline','doubleDouble','tripleDouble'):
@@ -58,6 +61,10 @@ def _identity_inputs(request, evidence):
             raise ValueError('Input player/team/stat/league differs from request')
     if evidence.get('inputSnapshotHash') != digest({'features':rows,'facts':evidence.get('facts',[])}):
         raise ValueError('Input snapshot checksum mismatch')
+    if request['entityType']=='player':
+        participant=[f for f in evidence.get('facts',[]) if f.get('kind')=='participation' and f.get('teamId')==request['teamId'] and (f.get('playerId')==request['entityId'] or request['entityId'] in f.get('coveredPlayerIds',[]))]
+        if not participant or any(f.get('availability')!='active_unrestricted' for f in participant):
+            raise ValueError('Unknown, inactive or limited participation requires a separately qualified scenario; no healthy default')
 
 
 def _validation_guard(record, attestation, request, protected_ids):
@@ -143,7 +150,7 @@ class ResearchRouter:
                 cohort=_validation_guard(r,a,request,self.protected_ids)
                 if mode == AccuracyMode.PROBABILITY:
                     p=a.get('probabilityValidation',{})
-                    definition={k:request.get(k) for k in ('sport','stat','threshold','side','equality')}
+                    definition={k:request.get(k) for k in ('sport','stat','threshold','side','equality','period','overtimeIncluded','settlementVersion','product')}
                     if p.get('definitionHash')!=digest(definition) or p.get('calibrationAccepted') is not True or not p.get('reportSHA256') or p.get('rawAndCalibratedSeparate') is not True:
                         raise ValueError('Exact outcome probability/calibration validation missing; CDF diagnostics are insufficient')
                 if mode == AccuracyMode.MARKET:
@@ -171,8 +178,11 @@ class ResearchRouter:
                 if model.get('sport')!=request['sport'] or match['id']!=request['eventId'] or aware(match['cutoff'])!=aware(request['cutoff']):
                     raise ValueError('Joint qualification event/league/cutoff mismatch')
                 bound=cert.get('objectiveHeadValidation',{}).get(r['id'],{})
-                if r['id'] not in model.get('specializedHeadIds',[]) or bound.get('artifactSHA256')!=a['artifactSHA256'] or bound.get('inputSnapshotHash')!=evidence['inputSnapshotHash'] or bound.get('compatible') is not True:
+                head_ids=model.get('objectiveHeadIds',[]) if mode==AccuracyMode.PROBABILITY else model.get('specializedHeadIds',[])
+                if r['id'] not in head_ids or bound.get('artifactSHA256')!=a['artifactSHA256'] or bound.get('inputSnapshotHash')!=evidence['inputSnapshotHash'] or bound.get('compatible') is not True:
                     raise ValueError('Selected head not certified against this shared game distribution')
+                from .accuracy_v25.reconciliation import require_report
+                require_report(bound.get('reconciliationReport'),r['id'],a['artifactSHA256'],evidence['inputSnapshotHash'],model['sha256'])
                 eligible.append((r,a,cohort))
             except (ValueError,KeyError,TypeError) as error:
                 rejected.append({'id':r['id'],'family':r['family'],'reason':str(error)})
@@ -194,7 +204,7 @@ class ResearchRouter:
                        'selected':{'registryRecordId':r['id'],'modelVersion':r['modelVersion'],
                                    'artifactSHA256':a['artifactSHA256'],'family':r['family'],'purpose':r['purpose'],
                                    'trainingCutoff':r['trainingCutoff'],'validationCohortHash':cohort,
-                                   'uncertainty':r['uncertainty'],'calibrated':a.get('calibratorValidated') is True,
+                                   'validationUncertainty':r['uncertainty'],'calibrated':a.get('calibratorValidated') is True,
                                    'inputSnapshotHash':evidence['inputSnapshotHash'],
                                    'jointModelHash':qualification['model']['sha256']}}
 
@@ -210,9 +220,25 @@ class ResearchRouter:
                              ('jointModelHash',selected['jointModelHash'])]:
             if cached.get(key)!=expected:
                 return route|{'status':'withheld','reason':'cached_prediction_binding_mismatch:'+key}
-        if aware(cached['createdAt'])>aware(request['cutoff']) or cached.get('stale') is not False:
-            return route|{'status':'withheld','reason':'cached_prediction_stale_or_post_cutoff'}
+        # Input availability is bound to the as-of cutoff above. Computation may
+        # finish later, but a prospective cached forecast must precede kickoff.
+        # Never backdate a retrospective run to masquerade as a pregame capture.
+        if aware(cached['createdAt'])>=aware(request['eventAt']) or cached.get('stale') is not False:
+            return route|{'status':'withheld','reason':'cached_prediction_stale_or_not_pregame'}
         if cached.get('accuracyMode')!=route['accuracyMode'] or cached.get('prediction') is None:
             return route|{'status':'withheld','reason':'cached_objective_output_missing_or_mismatched'}
+        prediction=cached['prediction']
+        if not isinstance(prediction,dict):
+            return route|{'status':'withheld','reason':'invalid_cached_prediction_shape'}
+        if route['accuracyMode']==AccuracyMode.PROBABILITY.value:
+            p=prediction.get('rawProbability');cal=prediction.get('calibratedProbability')
+            valid=lambda value:isinstance(value,(int,float)) and not isinstance(value,bool) and math.isfinite(value) and 0<=value<=1
+            if not valid(p) or cal is not None and (not selected['calibrated'] or not valid(cal)):
+                return route|{'status':'withheld','reason':'invalid_probability_or_unvalidated_calibration'}
+        elif route['accuracyMode']==AccuracyMode.NUMERICAL.value:
+            value=prediction.get(request['output'])
+            if isinstance(value,bool) or not isinstance(value,(int,float)) or not math.isfinite(value):
+                return route|{'status':'withheld','reason':'invalid_cached_numerical_estimand'}
         return route|{'status':'ready_research_only','prediction':cached['prediction'],
-                      'predictionHash':cached['sha256'],'lastVerifiedAt':cached.get('lastVerifiedAt')}
+                      'predictionHash':cached['sha256'],'lastVerifiedAt':cached.get('lastVerifiedAt'),
+                      'modelUncertainty':prediction.get('modelUncertainty','not_fully_quantified')}

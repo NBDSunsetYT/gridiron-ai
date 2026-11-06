@@ -54,7 +54,7 @@ The failed availability/qualification gate blocks new dependent training, strict
 OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 python -m unittest modeling.test_objective_router_v25
 ```
 
-Existing artifacts remain readable without migration. New objective envelopes use version `accuracy-objectives-25.2` and router version `objective-router-25.2`; legacy V24 artifacts are not rewritten.
+Existing artifacts remain readable without migration. Objective envelopes use version `accuracy-objectives-25.2`. The initial router was `objective-router-25.2`; final compatibility and settlement safeguards use `objective-router-25.3`. Legacy V24 artifacts and registry records are not rewritten. An older provisional routing cache without new compatibility evidence is retained but withheld; evidence is never fabricated to migrate it into eligibility.
 
 ## Executed same-event objective shadow verification
 
@@ -73,7 +73,28 @@ Twenty-eight focused tests passed against the exact checkpoint source, including
 ```bash
 # At the pinned objective-shadow checkpoint, with preserved private artifacts:
 OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 python scripts/shadow-objectives-v25.py
-python scripts/report-objectives-v25.py
 ```
 
 The immutable protocol records exact source editions. Later routing-only hardening must not be used to rewrite this checkpoint; reproduce it from its recorded commit. The pre-existing campaign ledger and accuracy pause remain intact.
+
+## Shared-game integration and final safeguards
+
+The exact numerical shadow checkpoint is GitHub commit **7c4970e14f270e5a7197c63e091b88815daf6ca4**. The initial routing checkpoint is **af38590fce79f0f931023f47612af3b5f977e9e4**. Reproduce the shadow run from its pinned source; the final router has additional non-numerical checks and intentionally does not match the older protocol's router hash.
+
+`accuracy_v25/joint_session.py` calls the existing V24 `forecast_with_heads` entry point once per qualified model/event/input/seed. It does not replace the game engine, model bank or tournament. It rechecks existing evidence and joint-probability gates, uses a nonblocking process lease, and persists checksum-verified compact aggregates only. The cache key includes model, kernel, source-evidence/context, conversion rules, cutoff and seed. All objectives can reuse that same simulation. Source changes invalidate the shared cache. Margin orientation is explicit instead of relying on serialized dictionary order.
+
+This is an explicit local research-batch entry point, blocked under `VERCEL` and `RENDER`. Every uncached invocation has a maximum of **180 CPU seconds / 360 wall seconds**, and retains the existing 10,000-game forecast protocol. It does not schedule a job on page visits, reserve a new overnight campaign, or bypass the preserved pause. Timeout, incorrect game counts, failed mechanics, incomplete histograms, raw play tapes and corrupted cache records cannot publish a completed result.
+
+Expected-value heads remain in the existing `specializedHeadIds` bank slot. Separately validated probability heads use an `objectiveHeadIds` manifest slot, bound to the same joint model and input by the certificate; they do not masquerade as mean heads. No current conditional probability candidate has acquired this authorization.
+
+`accuracy_v25/reconciliation.py` compares specialized marginal distributions with shared-event realizations without changing either. It reports mean differences and Monte Carlo standard errors, uses a multiplicity-adjusted normal approximation for adequately supported means, and simultaneous two-sample DKW bounds for the full marginal CDF. Rare nonzero support is withheld. These are **simulation compatibility checks, not model-uncertainty estimates or historical accuracy evidence**. Existing independent historical joint-probability validation is still separately required. Certificates bind head, artifact, input and joint model; a bare `compatible: true` flag no longer suffices.
+
+Confirmed publication status does not imply active/unrestricted participation. Limited, inactive and unknown player participation require separately qualified scenarios. Probability requests bind period, overtime inclusion, product and settlement version, and reject unsupported regulation-only or partial-game distribution reuse. Cached probabilities must be finite and cannot claim calibration without a validated calibrator. Cached numerical outputs must match the requested estimand. Validation uncertainty and model uncertainty are labeled separately.
+
+The positive shared-session/routing unit fixtures mock scientific authorization and return synthetic contract data. They test deduplication, invalidation, accounting-result checks and failure handling. They do **not** count as mechanically certified historical games or 10,000 real simulated football/basketball games. This session launched **zero qualified full-game runs** and promoted **zero models**.
+
+The 15-stage map remains the execution gate: strict availability/source-edition and model-bound forecasting requirements are unresolved. Therefore no new structural fit, new unseen accuracy experiment, market-edge champion or protected final evaluation is claimed. The original production champions are retained.
+
+For an isolated numerical reproduction, use a detached worktree of the pinned shadow commit and link the preserved private `artifacts` directory there. Run `scripts/shadow-objectives-v25.py` with `OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1`. Do not replace current branch files or overwrite an existing protocol. A newly generated runtime receipt is not a reason to rewrite published benchmark results.
+
+Final verification passed **795 TypeScript tests**, **533 Python tests**, and typechecking. After the full Python pass, a cache-deadline correction and version bump passed all **41 focused tests**: computation may finish after the input as-of cutoff, while prospective captures must still precede kickoff. Input snapshots, training, selection and source timestamps remain subject to their original cutoff checks. [Final software receipts](V25_OBJECTIVE_SOFTWARE_CHECKS.json) distinguish full-suite and final focused source editions.

@@ -51,7 +51,7 @@ class ObjectiveScoring(unittest.TestCase):
 
 class Routing(unittest.TestCase):
     def setUp(self):
-        self.request={'sport':'NBA','eventId':'SYNTHETIC-FUTURE','entityId':'p','teamId':'A','entityType':'player','stat':'rebounds','output':'mean','eventAt':'2024-05-01T20:00:00Z','cutoff':'2024-05-01T18:00:00Z'}
+        self.request={'sport':'NBA','eventId':'SYNTHETIC-FUTURE','entityId':'p','teamId':'A','entityType':'player','stat':'rebounds','output':'mean','eventAt':'2024-05-01T20:00:00Z','cutoff':'2024-05-01T18:00:00Z','settlementVersion':'SYNTHETIC','period':'full_game','overtimeIncluded':True,'product':'independent_threshold'}
         metrics=[]
         for _ in range(2):
             metrics.append({'games':30,'candidate':{'mae':1.,'rmse':1.,'crps':.5,'cdfBrier':.1,'cdfLogLoss':.3,'coverage':{'0.9':.9}},'reference':{'mae':2.,'rmse':2.,'crps':1.,'cdfBrier':.11,'cdfLogLoss':.31,'coverage':{'0.9':.9}},'paired':{'adjustedCI':[-2.,-1.]},'converged':True})
@@ -65,9 +65,11 @@ class Routing(unittest.TestCase):
         self.att=signed({'registryRecordId':self.record['id'],'modelVersion':self.record['modelVersion'],'artifactSHA256':'SYNTHETIC-b','sourceVersions':self.record['sourceVersions'],'strictPregameEvidence':True,'productionReferenceCompared':True,'policyFrozenBeforeValidation':True,'artifactAvailableTimes':['2024-03-01T00:00:00Z'],'windows':windows,'freshnessSeconds':{k:8640000 for k in ('injury','lineup','participation','historical_statistics')}})
         self.evidence={'features':[{'gameId':self.request['eventId'],'sport':'NBA','team':'A','player':'p','stat':'rebounds','at':self.request['eventAt'],'featureLastGame':'2024-04-01T00:00:00Z','sourceEditionVerified':True,'missingEvidence':[],'missingAvailability':False,**{k:'2024-04-30T00:00:00Z' for k in ('statisticsPublishedAt','injuryPublishedAt','lineupPublishedAt','participationPublishedAt')}}],'facts':[]}
         for kind in ('injury','lineup','participation','historical_statistics'):
-            self.evidence['facts'].append({'kind':kind,'sport':'NBA','teamId':'A','playerId':'p','eventId':self.request['eventId'] if kind!='historical_statistics' else 'SYNTHETIC-OLD','source':'https://example.test/synthetic','sourceVersion':'SYNTHETIC','publishedAt':'2024-04-30T00:00:00Z','availableAt':'2024-04-30T00:00:00Z','editionPublishedAt':'2024-04-30T00:00:00Z','retrievedAt':'2024-04-30T01:00:00Z','sourceRole':'official_pregame_report','status':'confirmed','gameEndedAt':'2024-04-01T00:00:00Z'})
+            self.evidence['facts'].append({'kind':kind,'sport':'NBA','teamId':'A','playerId':'p','eventId':self.request['eventId'] if kind!='historical_statistics' else 'SYNTHETIC-OLD','source':'https://example.test/synthetic','sourceVersion':'SYNTHETIC','publishedAt':'2024-04-30T00:00:00Z','availableAt':'2024-04-30T00:00:00Z','editionPublishedAt':'2024-04-30T00:00:00Z','retrievedAt':'2024-04-30T01:00:00Z','sourceRole':'official_pregame_report','status':'confirmed','availability':'active_unrestricted','gameEndedAt':'2024-04-01T00:00:00Z'})
         self.evidence['inputSnapshotHash']=digest(self.evidence)
         self.qualification={'model':{'sport':'NBA','sha256':'SYNTHETIC-joint','specializedHeadIds':[self.record['id']]},'match':{'id':self.request['eventId'],'cutoff':self.request['cutoff']},'ctx':{},'evidence':{},'certificate':{'objectiveHeadValidation':{self.record['id']:{'artifactSHA256':'SYNTHETIC-b','inputSnapshotHash':self.evidence['inputSnapshotHash'],'compatible':True}}}}
+        from .accuracy_v25.reconciliation import compare
+        self.qualification['certificate']['objectiveHeadValidation'][self.record['id']]['reconciliationReport']=compare(self.record['id'],'SYNTHETIC-b',self.evidence['inputSnapshotHash'],'SYNTHETIC-joint',1.,np.tile([0.,2.],1000),np.tile([0.,2.],1000))
 
     def route(self,request=None,record=None,att=None,evidence=None,qualification=None):
         r=record or self.record
@@ -125,12 +127,45 @@ class Routing(unittest.TestCase):
         cache=signed({'requestHash':digest(self.request),'registryRecordId':self.record['id'],'artifactSHA256':'SYNTHETIC-b','inputSnapshotHash':self.evidence['inputSnapshotHash'],'jointModelHash':'SYNTHETIC-joint','accuracyMode':AccuracyMode.NUMERICAL.value,'createdAt':'2024-05-01T17:00:00Z','stale':False,'prediction':{'mean':8.}})
         args={'evidence':self.evidence,'attestations':{self.record['id']:self.att},'qualification':self.qualification}
         self.assertEqual(router.predict(self.request,cached_forecast=cache,**args)['status'],'ready_research_only')
+        later=signed({k:('2024-05-01T19:00:00Z' if k=='createdAt' else v) for k,v in cache.items() if k!='sha256'})
+        self.assertEqual(router.predict(self.request,cached_forecast=later,**args)['status'],'ready_research_only')
+        at_kickoff=signed({k:(self.request['eventAt'] if k=='createdAt' else v) for k,v in cache.items() if k!='sha256'})
+        self.assertEqual(router.predict(self.request,cached_forecast=at_kickoff,**args)['status'],'withheld')
         cache=signed({k:('wrong' if k=='jointModelHash' else v) for k,v in cache.items() if k!='sha256'})
         self.assertIn('binding_mismatch',router.predict(self.request,cached_forecast=cache,**args)['reason'])
 
     def test_numerical_mean_cannot_reuse_probability_or_median_slot(self):
         r=copy.deepcopy(self.record);r['purpose']='median';r['estimand']='conditional_median';r['decision']=decision(r['metrics'],'median',strict=True,production_reference=True);r['id']=digest({k:v for k,v in r.items() if k!='id'})
         self.assertEqual(self.route(record=r)['candidateCount'],0)
+
+    def test_confirmed_report_is_not_automatic_healthy_participation(self):
+        for availability in (None,'uncertain','inactive','active_limited'):
+            e=copy.deepcopy(self.evidence)
+            for f in e['facts']:
+                if f['kind']=='participation':f['availability']=availability
+            e['inputSnapshotHash']=digest({k:v for k,v in e.items() if k!='inputSnapshotHash'})
+            r=self.route(evidence=e)
+            self.assertEqual(r['status'],'withheld');self.assertIn('no healthy default',r['rejected'][0]['reason'])
+
+    def test_validation_windows_cannot_contain_protected_games_or_future_training(self):
+        for bad_kind in ('protected','future_training'):
+            a={k:copy.deepcopy(v) for k,v in self.att.items() if k!='sha256'}
+            if bad_kind=='protected':
+                a['windows'][0]['gameIds'][0]='SEALED';a['windows'][0]['gameManifestHash']=digest(a['windows'][0]['gameIds'])
+            else:a['windows'][0]['start']=self.record['trainingCutoff'][0]
+            r=self.route(att=signed(a));self.assertEqual(r['status'],'withheld')
+
+    def test_probability_head_needs_exact_threshold_validation(self):
+        r=copy.deepcopy(self.record);r['purpose']='distribution';r['decision']=decision(r['metrics'],'distribution',strict=True,production_reference=True);r['id']=digest({k:v for k,v in r.items() if k!='id'})
+        a={k:copy.deepcopy(v) for k,v in self.att.items() if k!='sha256'};a['registryRecordId']=r['id']
+        req=self.request|{'output':'probability','threshold':8.5,'side':'over','equality':'lose','thresholdSourceVersion':'SYNTHETIC'}
+        result=self.route(request=req,record=r,att=signed(a))
+        self.assertIn('Exact outcome probability',result['rejected'][0]['reason'])
+
+    def test_regulation_only_contract_cannot_reuse_overtime_distribution(self):
+        req=self.request|{'output':'probability','threshold':8.5,'side':'over','equality':'lose','thresholdSourceVersion':'SYNTHETIC'}
+        for bad in ({'overtimeIncluded':False},{'settlementVersion':None},{'period':'first_half'}):
+            with self.assertRaises(ValueError):request_guard(req|bad)
 
 
 if __name__=='__main__':unittest.main()
