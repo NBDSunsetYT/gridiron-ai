@@ -12,6 +12,7 @@ from .accuracy_v25.objectives import AccuracyMode, objective
 from .accuracy_v25.leakage import forecast_lineage_guard
 from .dynamic_v24.completion.selection import decision as registry_decision
 from .dynamic_v24.registry import FOOTBALL, NBA
+from .dynamic_v24.completion.data import EXTRA_FOOT, EXTRA_NBA
 from .overnight_v20.state import digest, read
 
 VERSION = 'objective-router-25.2'
@@ -20,7 +21,7 @@ VERSION = 'objective-router-25.2'
 def request_guard(request):
     if request.get('sport') not in ('NFL', 'CFB', 'NBA'):
         raise ValueError('Unsupported league')
-    if request.get('stat') not in (NBA if request['sport']=='NBA' else FOOTBALL):
+    if request.get('stat') not in (NBA+EXTRA_NBA if request['sport']=='NBA' else FOOTBALL+EXTRA_FOOT):
         raise ValueError('Statistic is not in the existing league catalogue')
     for key in ('eventId', 'entityId', 'teamId'):
         if not isinstance(request.get(key),str) or not request[key]:

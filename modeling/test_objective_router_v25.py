@@ -86,6 +86,13 @@ class Routing(unittest.TestCase):
         with self.assertRaises(ValueError):request_guard(self.request|{'output':'probability'})
         request_guard(self.request|{'output':'probability','threshold':8.5,'side':'over','equality':'lose','thresholdSourceVersion':'SYNTHETIC'})
 
+    def test_entire_existing_53_category_catalogue_is_preserved(self):
+        import json
+        from pathlib import Path
+        heads=json.loads((Path(__file__).resolve().parents[1]/'docs/research/specialized-v24-results.json').read_text())['heads']
+        self.assertEqual(len(heads),53)
+        for h in heads:request_guard(self.request|{'sport':h['sport'],'stat':h['stat']})
+
     def test_protected_game_never_opens_automatically(self):
         self.assertIn('protected',self.route(self.request|{'eventId':'SEALED'})['reason'])
 

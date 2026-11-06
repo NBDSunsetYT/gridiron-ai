@@ -1,0 +1,32 @@
+{
+  "baselineReplayPassed": true,
+  "categories": 52,
+  "cpuSeconds": 64.593209524,
+  "forecastingGatePassed": false,
+  "marketBlendFits": 0,
+  "marketObservations": 0,
+  "modelsPromoted": 0,
+  "newFullGameSimulations": 0,
+  "newIndependentGames": 0,
+  "newModelFits": 0,
+  "newStrictPregameGames": 0,
+  "originalRegistrySHA256": "9f32c24b1818bf200b99d0743299fc26a6d8f8167a6a874563b2c97433e0c95a",
+  "passed": true,
+  "peakRssKiB": 966988,
+  "productionWrites": 0,
+  "protectedFinalOutcomesOpened": false,
+  "sameEventSetChecksPassed": 320,
+  "sameSnapshotChecksPassed": 320,
+  "scope": "conditional_corrected_history",
+  "separateModePredictionHashes": true,
+  "traceCount": 320,
+  "version": "three-objective-shadow-25.2",
+  "wallSeconds": 65.36025400299695,
+  "existingReplayGames": {
+    "NFL": 301,
+    "CFB": 115,
+    "NBA": 94
+  },
+  "originalFinalTestProtected": true,
+  "statisticalImprovementEstablished": false
+}

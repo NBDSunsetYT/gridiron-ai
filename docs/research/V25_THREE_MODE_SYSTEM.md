@@ -55,3 +55,25 @@ OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 python -m unittest modeling.test_object
 ```
 
 Existing artifacts remain readable without migration. New objective envelopes use version `accuracy-objectives-25.2` and router version `objective-router-25.2`; legacy V24 artifacts are not rewritten.
+
+## Executed same-event objective shadow verification
+
+The bounded `objectives-r1` verification regenerated the same 320 original fitted-model traces across 52 categories and checked their original point estimates, intervals and metrics. It calculated A/B/C views using one draw tape per trace. All 320 event-set and snapshot-hash checks passed. Mode-specific prediction hashes remain distinct. These tapes are original **marginal** research distributions, not a new certified joint-game simulation. The coherent-game gate is unchanged.
+
+Existing unique games represented in these replay traces were NFL **301**, CFB **115**, NBA **94**. They are previously exposed conditional diagnostics; newly independent games and strictly qualified new pregame games are both **0**. CFB targets has no verified observations and remains unsupported. No model was fit or selected, no full-game simulation ran, no protected final outcomes were opened, and no model was promoted.
+
+Mode A reports raw Bernoulli or training-quantile CDF diagnostics and proper distribution scores. Diagnostic thresholds are never labeled historical market lines. Mode B adds quantile loss and 50/80/90/95% Winkler/coverage scores to MAE/RMSE/bias. Mode C carries the same event set with **zero verified market observations**, so CLV, return distributions and blend weights are null.
+
+The optional market research math has tested multiplicative and Shin devigging, strict identity/threshold/settlement/time checks, grading-only closing observations, and a bounded development-only logit-weight candidate. It imposes no fixed weight or correlation threshold. No real blend was fit. Event contracts are explicitly refused by the sportsbook devig adapter; existing DraftKings Predictions payout/fee integration is preserved separately.
+
+The [53-category routing table](V25_ROUTING_LEADERBOARD.md) and its compressed machine-readable data preserve original candidates, references, uncertainty and rejected alternatives. Every strict route remains withheld; existing conditional winners are not relabeled as approved champions. A reporting defect for unsupported CFB targets was fixed and regression-tested without supplying fabricated metrics.
+
+Twenty-eight focused tests passed against the exact checkpoint source, including the full 53-category catalogue and unsupported-category handling. Measured replay: **64.593 CPU seconds**, **65.360 wall seconds**, **966988 KiB** peak RSS. [Execution receipt](V25_THREE_MODE_SHADOW.json).
+
+```bash
+# At the pinned objective-shadow checkpoint, with preserved private artifacts:
+OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 python scripts/shadow-objectives-v25.py
+python scripts/report-objectives-v25.py
+```
+
+The immutable protocol records exact source editions. Later routing-only hardening must not be used to rewrite this checkpoint; reproduce it from its recorded commit. The pre-existing campaign ledger and accuracy pause remain intact.
