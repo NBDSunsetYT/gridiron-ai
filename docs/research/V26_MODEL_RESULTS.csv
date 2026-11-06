@@ -1,0 +1,54 @@
+league,statistic,existing_champion_action,candidate,diagnostic_games,observations,reference_MAE,candidate_MAE,reference_RMSE,candidate_RMSE,reference_CRPS,candidate_CRPS,reference_90_coverage,candidate_90_coverage,paired_MAE_CI95,strict_independent_games,promotion_eligible
+NFL,passingAttempts,retain_existing_champion,calendar_exposure,6,6,15.138888888888891,13.819444444444445,19.26430444957528,17.262508883790993,12.277777777777779,10.260416666666666,0.16666666666666666,0.16666666666666666,"[-3.958333333333334, 0.0]",0,False
+NFL,passingYards,retain_existing_champion,calendar_exposure,6,6,115.55555555555554,108.59722222222221,121.37285681061631,112.684504053147,96.3101851851852,84.79745370370371,0.0,0.0,"[-20.875, 0.0]",0,False
+NFL,passingTouchdowns,retain_existing_champion,not_tested,0,0,,,,,,,,,,0,False
+NFL,interceptions,retain_existing_champion,not_tested,0,0,,,,,,,,,,0,False
+NFL,carries,retain_existing_champion,calendar_exposure,8,20,5.1625,5.079166666666667,6.852285709487342,6.809638797730432,4.206597222222221,4.084375,0.35,0.4,"[-0.140625, 0.006944444444444457]",0,False
+NFL,rushingYards,retain_existing_champion,calendar_exposure,8,20,32.68333333333333,32.4125,45.05413410554019,44.88920388022047,26.272916666666667,25.880902777777784,0.5,0.45,"[-0.6944444444444446, 0.2951388888888888]",0,False
+NFL,rushingTouchdowns,retain_existing_champion,not_tested,0,0,,,,,,,,,,0,False
+NFL,targets,retain_existing_champion,not_tested,0,0,,,,,,,,,,0,False
+NFL,receptions,retain_existing_champion,calendar_exposure,8,48,1.6336805555555554,1.550347222222222,2.0411351348915847,1.9599210466902128,1.2368344907407407,1.1563946759259258,0.3541666666666667,0.4166666666666667,"[-0.17981150793650796, 0.011904761904761916]",0,False
+NFL,receivingYards,retain_existing_champion,calendar_exposure,8,48,19.994791666666668,19.31423611111111,26.924268469893274,26.718842727800972,15.117042824074076,14.446035879629632,0.3541666666666667,0.3958333333333333,"[-1.527281746031746, 0.15625]",0,False
+NFL,receivingTouchdowns,retain_existing_champion,not_tested,0,0,,,,,,,,,,0,False
+NFL,teamPoints,retain_existing_champion,not_tested,0,0,,,,,,,,,,0,False
+NFL,moneyline,retain_existing_champion,not_tested,0,0,,,,,,,,,,0,False
+NFL,spread,retain_existing_champion,not_tested,0,0,,,,,,,,,,0,False
+NFL,total,retain_existing_champion,not_tested,0,0,,,,,,,,,,0,False
+NFL,passingCompletions,retain_existing_champion,not_tested,0,0,,,,,,,,,,0,False
+CFB,passingAttempts,retain_existing_champion,calendar_exposure,8,8,7.510416666666666,7.510416666666666,8.720834328714707,8.720834328714707,5.377604166666666,5.377604166666666,0.375,0.375,"[0.0, 0.0]",0,False
+CFB,passingYards,retain_existing_champion,calendar_exposure,8,8,68.08333333333333,68.08333333333333,82.71970954507893,82.71970954507893,49.27430555555556,49.27430555555556,0.625,0.625,"[0.0, 0.0]",0,False
+CFB,passingTouchdowns,retain_existing_champion,not_tested,0,0,,,,,,,,,,0,False
+CFB,interceptions,retain_existing_champion,not_tested,0,0,,,,,,,,,,0,False
+CFB,carries,retain_existing_champion,calendar_exposure,8,26,3.4038461538461537,3.4711538461538463,4.412794625886912,4.428292632722643,2.5106837606837606,2.50934829059829,0.4230769230769231,0.4230769230769231,"[0.0, 0.13124999999999998]",0,False
+CFB,rushingYards,retain_existing_champion,calendar_exposure,8,26,29.25320512820513,29.451923076923077,43.20494726242259,43.378696054255954,21.866720085470085,21.98798076923077,0.3076923076923077,0.3076923076923077,"[0.0, 0.38749999999999996]",0,False
+CFB,rushingTouchdowns,retain_existing_champion,not_tested,0,0,,,,,,,,,,0,False
+CFB,targets,retain_existing_champion,not_tested,0,0,,,,,,,,,,0,False
+CFB,receptions,retain_existing_champion,calendar_exposure,8,37,1.3896396396396395,1.3265765765765765,1.8557697544095768,1.7992845591859352,1.1435810810810811,1.1071696696696698,0.5405405405405406,0.5675675675675675,"[-0.1270833333333333, -0.010416666666666663]",0,False
+CFB,receivingYards,retain_existing_champion,calendar_exposure,8,37,28.006756756756758,26.844594594594593,38.32419348539909,37.201295325215135,22.801614114114116,21.97578828828829,0.4594594594594595,0.5135135135135135,"[-2.254166666666667, -0.1604166666666667]",0,False
+CFB,receivingTouchdowns,retain_existing_champion,not_tested,0,0,,,,,,,,,,0,False
+CFB,teamPoints,retain_existing_champion,not_tested,0,0,,,,,,,,,,0,False
+CFB,moneyline,retain_existing_champion,not_tested,0,0,,,,,,,,,,0,False
+CFB,spread,retain_existing_champion,not_tested,0,0,,,,,,,,,,0,False
+CFB,total,retain_existing_champion,not_tested,0,0,,,,,,,,,,0,False
+CFB,passingCompletions,retain_existing_champion,not_tested,0,0,,,,,,,,,,0,False
+NBA,minutes,retain_existing_champion,calendar_exposure,8,72,4.443287037037036,4.438657407407407,5.374614183683959,5.37447061705432,3.3249421296296293,3.325135030864198,0.5138888888888888,0.5138888888888888,"[-0.012499999999999997, 0.0]",0,False
+NBA,points,retain_existing_champion,calendar_exposure,8,72,4.319444444444445,4.31712962962963,5.600254210499933,5.600013089711333,3.4286265432098766,3.427276234567901,0.4722222222222222,0.4722222222222222,"[-0.006249999999999999, 0.0]",0,False
+NBA,rebounds,retain_existing_champion,calendar_exposure,8,72,1.866898148148148,1.866898148148148,2.5413061371499595,2.5413061371499595,1.4539930555555556,1.4539930555555556,0.5833333333333334,0.5833333333333334,"[0.0, 0.0]",0,False
+NBA,assists,retain_existing_champion,calendar_exposure,8,72,1.3946759259259258,1.3946759259259258,1.9402484488358382,1.9402484488358382,1.0967399691358026,1.0967399691358026,0.5277777777777778,0.5277777777777778,"[0.0, 0.0]",0,False
+NBA,threePointersMade,retain_existing_champion,calendar_exposure,8,72,0.875,0.875,1.206016297005134,1.206016297005134,0.6875,0.6875,0.5833333333333334,0.5833333333333334,"[0.0, 0.0]",0,False
+NBA,steals,retain_existing_champion,not_tested,0,0,,,,,,,,,,0,False
+NBA,blocks,retain_existing_champion,not_tested,0,0,,,,,,,,,,0,False
+NBA,turnovers,retain_existing_champion,not_tested,0,0,,,,,,,,,,0,False
+NBA,pointsReboundsAssists,retain_existing_champion,not_tested,0,0,,,,,,,,,,0,False
+NBA,pointsRebounds,retain_existing_champion,not_tested,0,0,,,,,,,,,,0,False
+NBA,pointsAssists,retain_existing_champion,not_tested,0,0,,,,,,,,,,0,False
+NBA,reboundsAssists,retain_existing_champion,not_tested,0,0,,,,,,,,,,0,False
+NBA,doubleDouble,retain_existing_champion,not_tested,0,0,,,,,,,,,,0,False
+NBA,tripleDouble,retain_existing_champion,not_tested,0,0,,,,,,,,,,0,False
+NBA,teamPoints,retain_existing_champion,not_tested,0,0,,,,,,,,,,0,False
+NBA,moneyline,retain_existing_champion,not_tested,0,0,,,,,,,,,,0,False
+NBA,spread,retain_existing_champion,not_tested,0,0,,,,,,,,,,0,False
+NBA,total,retain_existing_champion,not_tested,0,0,,,,,,,,,,0,False
+NBA,fieldGoalAttempts,retain_existing_champion,calendar_exposure,8,72,2.5381944444444446,2.5358796296296293,3.368893080289096,3.368492239732163,2.0463927469135803,2.0436921296296293,0.5694444444444444,0.5833333333333334,"[-0.006249999999999999, 0.0]",0,False
+NBA,threePointAttempts,retain_existing_champion,not_tested,0,0,,,,,,,,,,0,False
+NBA,freeThrowAttempts,retain_existing_champion,not_tested,0,0,,,,,,,,,,0,False
