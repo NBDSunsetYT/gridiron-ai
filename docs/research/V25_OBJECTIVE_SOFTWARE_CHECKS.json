@@ -1,0 +1,83 @@
+{
+  "version": "objective-software-25.3",
+  "passed": true,
+  "checks": {
+    "typescript": {
+      "command": [
+        "npm",
+        "test"
+      ],
+      "exitCode": 0,
+      "cpuSeconds": 48.753569,
+      "wallSeconds": 47.11672974002431,
+      "peakRssKiB": 427272,
+      "tests": 795,
+      "logSHA256": "bcc52d9ba63c52439e616d3db40b1eca2b1d98ef4032ee9de22c2cb12c509955"
+    },
+    "typecheck": {
+      "command": [
+        "npm",
+        "run",
+        "typecheck"
+      ],
+      "exitCode": 0,
+      "cpuSeconds": 6.745966000000003,
+      "wallSeconds": 3.732948037009919,
+      "peakRssKiB": 773220,
+      "tests": null,
+      "logSHA256": "d4028a3938122a417889fcbd7432c72e2b262cf7651b662783ffc2c9370d8074"
+    },
+    "python-final": {
+      "command": "npm run test:python",
+      "exitCode": 0,
+      "cpuSeconds": 156.193646,
+      "wallSeconds": 156.2360031179851,
+      "peakRssKiB": 294312,
+      "tests": 533,
+      "logSHA256": "6d441fb889ca9a235406f7f62facbaf490e2b484bd6fe55f922c91d47c1a9a91"
+    },
+    "focused-final": {
+      "command": [
+        "python",
+        "-m",
+        "unittest",
+        "modeling.test_objective_joint_v25",
+        "modeling.test_objective_router_v25",
+        "modeling.test_three_mode_shadow_v25"
+      ],
+      "exitCode": 0,
+      "tests": 41,
+      "wallSeconds": 1.3676986659993418,
+      "cpuSeconds": 1.3655059999999999,
+      "peakRssKiB": 179456,
+      "logSHA256": "a1c417ea9e0ce06ef52f4611d0c9d1c4a28cc7332211e4fabf9e981a159099c4"
+    }
+  },
+  "finalFocusedSourceSHA256": {
+    "modeling/accuracy_v25/shadow.py": "4e57555e3fdb99336c9302523ade92087591614583496c2068fdcb9a25e933e5",
+    "modeling/accuracy_v25/objectives.py": "3ac2ea4ffeb536ea39535095160b3d991a541e45b5645b47e71b0b03e985c141",
+    "modeling/accuracy_v25/reconciliation.py": "1da58b1c62a40a5a918c5ce66f4056a6a501267e7b07bc07926fb384b831583d",
+    "modeling/accuracy_v25/joint_session.py": "ae334b1bd350ef58fad911effaa173cfb77cbe07b78881a32b604c0718d8bc59",
+    "modeling/accuracy_v25/evaluation.py": "4a23e6866ff4581f262cc38a500904a989961488055943492b40dd0914849d52",
+    "modeling/accuracy_v25/leakage.py": "3415c5b5ed428f0b06cab46182f860248679c305d93278638d4756dfbcd15fcc",
+    "modeling/accuracy_v25/__init__.py": "1b272037e9ecb0e89a86cae85377308c9fa46fc36d851f56f5c80c08d6bcecf6",
+    "modeling/accuracy_v25/market_research.py": "fb0fd7acb99dad8f5b02333dc5699dbe83bc8e48dc097440e4fae9b16cf64c2b",
+    "modeling/router.py": "4e88f7767f61d7964fc4f5598719586f8def3bea068d54bb556cc7b3baf13b3f",
+    "modeling/test_objective_router_v25.py": "0babe5bff99a195b59dc7166fa6b69e55708f514e3f2b78bcb4fbf7c766db6fb",
+    "modeling/test_objective_joint_v25.py": "dfe67768aef3d10073c46ea19634cca4597ed086ec6039fc321e741a8c0dc734",
+    "modeling/test_three_mode_shadow_v25.py": "42d94bf65dbd35ef824140219622cd52823d8945b2c02416367ffff1b36da6a2"
+  },
+  "fullSuiteSourceBeforeFinalCacheDeadlineAdjustment": {
+    "modeling/router.py": "9fb011bef4462a00df60c21131bfacc7752a73d82be36d0141758c2c6d5140dc",
+    "modeling/test_objective_router_v25.py": "870b8d039ed8e92e2bcfde8e3d93f2c932b081921584220980ef72890d876b6e",
+    "modeling/accuracy_v25/joint_session.py": "ae334b1bd350ef58fad911effaa173cfb77cbe07b78881a32b604c0718d8bc59",
+    "modeling/accuracy_v25/reconciliation.py": "1da58b1c62a40a5a918c5ce66f4056a6a501267e7b07bc07926fb384b831583d",
+    "modeling/test_objective_joint_v25.py": "dfe67768aef3d10073c46ea19634cca4597ed086ec6039fc321e741a8c0dc734"
+  },
+  "fullSuiteRepeatedOnlyAfterNewBudgetAndSettlementSafeguards": true,
+  "newModelFits": 0,
+  "newFullGameSimulations": 0,
+  "productionPromotion": false,
+  "previousCampaignLedgerUnchanged": true,
+  "verificationMeaning": "Newly requested local software validation, not restarted overnight model optimization"
+}
