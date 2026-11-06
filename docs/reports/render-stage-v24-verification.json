@@ -1,0 +1,92 @@
+{
+  "checkedAt": "2026-11-06T07:34:00Z",
+  "serviceId": "srv-dblsg9gn74is73cjc8lg",
+  "workspaceId": "tea-dbidrq6c6qcc73a7n0u0",
+  "url": "https://gridiron-ai-frontend.onrender.com",
+  "plan": "free",
+  "deployedCommit": "3ac16f9710e330b2d486097483264293c5a59336",
+  "deployId": "dep-dbmo0f3m8hqs73b09q2g",
+  "migrationRuntimeCodeDeployed": false,
+  "cutoverReady": false,
+  "dnsChanged": false,
+  "productionModelPromotions": 0,
+  "existingPrivateTablesIntegrityVerified": 11,
+  "existingResearchArtifactChecksumsVerified": 6526,
+  "supabase": "reachable",
+  "dataBackend": "supabase",
+  "webComputeMode": "cache_and_queue_only",
+  "schedules": {
+    "NFL": 59,
+    "CFB": 130,
+    "NBA": 23
+  },
+  "livePropLineQuotesVerified": 0,
+  "draftKingsPredictionsContractsVerified": 0,
+  "sourceProviders": [
+    "nflverse NFL schedule",
+    "ESPN published CFB scoreboard",
+    "ESPN published NBA scoreboard"
+  ],
+  "gatewayHealth": {
+    "status": 200,
+    "ready": true,
+    "providerAccessVerified": false
+  },
+  "browser": {
+    "viewports": [
+      "iPhone 13 Chromium",
+      "Desktop Chromium"
+    ],
+    "sportAndHistoryChecks": 8,
+    "pageErrors": 0,
+    "horizontalOverflow": false,
+    "navigationWriteRequests": 0,
+    "offlineShellPassed": true,
+    "privateApiCached": false,
+    "physicalIPhoneTested": false
+  },
+  "databaseQa": {
+    "mode": "transaction rollback, simulated authenticated role; not browser login",
+    "cashCents": 13900,
+    "realizedPlCents": 900,
+    "pendingExposureCents": 0,
+    "workspaceRevision": 2,
+    "crossUserIsolationPassed": true,
+    "noSyntheticUsersRemain": true
+  },
+  "logicalRecovery": {
+    "tables": 21,
+    "plaintextBytes": 1408511,
+    "compressedBytes": 82320,
+    "decryptionVerified": true,
+    "fullDatabaseRestoreVerified": false,
+    "authSecretsExcluded": true,
+    "offHostBackupVerified": false
+  },
+  "tests": {
+    "nodeHosting": 2,
+    "vitestHosting": 22,
+    "localFinancialRegression": "passed"
+  },
+  "performance": {
+    "firstColdHomepageSeconds": 51.311,
+    "localStandaloneStartMilliseconds": 207,
+    "localBuildWallSeconds": 61.648,
+    "localBuildCpuSeconds": 103.028,
+    "observedRenderPeakMemoryBytes": 210726910,
+    "observedRenderPeakCpuCores": 0.06272785,
+    "platformP95Latency": null,
+    "cpuSavingsEstablished": false
+  },
+  "remaining": [
+    "Render service branch still needs switching to reviewed migration branch using a surface capable of editing service settings",
+    "Gateway bridge token is write-only in Vercel; secure operator transfer required",
+    "Successful disposable QA login, session refresh, reopen and cross-device persistence not executed",
+    "Supabase Auth Render return allowlist not verified",
+    "OPENAI_API_KEY unavailable",
+    "No separate hosted quantitative worker or SIMULATION_SERVICE_URL configured",
+    "Atlas/R2 settings absent from audited Vercel configuration",
+    "No authorized DraftKings Predictions event-contract feed",
+    "Provider-level recovery and full restore not verified"
+  ]
+}
