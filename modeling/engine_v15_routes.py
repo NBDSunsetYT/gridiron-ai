@@ -81,7 +81,7 @@ def make_engine_router(authorize,read_body,guarded,signature,verify_artifact):
         if set(data)-{'model','home','away','eventStart','simulations','seed','lineups'}:raise HTTPException(422,'Unsupported football inference fields')
         model=data.get('model')
         if not isinstance(model,dict) or not verify_artifact(model):raise HTTPException(422,'A signed candidate artifact is required; no per-visitor historical rebuild is performed')
-        from .football_v15 import VERSION,simulate_football
-        if model.get('version') not in (VERSION,'football-possession-hurdle-candidate-15.1.0','football-possession-candidate-15.0.0') or model.get('sport') not in ('NFL','CFB'):raise HTTPException(422,'A separate NFL or CFB fitted candidate is required')
+        from .football_v15 import VERSION,RATED_VERSION,simulate_football
+        if model.get('version') not in (VERSION,RATED_VERSION,'football-possession-hurdle-candidate-15.1.0','football-possession-candidate-15.0.0') or model.get('sport') not in ('NFL','CFB'):raise HTTPException(422,'A separate NFL or CFB fitted candidate is required')
         return await asyncio.to_thread(guarded,lambda:simulate_football(model,data.get('home'),data.get('away'),data.get('eventStart'),data.get('simulations',10000),data.get('seed',15001),data.get('lineups'),batch_size=2000))
     return router

@@ -118,6 +118,8 @@ class TransitionRepairs(unittest.TestCase):
         from .market_gates_v18 import require_previous,gate1
         with self.assertRaises(ValueError):require_previous({'1':{'passed':False}},2)
         self.assertFalse(gate1({'tsPassed':795,'pythonPassed':500,'typecheckPassed':True,'allCommandsExitZero':True},{'gamesCompleted':499,'allAccountingReconciled':True,'simulatedCompleteGames':4990000})['passed'])
+        from .market_gates_v18 import research_exclusions
+        self.assertEqual(research_exclusions({'sealed'},{'selection':[{'gameId':'audit'}]},[{'selection':[{'games':['old_final']}]}]),{'sealed','audit','old_final'})
     def test_parallel_execution_partitions_preserve_protocol_and_game_seeds(self):
         import importlib.util
         path=Path(__file__).resolve().parents[1]/'scripts/market-v18-workers.py';spec=importlib.util.spec_from_file_location('audit_workers_fixture',path);m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)

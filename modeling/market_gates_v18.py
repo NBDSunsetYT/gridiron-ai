@@ -3,6 +3,11 @@ import math
 import numpy as np
 from .fit import utc
 VERSION='market-research-gates-18.0.0'
+def research_exclusions(existing,audit,protocols):
+    ids=set(existing)|{r['gameId'] for r in audit['selection']}
+    for protocol in protocols:
+        for window in protocol['selection']:ids.update(window['games'])
+    return ids
 def gate1(tests,audit):
     failures=[]
     for key,minimum in [('tsPassed',753),('pythonPassed',200)]:

@@ -21,6 +21,7 @@ from .football_transitions_v18 import fit_transitions, starts as typed_starts, t
 
 LEGACY_VERSION='football-possession-hurdle-candidate-15.1.0'
 VERSION='football-market-candidate-18.0.0'
+RATED_VERSION='football-market-ratings-18.1.0'
 KINDS=('pass','rush','punt','field_goal','kneel','penalty')
 _MARKET_KINDS=(*KINDS,'spike')
 NUMERIC=13
@@ -198,7 +199,7 @@ def simulate_football(model,home,away,event_start,simulations=10000,seed=15001,l
     if model.get('version')=='football-possession-candidate-15.0.0':
         from .football_v15_baseline import simulate_football as legacy
         return legacy(model,home,away,event_start,simulations,seed,lineups,batch_size,contracts,representative_games)
-    if model.get('version')!=VERSION or home==away or not all(t in model['teams'] for t in (home,away)):
+    if model.get('version') not in (VERSION,RATED_VERSION) or home==away or not all(t in model['teams'] for t in (home,away)):
         raise ValueError('Exact fitted league and two distinct supported teams required')
     if utc(event_start)<=utc(model['asOf']):raise ValueError('Kickoff must follow every training observation')
     if isinstance(simulations,bool) or not isinstance(simulations,int) or not 1000<=simulations<=100000:
@@ -211,6 +212,12 @@ def simulate_football(model,home,away,event_start,simulations=10000,seed=15001,l
     idx={p:i for i,p in enumerate(ids)};stats=list(STATS);si={s:i for i,s in enumerate(stats)}
     pred={k:Predictor(model[k]) for k in ('play','dropback','passYards','rushYards','passTouchdown','rushTouchdown') if k in model}
     for predictor in pred.values():predictor.bind(teams,ids)
+    rating_context=None
+    if model.get('version')==RATED_VERSION:
+        from .ratings import Context,AdjustedPredictor
+        if model['ratings']['sport']!=model['sport']:raise ValueError('Rating league differs from game model')
+        rating_context=Context(model['ratings'],teams,event_start)
+        pred={name:AdjustedPredictor(name,p,model['ratings']) for name,p in pred.items()}
     qbi=np.asarray([idx[r['quarterback']] for r in roles])
     opportunities={}
     for side in (0,1):
@@ -223,6 +230,7 @@ def simulate_football(model,home,away,event_start,simulations=10000,seed=15001,l
     fgp=np.asarray(model['fg']['fields']);fgm=np.asarray(model['fg']['made'])
     for offset in range(0,simulations,batch_size):
         n=min(batch_size,simulations-offset);scores=np.zeros((n,2),dtype=np.int32);ps=np.zeros((n,len(ids),len(stats)),dtype=np.int32)
+        rating_draws=rating_context.draw(rng,n) if rating_context else None
         clock=np.full(n,3600);off=rng.integers(0,2,n);first=off.copy();down=np.ones(n,dtype=int);distance=np.full(n,10);field=np.full(n,75);plays=np.zeros(n,dtype=int);drives=np.ones(n,dtype=int);done=np.zeros(n,dtype=bool)
         components={k:np.zeros((n,2),dtype=np.int32) for k in ('offensiveTouchdowns','returnTouchdowns','fieldGoals','tryPoints','safeties')}
         def add(mask,participants,name,values=1):
@@ -266,6 +274,7 @@ def simulate_football(model,home,away,event_start,simulations=10000,seed=15001,l
             if iterations>800:raise ValueError('Game clock/transition quality gate failed: more than 800 plays')
             active=~done;oi=off.copy();di=1-oi;ix=np.arange(n);diff=scores[ix,oi]-scores[ix,di]
             x=numeric(down,distance,field,clock,diff,oi==0)
+            if rating_draws is not None:x=np.concatenate([x,rating_draws[ix,oi]],axis=1)
             probs=pred['play'].fast(x,oi,probabilities=True);classes=model['play']['classes']
             half=np.where(clock>1800,clock-1800,clock)
             for col,kind in enumerate(classes):
@@ -365,7 +374,7 @@ def simulate_football(model,home,away,event_start,simulations=10000,seed=15001,l
         # conversion evidence. OT drives use the same state transitions below.
         tied=np.flatnonzero(scores[:,0]==scores[:,1])
         if len(tied):
-            _overtime(model,rng,scores,ps,idx,si,tied,teams,roles,pred,components)
+            _overtime(model,rng,scores,ps,idx,si,tied,teams,roles,pred,components,rating_draws)
         # Internal accounting is checked for EVERY completed simulated game.
         if not np.array_equal(ps[:,:,si['passingYards']].sum(axis=1),ps[:,:,si['receivingYards']].sum(axis=1)) or not np.array_equal(ps[:,:,si['completions']].sum(axis=1),ps[:,:,si['receptions']].sum(axis=1)):
             raise AssertionError('Passing/receiving accounting did not reconcile')
@@ -378,7 +387,7 @@ def simulate_football(model,home,away,event_start,simulations=10000,seed=15001,l
             for s,j in si.items():ph[p][s].update(_hist(ps[:,i,j]))
         env.update(plays=int(plays.sum()),drives=int(drives.sum()),overtimeGames=len(tied));completed=offset+n;p=wins/completed;convergence.append({'simulations':completed,'homeWinProbability':p,'monteCarloSE':math.sqrt(p*(1-p)/completed)})
     p=wins/simulations
-    return {'schemaVersion':1,'modelVersion':VERSION,'sport':model['sport'],'modelStatus':'experimental_unpromoted',
+    return {'schemaVersion':1,'modelVersion':model['version'],'sport':model['sport'],'modelStatus':'experimental_unpromoted',
         'home':home,'away':away,'eventStart':event_start,'evidenceCutoff':model['asOf'],'inputDataVersion':model['sha256'],
         'simulations':simulations,'seed':seed,'homeWinProbability':p,'awayWinProbability':(simulations-wins-ties)/simulations,'tieProbability':ties/simulations,
         'monteCarloSE':math.sqrt(p*(1-p)/simulations),'monteCarloInterval95':wilson(wins,simulations),'calibratedProbability':None,
@@ -395,10 +404,12 @@ def simulate_football(model,home,away,event_start,simulations=10000,seed=15001,l
             'Kick-return scores use observed rates; separate return clock and touchback/return decision laws remain incomplete. Typed kickoff spots are used where observed, with explicitly reported legacy fallback where missing.',
             'Kneel yardage is approximated as one lost yard. Overtime and return-position approximations require independent rules/distribution validation.',
             'Retrospectively collected source corrections do not establish original pregame publication availability.'],
+        **({'ratings':{'version':model['ratings']['version'],'sha256':model['ratings']['sha256'],'posterior':rating_context.values,
+                       'uncertaintyMeaning':'Conditional parameter uncertainty; not Monte Carlo sampling error or full structural uncertainty'}} if rating_context else {}),
         'createdAt':datetime.now(timezone.utc).isoformat()}
 
 
-def _overtime(model,rng,scores,ps,idx,si,tied,teams,roles,pred,components=None):
+def _overtime(model,rng,scores,ps,idx,si,tied,teams,roles,pred,components=None,rating_draws=None):
     """Paired NCAA 25-yard drives; NFL paired possessions then sudden death.
 
     Uses the same fitted play/outcome models and credits participants. Bounded
@@ -422,9 +433,12 @@ def _overtime(model,rng,scores,ps,idx,si,tied,teams,roles,pred,components=None):
                     continue
                 field=25 if model['sport']=='CFB' else int(rng.choice(start_pools[teams[turn]]));down=1;distance=min(10,field);elapsed=0
                 for _ in range(40):
-                    x=numeric(np.array([down]),np.array([distance]),np.array([field]),np.array([min(600,max(1,nfl_clock))]),np.array([scores[game,turn]-scores[game,1-turn]]),np.array([turn==0]));off=np.array([teams[turn]]);defense=np.array([teams[1-turn]]);pr=pred['play'].probabilities(x,off,defense)[0]
+                    x=numeric(np.array([down]),np.array([distance]),np.array([field]),np.array([min(600,max(1,nfl_clock))]),np.array([scores[game,turn]-scores[game,1-turn]]),np.array([turn==0]))
+                    if rating_draws is not None:x=np.concatenate([x,rating_draws[game,turn][None,:]],axis=1)
+                    off=np.array([teams[turn]]);defense=np.array([teams[1-turn]]);pr=pred['play'].probabilities(x,off,defense)[0]
                     for col,k in enumerate(model['play']['classes']):
                         if _MARKET_KINDS[k] in ('kneel','penalty') or down<4 and _MARKET_KINDS[k] in ('punt','field_goal'):pr[col]=0
+                        if _MARKET_KINDS[k]=='spike' and (model['sport']!='NFL' or nfl_clock>120 or down==4):pr[col]=0
                     pr/=pr.sum();kind=_MARKET_KINDS[int(rng.choice(model['play']['classes'],p=pr))];qb=roles[turn]['quarterback'];target=None;who=None;yards=0;touchdown=False
                     clocks=clock_pools.get(kind,clock_pools['pass']);elapsed+=int(rng.choice(clocks))
                     if kind in ('punt','field_goal'):
@@ -447,6 +461,7 @@ def _overtime(model,rng,scores,ps,idx,si,tied,teams,roles,pred,components=None):
                                     prob=pred['passTouchdown'].probabilities(x,off,defense,np.array([target]))[0];td=int(rng.choice(model['passTouchdown']['classes'],p=prob))==1;yards=field if td else min(field-1,max(field-100,yards))
                                 else:yards=min(field,max(field-100,yards))
                                 ps[game,idx[qb],si['completions']]+=1;ps[game,idx[qb],si['passingYards']]+=yards;ps[game,idx[target],si['receptions']]+=1;ps[game,idx[target],si['receivingYards']]+=yards
+                    elif kind=='spike':ps[game,idx[qb],si['passingAttempts']]+=1
                     else:
                         rc=roles[turn]['runners'];w=np.array(list(rc.values()),float);who=str(rng.choice(list(rc),p=w/w.sum()));mean=pred['rushYards'].predict(x,off,defense,np.array([who]))[0,0];yards=int(round(mean+rng.choice(rush_residuals)))
                         if 'rushTouchdown' in pred:
