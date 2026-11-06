@@ -39,5 +39,9 @@ def nba_rows(body):
                 if ',' in name and status in ['Out','Doubtful','Questionable','Probable','Available'] and state['team'] and state['date']:
                     last,first=name.split(',',1);records.append({**state,'name':first+' '+last,'status':status,'reason':reason})
                 elif 'NOTYETSUBMITTED' in re.sub(r'\W','',name+status+reason).upper():records.append({**state,'status':'not_yet_submitted'})
-                elif reason and records and not (date or clock or match or team or name or status):records[-1]['reason']+=' '+reason
+                elif reason and records and not (date or clock or match or team or name or status):
+                    # A wrapped continuation can follow NOT YET SUBMITTED,
+                    # whose row intentionally has no player/reason fields.
+                    # Preserve the publisher fragment without inventing status.
+                    records[-1]['reason']=(records[-1].get('reason','')+' '+reason).strip()
     return records,report_time

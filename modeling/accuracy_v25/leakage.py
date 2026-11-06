@@ -8,6 +8,7 @@ from copy import deepcopy
 from datetime import timedelta
 import numpy as np
 from ..accuracy_v20.quality import aware
+from ..overnight_v20.state import digest
 
 FORBIDDEN={'y','opportunity','actualteamopportunity','actualgamemisses','actualminutes',
            'finalscore','homefinalscore','awayfinalscore','finalinjurystatus','finallineup',
@@ -23,16 +24,36 @@ def source_fact_guard(fact, cutoff, target_event):
     when=aware(cutoff)
     if not fact.get('sourceVersion') or not str(fact.get('source','')).startswith('https://'):
         raise ValueError('Source and exact edition required')
-    published=aware(fact.get('publishedAt'));available=aware(fact.get('availableAt'))
-    edition=aware(fact.get('editionPublishedAt'));retrieved=aware(fact.get('retrievedAt'))
-    if max(published,available,edition)>=when:raise ValueError('Future publication, availability or corrected edition')
-    if available<max(published,edition) or retrieved<available:raise ValueError('Inconsistent source availability lineage')
-    if retrieved>=when and fact.get('originalEditionVerified') is not True:
-        raise ValueError('Later retrieval requires verification of the archived original edition')
+    retrieved=aware(fact.get('retrievedAt'));receipt=fact.get('captureReceipt',{})
+    captured=False
+    if receipt:
+        body={k:v for k,v in receipt.items() if k!='sha256'}
+        if receipt.get('sha256')!=digest(body) or receipt.get('sourceVersion')!=fact['sourceVersion'] or receipt.get('url')!=fact['source'] or receipt.get('httpStatus')!=200 or receipt.get('immutableReceipt') is not True:
+            raise ValueError('Immutable capture receipt identity/checksum mismatch')
+        if aware(receipt['requestStartedAt'])>retrieved or aware(receipt['retrievedAt'])!=retrieved or retrieved>=when:
+            raise ValueError('Capture receipt does not precede the prediction cutoff')
+        captured=True
+    published=aware(fact['publishedAt']) if fact.get('publishedAt') else None
+    edition=aware(fact['editionPublishedAt']) if fact.get('editionPublishedAt') else None
+    if any(t>=when for t in (published,edition) if t is not None):
+        raise ValueError('Future publication, availability or corrected edition')
+    if not captured:
+        published=aware(fact.get('publishedAt'));edition=aware(fact.get('editionPublishedAt'))
+        available=aware(fact.get('availableAt'))
+        if available>=when or available<max(published,edition) or retrieved<available:raise ValueError('Inconsistent source availability lineage')
+        if retrieved>=when and fact.get('originalEditionVerified') is not True:
+            raise ValueError('Later retrieval requires verification of the archived original edition')
+    else:
+        available=retrieved
+        if any(t>retrieved for t in (published,edition) if t is not None):raise ValueError('Capture precedes claimed publisher edition')
     kind=fact.get('kind');role=fact.get('sourceRole')
     if kind=='historical_statistics':
-        if fact.get('eventId')==target_event or aware(fact.get('gameEndedAt'))>=when:
+        if fact.get('eventId')==target_event:
             raise ValueError('Current or future game results cannot be pregame history')
+        if fact.get('gameEndedAt'):
+            if aware(fact['gameEndedAt'])>=when:raise ValueError('Current or future game results cannot be pregame history')
+        elif not captured or fact.get('gameStatus')!='final' or aware(fact.get('gameCompletedObservedAt'))!=retrieved:
+            raise ValueError('Verified completion timestamp or pre-cutoff final-status observation required')
     elif kind in ('injury','lineup','participation'):
         if fact.get('eventId')!=target_event or role not in ('official_pregame_report','verified_pregame_projection'):
             raise ValueError('Final participation/rosters cannot replace pregame evidence')
@@ -45,7 +66,9 @@ def source_fact_guard(fact, cutoff, target_event):
             raise ValueError('Market product must remain explicit')
     else:raise ValueError('Unsupported source-fact role')
     return {'kind':kind,'verifiedBeforeCutoff':True,'availabilityStatus':fact.get('status'),
-            'unconditionalForecastAuthorized':False}
+            'eventId':fact.get('eventId'),'teamId':fact.get('teamId'),'playerId':fact.get('playerId'),
+            'availabilityAt':available.isoformat(),'availabilityEvidence':'immutable_pre_cutoff_capture' if captured else 'verified_publisher_edition',
+            'sourceFactHash':digest(fact),'unconditionalForecastAuthorized':False}
 
 
 def forecast_lineage_guard(features, facts, cutoff, target_event, training_through):
@@ -71,7 +94,7 @@ def forecast_lineage_guard(features, facts, cutoff, target_event, training_throu
     # Use the actual prediction cutoff for the historical embargo, rather than
     # silently admitting information that arrived between forecast and kickoff.
     check=[dict(r,at=cutoff) for r in features]
-    result=feature_guard(check,training_through,evidence_tier='strict_pregame')
+    result=feature_guard(check,training_through,evidence_tier='strict_pregame',availability_proofs=audited)
     return result|{'lineage':audited,'jointMechanicsCertificateStillRequired':True}
 
 

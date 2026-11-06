@@ -13,7 +13,7 @@ from ..overnight_v20.state import digest
 VERSION='frozen-accuracy-evaluation-25.1'
 
 
-def feature_guard(rows, training_through, *, evidence_tier):
+def feature_guard(rows, training_through, *, evidence_tier, availability_proofs=None):
     if evidence_tier not in ('conditional_corrected_history','strict_pregame') or not rows:
         raise ValueError('Explicit evidence tier and nonempty forecast features required')
     seen=set()
@@ -23,12 +23,19 @@ def feature_guard(rows, training_through, *, evidence_tier):
         if None in key or key in seen:raise ValueError('Missing or duplicate event/team/player/stat identity')
         seen.add(key);event=aware(row.get('at'))
         if aware(training_through)>=event:raise ValueError('Fit/selection must strictly precede every forecast event')
-        if aware(row.get('featureLastGame'))>=event-timedelta(hours=48):raise ValueError('Earlier-game embargo violated')
+        # Preserve the frozen 48h rule for corrected archives. Actual verified
+        # pre-cutoff editions may include yesterday's NBA game: publication
+        # evidence, rather than an arbitrary waiting period, establishes safety.
+        verified_stats=[p for p in (availability_proofs or []) if p.get('kind')=='historical_statistics' and row.get('featureLastGameId') and p.get('eventId')==row['featureLastGameId'] and p.get('teamId')==row['team'] and p.get('verifiedBeforeCutoff') is True and p.get('sourceFactHash') and aware(p['availabilityAt'])<event]
+        if aware(row.get('featureLastGame'))>=event or not verified_stats and aware(row.get('featureLastGame'))>=event-timedelta(hours=48):raise ValueError('Earlier-game embargo violated')
         if evidence_tier=='strict_pregame':
             if not row.get('sourceEditionVerified') or row.get('missingEvidence') or row.get('missingAvailability'):
                 raise ValueError('Missing point-in-time publication/availability evidence')
-            for field in ('statisticsPublishedAt','injuryPublishedAt','lineupPublishedAt','participationPublishedAt'):
-                if aware(row.get(field))>=event:raise ValueError('Pregame evidence must be published before prediction cutoff')
+            for field,kind in [('statisticsPublishedAt','historical_statistics'),('injuryPublishedAt','injury'),('lineupPublishedAt','lineup'),('participationPublishedAt','participation')]:
+                if row.get(field):
+                    if aware(row[field])>=event:raise ValueError('Pregame evidence must be published before prediction cutoff')
+                elif not any(p.get('kind')==kind and p.get('verifiedBeforeCutoff') is True and p.get('sourceFactHash') and aware(p['availabilityAt'])<event for p in (availability_proofs or [])):
+                    raise ValueError('Original publication or immutable pre-cutoff capture required: '+kind)
     return {'rows':len(rows),'games':len({r['gameId'] for r in rows}),
             'featureDigest':digest(rows),'evidenceTier':evidence_tier,'productionEligible':False}
 
