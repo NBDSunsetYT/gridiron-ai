@@ -1,5 +1,5 @@
 """Synthetic regression checks, never predictive-accuracy evidence."""
-import unittest,copy,runpy,tempfile
+import unittest,copy,runpy,tempfile,pickle,hashlib
 from unittest.mock import patch
 import numpy as np
 from pathlib import Path
@@ -33,6 +33,19 @@ class KernelBindingTests(unittest.TestCase):
     def test_participant_ownership_is_part_of_exact_input_binding(self):
         self.assertNotEqual(self.kernel({'Hp':'H','Ap':'A'}).input_hash,self.kernel({'Hp':'A','Ap':'H'}).input_hash)
     def test_owner_dictionary_order_does_not_change_binding(self):self.assertEqual(self.kernel({'Hp':'H','Ap':'A'}).input_hash,self.kernel({'Ap':'A','Hp':'H'}).input_hash)
+    def test_clock_candidate_never_mixes_completed_and_stopped_pass_intervals(self):
+        from .fullgame_v23.rules import RegulationClock
+        rows=[{'o':t,'kind':'pass','quarter':1,'clock':3500,'elapsed':elapsed,'complete':complete,'yards':5,'field':70} for t in ('H','A') for complete,elapsed in [(True,35),(False,5)] for _ in range(15)]
+        kernel=PlayKernel('NFL',['H','A'],rows,{},condition_clock=True);rng=np.random.default_rng(27);clock=RegulationClock('NFL',2024)
+        for _ in range(30):
+            self.assertEqual(kernel.charge(rng,rows[0],clock,clock_stop=False)[0],35)
+            self.assertEqual(kernel.charge(rng,rows[-1],clock,clock_stop=True)[0],5)
+        self.assertNotEqual(kernel.input_hash,PlayKernel('NFL',['H','A'],rows,{}).input_hash)
+    def test_missing_stopped_regime_is_withheld_not_given_running_time(self):
+        from .fullgame_v23.rules import RegulationClock
+        rows=[{'o':t,'kind':'rush','quarter':1,'clock':3500,'elapsed':35,'yards':5,'field':70} for t in ('H','A') for _ in range(30)]
+        kernel=PlayKernel('NFL',['H','A'],rows,{},condition_clock=True)
+        with self.assertRaises(ValueError):kernel.charge(np.random.default_rng(1),rows[0],RegulationClock('NFL',2024),clock_stop=True)
 
 class PrimaryBookTests(unittest.TestCase):
     def table(self):
@@ -76,5 +89,26 @@ class SourceReaderTests(unittest.TestCase):
             body,receipt=get('https://source.example.test/oversize.pdf')
             self.assertIsNone(body);self.assertNotIn('sourceVersion',receipt);self.assertNotIn('object',receipt)
             self.assertEqual(receipt['error'],'ValueError')
+
+class OwnedBankTests(unittest.TestCase):
+    def test_clock_certificate_uses_existing_ledger_tolerance_without_masking_errors(self):
+        ns=runpy.run_path(str(Path(__file__).resolve().parents[1]/'scripts/v27-report.py'))
+        self.assertTrue(ns['nba_time_valid'](2879.9999999999995,0));self.assertTrue(ns['nba_time_valid'](3180.,1))
+        self.assertFalse(ns['nba_time_valid'](2879.,0));self.assertFalse(ns['nba_time_valid'](float('nan'),0))
+    def test_league_qualified_roster_identity_prevents_cross_sport_id_collision(self):
+        ns=runpy.run_path(str(Path(__file__).resolve().parents[1]/'scripts/v27-bank-shadow.py'))
+        football='https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/4/roster?season=2026';nba='https://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams/4/roster?season=2027'
+        self.assertEqual(ns['nba_roster_source']([{'source':football},{'source':nba}],'4'),nba)
+        with self.assertRaises(ValueError):ns['nba_roster_source']([{'source':football}],'4')
+    def test_shared_owned_artifacts_resolve_both_sides_without_allowing_escape(self):
+        from .dynamic_v24.completion.bank import HeadBank
+        from .dynamic_v24.stat_models import StatModel
+        from .overnight_v20.state import digest
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);owned=root/'owner/artifacts/dynamic-v24';owned.mkdir(parents=True);work=root/'worktree';work.mkdir();(work/'artifacts').symlink_to(root/'owner/artifacts',target_is_directory=True)
+            model=StatModel('rolling5','receptions');p=owned/'test.pickle';p.write_bytes(pickle.dumps(model));entry={'modelPath':'artifacts/dynamic-v24/test.pickle','modelSHA256':hashlib.sha256(p.read_bytes()).hexdigest(),'stat':'receptions'};manifest={'heads':[entry]};manifest['sha256']=digest(manifest);bank=HeadBank(manifest,work)
+            self.assertEqual(bank.load(entry).stat,'receptions')
+            outside=root/'outside.pickle';outside.write_bytes(p.read_bytes());(owned/'escape.pickle').symlink_to(outside)
+            with self.assertRaises(ValueError):bank.load(entry|{'modelPath':'artifacts/dynamic-v24/escape.pickle'})
 
 if __name__=='__main__':unittest.main()

@@ -11,18 +11,31 @@ from ..fullgame_v23.rules import RegulationClock,FootballOvertime,dead_ball_enfo
 from ..fullgame_v23.modes import Mode,label
 
 class PlayKernel:
-    def __init__(self,sport,teams,rows,owners,clock_model=None,additional_clock_pools=None,phase_clock=None):
+    def __init__(self,sport,teams,rows,owners,clock_model=None,additional_clock_pools=None,phase_clock=None,condition_clock=False):
         self.sport=sport;self.teams=tuple(teams);self.owners=owners;self.rows={t:[r for r in rows if r['o']==t] for t in teams};self.clock_model=clock_model
         if any(len(rs)<30 for rs in self.rows.values()):raise ValueError('Thirty observed team actions required')
         self.positive={k:[int(r['elapsed']) for rs in self.rows.values() for r in rs if r['kind']==k and r.get('elapsed') is not None and 1<=r['elapsed']<=90] for k in ('pass','sack','rush','kneel','punt','field_goal')}
         self.additional_clock_pools=additional_clock_pools or {}
         self.phase_clock=phase_clock
+        self.condition_clock=condition_clock
+        if condition_clock and sport!='NFL':raise ValueError('The conditional clock candidate is NFL only; NCAA uses its separate censored law')
+        self.clock_groups=defaultdict(list);self.clock_backoffs=0
+        if condition_clock:
+            for source in rows:
+                q=source.get('quarter');remaining=source.get('clock',-1)-(4-q)*900 if q in (1,2,3,4) else -1
+                if 0<=remaining<=900 and source.get('elapsed') is not None and 1<=source['elapsed']<=90:
+                    stop=self.stopped_clock(source,q,remaining);hurry=q in (2,4) and remaining<=120
+                    self.clock_groups[(source['kind'],stop,hurry)].append(int(source['elapsed']))
         self.unavailable=set()
         for k,values in self.additional_clock_pools.items():
             if k not in self.positive or any(not 1<=v<=90 for v in values):raise ValueError('Positive same-league clock support required')
             self.positive[k].extend(values)
         self.admin=[int(r['elapsed']) for rs in self.rows.values() for r in rs if r['kind']=='penalty' and r.get('elapsed') is not None and 0<=r['elapsed']<=90]
-        self.cache={};self.input_hash=hashlib.sha256(json.dumps({'inputBindingVersion':'27.0','sport':sport,'teams':self.teams,'owners':owners,'rows':rows,'clockArtifact':clock_model.artifact if clock_model else None,'additionalClockPools':self.additional_clock_pools,'phaseClockObservations':phase_clock.observations if phase_clock else None},sort_keys=True,default=str).encode()).hexdigest()
+        self.cache={};self.input_hash=hashlib.sha256(json.dumps({'inputBindingVersion':'27.1','sport':sport,'teams':self.teams,'owners':owners,'rows':rows,'clockArtifact':clock_model.artifact if clock_model else None,'additionalClockPools':self.additional_clock_pools,'phaseClockObservations':phase_clock.observations if phase_clock else None,'conditionalClock':condition_clock},sort_keys=True,default=str).encode()).hexdigest()
+    @staticmethod
+    def stopped_clock(row,period,remaining):
+        late_oob=row.get('outOfBounds') and (period==2 and remaining<=120 or period==4 and remaining<=300)
+        return bool(row['kind']=='pass' and not row.get('complete') or row['kind'] in ('punt','field_goal','spike') or row.get('int') or row.get('fumble') or row.get('yards',0)>=row.get('field',float('inf')) or late_oob)
     def select(self,rng,offense,down,field,clock,diff,overtime=False,period=4,distance=10):
         # The distance calculation uses exact state, so memoize exact state.
         # Bucket-only keys would make future draws depend on which game first
@@ -35,12 +48,19 @@ class PlayKernel:
             if not candidates:raise ValueError('Availability scenario has no supported remaining play participants')
             distances=np.array([abs(r['down']-down)*4+abs(r.get('distance',10)-distance)/5+abs(r['field']-field)/20+int((r.get('quarter',4) in (2,4) and r['clock']%1800<=120)!=hurry)*2+int(np.sign(r['script'])!=np.sign(diff)) for r in candidates]);nearest=np.quantile(distances,.25);pool=[r for r,d in zip(candidates,distances) if d<=nearest];self.cache[key]=pool
         pool=self.cache[key];return pool[int(rng.integers(len(pool)))].copy()
-    def charge(self,rng,r,clock):
+    def charge(self,rng,r,clock,clock_stop=None):
         if r['kind']=='penalty':
             if not self.admin:raise ValueError('Administrative interval evidence unavailable; no zero substitution')
             return min(int(rng.choice(self.admin)),int(clock.remaining)),True
         kind=r['kind'];hurry=clock.period in (2,4) and clock.remaining<=120
-        if self.clock_model is not None and kind in self.clock_model.artifact['supported']:
+        if self.condition_clock:
+            stop=self.stopped_clock(r,clock.period,clock.remaining) if clock_stop is None else clock_stop
+            pool=self.clock_groups.get((kind,stop,hurry),[])
+            if not pool:
+                pool=[v for (k,s,h),values in self.clock_groups.items() if k==kind and s==stop for v in values];self.clock_backoffs+=1
+            if not pool:raise ValueError('No observed same-kind, same-stop clock regime; no running/stopped mixture substituted')
+            value=int(rng.choice(pool))
+        elif self.clock_model is not None and kind in self.clock_model.artifact['supported']:
             cdf=self.clock_model.cdf(kind,bool(r.get('complete')),hurry);value=int(np.searchsorted(cdf,rng.random()))
         else:
             pool=self.positive.get(kind) or []
@@ -72,7 +92,8 @@ def _drive(kernel,rng,ledger,offense,field,down,distance,clock=None,ot=None,trac
         touchdown=kind in ('rush','pass') and (kind=='rush' or complete) and gain>=field and not interception and not lost;safety=kind in ('rush','sack','kneel') and field-gain>=100
         charge=0
         if clock:
-            charge,admin=kernel.charge(rng,r,clock)
+            late_oob=r.get('outOfBounds') and (clock.period==2 and clock.remaining<=120 or clock.period==4 and clock.remaining<=300)
+            charge,admin=kernel.charge(rng,r,clock,clock_stop=bool(touchdown or safety or interception or lost or late_oob or kind in ('punt','field_goal','spike') or kind=='pass' and not complete))
             if kernel.phase_clock:
                 prior=clock.remaining;terminal=touchdown or safety or interception or lost or kind in ('punt','field_goal');kernel.phase_clock.advance(rng,clock,kind,complete,charge,first_down=gain>=distance,out_of_bounds=bool(r.get('outOfBounds')),terminal=terminal);charge=prior-clock.remaining
             else:

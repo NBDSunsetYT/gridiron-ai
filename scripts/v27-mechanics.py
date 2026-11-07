@@ -49,7 +49,7 @@ def load():
             game['teams'][t]={'players':players,'totals':totals}
         if len(game['teams'])==2:owned['NFL'][gid]=game
     cs,_=cfb_packets();owned['CFB'].update({g['id']:g for g in cs})
-    selection_path=OUT/('selection-nba-expansion.json' if '--nba-expansion' in sys.argv else 'selection-clock-eligible.json' if '--eligible-clock-cohort' in sys.argv else 'selection.json')
+    selection_path=OUT/('selection-nfl-clock.json' if '--nfl-clock-only' in sys.argv else 'selection-nba-expansion.json' if '--nba-expansion' in sys.argv else 'selection-clock-eligible.json' if '--eligible-clock-cohort' in sys.argv else 'selection.json')
     selection=read(selection_path)
     if selection is None:
         chosen={}
@@ -116,7 +116,7 @@ def run(tag,phase=False):
     codepaths=[Path(__file__),*sorted((ROOT/'modeling/dynamic_v24').glob('*.py')),*sorted((ROOT/'modeling/dynamic_v24/completion').glob('*.py')),*sorted((ROOT/'modeling/fullgame_v23').glob('*.py'))]
     implementation={str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in codepaths}
     trials=2 if '--eligible-clock-cohort' in sys.argv else 4
-    protocol={'selection':selection,'implementation':implementation,'phaseClock':phase,'trialsPerCase':trials,'sourceVersions':{s:hashlib.sha256(Path(p).read_bytes()).hexdigest() for s,p in paths.items()},'accuracyClaim':False,'forecastTrials':0,'maximumCPUSeconds':180}
+    protocol={'selection':selection,'implementation':implementation,'phaseClock':phase,'conditionalClock':'--conditional-clock' in sys.argv,'trialsPerCase':trials,'sourceVersions':{s:hashlib.sha256(Path(p).read_bytes()).hexdigest() for s,p in paths.items()},'accuracyClaim':False,'forecastTrials':0,'maximumCPUSeconds':180}
     freeze_json(folder/'protocol.json',protocol);cases=[]
     freeze_json(folder/'code-editions.json',{str(p.relative_to(ROOT)):p.read_text() for p in codepaths})
     for sport,ids in selection['selection'].items():
@@ -159,6 +159,7 @@ def run(tag,phase=False):
                             credits={k:float(x) for k,x in v.get('unassignedTeamCredits',{}).items() if k in ('passingAttempts','passingYards','carries','rushingYards','receptions','receivingYards')}
                             if credits:owners[team_actor(t)]=t;est[team_actor(t)]=credits
                         kwargs={}
+                        if '--conditional-clock' in sys.argv:kwargs['condition_clock']=True
                         if sport=='CFB':
                             from modeling.integration_v22.clock import RuntimeClock,serialize_clock
                             kwargs['clock_model']=RuntimeClock(serialize_clock(pickle.load((ROOT/'artifacts/overnight-v21/clock/censored_drive_em2.pickle').open('rb'))),game['at'])

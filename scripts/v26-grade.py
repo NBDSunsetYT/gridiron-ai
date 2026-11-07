@@ -27,20 +27,22 @@ def verify_snapshot(snapshot):
         due(g,aware(g['eventAt'])) # timestamp check only; no source requests
 
 
-def main():
+def main(snapshot_paths=None,output_root=None,public_prefix='V26'):
     tag=sys.argv[sys.argv.index('--id')+1] if '--id' in sys.argv else datetime.now(timezone.utc).strftime('grade-%Y%m%dT%H%M%S')
     if not re.fullmatch('[A-Za-z0-9_-]{1,60}',tag):raise ValueError('Safe unique grade ID required')
-    out=ROOT/'artifacts/accuracy-v26/grades'/tag;out.mkdir(parents=True,exist_ok=True)
+    if not re.fullmatch(r'V[0-9]+',public_prefix):raise ValueError('Versioned public grading prefix required')
+    out=(Path(output_root) if output_root is not None else ROOT/'artifacts/accuracy-v26/grades')/tag;out.mkdir(parents=True,exist_ok=True)
     protocol=read(out/'protocol.json')
     if protocol is None:
         protocol={'createdAt':datetime.now(timezone.utc).isoformat(),'operation':'grade_saved_prospective_references_only','noRefit':True,'noProductionWrites':True}
         freeze_json(out/'protocol.json',protocol)
     when=aware(protocol['createdAt']);versions={}
-    for revision in ('R1','R2'):
-        p=ROOT/'docs/research'/('V26_PROSPECTIVE_'+revision+'.json.gz');snapshot=json.loads(gzip.decompress(p.read_bytes()));verify_snapshot(snapshot);versions[revision]=snapshot
+    paths=snapshot_paths or {r:ROOT/'docs/research'/('V26_PROSPECTIVE_'+r+'.json.gz') for r in ('R1','R2')}
+    for revision,p in paths.items():
+        snapshot=json.loads(gzip.decompress(Path(p).read_bytes()));verify_snapshot(snapshot);versions[revision]=snapshot
     capture=runpy.run_path(str(ROOT/'scripts/v26-capture.py'));capture['get'].__globals__['OUT']=out/'source-probes'
     parser=runpy.run_path(str(ROOT/'scripts/v26-forecast.py'));actuals={};pending=[]
-    for game in versions['R1']['games']:
+    for game in next(iter(versions.values()))['games']:
         key=(game['sport'],game['eventId'])
         if not due(game,when):pending.append({'sport':key[0],'eventId':key[1],'reason':'Future/not-yet-due game; no final-stat request made'});continue
         url='https://site.api.espn.com/apis/site/v2/sports/'+capture['LEAGUES'][key[0]]+'/summary?event='+key[1]
@@ -80,7 +82,7 @@ def main():
             'comparisonPolicy':'Report each frozen revision separately; changed coverage is not claimed as paired accuracy improvement',
             'statisticallyEstablishedImprovement':False,'strictJointValidationClaim':False}
     freeze_json(out/'results.json',report)
-    if actuals:freeze_json(ROOT/'docs/research'/('V26_GRADES_'+tag+'.json.gz'),report)
+    if actuals:freeze_json(ROOT/'docs/research'/(public_prefix+'_GRADES_'+tag+'.json.gz'),report)
     print(json.dumps({'finalGamesRetrieved':len(actuals),'gradedObservations':len(evaluations),'pending':pending,'modelsPromoted':0}),flush=True)
 
 

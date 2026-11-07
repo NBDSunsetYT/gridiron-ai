@@ -20,7 +20,12 @@ class HeadBank:
         self.loaded={}
     def load(self,entry):
         path=(self.root/entry['modelPath']).resolve()
-        if not path.is_relative_to(self.root/'artifacts/dynamic-v24') or path.suffix!='.pickle':raise ValueError('Only owned research model artifacts are loadable')
+        # Research worktrees intentionally share the owned artifact directory.
+        # Resolve both sides: comparing a resolved file to an unresolved base
+        # rejects legitimate heads. A nested link escaping this exact owned
+        # directory is still rejected, and content hashes remain mandatory.
+        owned=(self.root/'artifacts/dynamic-v24').resolve()
+        if not path.is_relative_to(owned) or path.suffix!='.pickle':raise ValueError('Only owned research model artifacts are loadable')
         if entry['modelSHA256'] not in self.loaded:
             raw=path.read_bytes()
             if hashlib.sha256(raw).hexdigest()!=entry['modelSHA256']:raise ValueError('Specialized model checksum mismatch')
