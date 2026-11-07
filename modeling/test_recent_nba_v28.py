@@ -25,3 +25,7 @@ class RecentSeasonTests(unittest.TestCase):
     def test_conflicting_player_team_scoring_is_quarantined(self):
         with tempfile.TemporaryDirectory() as d,patch('modeling.dynamic_v24.completion.additional_data.protected',return_value=set()):
             root=Path(d);self.files(root,True);g,m=recent_nba_packets(source_folder=root);self.assertEqual(g,[]);self.assertEqual(len(m['rejected']),1)
+    def test_missing_minutes_cannot_silently_drop_a_scoring_participant(self):
+        with tempfile.TemporaryDirectory() as d,patch('modeling.dynamic_v24.completion.additional_data.protected',return_value=set()):
+            root=Path(d);self.files(root);p=root/'NBA-player_box_2027.parquet';rows=pq.read_table(p).to_pylist();rows[0]['minutes']=None;pq.write_table(pa.Table.from_pylist(rows),p)
+            g,m=recent_nba_packets(source_folder=root);self.assertEqual(g,[]);self.assertIn('participant',m['rejected'][0]['reason'])

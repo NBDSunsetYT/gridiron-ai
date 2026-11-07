@@ -19,7 +19,7 @@ def recent_nba_packets(year=2027,*,root=ROOT,exclude=(),source_folder=None):
     the exact local edition before its cutoff without backdating old sources.
     """
     from .nba_quality import audit
-    import hashlib
+    import hashlib,math
     from pathlib import Path
     root=Path(root).resolve();folder=Path(source_folder).resolve() if source_folder else root/'artifacts/overnight-v21/external';banned=protected()|set(exclude);hidden=[int(g.split(':')[-1]) for g in banned if g.startswith('nba:espn:')]
     files={k:folder/f'NBA-{k}_box_{year}.parquet' for k in ('player','team')};raw={}
@@ -35,6 +35,9 @@ def recent_nba_packets(year=2027,*,root=ROOT,exclude=(),source_folder=None):
         at=teams[0]['game_date_time'].isoformat();game={'id':'nba:espn:'+gid,'at':at,'season':year,'teams':tid,'players':players}
         qa=audit(game)
         if not qa['usable']:rejected.append(qa);continue
+        identities=[str(p.get('athlete_id')) for p in players]
+        if len(identities)!=len(set(identities)) or any(p.get('athlete_id') is None or p.get('minutes') is None and p.get('did_not_play') is not True or p.get('minutes') is not None and (not math.isfinite(float(p['minutes'])) or float(p['minutes'])<0) for p in players):
+            rejected.append({'gameId':game['id'],'reason':'Missing/duplicate participant identity or unverified/invalid minutes'});continue
         packet={'id':game['id'],'at':at,'sport':'NBA','season':year,'teams':{},'sourceEditionVerifiedForHistoricalCutoff':False}
         for team,t in tid.items():
             ps={}

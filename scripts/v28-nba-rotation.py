@@ -28,7 +28,11 @@ def blocked():
     for p in (ROOT/'artifacts').glob('**/*protocol*.json'):
         ids.update(re.findall(r'nba:espn:\d+',p.read_text(errors='replace')))
     for p in (ROOT/'docs/research').glob('V2[67]*R*.json.gz'):
-        ids.update('nba:espn:'+v for v in re.findall(r'"eventId"\s*:\s*"(\d+)"',gzip.decompress(p.read_bytes()).decode()))
+        raw=gzip.decompress(p.read_bytes()).decode();ids.update('nba:espn:'+v for v in re.findall(r'"eventId"\s*:\s*"(\d+)"',raw))
+        data=json.loads(raw)
+        for game in data.get('games',[]) if isinstance(data,dict) else []:
+            if isinstance(game,dict) and game.get('sport')=='NBA':
+                for values in game.get('inputGameIds',{}).values():ids.update('nba:espn:'+str(v) for v in values)
     return ids
 
 def metrics(rows,field):

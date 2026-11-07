@@ -9,6 +9,20 @@ RULE_SOURCES={
  'NBA':'https://official.nba.com/rule-no-3-players-substitutes-and-coaches/',
  'NBAclock':'https://official.nba.com/rule-no-5-scoring-and-timing/' }
 
+CFB_EXTENSION_SOURCE='https://footballfoundation.org/news/2023/7/20/important-rule-changes-for-the-2023-college-football-season.aspx'
+
+def cfb_period_extension(season,period,reason,*,loss_of_down=False):
+    """NCAA 2023/24 ordinary period extension; no guessed election/exception.
+
+    Rules editor's published 2023 change: only Q2/Q4 extend. Rare loss-of-down
+    elections and special enforcement exceptions need the complete book/event
+    evidence and remain unsupported here. Try handling stays separate.
+    """
+    if season not in (2023,2024) or period not in (1,2,3,4):raise ValueError('Period-extension season has not been source-certified')
+    if reason not in ('accepted_live_ball_foul','offsetting_fouls','inadvertent_whistle'):raise ValueError('Unsupported period-extension circumstance')
+    if loss_of_down:raise ValueError('Loss-of-down election/exception requires independent ruling evidence')
+    return {'untimedDown':period in (2,4),'carryEnforcementToNextPeriod':period in (1,3),'ruleSource':CFB_EXTENSION_SOURCE,'physicalPlayDuration':None}
+
 def dead_ball_enforcement(field,yards,defense=False):
     """Ordinary distance penalty, half-distance when prescribed; no DPI guess."""
     if not 0<field<100 or yards<=0:raise ValueError('Supported spot and distance penalty required')
@@ -43,11 +57,13 @@ class RegulationClock:
     warning_taken:bool=False
     pending_warning:bool=False
     running:bool=False
+    pending_untimed_down:bool=False
     def __post_init__(self):
         if self.sport not in ('NFL','CFB','NBA'):raise ValueError('Unknown ruleset')
         self.length=720 if self.sport=='NBA' else 900
         if self.remaining is None:self.remaining=float(self.length)
     def advance(self,seconds,*,kind='play',verified=False):
+        if self.pending_untimed_down and seconds!=0:raise ValueError('An untimed down cannot consume regulation game-clock seconds')
         if self.period>4 or not 0<=seconds<=self.remaining or kind not in ('play','running','administrative','runoff'):raise ValueError('Clock charge crosses period or is invalid')
         if kind=='running' and not self.running:raise ValueError('A stopped clock cannot burn between-play runoff')
         if kind in ('administrative','runoff') and not verified:raise ValueError('Administrative/runoff charge needs explicit evidence or an identified conditional scenario')
@@ -64,14 +80,24 @@ class RegulationClock:
     def first_down_rule(self):
         if self.sport=='NBA':raise ValueError('Football rule requested for basketball')
         return first_down_clock(self.sport,self.season,self.period,int(self.remaining),self.warning_taken if self.season>=2024 else None)
+    def request_period_extension(self,reason,source,*,loss_of_down=False):
+        if self.sport!='CFB' or self.remaining!=0 or self.period>4:raise ValueError('Expired NCAA regulation period required')
+        if not source.get('sourceVersion') or not str(source.get('source','')).startswith('https://'):raise ValueError('An explicit verified/conditional ruling source is required')
+        rule=cfb_period_extension(self.season,self.period,reason,loss_of_down=loss_of_down);self.pending_untimed_down=rule['untimedDown'];return rule
+    def complete_untimed_down(self,*,repeat_reason=None,source=None,loss_of_down=False):
+        if not self.pending_untimed_down:raise ValueError('No untimed down is pending')
+        if repeat_reason is not None:
+            return self.request_period_extension(repeat_reason,source or {},loss_of_down=loss_of_down)
+        self.pending_untimed_down=False
     def next_period(self):
+        if self.pending_untimed_down:raise ValueError('Cannot skip a required untimed down')
         if self.remaining!=0 or self.period>4:raise ValueError('Cannot skip unaccounted regulation time')
         self.period_charges.append(self.length);self.period+=1
         self.running=False
         if self.period<=4:self.remaining=float(self.length)
         if self.period==3:self.warning_taken=False;self.pending_warning=False
     def verify_complete(self):
-        if self.period!=5 or self.elapsed!=4*self.length or self.period_charges!=[self.length]*4:raise AssertionError('Incomplete regulation clock')
+        if self.pending_untimed_down or self.period!=5 or self.elapsed!=4*self.length or self.period_charges!=[self.length]*4:raise AssertionError('Incomplete regulation clock')
 
 @dataclass
 class FootballOvertime:

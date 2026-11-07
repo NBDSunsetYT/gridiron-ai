@@ -28,6 +28,8 @@ class RotationTests(unittest.TestCase):
         p=self.priors();facts={'0':self.fact('out'),'1':self.fact('restricted',maxMinutes=12)};r=draw_minutes(p,facts,{i:True for i in p},n=32)
         self.assertTrue(np.all(r['draws'][:,r['players'].index('0')]==0));self.assertLessEqual(r['draws'][:,r['players'].index('1')].max(),12)
         with self.assertRaises(ValueError):draw_minutes(p,{'0':{'status':'out'}},{i:True for i in p},n=32)
+        for invalid in (-1,float('nan'),True):
+            with self.assertRaises(ValueError):draw_minutes(p,{'0':self.fact('restricted',maxMinutes=invalid)},{i:True for i in p},n=32)
     def test_future_injury_and_insufficient_capacity_withheld(self):
         p=self.priors();facts={'0':self.fact('out',publishedAt=self.cutoff)}
         with self.assertRaises(ValueError):draw_minutes(p,facts,{i:True for i in p},n=32)

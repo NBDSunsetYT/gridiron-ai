@@ -76,7 +76,7 @@ def draw_minutes(priors,statuses,decisions,*,n=512,seed=280028,duration=48.,step
             active=decisions[p]
         if not active:cap[i]=0
         if status in ('restricted','limited'):
-            if not fact.get('sourceVersion') or not isinstance(fact.get('maxMinutes'),(int,float)):raise ValueError('A restriction needs an exact sourced minute cap')
+            if not fact.get('sourceVersion') or isinstance(fact.get('maxMinutes'),bool) or not isinstance(fact.get('maxMinutes'),(int,float)) or not math.isfinite(fact['maxMinutes']) or fact['maxMinutes']<0:raise ValueError('A restriction needs an exact sourced nonnegative finite minute cap')
             cap[i]=min(cap[i],int(float(fact['maxMinutes'])/step))
     if sum(cap>0)>15:raise ValueError('Conditional active list exceeds 15; declare the roster scenario explicitly')
     target=int(5*duration/step)
