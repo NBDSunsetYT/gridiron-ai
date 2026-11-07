@@ -22,7 +22,7 @@ class PlayKernel:
             if k not in self.positive or any(not 1<=v<=90 for v in values):raise ValueError('Positive same-league clock support required')
             self.positive[k].extend(values)
         self.admin=[int(r['elapsed']) for rs in self.rows.values() for r in rs if r['kind']=='penalty' and r.get('elapsed') is not None and 0<=r['elapsed']<=90]
-        self.cache={};self.input_hash=hashlib.sha256(json.dumps({'rows':rows,'clockArtifact':clock_model.artifact if clock_model else None,'additionalClockPools':self.additional_clock_pools,'phaseClockObservations':phase_clock.observations if phase_clock else None},sort_keys=True,default=str).encode()).hexdigest()
+        self.cache={};self.input_hash=hashlib.sha256(json.dumps({'inputBindingVersion':'27.0','sport':sport,'teams':self.teams,'owners':owners,'rows':rows,'clockArtifact':clock_model.artifact if clock_model else None,'additionalClockPools':self.additional_clock_pools,'phaseClockObservations':phase_clock.observations if phase_clock else None},sort_keys=True,default=str).encode()).hexdigest()
     def select(self,rng,offense,down,field,clock,diff,overtime=False,period=4,distance=10):
         # The distance calculation uses exact state, so memoize exact state.
         # Bucket-only keys would make future draws depend on which game first

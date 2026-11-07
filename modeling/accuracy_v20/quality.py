@@ -2,7 +2,7 @@
 from datetime import datetime,timezone
 import math
 
-VERSION='pit-evidence-policy-20.1'
+VERSION='pit-evidence-policy-20.2'
 DOMAINS=('identity','historical_statistics','injury','lineup','participation')
 def aware(v):
     if not v:raise ValueError('An explicit timezone-aware timestamp is required')
@@ -19,8 +19,15 @@ def assess(sport,event_id,cutoff,components,player_id=None,model_uncertainty=Non
         if player_id and r.get('playerId') not in (None,player_id):reason='player_identity_mismatch'
         if not reason and r.get('publishedAt'):
             try:
-                if aware(r['publishedAt'])>when:reason='published_after_prediction_cutoff'
+                if aware(r['publishedAt'])>=when:reason='published_after_prediction_cutoff'
                 if r.get('retrievedAt') and aware(r['retrievedAt'])<aware(r['publishedAt']):reason='retrieval_precedes_publication'
+            except ValueError:reason='invalid_source_timestamp'
+        # A source's original date cannot qualify a later corrected edition.
+        # Prospective receipts prove availability only before, not at, cutoff.
+        if not reason:
+            try:
+                if any(aware(r[k])>=when for k in ('modifiedAt','dateModified','availableAt') if r.get(k)):
+                    reason='source_edition_not_before_prediction_cutoff'
             except ValueError:reason='invalid_source_timestamp'
         established_by=r.get('publishedAt')
         if not reason and not established_by:
@@ -28,7 +35,7 @@ def assess(sport,event_id,cutoff,components,player_id=None,model_uncertainty=Non
             # without inventing a publisher's original publication timestamp.
             if r.get('retrievedAt') and r.get('immutableReceipt') is True and r.get('sourceVersion'):
                 try:
-                    if aware(r['retrievedAt'])<=when:established_by=r['retrievedAt']
+                    if aware(r['retrievedAt'])<when:established_by=r['retrievedAt']
                 except ValueError:reason='invalid_source_timestamp'
             if not established_by and not reason:reason='original_publication_or_pre_cutoff_receipt_unverified'
         if not reason and (not str(r.get('source','')).startswith('https://') or not r.get('sourceVersion')):reason='source_or_version_unverified'

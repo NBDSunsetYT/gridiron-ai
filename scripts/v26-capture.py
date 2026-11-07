@@ -51,8 +51,8 @@ def get(url):
             receipt.update(httpStatus=response.status,sourceVersion=sha,object=str(obj.relative_to(ROOT)),
                            serverDate=response.headers.get('Date'),lastModified=response.headers.get('Last-Modified'),
                            contentType=response.headers.get('Content-Type'),finalUrl=response.url,bytes=len(body))
-    except HTTPError as e:receipt.update(httpStatus=e.code,error='HTTPError')
-    except (OSError,ValueError) as e:receipt.update(error=type(e).__name__,message=str(e)[:150])
+    except HTTPError as e:body=None;receipt.update(httpStatus=e.code,error='HTTPError')
+    except (OSError,ValueError) as e:body=None;receipt.update(error=type(e).__name__,message=str(e)[:150])
     receipt['retrievedAt']=now();freeze_json(path,receipt)
     return body,receipt
 

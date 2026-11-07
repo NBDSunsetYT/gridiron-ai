@@ -151,7 +151,10 @@ def football_book_totals(text,sport,teams):
     return rows
 
 def nba_book_players(text,away,home):
-    first=text.split("OFFICIAL SCORER'S REPORT1st QUARTER")[0];team=None;out=[];columns=['fieldGoalsMade','fieldGoalAttempts','threePointersMade','threePointAttempts','freeThrowsMade','freeThrowAttempts','offensiveRebounds','defensiveRebounds','rebounds','assists','fouls','steals','turnovers','blocks','plusMinus','points']
+    # PDF extractors preserve different whitespace between the report title
+    # and the quarter heading. Quarter-only rows must never overwrite FINAL
+    # BOX rows when constructing the official player/minute reference.
+    first=re.split(r"OFFICIAL SCORER'S REPORT\s*1st\s+QUARTER",text,maxsplit=1,flags=re.I)[0];team=None;out=[];columns=['fieldGoalsMade','fieldGoalAttempts','threePointersMade','threePointAttempts','freeThrowsMade','freeThrowAttempts','offensiveRebounds','defensiveRebounds','rebounds','assists','fouls','steals','turnovers','blocks','plusMinus','points']
     for line in first.splitlines():
         if line.startswith('VISITOR:'):team=away
         if line.startswith('HOME:'):team=home
@@ -159,4 +162,5 @@ def nba_book_players(text,away,home):
         if m and team:
             out.append({'team':team,'name':m[1].strip(),'seconds':clock_seconds(m[2]),'stats':dict(zip(columns,map(int,m[3].split())))})
     if len(out)<10:raise ValueError('Incomplete official NBA final player table')
+    if len({(p['team'],name_key(p['name'])) for p in out})!=len(out):raise ValueError('Repeated official NBA player rows; full-game and period tables cannot be combined')
     return out
